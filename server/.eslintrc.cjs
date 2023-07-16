@@ -48,9 +48,7 @@ module.exports = {
       'ignorePackages',
       {
         js: 'never',
-        jsx: 'never',
-        ts: 'never',
-        tsx: 'never'
+        ts: 'never'
       }
     ],
     'jsx-a11y/anchor-is-valid': [
