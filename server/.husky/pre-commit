@@ -2,4 +2,4 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 # Add the following
-npx eslint --fix . && npx prettier --write .
+npx tsc --noEmit && npx eslint --fix . && npx prettier --write .
