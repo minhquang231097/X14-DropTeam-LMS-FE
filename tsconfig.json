@@ -12,8 +12,6 @@
     "allowJs": true,
     "incremental": true,
     "sourceMap": true,
-    "outDir": "./dist/",
-    "rootDir": ".",
     "removeComments": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
@@ -33,7 +31,7 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", ".commitlintrc.js"],
+  "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
   "exclude": ["./node_modules", "./build", "./dist"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

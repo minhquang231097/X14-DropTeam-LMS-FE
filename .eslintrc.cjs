@@ -6,12 +6,13 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
-    // 'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'plugin:react/recommended',
     'plugin:react-hooks/recommended',
     'eslint-config-prettier',
     'prettier',
     'airbnb',
+    'airbnb-typescript',
+    'airbnb/hooks',
     'plugin:jsx-a11y/recommended',
     'plugin:prettier/recommended',
     'plugin:security/recommended'
@@ -20,10 +21,9 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
-    project: true,
-    tsconfigRootDir: __dirname
+    project: './tsconfig.json'
   },
-  plugins: ['react-refresh', 'prettier', '@typescript-eslint'],
+  plugins: ['react-refresh', 'prettier', '@typescript-eslint', 'simple-import-sort'],
   rules: {
     'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
     'no-empty-function': 'off',
@@ -80,7 +80,7 @@ module.exports = {
     'no-nested-ternary': 'off',
     'import/prefer-default-export': 'off'
   },
-  ignorePatterns: ['.eslintrc.cjs', 'vite.config.ts'],
+  ignorePatterns: ['.eslintrc.cjs', 'vite.config.ts', '.commitlintrc.js', 'dist'],
   settings: {
     'import/resolver': {
       node: {
