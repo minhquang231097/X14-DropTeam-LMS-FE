@@ -1,13 +1,15 @@
-import { ConfigProvider } from 'antd'
+// import { ConfigProvider } from 'antd'
 import { StyleProvider } from '@ant-design/cssinjs'
 import React from 'react'
-import ButtonComponent from './components/Button'
+import { ConfigProvider, Button } from 'antd'
+// import ButtonComponent from './components/Button'
 
 const App: React.FC = () => {
   return (
-    <ConfigProvider theme={{ token: { fontFamily: 'Inter, Roboto, sans-serif' } }}>
+    <ConfigProvider>
       <StyleProvider hashPriority='high'>
-        <ButtonComponent />
+        <h1 className='text-3xl text-red-900'>Hello world!</h1>
+        <Button className='bg-green-500'>Test Integration</Button>
       </StyleProvider>
     </ConfigProvider>
   )
