@@ -9,9 +9,10 @@ const ModalRegister = () => {
   return (
     <div>
       <Button
-        type='default'
+        type='primary'
         onClick={() => setModalOpen(true)}
         size='large'
+        className='mt-4'
       >
         Register
       </Button>
