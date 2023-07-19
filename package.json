@@ -2,6 +2,7 @@
   "name": "x14-dropteam-lms-fe-project",
   "private": true,
   "version": "1.0.0",
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "rimraf dist && tsc && vite build",
