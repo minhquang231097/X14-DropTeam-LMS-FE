@@ -38,7 +38,8 @@ module.exports = {
         useTabs: false,
         singleQuote: true,
         printWidth: 120,
-        jsxSingleQuote: true
+        jsxSingleQuote: true,
+        singleAttributePerLine: true
       }
     ],
     '@typescript-eslint/no-non-null-assertion': 'off',
