@@ -3,14 +3,15 @@ import SearchBar from '../search/SearchBar'
 import DropdownList from '../dropdown/DropdownList'
 import DarkMode from '../darkModeToggle/DarkMode'
 import UserDropDown from '../userDropdown/UserDropDown'
+import { Link } from 'react-router-dom'
 
 const Header: React.FC = () => {
   return (
-    <header className='h-[56px] dark:bg-[#1E293B] flex items-center justify-between'>
+    <header className='h-[56px] dark:bg-[#1E293B] flex items-center justify-between border-0 border-b-[1px] border-gray-300 border-solid dark:border-none'>
       <nav className='max-w-[1280px] mx-auto w-full flex items-center justify-between lg:px-8'>
         <div className='flex lg:flex-1'>
           <a
-            href='#'
+            href='/'
             className='-m-1.5 p-1.5 flex items-center no-underline text-gray-600'
           >
             <img
@@ -23,12 +24,12 @@ const Header: React.FC = () => {
         </div>
 
         <div className='flex lg:flex-1 justify-between'>
-          <a
-            href='#'
+          <Link
+            to='/'
             className='leading-6 font-bold no-underline text-gray-600 dark:text-gray-100'
           >
             Home
-          </a>
+          </Link>
           <a
             href='#'
             className='leading-6 font-bold no-underline text-gray-600 dark:text-gray-100'
@@ -41,12 +42,12 @@ const Header: React.FC = () => {
           >
             Pages
           </a>
-          <a
-            href='#'
+          <Link
+            to='/courses-list'
             className='leading-6 font-bold no-underline text-gray-600 dark:text-gray-100'
           >
             <DropdownList />
-          </a>
+          </Link>
         </div>
 
         <SearchBar />

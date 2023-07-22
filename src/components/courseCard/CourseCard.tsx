@@ -8,8 +8,8 @@ import { Tooltip } from 'antd'
 const CourseCard = () => {
   return (
     <div
-      className='w-[300px] dark:bg-[#1E293B] rounded-xl overflow-hidden'
-      style={{ boxShadow: '0 0 10px rgba(0,0,0,.3)', cursor: 'pointer', border: '1px solid rgba(0,0,0,.14)' }}
+      className='w-[300px] dark:bg-[#1E293B] rounded-xl overflow-hidden '
+      style={{ boxShadow: '0 0 10px rgba(0,0,0,.18)', cursor: 'pointer', border: '1px solid rgba(0,0,0,.14)' }}
     >
       <a
         href=''
