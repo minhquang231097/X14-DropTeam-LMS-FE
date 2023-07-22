@@ -6,6 +6,7 @@ import { Routes, Route } from 'react-router-dom'
 import ModalLogin from './components/pages/login/ModalLogin'
 import Home from './components/pages/home/Home'
 import CoursesList from './components/pages/cousesList/CoursesList'
+import CourseDetail from './components/pages/courseDetail/CourseDetail'
 import Footer from './components/footer/Footer'
 
 const App: React.FC = () => {
@@ -21,6 +22,10 @@ const App: React.FC = () => {
           <Route
             path='/courses-list'
             element={<CoursesList />}
+          />
+          <Route
+            path='/course-detail'
+            element={<CourseDetail />}
           />
           <Route
             path='/login'

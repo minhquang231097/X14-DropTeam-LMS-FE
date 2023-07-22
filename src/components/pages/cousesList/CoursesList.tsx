@@ -3,6 +3,7 @@ import { Select, Pagination, ConfigProvider } from 'antd'
 import Sidebar from '@/components/sidebar/Sidebar'
 import CourseCard from '@/components/courseCard/CourseCard'
 import './coursesList.css'
+import { Link } from 'react-router-dom'
 
 const CoursesList: React.FC = () => {
   const handleChange = (value: string) => {
@@ -59,20 +60,29 @@ const CoursesList: React.FC = () => {
 
         <div className='col-span-3 grid grid-cols-3 row-span-1'>
           <div className='col-span-3 grid grid-cols-3 gap-6'>
-            <CourseCard />
-            <CourseCard />
-            <CourseCard />
-            <CourseCard />
-            <CourseCard />
-            <CourseCard />
-            <CourseCard />
-            <CourseCard />
-            <CourseCard />
+            <Link to='/course-detail'>
+              <CourseCard />
+            </Link>
+            <a href=''>
+              <CourseCard />
+            </a>
+            <a href=''>
+              <CourseCard />
+            </a>
+            <a href=''>
+              <CourseCard />
+            </a>
+            <a href=''>
+              <CourseCard />
+            </a>
+            <a href=''>
+              <CourseCard />
+            </a>
           </div>
           <div className='flex justify-center col-start-2 mt-10'>
             <Pagination
               defaultCurrent={1}
-              total={30}
+              total={20}
             />
           </div>
         </div>
