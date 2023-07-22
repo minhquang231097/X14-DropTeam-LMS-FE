@@ -1,6 +1,5 @@
 import { Button, Checkbox, Form, Input, Select } from 'antd'
 import './register.css'
-
 const { Option } = Select
 
 const Register = () => {
@@ -45,18 +44,33 @@ const Register = () => {
           />
         </Form.Item>
 
+        {/* fullname */}
+        <Form.Item
+          name='fullname'
+          rules={[{ required: true, message: 'Please input your fullname!', whitespace: true }]}
+        >
+          <p className='login-label'>Full Name</p>
+          <Input
+            size='large'
+            placeholder='Full Name ...'
+          />
+        </Form.Item>
+      </div>
+
+      <div className='grid grid-cols-2'>
         {/* email */}
         <Form.Item
+          className='w-[98%]'
           name='email'
           rules={[
             {
               type: 'email',
-              message: 'The input is not valid E-mail!'
+              message: 'The input is not valid Email!',
             },
             {
               required: true,
-              message: 'Please input your E-mail!'
-            }
+              message: 'Please input your E-mail!',
+            },
           ]}
         >
           <p className='login-label'>Email</p>
@@ -65,12 +79,9 @@ const Register = () => {
             placeholder='Email address here ...'
           />
         </Form.Item>
-      </div>
 
-      <div className='grid grid-cols-2'>
         {/* address */}
         <Form.Item
-          className='w-[98%]'
           name='address'
           rules={[{ type: 'array', required: true, message: 'Please select your address!' }]}
         >
@@ -81,9 +92,12 @@ const Register = () => {
             placeholder='Your address ...'
           />
         </Form.Item>
+      </div>
 
+      <div className='grid grid-cols-2'>
         {/* phone number */}
         <Form.Item
+          className='w-[98%]'
           name='phone'
           rules={[{ required: true, message: 'Please input your phone number!' }]}
         >
@@ -95,23 +109,23 @@ const Register = () => {
             placeholder='Phone number ...'
           />
         </Form.Item>
-      </div>
 
-      {/* gender */}
-      <Form.Item
-        name='gender'
-        rules={[{ required: true, message: 'Please select gender!' }]}
-      >
-        <p className='login-label'>Gender</p>
-        <Select
-          size='large'
-          placeholder='Select your gender'
+        {/* gender */}
+        <Form.Item
+          name='gender'
+          rules={[{ required: true, message: 'Please select gender!' }]}
         >
-          <Option value='male'>Male</Option>
-          <Option value='female'>Female</Option>
-          <Option value='other'>Other</Option>
-        </Select>
-      </Form.Item>
+          <p className='login-label'>Gender</p>
+          <Select
+            size='large'
+            placeholder='Select your gender'
+          >
+            <Option value='male'>Male</Option>
+            <Option value='female'>Female</Option>
+            <Option value='other'>Other</Option>
+          </Select>
+        </Form.Item>
+      </div>
 
       <div className='grid grid-cols-2'>
         {/* password */}
@@ -121,8 +135,8 @@ const Register = () => {
           rules={[
             {
               required: true,
-              message: 'Please input your password!'
-            }
+              message: 'Please input your password!',
+            },
           ]}
           hasFeedback
         >
@@ -141,7 +155,7 @@ const Register = () => {
           rules={[
             {
               required: true,
-              message: 'Please confirm your password!'
+              message: 'Please confirm your password!',
             },
             ({ getFieldValue }) => ({
               validator(_, value) {
@@ -149,8 +163,8 @@ const Register = () => {
                   return Promise.resolve()
                 }
                 return Promise.reject(new Error('The new password that you entered do not match!'))
-              }
-            })
+              },
+            }),
           ]}
         >
           <p className='login-label'>Confirm Password</p>
@@ -167,8 +181,8 @@ const Register = () => {
         valuePropName='checked'
         rules={[
           {
-            validator: (_, value) => (value ? Promise.resolve() : Promise.reject(new Error('Should accept agreement')))
-          }
+            validator: (_, value) => (value ? Promise.resolve() : Promise.reject(new Error('Should accept agreement'))),
+          },
         ]}
       >
         <Checkbox>

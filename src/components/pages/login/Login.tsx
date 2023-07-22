@@ -1,16 +1,16 @@
+import { useState } from 'react'
 import { Button, Checkbox, Form, Input } from 'antd'
+import handleLogin from './login'
 import './login.css'
 
 const Login = () => {
-  const onFinish = (values: any) => {
-    console.log('Received values of form: ', values)
-  }
+  const [loginForm, setLoginForm] = useState({ username: '', password: '' })
+
   return (
     <Form
       name='normal_login'
       className='login-form'
       initialValues={{ remember: true }}
-      onFinish={onFinish}
     >
       <Form.Item
         name='username'
@@ -20,8 +20,12 @@ const Login = () => {
         <Input
           size='large'
           placeholder='Username or Email address here ...'
+          onChange={(e) => {
+            setLoginForm({ ...loginForm, username: e.target.value })
+          }}
         />
       </Form.Item>
+
       <Form.Item
         name='password'
         rules={[{ required: true, message: 'Please input your Password!' }]}
@@ -31,8 +35,12 @@ const Login = () => {
           size='large'
           type='password'
           placeholder='********'
+          onChange={(e) => {
+            setLoginForm({ ...loginForm, password: e.target.value })
+          }}
         />
       </Form.Item>
+
       <Form.Item>
         <Form.Item
           name='remember'
@@ -56,6 +64,7 @@ const Login = () => {
           type='primary'
           htmlType='submit'
           className='login-form-button'
+          onClick={() => handleLogin(loginForm.username, loginForm.password)}
         >
           Login
         </Button>

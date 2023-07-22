@@ -1,41 +1,40 @@
 import { useState } from 'react'
-import { Modal } from 'antd'
+import { Button, Modal } from 'antd'
+import ForgotPassword from './ForgotPassword'
 import Logo from '../../../assets/images/logo/logo-with-shadow.png'
-import { BsPersonAdd } from 'react-icons/bs'
-import Register from './Register'
 
-const ModalRegister = () => {
+const ModalForgotPassword = () => {
   const [modalOpen, setModalOpen] = useState(false)
 
   return (
     <div>
-      <div
+      <Button
+        type='primary'
         onClick={() => setModalOpen(true)}
-        className='flex items-center text-gray-600 font-bold'
+        size='large'
+        className='mt-4'
       >
-        <BsPersonAdd className='text-2xl mr-2 p-2' />
-        Register
-      </div>
+        Forgot Password
+      </Button>
       <Modal
         open={modalOpen}
         onOk={() => setModalOpen(false)}
         onCancel={() => setModalOpen(false)}
         footer={null}
         centered
-        style={{ top: 20, marginBottom: 40 }}
-        width={1000}
       >
         <img
           src={Logo}
           alt=''
           className='login-logo'
         />
-        <h1>Register</h1>
-        Already have an account? <a href='/login'>Login now!</a>
-        <Register />
+        <h1>Forgot Password</h1>
+        <p>Fill the form to reset your password.</p>
+        <ForgotPassword />
+        Return to <a href='/'>Sign up!</a>
       </Modal>
     </div>
   )
 }
 
-export default ModalRegister
+export default ModalForgotPassword

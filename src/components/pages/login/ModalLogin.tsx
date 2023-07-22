@@ -1,20 +1,21 @@
 import { useState } from 'react'
-import { Button, Modal } from 'antd'
-import Login from './Login'
+import { Modal } from 'antd'
+import Login from './Login.tsx'
 import Logo from '../../../assets/images/logo/logo-with-shadow.png'
+import { IoMdLogIn } from 'react-icons/io'
 
 const ModalLogin = () => {
   const [modalOpen, setModalOpen] = useState(false)
 
   return (
     <div>
-      <Button
-        type='primary'
+      <div
         onClick={() => setModalOpen(true)}
-        size='large'
+        className='flex items-center text-gray-600 font-bold'
       >
+        <IoMdLogIn className='text-2xl mr-2 p-2' />
         Login
-      </Button>
+      </div>
       <Modal
         open={modalOpen}
         onOk={() => setModalOpen(false)}
