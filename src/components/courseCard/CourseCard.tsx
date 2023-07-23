@@ -4,6 +4,7 @@ import { AiOutlineClockCircle } from 'react-icons/ai'
 import { BiBarChart } from 'react-icons/bi'
 import { BiMessageSquareDetail } from 'react-icons/bi'
 import { Tooltip } from 'antd'
+import { Link } from 'react-router-dom'
 
 const CourseCard = () => {
   return (
@@ -11,8 +12,8 @@ const CourseCard = () => {
       className='w-[300px] dark:bg-[#1E293B] rounded-xl overflow-hidden '
       style={{ boxShadow: '0 0 10px rgba(0,0,0,.18)', cursor: 'pointer', border: '1px solid rgba(0,0,0,.14)' }}
     >
-      <a
-        href=''
+      <Link
+        to='/course-detail'
         className='no-underline text-gray-800 dark:text-gray-100'
       >
         <img
@@ -62,7 +63,7 @@ const CourseCard = () => {
             </Tooltip>
           </a>
         </div>
-      </a>
+      </Link>
     </div>
   )
 }

@@ -123,7 +123,7 @@ const CourseDetail: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className='mt-[320px]'>
+      <div className='mt-[320px] mb-[96px]'>
         <Sheft title='Recommended to you' />
       </div>
     </>

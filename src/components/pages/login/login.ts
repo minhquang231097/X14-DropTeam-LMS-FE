@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-const handleLogin = (username: string, password: string, other?: any) => {
-  console.log('Login:', username, password)
+const handleLogin = (value: { username: string; password: string }) => {
+  console.log('Login:', value.username, value.password)
 }
 
 export default handleLogin

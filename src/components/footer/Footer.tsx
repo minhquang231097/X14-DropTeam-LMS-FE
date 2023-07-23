@@ -1,6 +1,6 @@
 const Footer = () => {
   return (
-    <div className='max-w-[1280px] mx-auto mt-[96px] flex items-center justify-between border-0 border-t-[1px] border-gray-300 dark:border-[#334155] border-solid py-4'>
+    <div className='max-w-[1280px] mx-auto mt-0 flex items-center justify-between border-0 border-t-[1px] border-gray-300 dark:border-[#334155] border-solid py-4'>
       <div className='text-sm dark:text-gray-300'>© 2023 Drop Team. All Rights Reserved.</div>
       <div>
         <a

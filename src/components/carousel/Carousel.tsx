@@ -1,5 +1,6 @@
 import React from 'react'
 import img1 from '../../assets/images/carousel/carosel-1.jpg'
+import { Link } from 'react-router-dom'
 
 const contentStyle: React.CSSProperties = {
   height: '408px',
@@ -21,7 +22,12 @@ const Carousel: React.FC = () => {
             entrepreneur.
           </p>
           <button className='mt-4 text-white font-bold bg-gray-800 outline-none border-none p-3 rounded-md cursor-pointer hover:bg-gray-600'>
-            Browse Courses
+            <Link
+              to='/courses-list'
+              className='no-underline text-gray-200'
+            >
+              Browse Courses
+            </Link>
           </button>
         </div>
       </div>

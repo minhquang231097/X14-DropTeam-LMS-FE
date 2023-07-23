@@ -1,8 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+html {
+  scroll-behavior: smooth;
+}
+
+html.dark #root {
+  background-color: #0f172a;
+}
 
 body {
   margin: 0;
@@ -10,6 +18,8 @@ body {
   background-color: #fff;
 }
 
-html.dark #root {
-  background-color: #0f172a;
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }

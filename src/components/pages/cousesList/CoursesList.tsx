@@ -53,31 +53,19 @@ const CoursesList: React.FC = () => {
           />
         </div>
       </div>
-      <div className='max-w-[1280px] mx-auto grid grid-rows-1 grid-cols-4 gap-6'>
+      <div className='max-w-[1280px] mx-auto  mb-[96px] grid grid-rows-1 grid-cols-4 gap-6'>
         <div className='row-span-1'>
           <Sidebar />
         </div>
 
         <div className='col-span-3 grid grid-cols-3 row-span-1'>
           <div className='col-span-3 grid grid-cols-3 gap-6'>
-            <Link to='/course-detail'>
-              <CourseCard />
-            </Link>
-            <a href=''>
-              <CourseCard />
-            </a>
-            <a href=''>
-              <CourseCard />
-            </a>
-            <a href=''>
-              <CourseCard />
-            </a>
-            <a href=''>
-              <CourseCard />
-            </a>
-            <a href=''>
-              <CourseCard />
-            </a>
+            <CourseCard />
+            <CourseCard />
+            <CourseCard />
+            <CourseCard />
+            <CourseCard />
+            <CourseCard />
           </div>
           <div className='flex justify-center col-start-2 mt-10'>
             <Pagination
