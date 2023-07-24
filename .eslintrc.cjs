@@ -15,13 +15,13 @@ module.exports = {
     'airbnb/hooks',
     'plugin:jsx-a11y/recommended',
     'plugin:prettier/recommended',
-    'plugin:security/recommended'
+    'plugin:security/recommended',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
-    project: './tsconfig.json'
+    project: './tsconfig.json',
   },
   plugins: ['react-refresh', 'prettier', '@typescript-eslint', 'simple-import-sort'],
   rules: {
@@ -32,14 +32,15 @@ module.exports = {
       {
         arrowParens: 'always',
         semi: false,
-        trailingComma: 'none',
+        trailingComma: 'all',
         tabWidth: 2,
         endOfLine: 'auto',
         useTabs: false,
         singleQuote: true,
         printWidth: 120,
-        jsxSingleQuote: true
-      }
+        jsxSingleQuote: true,
+        singleAttributePerLine: true,
+      },
     ],
     '@typescript-eslint/no-non-null-assertion': 'off',
     '@typescript-eslint/interface-name-prefix': 'off',
@@ -55,8 +56,8 @@ module.exports = {
     'react/jsx-filename-extension': [
       1,
       {
-        extensions: ['.ts', '.tsx', '.js', '.jsx']
-      }
+        extensions: ['.ts', '.tsx', '.js', '.jsx'],
+      },
     ],
     'react/jsx-props-no-spreading': 'off',
     'import/extensions': [
@@ -66,26 +67,26 @@ module.exports = {
         js: 'never',
         jsx: 'never',
         ts: 'never',
-        tsx: 'never'
-      }
+        tsx: 'never',
+      },
     ],
     'jsx-a11y/anchor-is-valid': [
       'error',
       {
         components: ['Link'],
         specialLink: ['hrefLeft', 'hrefRight'],
-        aspects: ['invalidHref', 'preferButton']
-      }
+        aspects: ['invalidHref', 'preferButton'],
+      },
     ],
     'no-nested-ternary': 'off',
-    'import/prefer-default-export': 'off'
+    'import/prefer-default-export': 'off',
   },
   ignorePatterns: ['.eslintrc.cjs', 'vite.config.ts', '.commitlintrc.js', 'dist'],
   settings: {
     'import/resolver': {
       node: {
-        extensions: ['.ts', '.tsx', '.js', '.jsx']
-      }
-    }
-  }
+        extensions: ['.ts', '.tsx', '.js', '.jsx'],
+      },
+    },
+  },
 }
