@@ -26,7 +26,7 @@ const Sidebar: React.FC = () => {
             <Checkbox style={{ color: '#888' }}>JavaScript</Checkbox>
           </div>
           <div className='mb-2 dark:text-gray-100'>
-            <Checkbox style={{ color: '#888' }}>HTMl</Checkbox>
+            <Checkbox style={{ color: '#888' }}>HTML</Checkbox>
           </div>
         </div>
       </div>
