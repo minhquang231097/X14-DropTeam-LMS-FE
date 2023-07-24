@@ -41,7 +41,7 @@ const UserDropDown: React.FC = () => {
       arrow
     >
       <a
-        href='#'
+        target='_blank'
         className='flex items-center no-underline text-gray-600 dark:text-gray-100'
       >
         <FaUserCircle className='text-3xl cursor-pointer' />

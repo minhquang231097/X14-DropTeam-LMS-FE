@@ -1,5 +1,4 @@
-import { MdDarkMode } from 'react-icons/md'
-import { MdSunny } from 'react-icons/md'
+import { MdDarkMode, MdSunny } from 'react-icons/md'
 
 const DarkMode: React.FC = () => {
   const sunIcon = document.querySelector('.sun')

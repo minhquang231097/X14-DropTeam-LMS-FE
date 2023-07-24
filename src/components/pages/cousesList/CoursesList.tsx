@@ -1,9 +1,9 @@
 import React from 'react'
 import { Select, Pagination, ConfigProvider } from 'antd'
-import Sidebar from '@/components/sidebar/Sidebar'
-import CourseCard from '@/components/courseCard/CourseCard'
+import Sidebar from '../../sidebar/Sidebar'
+import CourseCard from '../../courseCard/CourseCard'
 import './coursesList.css'
-import { Link } from 'react-router-dom'
+// import { Link } from 'react-router-dom'
 
 const CoursesList: React.FC = () => {
   const handleChange = (value: string) => {

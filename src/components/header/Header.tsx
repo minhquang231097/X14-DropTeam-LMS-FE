@@ -1,9 +1,9 @@
+import { Link } from 'react-router-dom'
 import Logo from '../../assets/images/logo/logo-with-shadow.png'
 import SearchBar from '../search/SearchBar'
 import DropdownList from '../dropdown/DropdownList'
 import DarkMode from '../darkModeToggle/DarkMode'
 import UserDropDown from '../userDropdown/UserDropDown'
-import { Link } from 'react-router-dom'
 
 const Header: React.FC = () => {
   return (
@@ -31,13 +31,13 @@ const Header: React.FC = () => {
             Home
           </Link>
           <a
-            href='#'
+            target='_blank'
             className='leading-6 font-bold no-underline text-gray-600 dark:text-gray-100'
           >
             About
           </a>
           <a
-            href='#'
+            target='_blank'
             className='leading-6 font-bold no-underline text-gray-600 dark:text-gray-100'
           >
             Pages
@@ -55,7 +55,7 @@ const Header: React.FC = () => {
         <div className='hidden lg:flex lg:items-center lg:flex-1 lg:justify-end'>
           <DarkMode />
           <a
-            href='#'
+            target='_blank'
             className='flex items-center no-underline text-gray-600 dark:text-gray-100'
           >
             <UserDropDown />

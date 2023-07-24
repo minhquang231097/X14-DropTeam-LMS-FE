@@ -51,6 +51,7 @@ const LoginForm = () => {
                 if (!value || value.length >= 6) {
                   return Promise.resolve()
                 }
+                // eslint-disable-next-line prefer-promise-reject-errors
                 return Promise.reject('Please enter password at least 6 characters')
               },
             },

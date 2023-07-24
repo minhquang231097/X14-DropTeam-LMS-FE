@@ -1,7 +1,7 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import Logo from '../../../assets/images/logo/logo-with-shadow.png'
 import RegisterForm from './RegisterForm'
-import { Link } from 'react-router-dom'
 
 const Register: React.FC = () => {
   return (

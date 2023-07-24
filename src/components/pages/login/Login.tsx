@@ -1,7 +1,7 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import LoginForm from './LoginForm'
 import Logo from '../../../assets/images/logo/logo-with-shadow.png'
-import { Link } from 'react-router-dom'
 
 const Login: React.FC = () => {
   return (

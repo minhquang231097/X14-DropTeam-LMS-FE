@@ -1,5 +1,10 @@
 import CourseCard from '../courseCard/CourseCard'
-const Sheft: React.FC = ({ title: title }) => {
+
+interface SheftProps {
+  title: string
+}
+
+const Sheft = ({ title }: SheftProps) => {
   return (
     <div className='max-w-[1280px] mx-auto '>
       <p className='text-2xl font-bold m-0 mt-[96px] mb-[30px] dark:text-gray-100'>{title}</p>

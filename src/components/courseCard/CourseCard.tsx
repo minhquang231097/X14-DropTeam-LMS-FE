@@ -1,10 +1,9 @@
-import graphql from '../../assets/images/courses/graphql.jpg'
-import a from '../../assets/images/teacher/a.jpg'
 import { AiOutlineClockCircle } from 'react-icons/ai'
-import { BiBarChart } from 'react-icons/bi'
-import { BiMessageSquareDetail } from 'react-icons/bi'
+import { BiBarChart, BiMessageSquareDetail } from 'react-icons/bi'
 import { Tooltip } from 'antd'
 import { Link } from 'react-router-dom'
+import a from '../../assets/images/teacher/a.jpg'
+import graphql from '../../assets/images/courses/graphql.jpg'
 
 const CourseCard = () => {
   return (
@@ -57,7 +56,7 @@ const CourseCard = () => {
             />
             <p className='text-gray-500'>Miston Wilson</p>
           </div>
-          <a href=''>
+          <a target='_blank'>
             <Tooltip title='View Detail Course'>
               <BiMessageSquareDetail className='text-xl text-[#8A6AFE]' />
             </Tooltip>

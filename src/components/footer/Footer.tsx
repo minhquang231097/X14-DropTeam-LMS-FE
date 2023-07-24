@@ -5,25 +5,25 @@ const Footer = () => {
       <div>
         <a
           className='no-underline text-sm mr-8 text-gray-600 dark:text-gray-400'
-          href=''
+          target='_blank'
         >
           Privacy
         </a>
         <a
           className='no-underline text-sm mr-8 text-gray-600 dark:text-gray-400'
-          href=''
+          target='_blank'
         >
           Terms
         </a>
         <a
           className='no-underline text-sm mr-8 text-gray-600 dark:text-gray-400'
-          href=''
+          target='_blank'
         >
           Feedback
         </a>
         <a
           className='no-underline text-sm text-gray-600 dark:text-gray-400'
-          href=''
+          target='_blank'
         >
           Support
         </a>

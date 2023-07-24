@@ -26,6 +26,7 @@ module.exports = {
   plugins: ['react-refresh', 'prettier', '@typescript-eslint', 'simple-import-sort'],
   rules: {
     'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
+    'react/button-has-type': 'off',
     'no-empty-function': 'off',
     'prettier/prettier': [
       'warn',

@@ -1,8 +1,8 @@
 import React from 'react'
-import ScrollToTop from './components/scrollToTop/scrollToTop.ts'
 import { ConfigProvider } from 'antd'
 import { StyleProvider } from '@ant-design/cssinjs'
 import { Routes, Route } from 'react-router-dom'
+import ScrollToTop from './components/scrollToTop/scrollToTop'
 import Header from './components/header/Header'
 import Home from './components/pages/home/Home'
 import CoursesList from './components/pages/cousesList/CoursesList'
@@ -11,7 +11,8 @@ import Footer from './components/footer/Footer'
 import Register from './components/pages/register/Register.tsx'
 import Login from './components/pages/login/Login.tsx'
 import ForgotPassword from './components/pages/forgotPassword/ForgotPassword.tsx'
-import NotFound404 from './components/notFound404/NotFound404.tsx'
+import NotFound404 from './components/notFound404/NotFound404'
+
 const App: React.FC = () => {
   return (
     <ConfigProvider>
