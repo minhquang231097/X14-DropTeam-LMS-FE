@@ -6,8 +6,9 @@
     "module": "ESNext",
     "skipLibCheck": true,
     "baseUrl": ".",
+    "rootDir": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["./src/*"]
     },
     "allowJs": true,
     "incremental": true,
@@ -31,7 +32,7 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
+  "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "./src/declaration.d.ts"],
   "exclude": ["./node_modules", "./build", "./dist"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
