@@ -53,7 +53,7 @@ const CoursesList: React.FC = () => {
           />
         </div>
       </div>
-      <div className='max-w-[1280px] mx-auto  mb-[96px] grid grid-rows-1 grid-cols-4 gap-6'>
+      <div className='max-w-[1280px] mx-auto mb-[96px] grid grid-rows-1 grid-cols-4 gap-6'>
         <div className='row-span-1'>
           <Sidebar />
         </div>

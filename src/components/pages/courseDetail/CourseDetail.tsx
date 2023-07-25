@@ -55,13 +55,13 @@ const onChange = (key: string) => {
 const items: TabsProps['items'] = [
   {
     key: '1',
-    label: `Contents`,
-    children: <CollapseComponent />,
+    label: `Description`,
+    children: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`,
   },
   {
     key: '2',
-    label: `Description`,
-    children: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`,
+    label: `Contents`,
+    children: <CollapseComponent />,
   },
 ]
 

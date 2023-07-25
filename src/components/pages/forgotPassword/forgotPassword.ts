@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const handleSubmitForgot = (value: string) => {
+const handleSubmitForgot = async (value: string) => {
   console.log(value)
 }
 

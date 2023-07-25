@@ -2,10 +2,12 @@ import Logo from '../../assets/images/logo/logo-with-shadow.png'
 import SearchBar from '../search/SearchBar'
 import DropdownList from '../dropdown/DropdownList'
 import DarkMode from '../darkModeToggle/DarkMode'
-import UserDropDown from '../userDropdown/UserDropDown'
+import UserDropDown from '../userDropdown/UserDropdownDefault'
+import UserDropdownLogged from '../userDropdown/userDropdownLogged'
 import { Link } from 'react-router-dom'
 
 const Header: React.FC = () => {
+  const USER = JSON.parse(localStorage.getItem('user'))
   return (
     <header className='h-[56px] dark:bg-[#1E293B] flex items-center justify-between border-0 border-b-[1px] border-gray-300 border-solid dark:border-none'>
       <nav className='max-w-[1280px] mx-auto w-full flex items-center justify-between lg:px-8'>
@@ -58,7 +60,7 @@ const Header: React.FC = () => {
             href='#'
             className='flex items-center no-underline text-gray-600 dark:text-gray-100'
           >
-            <UserDropDown />
+            {!USER ? <UserDropDown /> : <UserDropdownLogged username={USER.username} />}
           </a>
         </div>
       </nav>
