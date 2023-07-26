@@ -1,9 +1,9 @@
 import Logo from '../../assets/images/logo/logo-with-shadow.png'
-import SearchBar from '../search/SearchBar'
-import DropdownList from '../dropdown/DropdownList'
-import DarkMode from '../darkModeToggle/DarkMode'
-import UserDropDown from '../userDropdown/UserDropdownDefault'
-import UserDropdownLogged from '../userDropdown/userDropdownLogged'
+import SearchBar from './SearchBar'
+import DropdownList from './DropdownList'
+import DarkMode from './DarkMode'
+import UserDropDown from './UserDropdownDefault'
+import UserDropdownLogged from './UserDropdownLogged'
 import { Link } from 'react-router-dom'
 
 const Header: React.FC = () => {

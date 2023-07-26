@@ -1,4 +1,4 @@
-import CourseCard from '../courseCard/CourseCard'
+import CourseCard from './CourseCard'
 const Sheft: React.FC = ({ title: title }) => {
   return (
     <div className='max-w-[1280px] mx-auto '>
