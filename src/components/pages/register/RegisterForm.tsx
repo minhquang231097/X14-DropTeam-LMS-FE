@@ -1,18 +1,20 @@
 import { Button, Checkbox, Form, Input, Select, DatePicker } from 'antd'
 import React, { useState } from 'react'
 import handleRegister from './register.ts'
+import { useNavigate } from 'react-router-dom'
 
 const { Option } = Select
 
 const RegisterForm: React.FC = () => {
+  const navigate = useNavigate()
   const [registerValue, setRegisterValue] = useState({
-    usename: '',
     fullname: '',
-    dateOfBirth: '',
     email: '',
-    address: '',
-    phoneNumber: '',
+    dob: '',
     gender: '',
+    address: '',
+    phone_number: '',
+    username: '',
     password: '',
   })
 
@@ -68,7 +70,7 @@ const RegisterForm: React.FC = () => {
               className='w-full'
               format={'DD/MM/YYYY'}
               onChange={(_date: any, dateString: string) => {
-                setRegisterValue({ ...registerValue, dateOfBirth: dateString })
+                setRegisterValue({ ...registerValue, dob: dateString })
               }}
             />
           </Form.Item>
@@ -118,7 +120,7 @@ const RegisterForm: React.FC = () => {
               maxLength={10}
               type='number'
               onBlur={(e) => {
-                setRegisterValue({ ...registerValue, phoneNumber: e.target.value })
+                setRegisterValue({ ...registerValue, phone_number: e.target.value })
               }}
             />
           </Form.Item>
@@ -190,7 +192,7 @@ const RegisterForm: React.FC = () => {
             placeholder='Username ...'
             maxLength={200}
             onChange={(e) => {
-              setRegisterValue({ ...registerValue, usename: e.target.value })
+              setRegisterValue({ ...registerValue, username: e.target.value })
             }}
           />
         </Form.Item>
@@ -278,7 +280,7 @@ const RegisterForm: React.FC = () => {
             htmlType='submit'
             size='large'
             className='w-full'
-            onClick={() => handleRegister(registerValue)}
+            onClick={() => handleRegister(registerValue, navigate)}
           >
             Register
           </Button>
