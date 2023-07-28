@@ -26,6 +26,7 @@ module.exports = {
   rules: {
     'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
     'react/button-has-type': 'off',
+    'no-console': 'off',
     'no-empty-function': 'off',
     'prettier/prettier': [
       'warn',
