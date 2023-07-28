@@ -2,8 +2,8 @@ import React from 'react'
 import { AiOutlineClockCircle, AiOutlineUser } from 'react-icons/ai'
 import { BiBarChart } from 'react-icons/bi'
 import { Tabs, Collapse, Button, TabsProps, CollapseProps } from 'antd'
-import JS from '../../../assets/images/courses/js.jpg'
-import Sheft from '../../sheft/Sheft'
+import JS from '@/assets/images/courses/js.jpg'
+import Sheft from '../../components/sheft/Sheft'
 
 const text = `
   A dog is a type of domesticated animal.

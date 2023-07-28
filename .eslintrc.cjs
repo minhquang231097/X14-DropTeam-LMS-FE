@@ -1,5 +1,3 @@
-/* eslint-env node */
-
 module.exports = {
   root: true,
   env: { browser: true, es2020: true },
@@ -22,6 +20,7 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
     project: './tsconfig.json',
+    tsconfigRootDir: __dirname,
   },
   plugins: ['react-refresh', 'prettier', '@typescript-eslint', 'simple-import-sort'],
   rules: {
@@ -48,7 +47,6 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
-    'no-empty-function': 'off',
     '@typescript-eslint/no-empty-function': 'off',
     'no-unused-vars': ['error', { vars: 'all' }],
     'react/jsx-no-useless-fragment': 'off',
@@ -62,7 +60,7 @@ module.exports = {
     ],
     'react/jsx-props-no-spreading': 'off',
     'import/extensions': [
-      'error',
+      'warn',
       'ignorePackages',
       {
         js: 'never',
