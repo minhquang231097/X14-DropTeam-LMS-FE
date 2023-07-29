@@ -2,7 +2,7 @@ import React from 'react'
 import { Avatar, Dropdown } from 'antd'
 import type { MenuProps } from 'antd'
 import { IoMdLogOut } from 'react-icons/io'
-import handleLogout from '../pages/login/logout.ts'
+import handleLogout from '@/apis/logout.api'
 import { useNavigate } from 'react-router-dom'
 
 const UserDropdownLogged: React.FC<{ username: any }> = (prop: any) => {

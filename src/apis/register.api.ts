@@ -1,4 +1,4 @@
-import axios from 'axios'
+import http from '@/utils/http'
 
 const handleRegister = async (
   value: {
@@ -14,10 +14,8 @@ const handleRegister = async (
   other?: any,
 ) => {
   console.log(value.phone_number)
-  await axios
-    .post('http://localhost:8080/auth/sign-up', JSON.stringify(value), {
-      headers: { 'Content-Type': 'application/json' },
-    })
+  await http
+    .post('/auth/sign-up', JSON.stringify(value))
     .then((res) => {
       if (res.status === 200) {
         other('/login', { replace: true })

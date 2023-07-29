@@ -1,9 +1,11 @@
 export interface Course {
-  name: string
+  course_code: string
   desc: string
-  rate: number
+  rate?: number
   price: string
-  level: string
-  duration: number
+  level?: string
+  duration?: number
   discount?: number
+  image?: any
+  title: any
 }

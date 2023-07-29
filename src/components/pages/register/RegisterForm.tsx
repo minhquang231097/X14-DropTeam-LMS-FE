@@ -1,6 +1,6 @@
 import { Button, Checkbox, Form, Input, Select, DatePicker } from 'antd'
 import React, { useState } from 'react'
-import handleRegister from './register.ts'
+import handleRegister from '@/apis/register.api'
 import { useNavigate } from 'react-router-dom'
 
 const { Option } = Select

@@ -1,8 +1,10 @@
 import { Button, Form, Input } from 'antd'
 import React, { useState } from 'react'
-import handleSubmitForgot from './forgotPassword'
+import handleForgotPassword from '@/apis/forgotPassword.api'
+import { useNavigate } from 'react-router-dom'
 
 const ForgotPasswordForm: React.FC = () => {
+  const navigate = useNavigate()
   const [emailForgot, setEmailForgot] = useState('')
 
   return (
@@ -42,10 +44,10 @@ const ForgotPasswordForm: React.FC = () => {
           htmlType='submit'
           className='w-full'
           onClick={() => {
-            handleSubmitForgot(emailForgot)
+            handleForgotPassword(emailForgot, navigate)
           }}
         >
-          Submit
+          Send
         </Button>
       </Form.Item>
     </Form>

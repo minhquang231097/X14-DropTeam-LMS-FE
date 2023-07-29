@@ -1,9 +1,9 @@
 import axios from 'axios'
 
 const http = axios.create({
-  baseURL: 'https://localhost:8080/',
-  timeout: 10000,
-  headers: { 'Content-type': 'application/json' },
+  baseURL: 'http://localhost:8080/api/v1',
+  timeout: 30000,
+  headers: { 'Content-Type': 'application/json' },
 })
 
 export default http

@@ -10,6 +10,8 @@ import Register from './components/pages/register/Register.tsx'
 import Login from './components/pages/login/Login.tsx'
 import ForgotPassword from './components/pages/forgotPassword/ForgotPassword.tsx'
 import NotFound404 from './components/pages/notFound404/NotFound404.tsx'
+import SendMailDone from './components/pages/forgotPassword/SendMailDone.tsx'
+import ChangePassword from './components/pages/changePassword/ChangePassword.tsx'
 
 const App: React.FC = () => {
   return (
@@ -39,6 +41,14 @@ const App: React.FC = () => {
           <Route
             path='/forgot-password'
             element={<ForgotPassword />}
+          />
+          <Route
+            path='/forgot-password/send-mail'
+            element={<SendMailDone />}
+          />
+          <Route
+            path='/change-password'
+            element={<ChangePassword />}
           />
           <Route
             path='*'

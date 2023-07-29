@@ -1,15 +1,26 @@
 import React from 'react'
+import './coursesList.css'
 import { Select, Pagination, ConfigProvider } from 'antd'
 import Sidebar from '@/components/layouts/Sidebar'
 import CourseCard from '@/components/layouts/CourseCard'
-import './coursesList.css'
 import Header from '@/components/layouts/Header'
 import Footer from '@/components/layouts/Footer'
+import { getCourses } from '@/apis/courses.api'
+import { useQuery } from '@tanstack/react-query'
+import { useQueryString } from '@/utils/utils'
 
 const CoursesList: React.FC = () => {
-  const handleChange = (value: string) => {
-    console.log(`selected ${value}`)
-  }
+  const queryString: { page?: string } = useQueryString()
+  const page = Number(queryString.page) || 1
+
+  const { data } = useQuery({
+    queryKey: ['courses', page],
+    queryFn: async () => {
+      const data = await getCourses(page, 6)
+      return data?.data
+    },
+  })
+
   return (
     <>
       <Header />
@@ -42,13 +53,12 @@ const CoursesList: React.FC = () => {
         <div className='max-w-[1280px] mx-auto'>
           <div className='flex items-center justify-between mb-4 mt-10'>
             <p className='text-gray-500'>
-              Displaying <span className='text-blue-500 font-bold'> 9</span> out of{' '}
-              <span className='text-blue-500 font-bold'> 68</span> courses
+              Displaying <span className='text-blue-500 font-bold'>{data ? data.length : ''}</span> out of{' '}
+              <span className='text-blue-500 font-bold'> 25</span> courses
             </p>
             <Select
               placeholder='Sort by'
               style={{ width: 120 }}
-              onChange={handleChange}
               options={[
                 { value: 'newest', label: 'Newest' },
                 { value: 'free', label: 'Free' },
@@ -63,12 +73,14 @@ const CoursesList: React.FC = () => {
 
           <div className='col-span-3 grid grid-cols-3 row-span-1'>
             <div className='col-span-3 grid grid-cols-3 gap-6'>
-              <CourseCard />
-              <CourseCard />
-              <CourseCard />
-              <CourseCard />
-              <CourseCard />
-              <CourseCard />
+              {data
+                ? data.map((course: any) => (
+                    <CourseCard
+                      {...course}
+                      key={course._id}
+                    />
+                  ))
+                : ''}
             </div>
             <div className='flex justify-center col-start-2 mt-10'>
               <Pagination

@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Button, Checkbox, Form, Input } from 'antd'
-import handleLogin from './login'
+import handleLogin from '@/apis/login.api'
 
 const LoginForm = () => {
-  const [loginValue, setLoginValue] = useState({ username: '', password: '' })
   const navigate = useNavigate()
+  const [loginValue, setLoginValue] = useState({ username: '', password: '' })
 
   return (
     <div className='mt-4'>

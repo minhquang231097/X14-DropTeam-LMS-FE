@@ -9,6 +9,9 @@ import JS from '../../../assets/images/courses/js.jpg'
 import Sheft from '@/components/layouts/Sheft'
 import Header from '@/components/layouts/Header'
 import Footer from '@/components/layouts/Footer'
+import { getCourses } from '@/apis/courses.api'
+import { useQuery } from '@tanstack/react-query'
+import { useQueryString } from '@/utils/utils'
 
 const text = `
   A dog is a type of domesticated animal.
@@ -68,6 +71,17 @@ const items: TabsProps['items'] = [
 ]
 
 const CourseDetail: React.FC = () => {
+  const queryString: { page?: string } = useQueryString()
+  const page = Number(queryString.page) || 1
+
+  const { data } = useQuery({
+    queryKey: ['courses', page],
+    queryFn: async () => {
+      const data = await getCourses(page, 6)
+      return data?.data
+    },
+  })
+  
   return (
     <>
       <Header />
