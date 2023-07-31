@@ -1,5 +1,5 @@
 import React from 'react'
-import Logo from '../../../assets/images/logo/logo-with-shadow.png'
+import Logo from '@/assets/images/logo/logo-with-shadow.png'
 import ForgotPasswordForm from './ForgotPasswordForm'
 import { Link } from 'react-router-dom'
 import Header from '@/components/layouts/Header'

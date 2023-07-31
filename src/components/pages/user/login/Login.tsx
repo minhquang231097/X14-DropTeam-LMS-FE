@@ -1,6 +1,6 @@
 import React from 'react'
 import LoginForm from './LoginForm'
-import Logo from '../../../assets/images/logo/logo-with-shadow.png'
+import Logo from '@/assets/images/logo/logo-with-shadow.png'
 import { Link } from 'react-router-dom'
 import Header from '@/components/layouts/Header'
 import Footer from '@/components/layouts/Footer'

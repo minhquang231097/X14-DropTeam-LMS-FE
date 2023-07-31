@@ -1,17 +1,20 @@
 import React from 'react'
-import ScrollToTop from './components/layouts/scrollToTop/scrollToTop.ts'
+import ScrollToTop from './components/layouts/scrollToTop.ts'
 import { ConfigProvider } from 'antd'
 import { StyleProvider } from '@ant-design/cssinjs'
 import { Routes, Route } from 'react-router-dom'
-import Home from './components/pages/home/Home'
-import CoursesList from './components/pages/cousesList/CoursesList'
-import CourseDetail from './components/pages/courseDetail/CourseDetail'
-import Register from './components/pages/register/Register.tsx'
-import Login from './components/pages/login/Login.tsx'
-import ForgotPassword from './components/pages/forgotPassword/ForgotPassword.tsx'
+import Home from './components/pages/user/home/Home'
+import CoursesList from './components/pages/user/cousesList/CoursesList'
+import CourseDetail from './components/pages/user/courseDetail/CourseDetail'
+import Register from './components/pages/user/register/Register.tsx'
+import Login from './components/pages/user/login/Login.tsx'
+import ForgotPassword from './components/pages/user/forgotPassword/ForgotPassword.tsx'
 import NotFound404 from './components/pages/notFound404/NotFound404.tsx'
-import SendMailDone from './components/pages/forgotPassword/SendMailDone.tsx'
-import ChangePassword from './components/pages/changePassword/ChangePassword.tsx'
+import SendMailDone from './components/pages/user/forgotPassword/SendMailDone.tsx'
+import ChangePassword from './components/pages/user/changePassword/ChangePassword.tsx'
+import ClassesListForTeacher from './components/pages/teacher/classesListForTeacher/ClassesListForTeacher.tsx'
+import ClassDetailForTeacher from './components/pages/teacher/classDetailForTeacher/ClassDetailForTeacher.tsx'
+import EditProfile from './components/pages/user/profileDetail/EditProfile.tsx'
 
 const App: React.FC = () => {
   return (
@@ -39,6 +42,10 @@ const App: React.FC = () => {
             element={<Login />}
           />
           <Route
+            path='/profile-detail'
+            element={<EditProfile />}
+          />
+          <Route
             path='/forgot-password'
             element={<ForgotPassword />}
           />
@@ -49,6 +56,14 @@ const App: React.FC = () => {
           <Route
             path='/change-password'
             element={<ChangePassword />}
+          />
+          <Route
+            path='/teacher/classes-list'
+            element={<ClassesListForTeacher />}
+          />
+          <Route
+            path='/teacher/classes-detail'
+            element={<ClassDetailForTeacher />}
           />
           <Route
             path='*'

@@ -18,18 +18,6 @@ const RegisterForm: React.FC = () => {
     password: '',
   })
 
-  const prefixSelector = (
-    <Form.Item
-      name='prefix'
-      noStyle
-    >
-      <Select style={{ width: 70 }}>
-        <Option value='84'>+84</Option>
-        <Option value='00'>+00</Option>
-      </Select>
-    </Form.Item>
-  )
-
   return (
     <div className='mt-4'>
       <Form
@@ -114,7 +102,6 @@ const RegisterForm: React.FC = () => {
           >
             <Input
               size='large'
-              addonBefore={prefixSelector}
               style={{ width: '100%' }}
               placeholder='Phone number ...'
               maxLength={10}

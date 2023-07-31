@@ -5,7 +5,7 @@ import { AiOutlineUser } from 'react-icons/ai'
 import { Tabs, Collapse, Button } from 'antd'
 import type { TabsProps } from 'antd'
 import type { CollapseProps } from 'antd'
-import JS from '../../../assets/images/courses/js.jpg'
+import JS from '@/assets/images/courses/js.jpg'
 import Sheft from '@/components/layouts/Sheft'
 import Header from '@/components/layouts/Header'
 import Footer from '@/components/layouts/Footer'
@@ -81,7 +81,7 @@ const CourseDetail: React.FC = () => {
       return data?.data
     },
   })
-  
+
   return (
     <>
       <Header />

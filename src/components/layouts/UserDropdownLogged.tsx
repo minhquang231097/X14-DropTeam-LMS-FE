@@ -2,6 +2,7 @@ import React from 'react'
 import { Avatar, Dropdown } from 'antd'
 import type { MenuProps } from 'antd'
 import { IoMdLogOut } from 'react-icons/io'
+import { RiUserSettingsLine } from 'react-icons/ri'
 import handleLogout from '@/apis/logout.api'
 import { useNavigate } from 'react-router-dom'
 
@@ -18,6 +19,18 @@ const UserDropdownLogged: React.FC<{ username: any }> = (prop: any) => {
     },
     {
       key: '2',
+      label: (
+        <div
+          className='flex items-center text-gray-600 font-bold'
+          onClick={() => navigate('/profile-detail')}
+        >
+          <RiUserSettingsLine className='text-2xl mr-2 p-2 pl-0' />
+          Edit Profile
+        </div>
+      ),
+    },
+    {
+      key: '3',
       label: (
         <div
           className='flex items-center text-gray-600 font-bold'

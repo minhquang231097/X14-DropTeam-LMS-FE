@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom'
 const Header: React.FC = () => {
   const USER = JSON.parse(localStorage.getItem('user'))
   return (
-    <header className='h-[56px] dark:bg-[#1E293B] flex items-center justify-between border-0 border-b-[1px] border-gray-300 border-solid dark:border-none'>
+    <header className='h-[56px] bg-white dark:bg-[#1E293B] flex items-center justify-between border-0 border-b-[1px] border-gray-300 border-solid dark:border-none'>
       <nav className='max-w-[1280px] mx-auto w-full flex items-center justify-between lg:px-8'>
         <div className='flex lg:flex-1'>
           <a

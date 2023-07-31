@@ -15,7 +15,7 @@ html.dark #root {
 body {
   margin: 0;
   font-family: 'Inter', sans-serif;
-  background-color: #fff;
+  background-color: #f1f5f9;
 }
 
 input::-webkit-outer-spin-button,

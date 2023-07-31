@@ -13,7 +13,6 @@ const handleRegister = async (
   },
   other?: any,
 ) => {
-  console.log(value.phone_number)
   await http
     .post('/auth/sign-up', JSON.stringify(value))
     .then((res) => {
