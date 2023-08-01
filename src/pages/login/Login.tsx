@@ -12,8 +12,8 @@ const Login: React.FC = () => {
           alt=''
           className='w-[20%]'
         />
-        <h1>Login</h1>
-        Don’t have an account?{' '}
+        <h1 className='text-black'>Login</h1>
+        <span className='text-black'>Don’t have an account?</span>{' '}
         <Link
           to='/register'
           className='no-underline text-blue-500'

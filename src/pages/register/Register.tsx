@@ -15,8 +15,8 @@ const Register: React.FC = () => {
           alt=''
           className='login-logo w-[200px]'
         />
-        <h1>Register</h1>
-        Already have an account?{' '}
+        <h1 className='text-black'>Register</h1>
+        <span className='text-black'>Already have an account?</span>Already have an account?{' '}
         <Link
           to='/login'
           className='no-underline text-blue-500'
