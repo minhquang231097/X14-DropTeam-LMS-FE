@@ -3,6 +3,8 @@ import { Select, Pagination, ConfigProvider } from 'antd'
 import Sidebar from '../../layouts/sidebar/Sidebar'
 import CourseCard from '../../components/courseCard/CourseCard'
 import './coursesList.css'
+import Header from '@/layouts/header/Header'
+import Footer from '@/layouts/footer/Footer'
 // import { Link } from 'react-router-dom'
 
 const CoursesList: React.FC = () => {
@@ -20,7 +22,7 @@ const CoursesList: React.FC = () => {
           Select: {
             colorText: '#888',
             colorBorder: '#777',
-            colorBgContainer: 'trasparent',
+            colorBgContainer: 'transparent',
             colorTextPlaceholder: '#888',
             colorBgSpotlight: '#888',
           },
@@ -33,6 +35,7 @@ const CoursesList: React.FC = () => {
         },
       }}
     >
+      <Header />
       <div className='h-[128px] dark:bg-gradient-to-r dark:from-indigo-500 dark:via-purple-500 dark:to-pink-500 bg-gradient-to-r from-[#24C6DC] to-[#514A9D] flex items-center'>
         <p className='max-w-[1280px] mx-auto text-white text-4xl font-bold m-0'>Courses List</p>
       </div>
@@ -75,6 +78,7 @@ const CoursesList: React.FC = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </ConfigProvider>
   )
 }
