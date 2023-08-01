@@ -1,11 +1,11 @@
 import React from 'react'
 import './coursesList.css'
-import { Select, Pagination, ConfigProvider } from 'antd'
 import Sidebar from '@/components/layouts/Sidebar'
 import CourseCard from '@/components/layouts/CourseCard'
 import Header from '@/components/layouts/Header'
 import Footer from '@/components/layouts/Footer'
-import { getCourses } from '@/apis/courses.api'
+import { Select, Pagination, ConfigProvider } from 'antd'
+import { getCoursesList } from '@/apis/coursesList.api'
 import { useQuery } from '@tanstack/react-query'
 import { useQueryString } from '@/utils/utils'
 
@@ -16,7 +16,7 @@ const CoursesList: React.FC = () => {
   const { data } = useQuery({
     queryKey: ['courses', page],
     queryFn: async () => {
-      const data = await getCourses(page, 6)
+      const data = await getCoursesList(page, 6)
       return data?.data
     },
   })

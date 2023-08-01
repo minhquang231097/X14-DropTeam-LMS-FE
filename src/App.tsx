@@ -11,10 +11,10 @@ import Login from './components/pages/user/login/Login.tsx'
 import ForgotPassword from './components/pages/user/forgotPassword/ForgotPassword.tsx'
 import NotFound404 from './components/pages/notFound404/NotFound404.tsx'
 import SendMailDone from './components/pages/user/forgotPassword/SendMailDone.tsx'
-import ChangePassword from './components/pages/user/changePassword/ChangePassword.tsx'
 import ClassesListForTeacher from './components/pages/teacher/classesListForTeacher/ClassesListForTeacher.tsx'
 import ClassDetailForTeacher from './components/pages/teacher/classDetailForTeacher/ClassDetailForTeacher.tsx'
 import EditProfile from './components/pages/user/profileDetail/EditProfile.tsx'
+import ResetPassword from './components/pages/user/resetPassword/ResetPassword.tsx'
 
 const App: React.FC = () => {
   return (
@@ -54,8 +54,8 @@ const App: React.FC = () => {
             element={<SendMailDone />}
           />
           <Route
-            path='/change-password'
-            element={<ChangePassword />}
+            path='/reset-password'
+            element={<ResetPassword />}
           />
           <Route
             path='/teacher/classes-list'

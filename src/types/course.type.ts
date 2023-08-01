@@ -1,4 +1,5 @@
 export interface Course {
+  _id: string
   course_code: string
   desc: string
   rate?: number

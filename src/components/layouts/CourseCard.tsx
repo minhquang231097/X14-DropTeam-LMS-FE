@@ -13,7 +13,7 @@ const CourseCard = (course: Course) => {
       style={{ boxShadow: '0 0 10px rgba(0,0,0,.18)', cursor: 'pointer', border: '1px solid rgba(0,0,0,.14)' }}
     >
       <Link
-        to='/course-detail'
+        to={`/course-detail?id=${course._id}`}
         className='no-underline text-gray-800 dark:text-gray-100'
       >
         <img

@@ -47,7 +47,7 @@ const ForgotPasswordForm: React.FC = () => {
             handleForgotPassword(emailForgot, navigate)
           }}
         >
-          Send
+          Send Reset Link
         </Button>
       </Form.Item>
     </Form>

@@ -1,24 +1,24 @@
 import React from 'react'
-import Logo from '@/assets/images/logo/logo-with-shadow.png'
-import ForgotPasswordForm from './ForgotPasswordForm'
-import { Link } from 'react-router-dom'
 import Header from '@/components/layouts/Header'
 import Footer from '@/components/layouts/Footer'
+import ResetPasswordForm from './ResetPasswordForm'
+import { Link } from 'react-router-dom'
+import Logo from '@/assets/images/logo/logo-with-shadow.png'
 
-const ForgotPassword: React.FC = () => {
+const ResetPassword: React.FC = () => {
   return (
     <>
       <Header />
-      <div className='w-full min-h-screen pt-20 pb-[96px] bg-gradient-to-r from-[#134E5E] to-[#71B280] dark:bg-gradient-to-r dark:from-[#8360c3] dark:to-[#2ebf91]'>
+      <div className='w-full min-h-screen pt-20 pb-[96px] dark:bg-gradient-to-r dark:from-[#6441A5] dark:to-[#2a0845] bg-gradient-to-r from-[#FFA17F] to-[#00223E]'>
         <div className='bg-white w-[480px] p-10 pb-6 rounded-lg mx-auto'>
           <img
             src={Logo}
             alt=''
             className='w-[20%]'
           />
-          <h1>Forgot Password</h1>
-          <p>Fill the form to send link reset your password.</p>
-          <ForgotPasswordForm />
+          <h1>Reset Password</h1>
+          <p>Fill the form to reset your password.</p>
+          <ResetPasswordForm />
           Return to{' '}
           <Link
             to='/login'
@@ -33,4 +33,4 @@ const ForgotPassword: React.FC = () => {
   )
 }
 
-export default ForgotPassword
+export default ResetPassword
