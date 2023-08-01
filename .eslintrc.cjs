@@ -60,8 +60,10 @@ module.exports = {
       },
     ],
     'react/jsx-props-no-spreading': 'off',
+    'react/no-unused-prop-types': 'off',
+    'react/prop-types': 'off',
     'import/extensions': [
-      'warn',
+      'off',
       'ignorePackages',
       {
         js: 'never',

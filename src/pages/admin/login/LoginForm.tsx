@@ -16,7 +16,7 @@ const LoginForm = () => {
       >
         <Form.Item
           name='email'
-          label={<p className='font-bold my-2'>Email</p>}
+          label={<p className='font-bold my-2 text-black'>Email</p>}
           hasFeedback
           rules={[
             {
@@ -40,7 +40,7 @@ const LoginForm = () => {
 
         <Form.Item
           name='password'
-          label={<p className='font-bold my-2'>Password</p>}
+          label={<p className='font-bold my-2 text-black'>Password</p>}
           rules={[
             {
               required: true,
@@ -74,7 +74,9 @@ const LoginForm = () => {
             valuePropName='checked'
             noStyle
           >
-            <Checkbox>Remember me</Checkbox>
+            <Checkbox>
+              <span className='text-black'>Remember me</span>
+            </Checkbox>
           </Form.Item>
 
           <Link

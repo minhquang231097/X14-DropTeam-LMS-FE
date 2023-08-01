@@ -6,15 +6,18 @@ import { StyleProvider } from '@ant-design/cssinjs'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import App from './App'
 import './index.css'
+import ColorModeContextProvider from './contexts/colorMode'
 
 const queryClient = new QueryClient()
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <ConfigProvider>
+      <ConfigProvider theme={{ token: { fontFamily: 'Inter, Roboto, sans-serif' } }}>
         <StyleProvider hashPriority='high'>
-          <App />
+          <ColorModeContextProvider>
+            <App />
+          </ColorModeContextProvider>
         </StyleProvider>
       </ConfigProvider>
       <ReactQueryDevtools initialIsOpen={false} />
