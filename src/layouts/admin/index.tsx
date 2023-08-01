@@ -1,17 +1,17 @@
 import React, { PropsWithChildren, useContext, useState } from 'react'
 import { Helmet } from 'react-helmet'
-import { Button, Layout, Space, Input, Avatar, Typography, Image } from 'antd'
+import { Button, Layout, Space, Input, Typography, Image } from 'antd'
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   SearchOutlined,
   TranslationOutlined,
-  UserOutlined,
   BellOutlined,
 } from '@ant-design/icons'
-import { MdDarkMode } from 'react-icons/md'
+import { MdDarkMode, MdSunny } from 'react-icons/md'
 import Logo from '@/assets/images/logo/logo-with-shadow.png'
 import { ColorModeContext } from '@/contexts/colorMode'
+import AdminDropDown from '@/components/adminDropdown/adminDropDown'
 
 interface LayoutProps extends PropsWithChildren {
   sider: React.ReactNode
@@ -56,8 +56,8 @@ const AdminLayout: React.FC<LayoutProps> = ({ sider, content }) => {
   }
 
   const ButtonStyle: React.CSSProperties = {
-    width: '3rem',
-    height: '3rem',
+    width: '2.5rem',
+    height: '2.5rem',
     verticalAlign: 'middle',
   }
 
@@ -117,12 +117,12 @@ const AdminLayout: React.FC<LayoutProps> = ({ sider, content }) => {
                   icon={
                     collapsed ? (
                       <MenuUnfoldOutlined
-                        style={{ fontSize: '20px', verticalAlign: 'middle' }}
+                        style={{ fontSize: '18px', verticalAlign: 'middle' }}
                         className={`text-${mode === 'light' ? 'black' : 'white'}`}
                       />
                     ) : (
                       <MenuFoldOutlined
-                        style={{ fontSize: '20px', verticalAlign: 'middle' }}
+                        style={{ fontSize: '18px', verticalAlign: 'middle' }}
                         className={`text-${mode === 'light' ? 'black' : 'white'}`}
                       />
                     )
@@ -146,32 +146,42 @@ const AdminLayout: React.FC<LayoutProps> = ({ sider, content }) => {
               <Space size='middle'>
                 <Button
                   shape='circle'
-                  icon={<TranslationOutlined style={{ fontSize: '22px' }} />}
+                  icon={<TranslationOutlined style={{ fontSize: '18px' }} />}
                   style={ButtonStyle}
                 />
                 <Button
                   shape='circle'
                   icon={
-                    <MdDarkMode
-                      style={{
-                        fontSize: '24px',
-                        verticalAlign: 'middle',
-                      }}
-                    />
+                    mode === 'light' ? (
+                      <MdDarkMode
+                        style={{
+                          fontSize: '24px',
+                          verticalAlign: 'middle',
+                        }}
+                      />
+                    ) : (
+                      <MdSunny
+                        style={{
+                          fontSize: '24px',
+                          verticalAlign: 'middle',
+                        }}
+                      />
+                    )
                   }
                   style={ButtonStyle}
                   onClick={() => setMode(mode === 'light' ? 'dark' : 'light')}
                 />
                 <Button
                   shape='circle'
-                  icon={<BellOutlined style={{ fontSize: '22px' }} />}
+                  icon={<BellOutlined style={{ fontSize: '18px' }} />}
                   style={ButtonStyle}
                 />
-                <Avatar
+                {/* <Avatar
                   icon={<UserOutlined style={{ fontSize: '24px' }} />}
                   size={44}
                   style={{ verticalAlign: 'middle' }}
-                />
+                /> */}
+                <AdminDropDown />
               </Space>
             </Header>
             <Content style={contentStyle}>{content}</Content>
