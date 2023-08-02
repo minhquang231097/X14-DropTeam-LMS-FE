@@ -1,28 +1,24 @@
 import React, { PropsWithChildren, useContext, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { Button, Layout, Space, Input, Typography, Image } from 'antd'
-import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  SearchOutlined,
-  TranslationOutlined,
-  BellOutlined,
-} from '@ant-design/icons'
-import { MdDarkMode, MdSunny } from 'react-icons/md'
+import { MdDarkMode, MdSunny, MdTranslate, MdSearch, MdNotifications, MdOutlineMenu } from 'react-icons/md'
 import Logo from '@/assets/images/logo/logo-with-shadow.png'
 import { ColorModeContext } from '@/contexts/colorMode'
 import AdminDropDown from '@/components/adminDropdown/adminDropDown'
+import MenuSection from './Menu'
 
 interface LayoutProps extends PropsWithChildren {
-  sider: React.ReactNode
   content: React.ReactNode
 }
 
 const { Header, Footer, Sider, Content } = Layout
 const { Search } = Input
 
-const AdminLayout: React.FC<LayoutProps> = ({ sider, content }) => {
+const AdminLayout: React.FC<LayoutProps> = ({ content }) => {
   const [collapsed, setCollapsed] = useState(false)
+  const handleCollapse = (isCollapsed: boolean) => {
+    setCollapsed(isCollapsed)
+  }
   const { mode, setMode } = useContext(ColorModeContext)
   const onSearch = (value: string) => console.log(value)
 
@@ -33,7 +29,8 @@ const AdminLayout: React.FC<LayoutProps> = ({ sider, content }) => {
     height: 64,
     paddingInline: 50,
     lineHeight: '64px',
-    backgroundColor: mode === 'light' ? '#e5e7eb' : '#374151', // bg-gray-300/700 (tailwind)
+    paddingLeft: 0,
+    backgroundColor: mode === 'light' ? '#e5e7eb' : '#374151',
   }
 
   const contentStyle: React.CSSProperties = {
@@ -46,19 +43,24 @@ const AdminLayout: React.FC<LayoutProps> = ({ sider, content }) => {
     textAlign: 'center',
     lineHeight: '120px',
     color: '#fff',
-    background: '#111827', // bg-gray-900 (tailwind)
+    background: '#111827',
   }
 
   const footerStyle: React.CSSProperties = {
     textAlign: 'center',
     color: mode === 'light' ? 'black' : 'white',
-    backgroundColor: mode === 'light' ? '#e5e7eb' : '#374151', // bg-gray-300/700 (tailwind)
+    backgroundColor: mode === 'light' ? '#e5e7eb' : '#374151',
   }
 
   const ButtonStyle: React.CSSProperties = {
     width: '2.5rem',
     height: '2.5rem',
     verticalAlign: 'middle',
+  }
+
+  const textStyle: React.CSSProperties = {
+    fontSize: '18px',
+    color: 'white',
   }
 
   return (
@@ -87,27 +89,28 @@ const AdminLayout: React.FC<LayoutProps> = ({ sider, content }) => {
             trigger={null}
             collapsible
             collapsed={collapsed}
-            collapsedWidth={0}
-            width='20%'
+            onCollapse={handleCollapse}
+            collapsedWidth={100}
+            width='15%'
             className='min-h-screen'
           >
             <Typography.Link
               href='/admin'
-              className='-m-1.5 p-1.5 flex items-center justify-center'
+              className='p-1.5 flex items-center justify-center'
             >
               <Image
                 src={Logo}
                 preview={false}
-                style={{ height: '4rem' }}
+                style={{ height: '3.5rem' }}
               />
               <Typography.Text
-                className='font-semibold'
-                style={{ fontSize: '18px', color: 'white' }}
+                className={`font-semibold ${collapsed ? 'hidden' : ''}`}
+                style={textStyle}
               >
                 Vite Education
               </Typography.Text>
             </Typography.Link>
-            {sider}
+            <MenuSection />
           </Sider>
           <Layout>
             <Header style={headerStyle}>
@@ -115,17 +118,9 @@ const AdminLayout: React.FC<LayoutProps> = ({ sider, content }) => {
                 <Button
                   type='text'
                   icon={
-                    collapsed ? (
-                      <MenuUnfoldOutlined
-                        style={{ fontSize: '18px', verticalAlign: 'middle' }}
-                        className={`text-${mode === 'light' ? 'black' : 'white'}`}
-                      />
-                    ) : (
-                      <MenuFoldOutlined
-                        style={{ fontSize: '18px', verticalAlign: 'middle' }}
-                        className={`text-${mode === 'light' ? 'black' : 'white'}`}
-                      />
-                    )
+                    <MdOutlineMenu
+                      className={`text-${mode === 'light' ? 'black' : 'white'} align-middle text-[24px]`}
+                    />
                   }
                   onClick={() => setCollapsed(!collapsed)}
                   style={{
@@ -137,7 +132,9 @@ const AdminLayout: React.FC<LayoutProps> = ({ sider, content }) => {
                 <Search
                   placeholder='Search Entire Dashboard'
                   allowClear
-                  enterButton={<SearchOutlined className='text-white' />}
+                  enterButton={
+                    <MdSearch className={`text-${mode === 'light' ? 'black' : 'white'} align-middle text-[24px]`} />
+                  }
                   size='large'
                   onSearch={onSearch}
                   style={{ display: 'flex' }}
@@ -146,26 +143,18 @@ const AdminLayout: React.FC<LayoutProps> = ({ sider, content }) => {
               <Space size='middle'>
                 <Button
                   shape='circle'
-                  icon={<TranslationOutlined style={{ fontSize: '18px' }} />}
+                  icon={
+                    <MdTranslate className={`text-${mode === 'light' ? 'black' : 'white'} align-middle text-[24px]`} />
+                  }
                   style={ButtonStyle}
                 />
                 <Button
                   shape='circle'
                   icon={
                     mode === 'light' ? (
-                      <MdDarkMode
-                        style={{
-                          fontSize: '24px',
-                          verticalAlign: 'middle',
-                        }}
-                      />
+                      <MdDarkMode className={`text-${mode === 'light' ? 'black' : 'white'} align-middle text-[24px]`} />
                     ) : (
-                      <MdSunny
-                        style={{
-                          fontSize: '24px',
-                          verticalAlign: 'middle',
-                        }}
-                      />
+                      <MdSunny className={`text-${mode === 'light' ? 'black' : 'white'} align-middle text-[24px]`} />
                     )
                   }
                   style={ButtonStyle}
@@ -173,14 +162,13 @@ const AdminLayout: React.FC<LayoutProps> = ({ sider, content }) => {
                 />
                 <Button
                   shape='circle'
-                  icon={<BellOutlined style={{ fontSize: '18px' }} />}
+                  icon={
+                    <MdNotifications
+                      className={`text-${mode === 'light' ? 'black' : 'white'} align-middle text-[24px]`}
+                    />
+                  }
                   style={ButtonStyle}
                 />
-                {/* <Avatar
-                  icon={<UserOutlined style={{ fontSize: '24px' }} />}
-                  size={44}
-                  style={{ verticalAlign: 'middle' }}
-                /> */}
                 <AdminDropDown />
               </Space>
             </Header>

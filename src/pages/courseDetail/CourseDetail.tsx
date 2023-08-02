@@ -4,6 +4,8 @@ import { BiBarChart } from 'react-icons/bi'
 import { Tabs, Collapse, Button, TabsProps, CollapseProps } from 'antd'
 import JS from '@/assets/images/courses/js.jpg'
 import Sheft from '../../components/sheft/Sheft'
+import Header from '@/layouts/header/Header'
+import Footer from '@/layouts/footer/Footer'
 
 const text = `
   A dog is a type of domesticated animal.
@@ -65,6 +67,7 @@ const items: TabsProps['items'] = [
 const CourseDetail: React.FC = () => {
   return (
     <>
+      <Header />
       <div className='relative z-0 h-[360px] bg-gradient-to-r from-[#F3904F] to-[#3B4371] dark:bg-gradient-to-r dark:from-[#67B26F] dark:to-[#4ca2cd] flex items-center' />
       <div className='max-w-[1280px] mx-auto'>
         <div className='absolute top-28 w-[720px] text-white'>
@@ -123,6 +126,7 @@ const CourseDetail: React.FC = () => {
       <div className='mt-[320px] mb-[96px]'>
         <Sheft title='Recommended to you' />
       </div>
+      <Footer />
     </>
   )
 }
