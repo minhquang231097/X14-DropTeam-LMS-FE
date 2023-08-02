@@ -39,7 +39,8 @@
     "react-icons": "^4.10.1",
     "react-quill": "^2.0.0",
     "react-router-dom": "^6.14.1",
-    "rimraf": "^5.0.1"
+    "rimraf": "^5.0.1",
+    "styled-components": "^6.0.5"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.6.6",
