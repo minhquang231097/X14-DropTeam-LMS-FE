@@ -1,6 +1,6 @@
+import { useQuery } from '@tanstack/react-query'
 import CourseCard from './CourseCard'
 import { getCoursesList } from '@/apis/coursesList.api'
-import { useQuery } from '@tanstack/react-query'
 import { useQueryString } from '@/utils/utils'
 
 const Sheft: React.FC = ({ title: title }) => {
@@ -10,11 +10,10 @@ const Sheft: React.FC = ({ title: title }) => {
   const { data } = useQuery({
     queryKey: ['courses', page],
     queryFn: async () => {
-      const data = await getCoursesList(page, 4)
-      return data?.data
+      const res = await getCoursesList(page, 4)
+      return res.data.data.list
     },
   })
-
   return (
     <div className='max-w-[1280px] mx-auto '>
       <p className='text-2xl font-bold m-0 mt-[96px] mb-[30px] dark:text-gray-100'>{title}</p>

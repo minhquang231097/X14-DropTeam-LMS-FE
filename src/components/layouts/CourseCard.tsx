@@ -1,10 +1,10 @@
-import a from '../../assets/images/teacher/a.jpg'
 import { AiOutlineClockCircle } from 'react-icons/ai'
 import { BiBarChart } from 'react-icons/bi'
 import { BiMessageSquareDetail } from 'react-icons/bi'
 import { Tooltip } from 'antd'
 import { Link } from 'react-router-dom'
 import { Course } from '@/types/course.type'
+import a from '../../assets/images/teacher/a.jpg'
 
 const CourseCard = (course: Course) => {
   return (
