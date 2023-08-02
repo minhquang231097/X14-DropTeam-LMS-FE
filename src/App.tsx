@@ -15,6 +15,7 @@ import ClassesListForTeacher from './components/pages/teacher/classesListForTeac
 import ClassDetailForTeacher from './components/pages/teacher/classDetailForTeacher/ClassDetailForTeacher.tsx'
 import EditProfile from './components/pages/user/profileDetail/EditProfile.tsx'
 import ResetPassword from './components/pages/user/resetPassword/ResetPassword.tsx'
+import LessonsListForTeacher from './components/pages/teacher/lessonsListForTeacher/LessonsListForTeacher.tsx'
 
 const App: React.FC = () => {
   return (
@@ -62,8 +63,12 @@ const App: React.FC = () => {
             element={<ClassesListForTeacher />}
           />
           <Route
-            path='/teacher/classes-detail'
+            path='/teacher/class-detail'
             element={<ClassDetailForTeacher />}
+          />
+          <Route
+            path='/teacher/lessons-list'
+            element={<LessonsListForTeacher />}
           />
           <Route
             path='*'

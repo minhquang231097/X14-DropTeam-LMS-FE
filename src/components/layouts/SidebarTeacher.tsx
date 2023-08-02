@@ -2,6 +2,7 @@ import React from 'react'
 import { MdOutlineClass } from 'react-icons/md'
 import { MdConveyorBelt } from 'react-icons/md'
 import Divider from 'antd/es/divider'
+import { Link } from 'react-router-dom'
 
 const SidebarTeacher: React.FC = () => {
   return (
@@ -15,10 +16,13 @@ const SidebarTeacher: React.FC = () => {
         className='dark:bg-gray-600'
       />
 
-      <div className='flex items-center text-gray-600 dark:text-gray-400 hover:bg-[#E2E8F0] dark:hover:bg-[#0F172A] hover:text-[#64748B] p-2 py-4 rounded-md'>
+      <Link
+        to='/teacher/classes-list'
+        className='flex items-center no-underline text-gray-600 dark:text-gray-400 hover:bg-[#E2E8F0] dark:hover:bg-[#0F172A] hover:text-[#64748B] p-2 py-4 rounded-md'
+      >
         <MdOutlineClass className='mr-2 text-xl' />
         Classes
-      </div>
+      </Link>
       <div className='flex items-center text-gray-600 dark:text-gray-400 hover:bg-[#E2E8F0] dark:hover:bg-[#0F172A] hover:text-[#64748B] p-2 py-4 rounded-md'>
         <MdConveyorBelt className='mr-2 text-xl' />
         Courses

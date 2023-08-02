@@ -4,6 +4,7 @@ import Footer from '@/components/layouts/Footer'
 import SidebarTeacher from '@/components/layouts/SidebarTeacher'
 import Divider from 'antd/es/divider'
 import { Select, ConfigProvider, Pagination } from 'antd'
+import { Link } from 'react-router-dom'
 
 const ClassDetailForTeacher: React.FC = () => {
   return (
@@ -29,12 +30,21 @@ const ClassDetailForTeacher: React.FC = () => {
             style={{ boxShadow: '0 0 10px rgba(0,0,0,.18)', cursor: 'pointer', border: '1px solid rgba(0,0,0,.1)' }}
           >
             <div className='p-4'>
-              <span className='text-xl text-gray-600 dark:text-gray-400 font-bold'>Code For Everyone</span>
-              <p className='m-0 text-small text-gray-500 mt-2'>
-                Total students: <span className='text-blue-600 font-bold'>10</span>
+              <span className='text-xl text-gray-600 dark:text-gray-400 font-bold'>Class Name here ...</span>
+              <p className='m-0 text-sm text-gray-500 mt-2'>
+                Total students: <span className='text-blue-600'>10</span>
               </p>
-              <p className='m-0 text-small text-gray-500 mt-2'>
-                Schedule: <span className='text-blue-600 font-bold'>Mon & Fri</span>
+              <p className='m-0 text-sm text-gray-500 mt-2'>
+                Schedule: <span className='text-blue-600'>Mon & Fri</span>
+              </p>
+              <p className='m-0 text-sm text-gray-500 mt-2'>
+                Lessons list:{' '}
+                <Link
+                  to='/teacher/lessons-list'
+                  className='text-blue-600 no-underline'
+                >
+                  View -&gt;
+                </Link>
               </p>
             </div>
             <Divider
