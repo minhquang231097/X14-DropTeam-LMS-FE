@@ -26,7 +26,7 @@ function getItem(
 }
 
 const items: MenuProps['items'] = [
-  getItem('Dashboard', '', <MdOutlineHome style={{ fontSize: '24px', verticalAlign: 'middle' }} />),
+  getItem('Home', '', <MdOutlineHome style={{ fontSize: '24px', verticalAlign: 'middle' }} />),
 
   getItem('Users', 'users', <MdPeople style={{ fontSize: '24px', verticalAlign: 'middle' }} />, [
     getItem('Teachers', 'users/teachers'),

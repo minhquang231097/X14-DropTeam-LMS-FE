@@ -1,7 +1,7 @@
 import React from 'react'
 import { AiOutlineClockCircle, AiOutlineUser } from 'react-icons/ai'
 import { BiBarChart } from 'react-icons/bi'
-import { Tabs, Collapse, Button, TabsProps, CollapseProps } from 'antd'
+import { Tabs, Collapse, Button, TabsProps, CollapseProps, ConfigProvider } from 'antd'
 import JS from '@/assets/images/courses/js.jpg'
 import Sheft from '../../components/sheft/Sheft'
 import Header from '@/layouts/header/Header'
@@ -17,17 +17,17 @@ const itemsCollapse: CollapseProps['items'] = [
   {
     key: '1',
     label: 'Lesson 1',
-    children: <p>{text}</p>,
+    children: <p className='text-black'>{text}</p>,
   },
   {
     key: '2',
     label: 'Lesson 2',
-    children: <p>{text}</p>,
+    children: <p className='text-black'>{text}</p>,
   },
   {
     key: '3',
     label: 'Lesson 3',
-    children: <p>{text}</p>,
+    children: <p className='text-black'>{text}</p>,
   },
 ]
 
@@ -60,13 +60,24 @@ const items: TabsProps['items'] = [
   {
     key: '2',
     label: `Description`,
-    children: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`,
+    children: (
+      <p className='text-black'>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+        magna aliqua.
+      </p>
+    ),
   },
 ]
 
 const CourseDetail: React.FC = () => {
   return (
-    <>
+    <ConfigProvider
+      theme={{
+        components: {
+          Collapse: { colorTextHeading: 'black', colorFillAlter: 'rgba(0, 0, 0, 0.02)', colorBorder: '#d9d9d9' },
+        },
+      }}
+    >
       <Header />
       <div className='relative z-0 h-[360px] bg-gradient-to-r from-[#F3904F] to-[#3B4371] dark:bg-gradient-to-r dark:from-[#67B26F] dark:to-[#4ca2cd] flex items-center' />
       <div className='max-w-[1280px] mx-auto'>
@@ -100,6 +111,7 @@ const CourseDetail: React.FC = () => {
               defaultActiveKey='1'
               items={items}
               onChange={onChange}
+              tabBarStyle={{ color: 'black' }}
             />
           </div>
           <div
@@ -127,7 +139,7 @@ const CourseDetail: React.FC = () => {
         <Sheft title='Recommended to you' />
       </div>
       <Footer />
-    </>
+    </ConfigProvider>
   )
 }
 

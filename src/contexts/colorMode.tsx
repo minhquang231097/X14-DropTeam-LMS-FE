@@ -36,7 +36,11 @@ const ColorModeContextProvider: React.FC<PropsWithChildren> = ({ children }) => 
       <ConfigProvider
         theme={{
           algorithm: mode === 'light' ? defaultAlgorithm : darkAlgorithm,
-          token: { colorPrimaryText: mode === 'light' ? 'black' : 'white' },
+          token: {
+            colorPrimaryText: mode === 'light' ? '#4b5563' : '#f3f4f6',
+            colorLink: '#4b5563',
+            colorLinkHover: '#3b82f6',
+          },
         }}
       >
         <App>{children}</App>

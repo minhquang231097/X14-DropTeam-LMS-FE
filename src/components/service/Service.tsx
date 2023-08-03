@@ -10,7 +10,7 @@ const Service: React.FC = () => {
             <BsCameraVideo className='text-xl text-[#C28135]' />
           </div>
           <div>
-            <span className='dark:text-gray-100 font-bold'>30,000 Online Courses</span>
+            <span className='text-gray-600 dark:text-gray-100 font-bold'>30,000 Online Courses</span>
             <p className='m-0 text-sm text-gray-500 mt-1'>Enjoy a variety of fresh topics</p>
           </div>
         </div>
@@ -20,7 +20,7 @@ const Service: React.FC = () => {
             <HiOutlineUserGroup className='text-2xl text-[#C28135]' />
           </div>
           <div>
-            <span className='dark:text-gray-100 font-bold'>Expert instruction</span>
+            <span className='text-gray-600 dark:text-gray-100 font-bold'>Expert instruction</span>
             <p className='m-0 text-sm text-gray-500 mt-1'>Find the right instructor for you</p>
           </div>
         </div>
@@ -30,7 +30,7 @@ const Service: React.FC = () => {
             <BsClock className='text-xl text-[#C28135]' />
           </div>
           <div>
-            <span className='dark:text-gray-100 font-bold'>Lifetime access</span>
+            <span className='text-gray-600 dark:text-gray-100 font-bold'>Lifetime access</span>
             <p className='m-0 text-sm text-gray-500 mt-1'>Learn on your schedule</p>
           </div>
         </div>
