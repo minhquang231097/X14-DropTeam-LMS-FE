@@ -1,6 +1,7 @@
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable react/destructuring-assignment */
 import { AiOutlineClockCircle } from 'react-icons/ai'
-import { BiBarChart } from 'react-icons/bi'
-import { BiMessageSquareDetail } from 'react-icons/bi'
+import { BiBarChart, BiMessageSquareDetail } from 'react-icons/bi'
 import { Tooltip } from 'antd'
 import { Link } from 'react-router-dom'
 import { Course } from '@/types/course.type'
@@ -57,7 +58,7 @@ const CourseCard = (course: Course) => {
             />
             <p className='text-gray-500'>Miston Wilson</p>
           </div>
-          <a href=''>
+          <a target='_blank'>
             <Tooltip title='View Detail Course'>
               <BiMessageSquareDetail className='text-xl text-[#8A6AFE]' />
             </Tooltip>

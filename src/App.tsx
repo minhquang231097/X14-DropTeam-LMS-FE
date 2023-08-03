@@ -1,8 +1,8 @@
 import React from 'react'
-import ScrollToTop from './components/layouts/scrollToTop.ts'
 import { ConfigProvider } from 'antd'
 import { StyleProvider } from '@ant-design/cssinjs'
 import { Routes, Route } from 'react-router-dom'
+import ScrollToTop from './components/layouts/scrollToTop.ts'
 import Home from './components/pages/user/home/Home'
 import CoursesList from './components/pages/user/cousesList/CoursesList'
 import CourseDetail from './components/pages/user/courseDetail/CourseDetail'
@@ -16,6 +16,21 @@ import ClassDetailForTeacher from './components/pages/teacher/classDetailForTeac
 import EditProfile from './components/pages/user/profileDetail/EditProfile.tsx'
 import ResetPassword from './components/pages/user/resetPassword/ResetPassword.tsx'
 import LessonsListForTeacher from './components/pages/teacher/lessonsListForTeacher/LessonsListForTeacher.tsx'
+
+import AdminLogin from './pages/admin/login'
+import AdminHome from './pages/admin/main/index'
+import AdminListFacilities from './pages/admin/facilities/List.tsx'
+import AdminShowFacilities from './pages/admin/facilities/Show.tsx'
+import AdminCreateFacilities from './pages/admin/facilities/Create.tsx'
+import AdminListCourses from './pages/admin/courses/List.tsx'
+import AdminShowCourses from './pages/admin/courses/Show.tsx'
+import AdminCreateCourses from './pages/admin/courses/Create.tsx'
+import AdminEditCourses from './pages/admin/courses/Edit.tsx'
+import AdminListCategories from './pages/admin/categories/List.tsx'
+import AdminShowCategories from './pages/admin/categories/Show.tsx'
+import AdminCreateCategories from './pages/admin/categories/Create.tsx'
+import AdminProfile from './pages/admin/profile/index.tsx'
+import AdminChangePassword from './pages/admin/profile/ChangePassword.tsx'
 
 const App: React.FC = () => {
   return (
@@ -69,6 +84,62 @@ const App: React.FC = () => {
           <Route
             path='/teacher/lessons-list'
             element={<LessonsListForTeacher />}
+          />
+          <Route
+            path='/admin'
+            element={<AdminHome />}
+          />
+          <Route
+            path='/admin/facilities'
+            element={<AdminListFacilities />}
+          />
+          <Route
+            path='/admin/facilities/show/:id'
+            element={<AdminShowFacilities />}
+          />
+          <Route
+            path='/admin/facilities/create'
+            element={<AdminCreateFacilities />}
+          />
+          <Route
+            path='/admin/courses/categories'
+            element={<AdminListCategories />}
+          />
+          <Route
+            path='/admin/courses/categories/show/:id'
+            element={<AdminShowCategories />}
+          />
+          <Route
+            path='/admin/courses/categories/create'
+            element={<AdminCreateCategories />}
+          />
+          <Route
+            path='/admin/courses/all'
+            element={<AdminListCourses />}
+          />
+          <Route
+            path='/admin/courses/show/:id'
+            element={<AdminShowCourses />}
+          />
+          <Route
+            path='/admin/courses/create'
+            element={<AdminCreateCourses />}
+          />
+          <Route
+            path='/admin/courses/edit/:id'
+            element={<AdminEditCourses />}
+          />
+          <Route
+            path='/admin/profile'
+            element={<AdminProfile />}
+          />
+          <Route
+            path='/admin/change-password'
+            element={<AdminChangePassword />}
+          />
+          <Route
+            path='/admin/login'
+            element={<AdminLogin />}
           />
           <Route
             path='*'

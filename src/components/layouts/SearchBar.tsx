@@ -1,5 +1,6 @@
 import React from 'react'
 import { FiSearch } from 'react-icons/fi'
+
 const SearchBar: React.FC = () => {
   return (
     <div className='relative flex items-center ml-10'>

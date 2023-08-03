@@ -6,18 +6,18 @@ import path from 'path'
 export default defineConfig({
   plugins: [react()],
   server: {
-    port: 8000
+    port: 8000,
   },
   css: {
-    devSourcemap: true
+    devSourcemap: true,
   },
   optimizeDeps: {
-    include: ['tailwind.config.ts']
+    include: ['tailwind.config.ts'],
   },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
-      'tailwind.config.ts': path.resolve(__dirname, 'tailwind.config.ts')
-    }
-  }
+      'tailwind.config.ts': path.resolve(__dirname, 'tailwind.config.ts'),
+    },
+  },
 })
