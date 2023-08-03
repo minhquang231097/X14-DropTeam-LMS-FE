@@ -1,9 +1,9 @@
 import React from 'react'
+import Divider from 'antd/es/divider'
+import { Select, ConfigProvider, Pagination } from 'antd'
 import Header from '@/layouts/user/Header'
 import Footer from '@/layouts/user/Footer'
 import SidebarTeacher from '@/layouts/user/SidebarTeacher'
-import Divider from 'antd/es/divider'
-import { Select, ConfigProvider, Pagination } from 'antd'
 
 const LessonsListForTeacher: React.FC = () => {
   return (

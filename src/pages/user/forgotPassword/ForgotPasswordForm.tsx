@@ -1,7 +1,7 @@
 import { Button, Form, Input } from 'antd'
 import React, { useState } from 'react'
-import handleForgotPassword from '@/apis/forgotPassword.api'
 import { useNavigate } from 'react-router-dom'
+import handleForgotPassword from '@/apis/forgotPassword.api'
 
 const ForgotPasswordForm: React.FC = () => {
   const navigate = useNavigate()

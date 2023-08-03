@@ -1,7 +1,7 @@
 import React from 'react'
-import logo from '@/assets/images/logo/logo-with-shadow.png'
 import { Button } from 'antd'
 import { useNavigate } from 'react-router-dom'
+import logo from '@/assets/images/logo/logo-with-shadow.png'
 
 const SendMailDone: React.FC = () => {
   const navigate = useNavigate()
@@ -23,7 +23,7 @@ const SendMailDone: React.FC = () => {
         >
           Return Home &gt;
         </Button>
-        <p className='text-gray-500'>If you didn't initiate this request, you can ignore this email!</p>
+        <p className='text-gray-500'>If you didn&#39;t initiate this request, you can ignore this email!</p>
         <span className='text-gray-500'>Thank!</span>
         <p className='font-bold text-gray-600 dark:text-gray-400'>DropTeam</p>
       </div>

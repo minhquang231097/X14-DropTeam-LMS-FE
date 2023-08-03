@@ -3,7 +3,11 @@ import CourseCard from './CourseCard'
 import { getCoursesList } from '@/apis/coursesList.api'
 import { useQueryString } from '@/utils/utils'
 
-const Sheft: React.FC = ({ title: title }) => {
+interface SheftProps {
+  title: string
+}
+
+const Sheft: React.FC<SheftProps> = ({ title }) => {
   const queryString: { page?: string } = useQueryString()
   const page = Number(queryString.page) || 1
 

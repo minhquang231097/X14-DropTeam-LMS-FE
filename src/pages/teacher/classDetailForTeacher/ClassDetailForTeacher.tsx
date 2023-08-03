@@ -1,10 +1,10 @@
 import React from 'react'
-import Header from '@/layouts/user/Header'
-import Footer from '@/layouts/user/Footer'
-import SidebarTeacher from '@/layouts/user/SidebarTeacher'
 import Divider from 'antd/es/divider'
 import { Select, ConfigProvider, Pagination } from 'antd'
 import { Link } from 'react-router-dom'
+import Header from '@/layouts/user/Header'
+import Footer from '@/layouts/user/Footer'
+import SidebarTeacher from '@/layouts/user/SidebarTeacher'
 
 const ClassDetailForTeacher: React.FC = () => {
   return (

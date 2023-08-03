@@ -82,6 +82,7 @@ module.exports = {
     ],
     'no-nested-ternary': 'off',
     'import/prefer-default-export': 'off',
+    'no-underscore-dangle': 'off',
   },
   ignorePatterns: ['.eslintrc.cjs', 'vite.config.ts', '.commitlintrc.js', 'dist'],
   settings: {

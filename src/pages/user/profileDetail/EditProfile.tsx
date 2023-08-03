@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
+import { Divider, Button, Form, Input, Select, DatePicker } from 'antd'
+import { useNavigate } from 'react-router-dom'
 import Header from '@/layouts/user/Header'
 import Footer from '@/layouts/user/Footer'
-import { Divider } from 'antd'
 import avatar from '@/assets/images/avatar/user.png'
 import UploadImage from '@/layouts/user/UploadImage'
-import { Button, Form, Input, Select, DatePicker } from 'antd'
-import { useNavigate } from 'react-router-dom'
 import handleUpdateUser from '@/apis/updateUser.api'
 
 const { Option } = Select
@@ -86,7 +85,7 @@ const EditProfile: React.FC = () => {
                 <DatePicker
                   size='large'
                   className='w-full'
-                  format={'DD/MM/YYYY'}
+                  format='DD/MM/YYYY'
                   onChange={(_date: any, dateString: string) => {
                     setEditProfileValue({ ...editProfileValue, dob: dateString })
                   }}
@@ -125,7 +124,7 @@ const EditProfile: React.FC = () => {
                       if (!value || value.length === 10) {
                         return Promise.resolve()
                       }
-                      return Promise.reject('Please enter 10 digit Number!')
+                      return Promise.reject(new Error('Please enter 10 digit Number!'))
                     },
                   },
                 ]}
@@ -188,7 +187,7 @@ const EditProfile: React.FC = () => {
 
               <div className='grid grid-cols-4 gap-4'>
                 {/* submit */}
-                <Form.Item name={'register'}>
+                <Form.Item name='register'>
                   <Button
                     size='large'
                     className='w-full'
@@ -199,7 +198,7 @@ const EditProfile: React.FC = () => {
                   </Button>
                 </Form.Item>
                 {/* submit */}
-                <Form.Item name={'register'}>
+                <Form.Item name='register'>
                   <Button
                     type='primary'
                     size='large'

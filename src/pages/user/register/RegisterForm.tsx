@@ -1,7 +1,7 @@
 import { Button, Checkbox, Form, Input, Select, DatePicker } from 'antd'
 import React, { useState } from 'react'
-import handleRegister from '@/apis/register.api'
 import { useNavigate } from 'react-router-dom'
+import handleRegister from '@/apis/register.api'
 
 const { Option } = Select
 
@@ -56,7 +56,7 @@ const RegisterForm: React.FC = () => {
             <DatePicker
               size='large'
               className='w-full'
-              format={'DD/MM/YYYY'}
+              format='DD/MM/YYYY'
               onChange={(_date: any, dateString: string) => {
                 setRegisterValue({ ...registerValue, dob: dateString })
               }}
@@ -95,7 +95,7 @@ const RegisterForm: React.FC = () => {
                   if (!value || value.length === 10) {
                     return Promise.resolve()
                   }
-                  return Promise.reject('Please enter 10 digit Number!')
+                  return Promise.reject(new Error('Please enter 10 digit Number!'))
                 },
               },
             ]}
@@ -169,7 +169,7 @@ const RegisterForm: React.FC = () => {
                 if (!value || value.length >= 6) {
                   return Promise.resolve()
                 }
-                return Promise.reject('Please enter Username at least 6 characters')
+                return Promise.reject(new Error('Please enter Username at least 6 characters'))
               },
             },
           ]}
@@ -198,7 +198,7 @@ const RegisterForm: React.FC = () => {
                   if (!value || value.length >= 6) {
                     return Promise.resolve()
                   }
-                  return Promise.reject('Please enter password at least 6 characters')
+                  return Promise.reject(new Error('Please enter password at least 6 characters'))
                 },
               },
             ]}
@@ -261,7 +261,7 @@ const RegisterForm: React.FC = () => {
         </Form.Item>
 
         {/* submit */}
-        <Form.Item name={'register'}>
+        <Form.Item name='register'>
           <Button
             type='primary'
             htmlType='submit'
