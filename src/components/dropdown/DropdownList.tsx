@@ -2,6 +2,7 @@ import React from 'react'
 import type { MenuProps } from 'antd'
 import { Dropdown } from 'antd'
 import { RiArrowDropDownLine } from 'react-icons/ri'
+// import { ColorModeContext } from '@/contexts/colorMode'
 
 const items: MenuProps['items'] = [
   {
@@ -40,6 +41,7 @@ const items: MenuProps['items'] = [
 ]
 
 const DropdownList: React.FC = () => {
+  // const { mode } = useContext(ColorModeContext)
   return (
     <Dropdown
       menu={{ items }}

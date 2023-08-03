@@ -34,9 +34,10 @@ const AdminLayout: React.FC<LayoutProps> = ({ content }) => {
   }
 
   const contentStyle: React.CSSProperties = {
-    textAlign: 'center',
+    // textAlign: 'center',
     minHeight: 120,
     lineHeight: '120px',
+    padding: '1rem',
   }
 
   const siderStyle: React.CSSProperties = {

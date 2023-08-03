@@ -14,6 +14,7 @@ const CoursesList: React.FC = () => {
   return (
     <ConfigProvider
       theme={{
+        token: { colorLink: 'black' },
         components: {
           Pagination: {
             colorText: '#888',
