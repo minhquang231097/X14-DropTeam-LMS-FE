@@ -7,6 +7,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import App from './App'
 import './index.css'
 import ColorModeContextProvider from './contexts/colorMode'
+import { BrowserRouter } from 'react-router-dom'
 
 const queryClient = new QueryClient()
 
@@ -15,9 +16,11 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <QueryClientProvider client={queryClient}>
       <ConfigProvider theme={{ token: { fontFamily: 'Inter, Roboto, sans-serif' } }}>
         <StyleProvider hashPriority='high'>
-          <ColorModeContextProvider>
-            <App />
-          </ColorModeContextProvider>
+          <BrowserRouter>
+            <ColorModeContextProvider>
+              <App />
+            </ColorModeContextProvider>
+          </BrowserRouter>
         </StyleProvider>
       </ConfigProvider>
       <ReactQueryDevtools initialIsOpen={false} />

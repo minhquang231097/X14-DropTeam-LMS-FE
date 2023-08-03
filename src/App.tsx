@@ -2,20 +2,20 @@ import React from 'react'
 import { ConfigProvider } from 'antd'
 import { StyleProvider } from '@ant-design/cssinjs'
 import { Routes, Route } from 'react-router-dom'
-import ScrollToTop from './components/layouts/scrollToTop.ts'
-import Home from './components/pages/user/home/Home'
-import CoursesList from './components/pages/user/cousesList/CoursesList'
-import CourseDetail from './components/pages/user/courseDetail/CourseDetail'
-import Register from './components/pages/user/register/Register.tsx'
-import Login from './components/pages/user/login/Login.tsx'
-import ForgotPassword from './components/pages/user/forgotPassword/ForgotPassword.tsx'
-import NotFound404 from './components/pages/notFound404/NotFound404.tsx'
-import SendMailDone from './components/pages/user/forgotPassword/SendMailDone.tsx'
-import ClassesListForTeacher from './components/pages/teacher/classesListForTeacher/ClassesListForTeacher.tsx'
-import ClassDetailForTeacher from './components/pages/teacher/classDetailForTeacher/ClassDetailForTeacher.tsx'
-import EditProfile from './components/pages/user/profileDetail/EditProfile.tsx'
-import ResetPassword from './components/pages/user/resetPassword/ResetPassword.tsx'
-import LessonsListForTeacher from './components/pages/teacher/lessonsListForTeacher/LessonsListForTeacher.tsx'
+import ScrollToTop from './layouts/scrollToTop.ts'
+import Home from './pages/user/home/Home'
+import CoursesList from './pages/user/cousesList/CoursesList'
+import CourseDetail from './pages/user/courseDetail/CourseDetail'
+import Register from './pages/user/register/Register.tsx'
+import Login from './pages/user/login/Login.tsx'
+import ForgotPassword from './pages/user/forgotPassword/ForgotPassword.tsx'
+import NotFound404 from './pages/notFound404/NotFound404.tsx'
+import SendMailDone from './pages/user/forgotPassword/SendMailDone.tsx'
+import ClassesListForTeacher from './pages/teacher/classesListForTeacher/ClassesListForTeacher.tsx'
+import ClassDetailForTeacher from './pages/teacher/classDetailForTeacher/ClassDetailForTeacher.tsx'
+import EditProfile from './pages/user/profileDetail/EditProfile.tsx'
+import ResetPassword from './pages/user/resetPassword/ResetPassword.tsx'
+import LessonsListForTeacher from './pages/teacher/lessonsListForTeacher/LessonsListForTeacher.tsx'
 
 import AdminLogin from './pages/admin/login'
 import AdminHome from './pages/admin/main/index'
@@ -37,6 +37,7 @@ const App: React.FC = () => {
     <ConfigProvider>
       <StyleProvider hashPriority='high'>
         <Routes>
+          {/* USER */}
           <Route
             path='/'
             element={<Home />}
@@ -73,6 +74,8 @@ const App: React.FC = () => {
             path='/reset-password'
             element={<ResetPassword />}
           />
+
+          {/* TEACHER */}
           <Route
             path='/teacher/classes-list'
             element={<ClassesListForTeacher />}
@@ -85,6 +88,8 @@ const App: React.FC = () => {
             path='/teacher/lessons-list'
             element={<LessonsListForTeacher />}
           />
+
+          {/* ADMIN */}
           <Route
             path='/admin'
             element={<AdminHome />}
@@ -141,6 +146,7 @@ const App: React.FC = () => {
             path='/admin/login'
             element={<AdminLogin />}
           />
+
           <Route
             path='*'
             element={<NotFound404 />}
