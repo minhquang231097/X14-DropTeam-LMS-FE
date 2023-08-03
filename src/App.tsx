@@ -1,7 +1,5 @@
 import React from 'react'
-import { ConfigProvider } from 'antd'
-import { StyleProvider } from '@ant-design/cssinjs'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, BrowserRouter } from 'react-router-dom'
 import ScrollToTop from './layouts/scrollToTop.ts'
 import Home from './pages/user/home/Home'
 import CoursesList from './pages/user/cousesList/CoursesList'
@@ -34,8 +32,8 @@ import AdminChangePassword from './pages/admin/profile/ChangePassword.tsx'
 
 const App: React.FC = () => {
   return (
-    <ConfigProvider>
-      <StyleProvider hashPriority='high'>
+    <>
+      <BrowserRouter>
         <Routes>
           {/* USER */}
           <Route
@@ -153,8 +151,8 @@ const App: React.FC = () => {
           />
         </Routes>
         <ScrollToTop />
-      </StyleProvider>
-    </ConfigProvider>
+      </BrowserRouter>
+    </>
   )
 }
 
