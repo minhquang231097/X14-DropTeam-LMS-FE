@@ -93,7 +93,7 @@ const App: React.FC = () => {
             element={<AdminHome />}
           />
           <Route
-            path='/admin/facilities'
+            path='/admin/facilities/all'
             element={<AdminListFacilities />}
           />
           <Route

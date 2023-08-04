@@ -55,12 +55,7 @@ const AdminDropDown: React.FC = () => {
       placement='bottomRight'
       arrow
     >
-      <a
-        target='_blank'
-        className='flex items-center no-underline text-gray-600 dark:text-gray-100'
-      >
-        <FaUserCircle className='text-[40px] cursor-pointer' />
-      </a>
+      <FaUserCircle className='text-[40px] cursor-pointer flex items-center no-underline' />
     </Dropdown>
   )
 }

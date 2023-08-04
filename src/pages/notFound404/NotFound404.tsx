@@ -1,12 +1,9 @@
 import React from 'react'
 import './notFound404.css'
-import Header from '@/layouts/user/Header'
-import Footer from '@/layouts/user/Footer'
 
 const NotFound404: React.FC = () => {
   return (
     <>
-      <Header />
       <div className='max-w-[1068px] mx-auto min-h-screen flex items-center'>
         <svg
           xmlns='http://www.w3.org/2000/svg'
@@ -478,7 +475,6 @@ const NotFound404: React.FC = () => {
           </g>
         </svg>
       </div>
-      <Footer />
     </>
   )
 }
