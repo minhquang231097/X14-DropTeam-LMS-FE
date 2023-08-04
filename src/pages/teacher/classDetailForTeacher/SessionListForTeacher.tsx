@@ -2,139 +2,48 @@ import React from 'react'
 import Header from '@/layouts/user/Header'
 import Footer from '@/layouts/user/Footer'
 import SidebarTeacher from '@/layouts/user/SidebarTeacher'
-import Divider from 'antd/es/divider'
-import { Select, ConfigProvider, Pagination } from 'antd'
-import { Link } from 'react-router-dom'
+import SessionListTable from './SessionListTable'
+import { Button } from 'antd'
+import { useNavigate } from 'react-router-dom'
 
-const ClassDetailForTeacher: React.FC = () => {
+const SessionListForTeacher: React.FC = () => {
+  const navigate = useNavigate()
   return (
     <>
       <Header />
-      <div className='max-w-[1280px] mx-auto py-8 grid grid-cols-4 gap-4'>
-        <ConfigProvider
-          theme={{
-            components: {
-              Select: {
-                colorText: '#888',
-                colorBorder: '#999',
-                colorBgContainer: 'trasparent',
-                colorTextPlaceholder: '#888',
-                colorBgSpotlight: '#888',
-              },
-            },
-          }}
+      <div className='max-w-[1280px] mx-auto py-8 grid grid-cols-7 gap-4'>
+        <SidebarTeacher />
+        <div
+          className='col-span-6 row-span-4 bg-white dark:bg-[#1E293B] dark:border-none rounded-lg border-[1px] border-solid border-gray-200 overflow-hidden'
+          style={{ boxShadow: '0 0 10px rgba(0,0,0,.18)', cursor: 'pointer', border: '1px solid rgba(0,0,0,.1)' }}
         >
-          <SidebarTeacher />
-          <div
-            className='col-span-3 row-span-4 bg-white dark:bg-[#1E293B] dark:border-none rounded-lg border-[1px] border-solid border-gray-200 overflow-hidden'
-            style={{ boxShadow: '0 0 10px rgba(0,0,0,.18)', cursor: 'pointer', border: '1px solid rgba(0,0,0,.1)' }}
-          >
-            <div className='p-4'>
+          <div className='p-4 flex justify-between items-start'>
+            <div>
               <span className='text-xl text-gray-600 dark:text-gray-400 font-bold'>Class Name here ...</span>
               <p className='m-0 text-sm text-gray-500 mt-2'>
-                Total students: <span className='text-blue-600'>10</span>
+                Total sessions: <span className='text-blue-600'>10</span>
               </p>
               <p className='m-0 text-sm text-gray-500 mt-2'>
                 Schedule: <span className='text-blue-600'>Mon & Fri</span>
               </p>
-              <p className='m-0 text-sm text-gray-500 mt-2'>
-                Lessons list:{' '}
-                <Link
-                  to='/teacher/lessons-list'
-                  className='text-blue-600 no-underline'
-                >
-                  View -&gt;
-                </Link>
-              </p>
+              <Button
+                className='mt-4'
+                type='primary'
+                onClick={() => navigate('/teacher/lessons-list')}
+              >
+                Lesson List
+              </Button>
             </div>
-            <Divider
-              style={{ margin: 0 }}
-              className='dark:bg-gray-600'
+            <input
+              type='text'
+              placeholder='Search Sessions Name ...'
+              className='h-8 dark:bg-[#0B1324] rounded-md outline-none pl-2 border-[1px] border-solid border-gray-500 dark:border-[#0B1324] focus:outline-none focus:border-sky-500 dark:focus:border-sky-500 dark:focus:border-solid dark:focus:border-[1px] focus:border-[1px] dark:text-gray-100'
             />
-            <div className='grid grid-cols-4 gap-4 p-4 py-6'>
-              <input
-                type='text'
-                placeholder='Search Student Name ...'
-                className='col-span-3 dark:bg-[#0B1324] rounded-md outline-none pl-2 border-[1px] border-solid border-gray-500 dark:border-[#0B1324] focus:outline-none focus:border-sky-500 dark:focus:border-sky-500 dark:focus:border-solid dark:focus:border-[1px] focus:border-[1px] dark:text-gray-100'
-              />
+          </div>
 
-              <Select
-                placeholder='Sort by'
-                className='col-span-1 h-8'
-                options={[
-                  { value: 'newest', label: 'Newest' },
-                  { value: 'free', label: 'Free' },
-                ]}
-              />
-            </div>
-            <Divider
-              style={{ margin: 0 }}
-              className='dark:bg-gray-600'
-            />
-            <div className=' overflow-x-scroll'>
-              <div className='grid grid-cols-12 px-4 gap-4 items-center font-bold text-gray-600 dark:text-gray-300'>
-                <div>No.</div>
-                <div className='col-span-2'>Student Name</div>
-                <div className='col-span-2'>Mail</div>
-                <div className='col-span-2'>Phone Number</div>
-                <div>Status</div>
+          <SessionListTable />
 
-                <div className='flex'>
-                  {/* Session 1 */}
-                  <div className='text-center border-solid border-[1px] border-gray-600'>
-                    <div className='text-sm p-2'>Session 1</div>
-                    <div className='flex text-sm border-solid border-0 border-t-[1px] border-gray-600'>
-                      <div className='p-2 w-[94px] border-solid border-0 border-r-[1px] border-gray-600'>
-                        Attendance
-                      </div>
-                      <div className='p-2 w-[94px] border-solid border-0 border-r-[1px] border-gray-600'>Score</div>
-                      <div className='p-2 w-[94px] '>Comment</div>
-                    </div>
-                  </div>
-
-                  {/* Session 2 */}
-                  <div className='text-center border-solid border-[1px] border-gray-600'>
-                    <div className='text-sm p-2'>Session 2</div>
-                    <div className='flex text-sm border-solid border-0 border-t-[1px] border-gray-600'>
-                      <div className='p-2 w-[94px] border-solid border-0 border-r-[1px] border-gray-600'>
-                        Attendance
-                      </div>
-                      <div className='p-2 w-[94px] border-solid border-0 border-r-[1px] border-gray-600'>Score</div>
-                      <div className='p-2 w-[94px] '>Comment</div>
-                    </div>
-                  </div>
-
-                  {/* Session 3 */}
-                  <div className='text-center border-solid border-[1px] border-gray-600'>
-                    <div className='text-sm p-2'>Session 3</div>
-                    <div className='flex text-sm border-solid border-0 border-t-[1px] border-gray-600'>
-                      <div className='p-2 w-[94px] border-solid border-0 border-r-[1px] border-gray-600'>
-                        Attendance
-                      </div>
-                      <div className='p-2 w-[94px] border-solid border-0 border-r-[1px] border-gray-600'>Score</div>
-                      <div className='p-2 w-[94px] '>Comment</div>
-                    </div>
-                  </div>
-
-                  {/* Session 4 */}
-                  <div className='text-center border-solid border-[1px] border-gray-600'>
-                    <div className='text-sm p-2'>Session 4</div>
-                    <div className='flex text-sm border-solid border-0 border-t-[1px] border-gray-600'>
-                      <div className='p-2 w-[94px] border-solid border-0 border-r-[1px] border-gray-600'>
-                        Attendance
-                      </div>
-                      <div className='p-2 w-[94px] border-solid border-0 border-r-[1px] border-gray-600'>Score</div>
-                      <div className='p-2 w-[94px] '>Comment</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <Divider
-                style={{ margin: 0 }}
-                className='dark:bg-gray-600'
-              />
-
-              <>
+          {/* <>
                 <>
                   <div className='grid grid-cols-12 gap-4 items-center p-4'>
                     <span className='text-sm text-gray-500'>1</span>
@@ -854,31 +763,12 @@ const ClassDetailForTeacher: React.FC = () => {
                     className='dark:bg-gray-600'
                   />
                 </>
-              </>
-            </div>
-            <div className='flex justify-center my-8'>
-              <ConfigProvider
-                theme={{
-                  components: {
-                    Pagination: {
-                      colorText: '#888',
-                      itemActiveBg: 'transparent',
-                    },
-                  },
-                }}
-              >
-                <Pagination
-                  defaultCurrent={1}
-                  total={20}
-                />
-              </ConfigProvider>
-            </div>
-          </div>
-        </ConfigProvider>
+              </> */}
+        </div>
       </div>
       <Footer />
     </>
   )
 }
 
-export default ClassDetailForTeacher
+export default SessionListForTeacher

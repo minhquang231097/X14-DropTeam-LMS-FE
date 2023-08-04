@@ -2,7 +2,7 @@ import React from 'react'
 import { AiOutlineClockCircle } from 'react-icons/ai'
 import { BiBarChart } from 'react-icons/bi'
 import { AiOutlineUser } from 'react-icons/ai'
-import { Tabs, Collapse, Button } from 'antd'
+import { Tabs, Collapse, Button, message } from 'antd'
 import type { TabsProps } from 'antd'
 import type { CollapseProps } from 'antd'
 import JS from '@/assets/images/courses/js.jpg'
@@ -12,6 +12,7 @@ import Footer from '@/layouts/user/Footer'
 import { getCourse } from '@/apis/course.api'
 import { useQuery } from '@tanstack/react-query'
 import { useQueryString } from '@/utils/utils'
+import LearnRegisterModal from './LearnRegisterModal'
 
 const CourseDetail: React.FC = () => {
   const queryString: { id?: string } = useQueryString()
@@ -82,6 +83,15 @@ const CourseDetail: React.FC = () => {
     },
   ]
 
+  const user = JSON.parse(localStorage.getItem('user'))
+  const [messageApi, contextHolder] = message.useMessage()
+  const error = () => {
+    messageApi.open({
+      type: 'error',
+      content: 'You are not logged in!',
+    })
+  }
+
   return (
     <>
       <Header />
@@ -130,13 +140,22 @@ const CourseDetail: React.FC = () => {
                   alt=''
                   className='w-full rounded-lg'
                 />
-                <Button
-                  type='primary'
-                  className='w-full mt-4'
-                  size='large'
-                >
-                  Learn
-                </Button>
+
+                {!user ? (
+                  <>
+                    {contextHolder}
+                    <Button
+                      size='large'
+                      type='primary'
+                      className='w-full mt-4'
+                      onClick={error}
+                    >
+                      Learn
+                    </Button>
+                  </>
+                ) : (
+                  <LearnRegisterModal {...data} />
+                )}
               </div>
             </div>
           </div>
