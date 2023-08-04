@@ -4,7 +4,7 @@ import { BiBarChart, BiMessageSquareDetail } from 'react-icons/bi'
 import { Tooltip } from 'antd'
 import { Link } from 'react-router-dom'
 import { Course } from '@/types/course.type'
-import a from '../../assets/images/teacher/a.jpg'
+import a from '../assets/images/carousel/carosel-1.jpg'
 
 const CourseCard = (course: Course) => {
   const { _id, image, course_code, title, duration, level, rate, price, discount } = course

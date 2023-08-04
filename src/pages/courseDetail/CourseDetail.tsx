@@ -3,7 +3,7 @@ import { AiOutlineClockCircle, AiOutlineUser } from 'react-icons/ai'
 import { BiBarChart } from 'react-icons/bi'
 import { Tabs, Collapse, Button, TabsProps, CollapseProps, ConfigProvider } from 'antd'
 import JS from '@/assets/images/courses/js.jpg'
-import Sheft from '../../components/sheft/Sheft'
+import Sheft from '../../components/Sheft'
 import Header from '@/layouts/header/Header'
 import Footer from '@/layouts/footer/Footer'
 

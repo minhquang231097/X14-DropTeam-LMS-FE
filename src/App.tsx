@@ -29,6 +29,8 @@ import AdminShowCategories from './pages/admin/categories/Show.tsx'
 import AdminCreateCategories from './pages/admin/categories/Create.tsx'
 import AdminProfile from './pages/admin/profile/index.tsx'
 import AdminChangePassword from './pages/admin/profile/ChangePassword.tsx'
+import { Profile } from './pages/user/profile/index.tsx'
+import { ChangePassword } from './pages/user/profile/ChangePassword.tsx'
 
 const App: React.FC = () => {
   return (
@@ -71,6 +73,14 @@ const App: React.FC = () => {
           <Route
             path='/reset-password'
             element={<ResetPassword />}
+          />
+          <Route
+            path='/profile'
+            element={<Profile />}
+          />
+          <Route
+            path='/change-password'
+            element={<ChangePassword />}
           />
 
           {/* TEACHER */}

@@ -4,7 +4,7 @@ import { Button, Layout, Space, Input, Typography, Image } from 'antd'
 import { MdDarkMode, MdSunny, MdTranslate, MdSearch, MdNotifications, MdOutlineMenu } from 'react-icons/md'
 import Logo from '@/assets/images/logo/logo-with-shadow.png'
 import { ColorModeContext } from '@/contexts/colorMode'
-import AdminDropDown from '@/components/adminDropdown/adminDropDown'
+import AdminDropDown from '@/components/adminDropDown'
 import MenuSection from './Menu'
 
 interface LayoutProps extends PropsWithChildren {
