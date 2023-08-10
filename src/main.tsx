@@ -7,6 +7,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import App from './App'
 import './index.css'
 import ColorModeContextProvider from './contexts/colorMode'
+// import ColorModeContextProvider from './contexts/colorMode'
 
 const queryClient = new QueryClient()
 

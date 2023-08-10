@@ -153,7 +153,9 @@ const AdminLayout: React.FC<LayoutProps> = ({ content }) => {
                   shape='circle'
                   icon={
                     mode === 'light' ? (
-                      <MdDarkMode className={`text-${mode === 'light' ? 'black' : 'white'} align-middle text-[24px]`} />
+                      <MdDarkMode
+                        className={`text-${mode === 'light' ? 'black' : 'white'} align-middle text-[24px]`}
+                      />
                     ) : (
                       <MdSunny className={`text-${mode === 'light' ? 'black' : 'white'} align-middle text-[24px]`} />
                     )
