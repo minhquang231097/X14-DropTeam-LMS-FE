@@ -1,7 +1,7 @@
 import React, { PropsWithChildren, useContext, useState } from 'react'
 import { Helmet } from 'react-helmet'
-import { Button, Layout, Space, Input, Typography, Image } from 'antd'
-import { MdDarkMode, MdSunny, MdTranslate, MdSearch, MdNotifications, MdOutlineMenu } from 'react-icons/md'
+import { Button, Layout, Space, Typography, Image } from 'antd'
+import { MdDarkMode, MdSunny, MdNotifications, MdOutlineMenu } from 'react-icons/md'
 import Logo from '@/assets/images/logo/logo-with-shadow.png'
 import { ColorModeContext } from '@/contexts/colorMode'
 import AdminDropDown from '@/components/adminDropDown'
@@ -12,7 +12,7 @@ interface LayoutProps extends PropsWithChildren {
 }
 
 const { Header, Footer, Sider, Content } = Layout
-const { Search } = Input
+// const { Search } = Input
 
 const AdminLayout: React.FC<LayoutProps> = ({ content }) => {
   const [collapsed, setCollapsed] = useState(false)
@@ -20,7 +20,7 @@ const AdminLayout: React.FC<LayoutProps> = ({ content }) => {
     setCollapsed(isCollapsed)
   }
   const { mode, setMode } = useContext(ColorModeContext)
-  const onSearch = (value: string) => console.log(value)
+  // const onSearch = (value: string) => console.log(value)
 
   const headerStyle: React.CSSProperties = {
     display: 'flex',
@@ -130,7 +130,7 @@ const AdminLayout: React.FC<LayoutProps> = ({ content }) => {
                     height: 64,
                   }}
                 />
-                <Search
+                {/* <Search
                   placeholder='Search Entire Dashboard'
                   allowClear
                   enterButton={
@@ -139,23 +139,21 @@ const AdminLayout: React.FC<LayoutProps> = ({ content }) => {
                   size='large'
                   onSearch={onSearch}
                   style={{ display: 'flex' }}
-                />
+                /> */}
               </Space>
               <Space size='middle'>
-                <Button
+                {/* <Button
                   shape='circle'
                   icon={
                     <MdTranslate className={`text-${mode === 'light' ? 'black' : 'white'} align-middle text-[24px]`} />
                   }
                   style={ButtonStyle}
-                />
+                /> */}
                 <Button
                   shape='circle'
                   icon={
                     mode === 'light' ? (
-                      <MdDarkMode
-                        className={`text-${mode === 'light' ? 'black' : 'white'} align-middle text-[24px]`}
-                      />
+                      <MdDarkMode className={`text-${mode === 'light' ? 'black' : 'white'} align-middle text-[24px]`} />
                     ) : (
                       <MdSunny className={`text-${mode === 'light' ? 'black' : 'white'} align-middle text-[24px]`} />
                     )

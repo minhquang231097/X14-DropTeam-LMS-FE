@@ -31,6 +31,13 @@ import AdminProfile from './pages/admin/profile/index.tsx'
 import AdminChangePassword from './pages/admin/profile/ChangePassword.tsx'
 import { Profile } from './pages/user/profile/index.tsx'
 import { ChangePassword } from './pages/user/profile/ChangePassword.tsx'
+import AdminEditFacilities from './pages/admin/facilities/Edit.tsx'
+import AdminListClasses from './pages/admin/classes/List.tsx'
+import AdminShowClasses from './pages/admin/classes/Show.tsx'
+import AdminCreateClasses from './pages/admin/classes/Create.tsx'
+import AdminEditClasses from './pages/admin/classes/Edit.tsx'
+import AdminTeachers from './pages/admin/users/teachers.tsx'
+import AdminStudents from './pages/admin/users/students.tsx'
 
 const App: React.FC = () => {
   return (
@@ -111,6 +118,10 @@ const App: React.FC = () => {
             element={<AdminShowFacilities />}
           />
           <Route
+            path='/admin/facilities/edit/:id'
+            element={<AdminEditFacilities />}
+          />
+          <Route
             path='/admin/facilities/create'
             element={<AdminCreateFacilities />}
           />
@@ -141,6 +152,38 @@ const App: React.FC = () => {
           <Route
             path='/admin/courses/edit/:id'
             element={<AdminEditCourses />}
+          />
+          <Route
+            path='/admin/classes/all'
+            element={<AdminListClasses />}
+          />
+          <Route
+            path='/admin/classes/show/:id'
+            element={<AdminShowClasses />}
+          />
+          <Route
+            path='/admin/classes/create'
+            element={<AdminCreateClasses />}
+          />
+          <Route
+            path='/admin/classes/edit/:id'
+            element={<AdminEditClasses />}
+          />
+          <Route
+            path='/admin/users/teachers'
+            element={<AdminTeachers />}
+          />
+          <Route
+            path='/admin/users/students'
+            element={<AdminStudents />}
+          />
+          <Route
+            path='/admin/classes/create'
+            element={<AdminCreateClasses />}
+          />
+          <Route
+            path='/admin/classes/edit/:id'
+            element={<AdminEditClasses />}
           />
           <Route
             path='/admin/profile'

@@ -1,14 +1,5 @@
 import { ConfigProvider, Menu, MenuProps } from 'antd'
-import {
-  MdBarChart,
-  MdClass,
-  MdMenuBook,
-  MdOutlineCalendarToday,
-  MdOutlineFeedback,
-  MdOutlineHome,
-  MdPeople,
-  MdPlace,
-} from 'react-icons/md'
+import { MdClass, MdMenuBook, MdOutlineFeedback, MdOutlineHome, MdPeople, MdPlace } from 'react-icons/md'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import './menu.css'
@@ -41,8 +32,8 @@ const items: MenuProps['items'] = [
   getItem('Classes', 'classes/all', <MdClass style={{ fontSize: '24px', verticalAlign: 'middle' }} />),
   getItem('Facilities', 'facilities/all', <MdPlace style={{ fontSize: '24px', verticalAlign: 'middle' }} />),
   getItem('Feedbacks', 'feedbacks', <MdOutlineFeedback style={{ fontSize: '24px', verticalAlign: 'middle' }} />),
-  getItem('Analytics', 'analytics', <MdBarChart style={{ fontSize: '24px', verticalAlign: 'middle' }} />),
-  getItem('Calendar', 'calendar', <MdOutlineCalendarToday style={{ fontSize: '24px', verticalAlign: 'middle' }} />),
+  // getItem('Analytics', 'analytics', <MdBarChart style={{ fontSize: '24px', verticalAlign: 'middle' }} />),
+  // getItem('Calendar', 'calendar', <MdOutlineCalendarToday style={{ fontSize: '24px', verticalAlign: 'middle' }} />),
 ]
 
 const MenuSection: React.FC = () => {
