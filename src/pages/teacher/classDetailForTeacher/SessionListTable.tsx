@@ -1,45 +1,79 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Table } from 'antd'
+import { Table, Tag } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 
 interface DataType {
   key: number
-  session: string
-  tags: string[]
+  session_name: string
+  status: string
+  desc: string
 }
 
 const columns: ColumnsType<DataType> = [
   {
     title: 'No.',
-    dataIndex: 'key',
+    dataIndex: 'index',
     width: '48px',
+    render: (_value, _record, index) => <>{index + 1}</>,
   },
   {
     title: 'Session',
-    dataIndex: 'session',
+    dataIndex: 'session_name',
+    width: '160px',
+  },
+  {
+    title: 'Description',
+    dataIndex: 'desc',
+  },
+  {
+    title: 'Status',
+    key: 'tags',
+    dataIndex: 'status',
+    width: '160px',
+    render: (_, { status }) => (
+      <>
+        {(status === 'completed' && (
+          <Tag
+            color='green'
+            key='active'
+          >
+            {status.toUpperCase()}
+          </Tag>
+        )) ||
+          (status === 'uncompleted' && (
+            <Tag
+              color='volcano'
+              key='inactive'
+            >
+              {status.toUpperCase()}
+            </Tag>
+          )) || (
+            <Tag
+              color='geekblue'
+              key='active'
+            >
+              {String(status).toUpperCase()}
+            </Tag>
+          )}
+      </>
+    ),
   },
 ]
 
-const data: DataType[] = []
-for (let i = 1; i <= 100; i++) {
-  data.push({
-    key: i,
-    session: `Session ${i} (Click to input Attendance, Score & Comment)`,
-    tags: ['Active'],
-  })
-}
+let data: DataType[] = []
 
-const SessionListTable: React.FC = () => {
+const SessionListTable: React.FC<{ statusCode: number; message: any; data: [] }> = (value) => {
   const navigate = useNavigate()
-
-  const [hasData, setHasData] = useState(true)
+  if (value.statusCode === 200) {
+    data = [...value.data]
+  }
 
   return (
     <Table
       pagination={{ position: ['bottomCenter'] }}
       columns={columns}
-      dataSource={hasData ? data : []}
+      dataSource={data}
       scroll={{ y: 340 }}
       bordered
       size='small'

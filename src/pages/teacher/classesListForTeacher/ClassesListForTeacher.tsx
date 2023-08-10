@@ -3,8 +3,22 @@ import Header from '@/layouts/user/Header'
 import Footer from '@/layouts/user/Footer'
 import SidebarTeacher from '@/layouts/user/SidebarTeacher'
 import ClassListTable from './ClassListTable'
+import { useQuery } from '@tanstack/react-query'
+import { useQueryString } from '@/utils/utils'
+import { getClassesList } from '@/apis/classesList.api'
 
 const ClassesListForTeacher: React.FC = () => {
+  const queryString: { page?: string } = useQueryString()
+  const page = Number(queryString.page) || 1
+
+  const { data } = useQuery({
+    queryKey: ['classes', page],
+    queryFn: async () => {
+      const res = await getClassesList(page, 10)
+      return res.data.data
+    },
+  })
+
   return (
     <>
       <Header />
@@ -18,7 +32,7 @@ const ClassesListForTeacher: React.FC = () => {
             <div>
               <span className='text-xl text-gray-600 dark:text-gray-400 font-bold'>Classes List For Teacher</span>
               <p className='m-0 text-sm text-gray-500 mt-2'>
-                Total students: <span className='text-blue-600'>10</span>
+                Total classes: <span className='text-blue-600'>{data && data.count}</span>
               </p>
             </div>
             <input
@@ -27,7 +41,7 @@ const ClassesListForTeacher: React.FC = () => {
               className='h-8 dark:bg-[#0B1324] rounded-md outline-none pl-2 border-[1px] border-solid border-gray-500 dark:border-[#0B1324] focus:outline-none focus:border-sky-500 dark:focus:border-sky-500 dark:focus:border-solid dark:focus:border-[1px] focus:border-[1px] dark:text-gray-100'
             />
           </div>
-          <ClassListTable />
+          <ClassListTable {...data} />
         </div>
       </div>
       <Footer />

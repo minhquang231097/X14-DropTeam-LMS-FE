@@ -1,7 +1,7 @@
 import http from '@/utils/http'
 
-export const getCoursesList = (page?: any, limit?: any) =>
-  http.get('/course', {
+export const getClassesList = async (page?: any, limit?: any) =>
+  await http.get('/class', {
     params: {
       page: page,
       limit: limit,

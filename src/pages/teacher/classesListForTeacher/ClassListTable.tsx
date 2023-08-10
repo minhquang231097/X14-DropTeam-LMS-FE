@@ -1,92 +1,94 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Table, Tag } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 
 interface DataType {
-  key: number
-  className: string
-  workplace: string
+  _id: string
+  class_code?: string
+  course?: {}
+  workplace?: string
   schedule: string
+  class_size: number
   status: string
-  tags: string[]
-  course: string
 }
 
 const columns: ColumnsType<DataType> = [
   {
     title: 'No.',
-    dataIndex: 'key',
+    dataIndex: 'index',
     width: '48px',
+    render: (_value, _record, index) => <>{index + 1}</>,
   },
   {
-    title: 'Class Name',
-    dataIndex: 'className',
+    title: 'Class Code',
+    dataIndex: 'class_code',
   },
   {
     title: 'Course',
     dataIndex: 'course',
+    render: (_, { course }) => <>{course && course.title}</>,
   },
   {
     title: 'Workplace',
     dataIndex: 'workplace',
+    render: (_, { workplace }) => <>{workplace || 'TC'}</>,
   },
   {
     title: 'Schedule',
     dataIndex: 'schedule',
-    onFilter: (value, record) => record.schedule.indexOf(value as string) === 0,
+  },
+  {
+    title: 'Total Students',
+    dataIndex: 'class_size',
   },
   {
     title: 'Status',
     key: 'tags',
-    dataIndex: 'tags',
-    render: (_, { tags }) => (
+    dataIndex: 'status',
+    render: (_, { status }) => (
       <>
-        {tags.map((tag) => {
-          let color = tag.length > 5 ? 'geekblue' : 'green'
-          if (tag === 'loser') {
-            color = 'volcano'
-          }
-          if (tag === 'Active') {
-            color = 'green'
-          }
-          return (
+        {(status === 'Active' && (
+          <Tag
+            color='green'
+            key='active'
+          >
+            {status.toUpperCase()}
+          </Tag>
+        )) ||
+          (status === 'Inactive' && (
             <Tag
-              color={color}
-              key={tag}
+              color='volcano'
+              key='inactive'
             >
-              {tag.toUpperCase()}
+              {status.toUpperCase()}
             </Tag>
-          )
-        })}
+          )) || (
+            <Tag
+              color='geekblue'
+              key='active'
+            >
+              {String(status).toUpperCase()}
+            </Tag>
+          )}
       </>
     ),
   },
 ]
 
-const data: DataType[] = []
-for (let i = 1; i <= 100; i++) {
-  data.push({
-    key: i,
-    className: 'C4E-137',
-    workplace: 'TC',
-    schedule: `Mon, Fri`,
-    status: 'Done',
-    tags: ['Active'],
-    course: 'C4E',
-  })
-}
+let data: DataType[] = []
 
-const ClassListTable: React.FC = () => {
+const ClassListTable: React.FC<{ list: []; count: number; page: number }> = (value) => {
   const navigate = useNavigate()
-
-  const [hasData, setHasData] = useState(true)
+  if (value.page !== undefined) {
+    data = [...value.list]
+  }
 
   return (
     <Table
       pagination={{ position: ['bottomCenter'] }}
       columns={columns}
-      dataSource={hasData ? data : []}
+      dataSource={data}
       scroll={{ y: 340 }}
       bordered
       size='small'
@@ -94,10 +96,10 @@ const ClassListTable: React.FC = () => {
       showHeader
       footer={undefined}
       style={{ padding: '0 16px' }}
-      onRow={() => {
+      onRow={({ _id, class_code }) => {
         return {
           onClick: () => {
-            navigate('/teacher/class-detail')
+            navigate(`/teacher/class-detail?class_code=${class_code}&id=${_id}`)
           },
         }
       }}

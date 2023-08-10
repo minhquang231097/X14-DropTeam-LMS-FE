@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Table, Tag, Select, Dropdown, Input } from 'antd'
+import { Table, Tag, Select, Input } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 
 interface DataType {
@@ -10,6 +10,8 @@ interface DataType {
   phone: string
   tags: string[]
 }
+
+const { TextArea } = Input
 
 const columns: ColumnsType<DataType> = [
   {
@@ -72,16 +74,9 @@ const columns: ColumnsType<DataType> = [
   {
     title: 'Score',
     render: () => (
-      <Select
-        defaultValue='Select'
-        style={{ width: '100%' }}
-        options={[
-          { value: '1', label: '1' },
-          { value: '2', label: '2' },
-          { value: '3', label: '3' },
-          { value: '4', label: '4' },
-          { value: '5', label: '5' },
-        ]}
+      <Input
+        type='number'
+        placeholder='Input score ...'
       />
     ),
   },
@@ -89,9 +84,9 @@ const columns: ColumnsType<DataType> = [
   {
     title: 'Comment',
     render: () => (
-      <Input
-        showCount
-        maxLength={20}
+      <TextArea
+        rows={1}
+        placeholder='Comment here ...'
       />
     ),
   },
