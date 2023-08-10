@@ -14,6 +14,8 @@ import ClassDetailForTeacher from './pages/teacher/classDetailForTeacher/ClassDe
 import EditProfile from './pages/user/profileDetail/EditProfile.tsx'
 import ResetPassword from './pages/user/resetPassword/ResetPassword.tsx'
 import LessonsListForTeacher from './pages/teacher/lessonsListForTeacher/LessonsListForTeacher.tsx'
+import { Profile } from './pages/user/profile/index.tsx'
+import { ChangePassword } from './pages/user/profile/ChangePassword.tsx'
 
 import AdminLogin from './pages/admin/login'
 import AdminHome from './pages/admin/main/index'
@@ -29,8 +31,6 @@ import AdminShowCategories from './pages/admin/categories/Show.tsx'
 import AdminCreateCategories from './pages/admin/categories/Create.tsx'
 import AdminProfile from './pages/admin/profile/index.tsx'
 import AdminChangePassword from './pages/admin/profile/ChangePassword.tsx'
-import { Profile } from './pages/user/profile/index.tsx'
-import { ChangePassword } from './pages/user/profile/ChangePassword.tsx'
 import AdminEditFacilities from './pages/admin/facilities/Edit.tsx'
 import AdminListClasses from './pages/admin/classes/List.tsx'
 import AdminShowClasses from './pages/admin/classes/Show.tsx'
@@ -38,6 +38,7 @@ import AdminCreateClasses from './pages/admin/classes/Create.tsx'
 import AdminEditClasses from './pages/admin/classes/Edit.tsx'
 import AdminTeachers from './pages/admin/users/teachers.tsx'
 import AdminStudents from './pages/admin/users/students.tsx'
+import AdminLessons from './pages/admin/lessons/index.tsx'
 
 const App: React.FC = () => {
   return (
@@ -154,6 +155,10 @@ const App: React.FC = () => {
             element={<AdminEditCourses />}
           />
           <Route
+            path='/admin/courses/show/:id/lessons'
+            element={<AdminLessons />}
+          />
+          <Route
             path='/admin/classes/all'
             element={<AdminListClasses />}
           />
@@ -197,7 +202,6 @@ const App: React.FC = () => {
             path='/admin/login'
             element={<AdminLogin />}
           />
-
           <Route
             path='*'
             element={<NotFound404 />}
