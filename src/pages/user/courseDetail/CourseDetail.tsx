@@ -1,18 +1,57 @@
 import React from 'react'
-import { AiOutlineClockCircle } from 'react-icons/ai'
+import { AiOutlineClockCircle, AiOutlineUser } from 'react-icons/ai'
 import { BiBarChart } from 'react-icons/bi'
-import { AiOutlineUser } from 'react-icons/ai'
 import { Tabs, Collapse, Button, message } from 'antd'
 import type { TabsProps } from 'antd'
 import type { CollapseProps } from 'antd'
+import { useQuery } from '@tanstack/react-query'
 import Sheft from '@/layouts/user/Sheft'
 import Header from '@/layouts/user/Header'
 import Footer from '@/layouts/user/Footer'
 import { getCourse } from '@/apis/course.api'
-import { useQuery } from '@tanstack/react-query'
 import { useQueryString } from '@/utils/utils'
 import LearnRegisterModal from './LearnRegisterModal'
 import noImage from '@/assets/images/courses/no-image.png'
+
+const text = `
+  A dog is a type of domesticated animal.
+  Known for its loyalty and faithfulness,
+  it can be found as a welcome guest in many households across the world.
+`
+
+const itemsCollapse: CollapseProps['items'] = [
+  {
+    key: '1',
+    label: 'Lesson 1',
+    children: <p>{text}</p>,
+  },
+  {
+    key: '2',
+    label: 'Lesson 2',
+    children: <p>{text}</p>,
+  },
+  {
+    key: '3',
+    label: 'Lesson 3',
+    children: <p>{text}</p>,
+  },
+]
+
+const CollapseComponent: React.FC = () => {
+  const onChange = (key: string | string[]) => {
+    console.log(key)
+  }
+
+  return (
+    <Collapse
+      items={itemsCollapse}
+      defaultActiveKey={['1']}
+      onChange={onChange}
+      bordered={false}
+      accordion
+    />
+  )
+}
 
 const CourseDetail: React.FC = () => {
   const queryString: { id?: string } = useQueryString()
@@ -21,50 +60,11 @@ const CourseDetail: React.FC = () => {
   const { data } = useQuery({
     queryKey: ['course', id],
     queryFn: async () => {
+      // eslint-disable-next-line @typescript-eslint/no-shadow
       const data = await getCourse(id)
       return data?.data.data
     },
   })
-
-  const text = `
-  A dog is a type of domesticated animal.
-  Known for its loyalty and faithfulness,
-  it can be found as a welcome guest in many households across the world.
-`
-
-  const itemsCollapse: CollapseProps['items'] = [
-    {
-      key: '1',
-      label: 'Lesson 1',
-      children: <p>{text}</p>,
-    },
-    {
-      key: '2',
-      label: 'Lesson 2',
-      children: <p>{text}</p>,
-    },
-    {
-      key: '3',
-      label: 'Lesson 3',
-      children: <p>{text}</p>,
-    },
-  ]
-
-  const CollapseComponent: React.FC = () => {
-    const onChange = (key: string | string[]) => {
-      console.log(key)
-    }
-
-    return (
-      <Collapse
-        items={itemsCollapse}
-        defaultActiveKey={['1']}
-        onChange={onChange}
-        bordered={false}
-        accordion
-      />
-    )
-  }
 
   const onChange = (key: string) => {
     console.log(key)
@@ -96,7 +96,7 @@ const CourseDetail: React.FC = () => {
     <>
       <Header />
       <>
-        <div className='relative z-0 h-[360px] bg-gradient-to-r from-[#F3904F] to-[#3B4371] dark:bg-gradient-to-r dark:from-[#67B26F] dark:to-[#4ca2cd] flex items-center'></div>
+        <div className='relative z-0 h-[360px] bg-gradient-to-r from-[#F3904F] to-[#3B4371] dark:bg-gradient-to-r dark:from-[#67B26F] dark:to-[#4ca2cd] flex items-center' />
         <div className='max-w-[1280px] mx-auto'>
           <div className='absolute top-28 w-[720px] text-white'>
             <p className='text-4xl font-bold m-0'>Getting Started with {data ? data.title : ''}</p>

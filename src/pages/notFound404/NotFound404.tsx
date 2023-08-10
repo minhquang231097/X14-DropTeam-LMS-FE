@@ -1,12 +1,9 @@
 import React from 'react'
 import './notFound404.css'
-import Header from '@/layouts/user/Header'
-import Footer from '@/layouts/user/Footer'
 
 const NotFound404: React.FC = () => {
   return (
     <>
-      <Header />
       <div className='max-w-[1068px] mx-auto min-h-screen flex items-center'>
         <svg
           xmlns='http://www.w3.org/2000/svg'
@@ -337,33 +334,33 @@ const NotFound404: React.FC = () => {
               <polygon
                 className='cls-8'
                 points='569.71 382.28 653.74 329.39 747.13 320.1 679.2 369.85 569.71 382.28'
-              ></polygon>
+              />
               <polygon
                 className='cls-5'
                 points='691.95 367.2 570.87 392.34 565.32 383.35 687.8 357.45 691.95 367.2'
-              ></polygon>
+              />
 
               <polygon
                 className='cls-5'
                 points='661.54 337.48 570.87 392.34 562.42 378.92 652.25 322.38 658.12 321.34 661.54 337.48'
-              ></polygon>
+              />
               <polygon
                 className='cls-7'
                 points='661.54 337.48 570.87 392.34 562.42 378.92 652.25 322.38 658.12 321.34 661.54 337.48'
-              ></polygon>
+              />
               <polygon
                 className='cls-5'
                 points='747.13 320.1 661.54 337.48 652.25 322.38 738.4 307.1 747.13 320.1'
-              ></polygon>
+              />
             </g>
             <path
               className='cls-5'
               d='M588.28,420.26s3.44,5.2,5.19,8l43.1,68.48,158.81-100-43.1-68.48q-2.63-4.17-5.47-8Z'
-            ></path>
+            />
             <path
               className='cls-7'
               d='M588.28,420.26s3.44,5.2,5.19,8l43.1,68.48,158.81-100-43.1-68.48q-2.63-4.17-5.47-8Z'
-            ></path>
+            />
             <rect
               className='cls-5'
               x='693.73'
@@ -371,7 +368,7 @@ const NotFound404: React.FC = () => {
               width='83.99'
               height='90.58'
               transform='translate(-89.78 450.43) rotate(-32.19)'
-            ></rect>
+            />
           </g>
 
           <g
@@ -478,7 +475,6 @@ const NotFound404: React.FC = () => {
           </g>
         </svg>
       </div>
-      <Footer />
     </>
   )
 }

@@ -20,7 +20,7 @@ const handleLogin = async (value: { username: string; password: string }, others
         others(0)
       }
 
-      if (user && res.data.statusCode == 404) {
+      if (user && res.data.statusCode === 404) {
         alert('Wrong Email or Password. Please try again!')
       }
     })

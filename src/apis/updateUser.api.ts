@@ -11,8 +11,8 @@ const handleUpdateUser = async (
   },
   other?: any,
 ) => {
-  const ID = JSON.parse(localStorage.getItem('user')).userId
-  const TOKEN = JSON.parse(localStorage.getItem('user')).access_token
+  const ID = JSON.parse(localStorage.getItem('user') as string).userId
+  const TOKEN = JSON.parse(localStorage.getItem('user') as string).access_token
   const AuthString = `Bearer ${TOKEN}`
   await http
     .put(`/auth/user/info/${ID}`, JSON.stringify(value), {
