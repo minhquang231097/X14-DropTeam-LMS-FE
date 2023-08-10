@@ -39,6 +39,7 @@ import AdminEditClasses from './pages/admin/classes/Edit.tsx'
 import AdminTeachers from './pages/admin/users/teachers.tsx'
 import AdminStudents from './pages/admin/users/students.tsx'
 import AdminLessons from './pages/admin/lessons/index.tsx'
+import AdminFeedbacks from './pages/admin/feedbacks/index.tsx'
 
 const App: React.FC = () => {
   return (
@@ -189,6 +190,10 @@ const App: React.FC = () => {
           <Route
             path='/admin/classes/edit/:id'
             element={<AdminEditClasses />}
+          />
+          <Route
+            path='/admin/classes/feedbacks'
+            element={<AdminFeedbacks />}
           />
           <Route
             path='/admin/profile'

@@ -3,7 +3,7 @@ import { Breadcrumb, Button, Card, Col, Image, Pagination, PaginationProps, Row,
 import { useNavigate } from 'react-router-dom'
 import { MdOutlineCheck, MdOutlineClose, MdAddCircleOutline } from 'react-icons/md'
 import AdminLayout from '@/layouts/admin'
-import { FacilityItems } from '@/data/facility'
+import { FacilityItems } from '@/data/facilities'
 
 const CustomContent = () => {
   const { useToken } = theme

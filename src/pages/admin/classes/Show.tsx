@@ -2,7 +2,7 @@ import React from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { Breadcrumb, Card, Typography, Row, Col, Image, Divider, Space } from 'antd'
 import AdminLayout from '@/layouts/admin'
-import { ClassItems } from '@/data/class'
+import { ClassItems } from '@/data/classes'
 
 const CustomContent = () => {
   const { id } = useParams()
