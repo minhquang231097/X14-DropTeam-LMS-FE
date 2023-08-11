@@ -1,11 +1,13 @@
 import React from 'react'
-import { useParams, Link } from 'react-router-dom'
-import { Breadcrumb, Card, Typography, Row, Col, Image, Divider, Space } from 'antd'
+import { useParams, Link, useNavigate } from 'react-router-dom'
+import { Breadcrumb, Card, Typography, Row, Col, Image, Divider, Space, Button } from 'antd'
 import AdminLayout from '@/layouts/admin'
 import { CourseItems } from '@/data/courses'
+import { ShowButtonStyle } from '../style'
 
 const CustomContent = () => {
   const { id } = useParams()
+  const navigate = useNavigate()
   const foundCourse = CourseItems.find((item) => item.key === id)
 
   if (!foundCourse) {
@@ -58,6 +60,24 @@ const CustomContent = () => {
             </Space>
           </Col>
         </Row>
+        <Space
+          size='middle'
+          style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 16 }}
+        >
+          <Button
+            type='default'
+            style={ShowButtonStyle}
+            onClick={() => navigate('/admin/courses/all')}
+          >
+            Back
+          </Button>
+          <Button
+            type='primary'
+            style={ShowButtonStyle}
+          >
+            Edit
+          </Button>
+        </Space>
       </Card>
     </>
   )

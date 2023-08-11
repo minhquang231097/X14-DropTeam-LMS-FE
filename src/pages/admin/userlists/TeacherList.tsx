@@ -3,8 +3,7 @@ import { Breadcrumb, Button, Card, Image, PaginationProps, Space, Table, Typogra
 import { useNavigate } from 'react-router-dom'
 import { MdAddCircleOutline, MdOutlineCheck, MdOutlineClose } from 'react-icons/md'
 import AdminLayout from '@/layouts/admin'
-import { FacilityItems } from '@/data/facilities'
-import AdminSearch from '@/components/adminSearch'
+import { TeacherItems } from '@/data/teachers'
 
 interface DataType {
   key: string
@@ -25,10 +24,6 @@ const CustomContent = () => {
     console.log(current, pageSize)
   }
 
-  // const onChange: TableProps<DataType>['onChange'] = (pagination, filters, sorter, extra) => {
-  //   console.log('params', pagination, filters, sorter, extra)
-  // }
-
   const columns = [
     {
       title: 'Image',
@@ -37,15 +32,15 @@ const CustomContent = () => {
       render: (image_url: string) => (
         <Image
           src={image_url}
-          alt='Facility Image'
+          alt='teacher Image'
         />
       ),
     },
     {
-      title: 'Facility',
+      title: 'Teacher',
       dataIndex: 'name',
       width: '40%',
-      render: (name: string, facility: DataType) => (
+      render: (name: string, teacher: DataType) => (
         <Space direction='vertical'>
           <Typography.Text
             strong
@@ -53,7 +48,7 @@ const CustomContent = () => {
           >
             {name}
           </Typography.Text>
-          <Typography.Text>{facility.location}</Typography.Text>
+          <Typography.Text>{teacher.location}</Typography.Text>
         </Space>
       ),
     },
@@ -87,23 +82,23 @@ const CustomContent = () => {
     {
       title: 'Action',
       width: '15%',
-      render: (facility: DataType) => (
+      render: (teacher: DataType) => (
         <Space>
           <Button
             type='primary'
             onClick={() => {
-              navigate(`/admin/facilities/show/${facility.key}`)
+              navigate(`/admin/users/teachers/edit/${teacher.key}`)
             }}
           >
-            Show
+            Edit
           </Button>
-          {facility.is_active ? (
+          {teacher.is_active ? (
             <Button
               type='primary'
               danger
               onClick={() => {
                 // eslint-disable-next-line no-param-reassign
-                facility.is_active = false
+                teacher.is_active = false
                 setIsActive(!isActive)
               }}
             >
@@ -114,7 +109,7 @@ const CustomContent = () => {
               type='primary'
               onClick={() => {
                 // eslint-disable-next-line no-param-reassign
-                facility.is_active = true
+                teacher.is_active = true
                 setIsActive(!isActive)
               }}
               style={{ backgroundColor: '#00b96b' }}
@@ -135,7 +130,7 @@ const CustomContent = () => {
             title: 'Home',
           },
           {
-            title: 'Facilities',
+            title: 'Teachers',
           },
         ]}
         style={{ padding: '4px' }}
@@ -146,26 +141,20 @@ const CustomContent = () => {
             level={3}
             className='mt-0 mx-1'
           >
-            Facility List
+            Teacher List
           </Typography.Title>
-          <Space
-            className='flex'
-            size='middle'
+          <Button
+            type='primary'
+            icon={<MdAddCircleOutline className='text-[18px]' />}
+            onClick={() => navigate('/admin/teachers/create')}
+            style={{ display: 'flex', alignItems: 'center' }}
           >
-            <AdminSearch />
-            <Button
-              type='primary'
-              icon={<MdAddCircleOutline className='text-[22px]' />}
-              onClick={() => navigate('/admin/facilities/create')}
-              style={{ display: 'flex', alignItems: 'center', height: '40px', fontSize: '16px' }}
-            >
-              Create
-            </Button>
-          </Space>
+            Create
+          </Button>
         </div>
         <Table
           columns={columns}
-          dataSource={FacilityItems}
+          dataSource={TeacherItems}
           pagination={{
             position: ['bottomRight'],
             pageSizeOptions: [5, 10],
@@ -181,8 +170,8 @@ const CustomContent = () => {
   )
 }
 
-const AdminListFacilities: React.FC = () => {
+const AdminTeachers: React.FC = () => {
   return <AdminLayout content={<CustomContent />} />
 }
 
-export default AdminListFacilities
+export default AdminTeachers

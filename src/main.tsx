@@ -12,7 +12,7 @@ import ColorModeContextProvider from './contexts/colorMode'
 const queryClient = new QueryClient()
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
+  <React.Suspense>
     <QueryClientProvider client={queryClient}>
       <ConfigProvider theme={{ token: { fontFamily: 'Inter, Roboto, sans-serif' } }}>
         <StyleProvider hashPriority='high'>
@@ -23,5 +23,5 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       </ConfigProvider>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
-  </React.StrictMode>,
+  </React.Suspense>,
 )

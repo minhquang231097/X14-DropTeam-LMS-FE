@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
 import { Breadcrumb, Button, Card, Image, PaginationProps, Space, Table, Typography, theme } from 'antd'
 import { useNavigate } from 'react-router-dom'
-import { MdAddCircleOutline, MdOutlineCheck, MdOutlineClose } from 'react-icons/md'
+import { MdOutlineCheck, MdOutlineClose } from 'react-icons/md'
 import AdminLayout from '@/layouts/admin'
-import { FacilityItems } from '@/data/facilities'
-import AdminSearch from '@/components/adminSearch'
+import { StudentItems } from '@/data/students'
 
 interface DataType {
   key: string
@@ -25,10 +24,6 @@ const CustomContent = () => {
     console.log(current, pageSize)
   }
 
-  // const onChange: TableProps<DataType>['onChange'] = (pagination, filters, sorter, extra) => {
-  //   console.log('params', pagination, filters, sorter, extra)
-  // }
-
   const columns = [
     {
       title: 'Image',
@@ -37,15 +32,15 @@ const CustomContent = () => {
       render: (image_url: string) => (
         <Image
           src={image_url}
-          alt='Facility Image'
+          alt='student Image'
         />
       ),
     },
     {
-      title: 'Facility',
+      title: 'Student',
       dataIndex: 'name',
       width: '40%',
-      render: (name: string, facility: DataType) => (
+      render: (name: string, student: DataType) => (
         <Space direction='vertical'>
           <Typography.Text
             strong
@@ -53,7 +48,7 @@ const CustomContent = () => {
           >
             {name}
           </Typography.Text>
-          <Typography.Text>{facility.location}</Typography.Text>
+          <Typography.Text>{student.location}</Typography.Text>
         </Space>
       ),
     },
@@ -87,23 +82,23 @@ const CustomContent = () => {
     {
       title: 'Action',
       width: '15%',
-      render: (facility: DataType) => (
+      render: (student: DataType) => (
         <Space>
           <Button
             type='primary'
             onClick={() => {
-              navigate(`/admin/facilities/show/${facility.key}`)
+              navigate(`/admin/users/students/edit/${student.key}`)
             }}
           >
-            Show
+            Edit
           </Button>
-          {facility.is_active ? (
+          {student.is_active ? (
             <Button
               type='primary'
               danger
               onClick={() => {
                 // eslint-disable-next-line no-param-reassign
-                facility.is_active = false
+                student.is_active = false
                 setIsActive(!isActive)
               }}
             >
@@ -114,7 +109,7 @@ const CustomContent = () => {
               type='primary'
               onClick={() => {
                 // eslint-disable-next-line no-param-reassign
-                facility.is_active = true
+                student.is_active = true
                 setIsActive(!isActive)
               }}
               style={{ backgroundColor: '#00b96b' }}
@@ -135,7 +130,7 @@ const CustomContent = () => {
             title: 'Home',
           },
           {
-            title: 'Facilities',
+            title: 'Students',
           },
         ]}
         style={{ padding: '4px' }}
@@ -146,26 +141,20 @@ const CustomContent = () => {
             level={3}
             className='mt-0 mx-1'
           >
-            Facility List
+            Student List
           </Typography.Title>
-          <Space
-            className='flex'
-            size='middle'
+          {/* <Button
+            type='primary'
+            icon={<MdAddCircleOutline className='text-[18px]' />}
+            onClick={() => navigate('/admin/students/create')}
+            style={{ display: 'flex', alignItems: 'center' }}
           >
-            <AdminSearch />
-            <Button
-              type='primary'
-              icon={<MdAddCircleOutline className='text-[22px]' />}
-              onClick={() => navigate('/admin/facilities/create')}
-              style={{ display: 'flex', alignItems: 'center', height: '40px', fontSize: '16px' }}
-            >
-              Create
-            </Button>
-          </Space>
+            Create
+          </Button> */}
         </div>
         <Table
           columns={columns}
-          dataSource={FacilityItems}
+          dataSource={StudentItems}
           pagination={{
             position: ['bottomRight'],
             pageSizeOptions: [5, 10],
@@ -181,8 +170,8 @@ const CustomContent = () => {
   )
 }
 
-const AdminListFacilities: React.FC = () => {
+const AdminStudents: React.FC = () => {
   return <AdminLayout content={<CustomContent />} />
 }
 
-export default AdminListFacilities
+export default AdminStudents

@@ -36,10 +36,12 @@ import AdminListClasses from './pages/admin/classes/List.tsx'
 import AdminShowClasses from './pages/admin/classes/Show.tsx'
 import AdminCreateClasses from './pages/admin/classes/Create.tsx'
 import AdminEditClasses from './pages/admin/classes/Edit.tsx'
-import AdminTeachers from './pages/admin/users/teachers.tsx'
-import AdminStudents from './pages/admin/users/students.tsx'
+import AdminTeachers from './pages/admin/userlists/TeacherList.tsx'
+import AdminStudents from './pages/admin/userlists/StudentList.tsx'
 import AdminLessons from './pages/admin/lessons/index.tsx'
 import AdminFeedbacks from './pages/admin/feedbacks/index.tsx'
+import AdminStudentEdit from './pages/admin/userlists/StudentEdit.tsx'
+import AdminTeacherEdit from './pages/admin/userlists/TeacherEdit.tsx'
 
 const App: React.FC = () => {
   return (
@@ -182,6 +184,14 @@ const App: React.FC = () => {
           <Route
             path='/admin/users/students'
             element={<AdminStudents />}
+          />
+          <Route
+            path='/admin/users/teachers/edit/:id'
+            element={<AdminTeacherEdit />}
+          />
+          <Route
+            path='/admin/users/students/edit/:id'
+            element={<AdminStudentEdit />}
           />
           <Route
             path='/admin/classes/create'
