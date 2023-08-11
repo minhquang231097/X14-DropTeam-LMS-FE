@@ -8,11 +8,13 @@ import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { useQueryString } from '@/utils/utils'
 import { getSessionsByClassCode } from '@/apis/sessionByClassCode.api'
+import { getClassById } from '@/apis/class.api'
 
 const SessionListForTeacher: React.FC = () => {
   const navigate = useNavigate()
-  const queryString: { class_code?: string } = useQueryString()
+  const queryString: { class_code?: string; id?: string } = useQueryString()
   const class_code = String(queryString.class_code).toLocaleLowerCase()
+  const id = String(queryString.id)
 
   const { data } = useQuery({
     queryKey: ['sessions', class_code],
@@ -21,6 +23,17 @@ const SessionListForTeacher: React.FC = () => {
       return res.data
     },
   })
+
+  const classData = useQuery({
+    queryKey: ['class', id],
+    queryFn: async () => {
+      const res = await getClassById(id)
+      return res.data
+    },
+  }).data
+
+  console.log(classData)
+
   return (
     <>
       <Header />
@@ -32,12 +45,20 @@ const SessionListForTeacher: React.FC = () => {
         >
           <div className='p-4 flex justify-between items-start'>
             <div>
-              <span className='text-xl text-gray-600 dark:text-gray-400 font-bold'>Class Name here ...</span>
+              <span className='text-xl text-gray-600 dark:text-gray-400 font-bold'>
+                {classData ? classData.data.class_code : 'Class Name'}
+              </span>
               <p className='m-0 text-sm text-gray-500 mt-2'>
                 Total sessions: <span className='text-blue-600'>{data ? data.data.length : ''}</span>
               </p>
               <p className='m-0 text-sm text-gray-500 mt-2'>
                 Schedule: <span className='text-blue-600'>Mon & Fri</span>
+              </p>
+              <p className='m-0 text-sm text-gray-500 mt-2'>
+                Start at:{' '}
+                <span className='text-blue-600'>
+                  {classData ? new Date(classData.data.start_at).toLocaleDateString('vi-VN') : 'DD/MM/YYYY'}
+                </span>
               </p>
               <Button
                 className='mt-4'
