@@ -7,11 +7,15 @@ import type { ColumnsType } from 'antd/es/table'
 interface DataType {
   _id: string
   class_code?: string
-  course?: {}
+  course?: CourseDataType
   workplace?: string
   schedule: string
   class_size: number
   status: string
+}
+
+interface CourseDataType {
+  title: string
 }
 
 const columns: ColumnsType<DataType> = [
