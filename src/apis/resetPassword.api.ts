@@ -1,11 +1,13 @@
 import http from '@/utils/http'
 
-const handleResetPassword = async (value: any) => {
-  console.log(value)
+const handleResetPassword = async (value: any, other?: any) => {
   await http
-    .post(`/auth/change-password?id=${value.id}&token=${value.token}`, { password: value.newPassword })
-    .then((res) => {
-      console.log(res)
+    .put(`/auth/change-password?id=${value.id}&token=${value.token}`, { password: value.newPassword })
+    .then(() => {
+      other('/login', {
+        replace: true,
+      })
+      other(0)
     })
     .catch((err) => {
       console.log(err)

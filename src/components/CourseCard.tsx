@@ -4,7 +4,8 @@ import { BiBarChart, BiMessageSquareDetail } from 'react-icons/bi'
 import { Tooltip } from 'antd'
 import { Link } from 'react-router-dom'
 import { Course } from '@/types/course.type'
-import a from '../assets/images/carousel/carosel-1.jpg'
+import avatar from '@/assets/images/teacher/a.jpg'
+import noImage from '@/assets/images/courses/no-image.png'
 
 const CourseCard = (course: Course) => {
   const { _id, image, course_code, title, duration, level, rate, price, discount } = course
@@ -18,7 +19,7 @@ const CourseCard = (course: Course) => {
         className='no-underline text-gray-800 dark:text-gray-100'
       >
         <img
-          src={image[0]}
+          src={image[0] || noImage}
           alt=''
           className='w-full'
         />
@@ -46,15 +47,13 @@ const CourseCard = (course: Course) => {
           </div>
           <div className='flex items-center'>
             <p className='font-bold mr-2'>${price}</p>
-            <p className='text-gray-500 text-sm line-through'>
-              ${discount ? parseInt(price, 10) * (1 - discount / 100) : parseInt(price, 10)}
-            </p>
+            <p className='text-gray-500 text-sm line-through'>${Number(price) * (1 - Number(discount) / 100)}</p>
           </div>
         </div>
         <div className='flex items-center justify-between border-0 border-t-[1px] border-gray-300 dark:border-[#334155] border-solid px-4'>
           <div className='flex items-center'>
             <img
-              src={a}
+              src={avatar}
               alt=''
               className='w-8 h-8 rounded-full mr-2'
             />
