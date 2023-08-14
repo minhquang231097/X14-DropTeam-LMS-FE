@@ -146,7 +146,7 @@ const CustomContent = () => {
             >
               <Button
                 type='default'
-                onClick={() => navigate(`/admin/facilities/show/${id}`)}
+                onClick={() => navigate(`/admin/courses/show/${id}`)}
               >
                 Cancel
               </Button>
