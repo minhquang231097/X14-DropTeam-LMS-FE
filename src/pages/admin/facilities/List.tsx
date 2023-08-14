@@ -1,17 +1,21 @@
 import React, { useState } from 'react'
-import { Breadcrumb, Button, Card, Image, PaginationProps, Space, Table, Typography, theme } from 'antd'
+import { Breadcrumb, Button, Card, Image, PaginationProps, Space, Table, Typography, Modal, theme } from 'antd'
 import { useNavigate } from 'react-router-dom'
-import { MdAddCircleOutline, MdOutlineCheck, MdOutlineClose } from 'react-icons/md'
+import { MdAddCircleOutline, MdOutlineCheck, MdOutlineCircle, MdOutlineClose } from 'react-icons/md'
+import { useQuery } from '@tanstack/react-query'
+import axios from 'axios'
 import AdminLayout from '@/layouts/admin'
-import { FacilityItems } from '@/data/facilities'
+// import { FacilityItems } from '@/data/facilities'
 import AdminSearch from '@/components/adminSearch'
+import { getWorkplacesList } from '@/apis/workplaceList.api'
+import { useQueryString } from '@/utils/utils'
 
 interface DataType {
-  key: string
+  _id: string
   image_url?: string
   name?: string
-  location?: string
-  is_active?: boolean
+  address?: string
+  status?: string
 }
 
 const CustomContent = () => {
@@ -19,7 +23,30 @@ const CustomContent = () => {
   const { token } = useToken()
   const navigate = useNavigate()
 
-  const [isActive, setIsActive] = useState(true)
+  const queryString: { page?: string } = useQueryString()
+  const page = Number(queryString.page) || 1
+
+  // const [isActive, setIsActive] = useState(true)
+  const [selectedFacility, setSelectedFacility] = useState<DataType | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const { data: workplaceData } = useQuery({
+    queryKey: ['workplace', page, 10],
+    queryFn: async () => {
+      const res = await getWorkplacesList(page, 10)
+      return res.data.data
+    },
+  })
+
+  const handleDelete = async () => {
+    try {
+      await axios.delete(`/api/workplace/?id=${selectedFacility?._id}`)
+      // Perform any necessary actions after successful deletion
+    } catch (error) {
+      console.error(error)
+    }
+    setIsModalOpen(false)
+  }
 
   const onShowSizeChange: PaginationProps['onShowSizeChange'] = (current, pageSize) => {
     console.log(current, pageSize)
@@ -34,9 +61,9 @@ const CustomContent = () => {
       title: 'Image',
       dataIndex: 'image_url',
       width: '30%',
-      render: (image_url: string) => (
+      render: () => (
         <Image
-          src={image_url}
+          src='https://via.placeholder.com/500x250'
           alt='Facility Image'
         />
       ),
@@ -53,32 +80,39 @@ const CustomContent = () => {
           >
             {name}
           </Typography.Text>
-          <Typography.Text>{facility.location}</Typography.Text>
+          <Typography.Text>{facility.address}</Typography.Text>
         </Space>
       ),
     },
     {
       title: 'Status',
-      dataIndex: 'is_active',
+      dataIndex: 'status',
       width: '15%',
-      render: (is_active: boolean) => (
+      render: (status: any) => (
         <Typography.Text
           style={{
-            color: is_active ? token.colorSuccessText : token.colorErrorText,
+            color:
+              status === 'ON'
+                ? token.colorSuccessText
+                : status === 'OFF'
+                  ? token.colorErrorText
+                  : token.colorWarningText,
             fontSize: '18px',
             display: 'flex',
             alignItems: 'center',
           }}
         >
-          {is_active ? (
+          {status === 'ON' ? (
             <>
-              <MdOutlineCheck className='text-[24px]' />
-              Active
+              <MdOutlineCheck className='text-[24px] m-1' /> ACTIVE
+            </>
+          ) : status === 'OFF' ? (
+            <>
+              <MdOutlineClose className='text-[24px] m-1' /> INACTIVE
             </>
           ) : (
             <>
-              <MdOutlineClose className='text-[24px]' />
-              Inactive
+              <MdOutlineCircle className='text-[24px] m-1' /> UPCOMING
             </>
           )}
         </Typography.Text>
@@ -92,36 +126,21 @@ const CustomContent = () => {
           <Button
             type='primary'
             onClick={() => {
-              navigate(`/admin/facilities/show/${facility.key}`)
+              navigate(`/admin/facilities/show/${facility._id}`)
             }}
           >
             Show
           </Button>
-          {facility.is_active ? (
-            <Button
-              type='primary'
-              danger
-              onClick={() => {
-                // eslint-disable-next-line no-param-reassign
-                facility.is_active = false
-                setIsActive(!isActive)
-              }}
-            >
-              Inactive
-            </Button>
-          ) : (
-            <Button
-              type='primary'
-              onClick={() => {
-                // eslint-disable-next-line no-param-reassign
-                facility.is_active = true
-                setIsActive(!isActive)
-              }}
-              style={{ backgroundColor: '#00b96b' }}
-            >
-              Active
-            </Button>
-          )}
+          <Button
+            type='primary'
+            danger
+            onClick={() => {
+              setSelectedFacility(facility)
+              setIsModalOpen(true)
+            }}
+          >
+            Delete
+          </Button>
         </Space>
       ),
     },
@@ -165,18 +184,29 @@ const CustomContent = () => {
         </div>
         <Table
           columns={columns}
-          dataSource={FacilityItems}
+          dataSource={workplaceData}
           pagination={{
             position: ['bottomRight'],
             pageSizeOptions: [5, 10],
             onShowSizeChange,
             showSizeChanger: true,
-            defaultCurrent: 1,
+            defaultCurrent: page,
+            // total: 20,
           }}
           bordered
           style={{ marginTop: 16 }}
         />
       </Card>
+      <Modal
+        title='Confirm Delete'
+        onOk={handleDelete}
+        okType='danger'
+        onCancel={() => setIsModalOpen(false)}
+        getContainer={false}
+        open={isModalOpen}
+      >
+        <Typography.Text>Are you sure you want to delete this facility?</Typography.Text>
+      </Modal>
     </>
   )
 }

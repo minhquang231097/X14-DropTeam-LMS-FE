@@ -1,16 +1,26 @@
 import React from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import { Breadcrumb, Card, Typography, Row, Col, Image, Divider, Space, Button } from 'antd'
+import { useQuery } from '@tanstack/react-query'
 import AdminLayout from '@/layouts/admin'
-import { FacilityItems } from '@/data/facilities'
+// import { FacilityItems } from '@/data/facilities'
+import { getWorkplace } from '@/apis/workplaceByID.api'
 import { ShowButtonStyle } from '../style'
 
 const CustomContent = () => {
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   const { id } = useParams()
   const navigate = useNavigate()
-  const facility = FacilityItems.find((item) => item.key === id)
 
-  if (!facility) {
+  const { data: workplace } = useQuery({
+    queryKey: ['workplace'],
+    queryFn: async () => {
+      const res = await getWorkplace(id as string)
+      return res.data.data
+    },
+  })
+
+  if (!workplace) {
     return <Typography.Text>Facility not found</Typography.Text>
   }
 
@@ -25,7 +35,7 @@ const CustomContent = () => {
             title: <Link to='/admin/facilities/all'>Facilities</Link>,
           },
           {
-            title: `${facility.name}`,
+            title: `${workplace.name}`,
           },
         ]}
         style={{ padding: '4px' }}
@@ -37,14 +47,14 @@ const CustomContent = () => {
               level={3}
               className='mt-0 mx-1'
             >
-              {facility.name}
+              {workplace.name}
             </Typography.Title>
-            <Typography.Text className='mt-2 mx-1'>{facility.location}</Typography.Text>
+            <Typography.Text className='mt-2 mx-1'>{workplace.address}</Typography.Text>
           </Col>
           <Col span={8}>
             <Image
-              src={facility.image_url}
-              alt={facility.name}
+              src='https://via.placeholder.com/500x250'
+              alt={workplace.name}
             />
           </Col>
           <Divider />
@@ -74,6 +84,7 @@ const CustomContent = () => {
           <Button
             type='primary'
             style={ShowButtonStyle}
+            onClick={() => navigate(`/admin/facilities/edit/${id}`)}
           >
             Edit
           </Button>

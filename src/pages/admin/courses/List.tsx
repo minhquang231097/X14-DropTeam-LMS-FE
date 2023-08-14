@@ -1,15 +1,20 @@
 import React, { useState } from 'react'
-import { Breadcrumb, Button, Card, Image, PaginationProps, Space, Table, Typography, theme } from 'antd'
+import { Breadcrumb, Button, Card, Image, Modal, PaginationProps, Space, Table, Typography, theme } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { MdOutlineCheck, MdOutlineClose, MdAddCircleOutline } from 'react-icons/md'
+import { useQuery } from '@tanstack/react-query'
+import axios from 'axios'
 import AdminLayout from '@/layouts/admin'
-import { CourseItems } from '@/data/courses'
+// import { CourseItems } from '@/data/courses'
 import AdminSearch from '@/components/adminSearch'
+import { getCoursesList } from '@/apis/coursesList.api'
+import { useQueryString } from '@/utils/utils'
 
 interface DataType {
-  key: string
-  image_url?: string
-  name?: string
+  _id: string
+  course_code: string
+  image?: string
+  title?: string
   location?: string
   is_active?: boolean
 }
@@ -19,7 +24,40 @@ const CustomContent = () => {
   const { token } = useToken()
   const navigate = useNavigate()
 
-  const [isActive, setIsActive] = useState(true)
+  const queryString: { page?: string } = useQueryString()
+  const page = Number(queryString.page) || 1
+
+  const [selectedCourse, setSelectedCourse] = useState<DataType | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const { data: courseData } = useQuery({
+    queryKey: ['course', page, 10],
+    queryFn: async () => {
+      const res = await getCoursesList(page, 10)
+      return res.data.data.list
+    },
+  })
+
+  // const { data: courseData } = useQuery({
+  //   queryKey: ['course', page, 10],
+  //   queryFn: async () => {
+  //     const res = await getCoursesList(page, 10)
+  //     console.log(res.data.data)
+  //     return res.data.data
+  //   },
+  // })
+
+  const handleDelete = async () => {
+    try {
+      await axios.delete(`/api/course/?id=${selectedCourse?._id}`)
+      // Perform any necessary actions after successful deletion
+    } catch (error) {
+      console.error(error)
+    }
+    setIsModalOpen(false)
+  }
+
+  // const [isActive, setIsActive] = useState(true)
 
   const onShowSizeChange: PaginationProps['onShowSizeChange'] = (current, pageSize) => {
     console.log(current, pageSize)
@@ -28,26 +66,26 @@ const CustomContent = () => {
   const columns = [
     {
       title: 'Image',
-      dataIndex: 'image_url',
+      dataIndex: 'image',
       width: '30%',
-      render: (image_url: string) => (
+      render: (image: any) => (
         <Image
-          src={image_url}
+          src={image || 'https://via.placeholder.com/500x250'}
           alt='Course Image'
         />
       ),
     },
     {
-      title: 'course',
-      dataIndex: 'name',
+      title: 'Course',
+      dataIndex: 'course_code',
       width: '40%',
-      render: (name: string, course: DataType) => (
+      render: (course_code: string, course: DataType) => (
         <Space direction='vertical'>
           <Typography.Text
             strong
             style={{ fontSize: '20px' }}
           >
-            {name}
+            {course_code}: {course.title}
           </Typography.Text>
           <Typography.Text>{course.location}</Typography.Text>
         </Space>
@@ -57,26 +95,17 @@ const CustomContent = () => {
       title: 'Status',
       dataIndex: 'is_active',
       width: '15%',
-      render: (is_active: boolean) => (
+      render: () => (
         <Typography.Text
           style={{
-            color: is_active ? token.colorSuccessText : token.colorErrorText,
+            color: token.colorSuccessText,
             fontSize: '18px',
             display: 'flex',
             alignItems: 'center',
           }}
         >
-          {is_active ? (
-            <>
-              <MdOutlineCheck className='text-[24px]' />
-              Active
-            </>
-          ) : (
-            <>
-              <MdOutlineClose className='text-[24px]' />
-              Inactive
-            </>
-          )}
+          <MdOutlineCheck className='text-[24px] m-1' />
+          Active
         </Typography.Text>
       ),
     },
@@ -88,36 +117,21 @@ const CustomContent = () => {
           <Button
             type='primary'
             onClick={() => {
-              navigate(`/admin/facilities/show/${course.key}`)
+              navigate(`/admin/courses/show/${course._id}`)
             }}
           >
             Show
           </Button>
-          {course.is_active ? (
-            <Button
-              type='primary'
-              danger
-              onClick={() => {
-                // eslint-disable-next-line no-param-reassign
-                course.is_active = false
-                setIsActive(!isActive)
-              }}
-            >
-              Inactive
-            </Button>
-          ) : (
-            <Button
-              type='primary'
-              onClick={() => {
-                // eslint-disable-next-line no-param-reassign
-                course.is_active = true
-                setIsActive(!isActive)
-              }}
-              style={{ backgroundColor: '#00b96b' }}
-            >
-              Active
-            </Button>
-          )}
+          <Button
+            type='primary'
+            danger
+            onClick={() => {
+              setSelectedCourse(course)
+              setIsModalOpen(true)
+            }}
+          >
+            Delete
+          </Button>
         </Space>
       ),
     },
@@ -161,17 +175,27 @@ const CustomContent = () => {
         </div>
         <Table
           columns={columns}
-          dataSource={CourseItems}
+          dataSource={courseData}
           pagination={{
             position: ['bottomRight'],
             pageSizeOptions: [5, 10],
             onShowSizeChange,
             showSizeChanger: true,
-            defaultCurrent: 1,
+            defaultCurrent: page,
           }}
           bordered
           style={{ marginTop: 16 }}
         />
+        <Modal
+          title='Confirm Delete'
+          onOk={handleDelete}
+          okType='danger'
+          onCancel={() => setIsModalOpen(false)}
+          getContainer={false}
+          open={isModalOpen}
+        >
+          <Typography.Text>Are you sure you want to delete this course?</Typography.Text>
+        </Modal>
       </Card>
     </>
   )

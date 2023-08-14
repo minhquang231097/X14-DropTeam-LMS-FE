@@ -1,27 +1,49 @@
 import React from 'react'
 import ImgCrop from 'antd-img-crop'
-import { Breadcrumb, Card, Form, Input, Typography, Row, Col, Upload, UploadProps, Button, message, Space } from 'antd'
+import {
+  Breadcrumb,
+  Card,
+  Form,
+  Input,
+  Typography,
+  Row,
+  Col,
+  Upload,
+  UploadProps,
+  Button,
+  message,
+  Space,
+  Select,
+} from 'antd'
 import { Link } from 'react-router-dom'
-import { UploadOutlined } from '@ant-design/icons'
+import { useMutation } from '@tanstack/react-query'
 import AdminLayout from '@/layouts/admin'
+import { createWorkplace } from '@/apis/workplaceCreate.api'
+// import { UploadOutlined } from '@ant-design/icons'
+
+interface IWorkplace {
+  name: string
+  workplace_code: string
+  address: string
+  status: string
+}
 
 const CustomContent = () => {
-  const props: UploadProps = {
-    name: 'file',
-    action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-    headers: {
-      authorization: 'authorization-text',
+  const [form] = Form.useForm()
+
+  const { mutate, isLoading } = useMutation(createWorkplace, {
+    onSuccess: () => {
+      // Perform any necessary actions after successful creation
+      form.resetFields()
     },
-    onChange(info: any) {
-      if (info.file.status !== 'uploading') {
-        console.log(info.file, info.fileList)
-      }
-      if (info.file.status === 'done') {
-        message.success(`${info.file.name} file uploaded successfully`)
-      } else if (info.file.status === 'error') {
-        message.error(`${info.file.name} file upload failed.`)
-      }
-    },
+  })
+
+  const handleSubmit = async (values: IWorkplace) => {
+    try {
+      mutate(values)
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   return (
@@ -41,47 +63,84 @@ const CustomContent = () => {
         style={{ padding: '4px' }}
       />
       <Card>
-        <Typography.Title
-          level={3}
-          className='mt-0 mx-1'
+        <Form
+          form={form}
+          onFinish={handleSubmit}
+          layout='vertical'
         >
-          Create a new Facility
-        </Typography.Title>
-        <Form layout='vertical'>
+          <Typography.Title
+            level={3}
+            className='mt-0 mx-1'
+          >
+            Create a new Facility
+          </Typography.Title>
           <Row gutter={[16, 16]}>
             <Col span={12}>
-              <Row style={{ margin: '8px 0' }}>
-                <Typography.Text>* Facility Name</Typography.Text>
+              <Form.Item
+                label='Facility Name'
+                name='name'
+                rules={[{ required: true, message: 'Please enter the name' }]}
+              >
                 <Input />
-              </Row>
-              <Row style={{ margin: '8px 0' }}>
-                <Typography.Text>* Facility Location</Typography.Text>
+              </Form.Item>
+              <Form.Item
+                label='Facility Code'
+                name='workplace_code'
+                rules={[{ required: true, message: 'Please enter the code' }]}
+              >
                 <Input />
-              </Row>
-              <Row style={{ margin: '8px 0' }}>
-                <Typography.Text>* Facility Description</Typography.Text>
-                <Input.TextArea />
-              </Row>
+              </Form.Item>
             </Col>
-            <Col
-              span={12}
-              style={{ display: 'flex', flexDirection: 'column', margin: '8px 0' }}
-            >
-              <Typography.Text>* Facility Image</Typography.Text>
-              <ImgCrop rotationSlider>
-                <Upload {...props}>
-                  <Button icon={<UploadOutlined />}>Click to Upload</Button>
-                </Upload>
-              </ImgCrop>
+            <Col span={12}>
+              <Form.Item
+                label='Facility Location'
+                name='address'
+                rules={[{ required: true, message: 'Please enter the location' }]}
+              >
+                <Input />
+              </Form.Item>
+              <Form.Item
+                label='Facility Status'
+                name='status'
+                rules={[{ required: true, message: 'Please select the status' }]}
+              >
+                <Select
+                  options={[
+                    { label: 'OFF', value: 'OFF' },
+                    { label: 'ON', value: 'ON' },
+                    { label: 'UPCOMING', value: 'UPCOMING' },
+                  ]}
+                />
+              </Form.Item>
             </Col>
           </Row>
-          <Space
-            size='middle'
-            style={{ display: 'flex', justifyContent: 'flex-end' }}
-          >
-            <Button type='default'>Cancel</Button>
-            <Button type='primary'>Update</Button>
-          </Space>
+          {/* <Col
+                span={12}
+                style={{ display: 'flex', flexDirection: 'column', margin: '8px 0' }}
+              >
+                <Typography.Text>* Facility Image</Typography.Text>
+                <ImgCrop rotationSlider>
+                  <Upload {...props}>
+                    <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                  </Upload>
+                </ImgCrop>
+              </Col> */}
+          {/* </Row> */}
+          <Form.Item>
+            <Space
+              size='middle'
+              style={{ display: 'flex', justifyContent: 'flex-end' }}
+            >
+              <Button type='default'>Cancel</Button>
+              <Button
+                type='primary'
+                htmlType='submit'
+                loading={isLoading}
+              >
+                Create
+              </Button>
+            </Space>
+          </Form.Item>
         </Form>
       </Card>
     </>

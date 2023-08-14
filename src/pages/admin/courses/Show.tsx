@@ -1,16 +1,25 @@
 import React from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
-import { Breadcrumb, Card, Typography, Row, Col, Image, Divider, Space, Button } from 'antd'
+import { Breadcrumb, Card, Typography, Row, Col, Image, Divider, Space, Button, Tag } from 'antd'
+import { useQuery } from '@tanstack/react-query'
 import AdminLayout from '@/layouts/admin'
-import { CourseItems } from '@/data/courses'
+// import { CourseItems } from '@/data/courses'
 import { ShowButtonStyle } from '../style'
+import { getCourse } from '@/apis/course.api'
 
 const CustomContent = () => {
   const { id } = useParams()
   const navigate = useNavigate()
-  const foundCourse = CourseItems.find((item) => item.key === id)
 
-  if (!foundCourse) {
+  const { data: course } = useQuery({
+    queryKey: ['workplace'],
+    queryFn: async () => {
+      const res = await getCourse(id as string)
+      return res.data.data
+    },
+  })
+
+  if (!course) {
     return <Typography.Text>Course not found</Typography.Text>
   }
 
@@ -25,7 +34,7 @@ const CustomContent = () => {
             title: <Link to='/admin/courses/all'>Courses</Link>,
           },
           {
-            title: `${foundCourse.name}`,
+            title: `${course.course_code}: ${course.title}`,
           },
         ]}
         style={{ padding: '4px' }}
@@ -37,14 +46,55 @@ const CustomContent = () => {
               level={3}
               className='mt-0 mx-1'
             >
-              {foundCourse.name}
+              {course.course_code}: {course.title}
             </Typography.Title>
-            <Typography.Text className='mt-2 mx-1'>{foundCourse.location}</Typography.Text>
+            <Card>
+              <Space direction='vertical'>
+                <Typography.Text className='mt-2 mx-1'>
+                  Price:{' '}
+                  {course.discount ? (
+                    <Typography.Text className='mt-2 mx-1 line-through'>{course.price} $</Typography.Text>
+                  ) : (
+                    <Typography.Text className='mt-2 mx-1'>{course.price} $</Typography.Text>
+                  )}{' '}
+                  {course.discount && (
+                    <>
+                      <Typography.Text
+                        strong
+                        className='mt-2 mx-1'
+                        style={{ fontSize: '20px' }}
+                      >
+                        {(1 - course.discount / 100) * course.price} $
+                      </Typography.Text>
+                      <Tag
+                        color='blue'
+                        style={{ fontSize: '14px', margin: '0 4px' }}
+                      >
+                        - {course.discount} %
+                      </Tag>
+                    </>
+                  )}
+                </Typography.Text>
+                <Typography.Text className='mt-2 mx-1'>Level: {course.level}</Typography.Text>
+                <Typography.Text className='mt-2 mx-1'>Duration: {course.duration} days</Typography.Text>
+                <Typography.Text className='mt-2 mx-1'>
+                  Sessions per course: {course.session_per_course}
+                </Typography.Text>
+                <div>
+                  {/* <Rate
+                    disabled
+                    value={course.rate}
+                    className='mt-2 mx-1'
+                  />{' '} */}
+                  <Typography.Text className='mt-2 mx-1'>Rate: {course.rate}/5 stars</Typography.Text>
+                </div>
+              </Space>
+            </Card>
           </Col>
           <Col span={8}>
             <Image
-              src={foundCourse.image_url}
-              alt={foundCourse.name}
+              src={course.image || 'https://via.placeholder.com/500x250'}
+              alt={course.title}
             />
           </Col>
           <Divider />
@@ -56,7 +106,7 @@ const CustomContent = () => {
               >
                 Description
               </Typography.Title>
-              <Typography.Text>THIS IS THE COURSE DESCRIPTION</Typography.Text>
+              <Typography.Text>{course.desc}</Typography.Text>
             </Space>
           </Col>
         </Row>
@@ -74,6 +124,7 @@ const CustomContent = () => {
           <Button
             type='primary'
             style={ShowButtonStyle}
+            onClick={() => navigate(`/admin/courses/edit/${id}`)}
           >
             Edit
           </Button>
