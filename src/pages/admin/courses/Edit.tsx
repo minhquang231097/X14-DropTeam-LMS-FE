@@ -73,7 +73,7 @@ const CustomContent = () => {
             title: 'Home',
           },
           {
-            title: <Link to='/admin/facilities/all'>Facilities</Link>,
+            title: <Link to='/admin/courses/all'>Courses</Link>,
           },
           {
             title: `${course.course_code}: ${course.title}`,
@@ -176,7 +176,7 @@ const CustomContent = () => {
             >
               <Button
                 type='default'
-                onClick={() => navigate(`/admin/course/show/${id}`)}
+                onClick={() => navigate(`/admin/courses/show/${id}`)}
               >
                 Cancel
               </Button>
