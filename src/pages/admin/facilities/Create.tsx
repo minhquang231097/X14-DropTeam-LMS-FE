@@ -72,7 +72,7 @@ const CustomContent = () => {
             level={3}
             className='mt-0 mx-1'
           >
-            Create a new Facility
+            Create A New Facility
           </Typography.Title>
           <Row gutter={[16, 16]}>
             <Col span={12}>
