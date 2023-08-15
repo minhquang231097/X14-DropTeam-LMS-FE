@@ -7,7 +7,7 @@ const handleLogout = async (navigate?: any) => {
     .then((res) => {
       if (res.status === 200) {
         localStorage.removeItem('user')
-        navigate(0)
+        navigate('/login', { replace: true })
       }
     })
     .catch((err) => {

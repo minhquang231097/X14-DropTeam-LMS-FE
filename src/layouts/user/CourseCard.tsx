@@ -8,38 +8,37 @@ import avatar from '@/assets/images/teacher/a.jpg'
 import noImage from '@/assets/images/courses/no-image.png'
 
 const CourseCard = (course: Course) => {
-  const { _id, image, course_code, title, duration, level, rate, price, discount } = course
   return (
     <div
       className='w-[300px] bg-white dark:bg-[#1E293B] rounded-xl overflow-hidden '
       style={{ boxShadow: '0 0 10px rgba(0,0,0,.18)', cursor: 'pointer', border: '1px solid rgba(0,0,0,.14)' }}
     >
       <Link
-        to={`/course-detail?id=${_id}`}
+        to={`/course-detail?id=${course._id}`}
         className='no-underline text-gray-800 dark:text-gray-100'
       >
         <img
-          src={course.image[0] || noImage}
+          src={course.image || noImage}
           alt=''
           className='w-full'
         />
         <div className='px-4'>
           <p className='font-bold leading-6'>
-            {course_code}: Introduction to {title} for Beginners
+            {course.course_code}: Introduction to {course.title} for Beginners
           </p>
           <div className='flex items-center'>
             <div className='flex items-center flex-1 text-gray-500'>
               <AiOutlineClockCircle className='text-[#368A29] text-lg mr-2' />
-              {duration} min
+              {course.duration} min
             </div>
             <div className='flex items-center flex-1 text-gray-500'>
               <BiBarChart className='text-[#754FFE] text-lg mr-2' />
-              {level}
+              {course.level}
             </div>
           </div>
           <div className='flex items-center'>
             <div className='flex items-center text-xl mr-1'>
-              {[...Array(rate)].map(() => {
+              {[...Array(course.rate)].map(() => {
                 return <p className='m-0 mt-2 mr-1 text-[#F59E0B]'>&#9733;</p>
               })}
             </div>

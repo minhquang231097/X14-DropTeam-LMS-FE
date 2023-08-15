@@ -1,10 +1,26 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { Input } from 'antd'
 import Header from '@/layouts/user/Header'
 import Footer from '@/layouts/user/Footer'
 import SidebarTeacher from '@/layouts/user/SidebarTeacher'
 import LessonsListTable from './LessonsListTable'
+import { useQuery } from '@tanstack/react-query'
+import { useQueryString } from '@/utils/utils'
+import { getLessonsList } from '@/apis/lessonsList.api'
 
 const LessonsListForTeacher: React.FC = () => {
+  const [searchText, setSearchText] = useState('')
+  const queryString: { page?: string } = useQueryString()
+  const page = Number(queryString.page) || 1
+
+  const { data } = useQuery({
+    queryKey: ['classes', page],
+    queryFn: async () => {
+      const res = await getLessonsList(page, 10)
+      return res.data
+    },
+  })
+
   return (
     <>
       <Header />
@@ -18,16 +34,20 @@ const LessonsListForTeacher: React.FC = () => {
             <div>
               <span className='text-xl text-gray-600 dark:text-gray-400 font-bold'>Lessons List For Teacher</span>
               <p className='m-0 text-sm text-gray-500 mt-2'>
-                Total lessons: <span className='text-blue-600'>10</span>
+                Total lessons: <span className='text-blue-600'>{data ? data.data.length : ''}</span>
               </p>
             </div>
-            <input
-              type='text'
-              placeholder='Search Lessons Name ...'
-              className='h-8 dark:bg-[#0B1324] rounded-md outline-none pl-2 border-[1px] border-solid border-gray-500 dark:border-[#0B1324] focus:outline-none focus:border-sky-500 dark:focus:border-sky-500 dark:focus:border-solid dark:focus:border-[1px] focus:border-[1px] dark:text-gray-100'
+            <Input.Search
+              placeholder='Search Lesson Name ...'
+              style={{ width: 280 }}
+              onSearch={(value) => setSearchText(value)}
+              onChange={(e) => setSearchText(e.target.value)}
             />
           </div>
-          <LessonsListTable />
+          <LessonsListTable
+            data={{ ...data }}
+            searchText={searchText}
+          />
         </div>
       </div>
       <Footer />

@@ -7,6 +7,7 @@ const handleLogin = async (value: { username: string; password: string }, others
       const user = {
         userId: res.data.id,
         username: res.data.username,
+        role: res.data.role,
         access_token: res.data.accessToken,
         refresh_token: res.data.refreshToken,
       }
