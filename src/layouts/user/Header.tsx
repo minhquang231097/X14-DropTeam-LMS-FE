@@ -6,6 +6,7 @@ import DropdownList from './DropdownList'
 import DarkMode from './DarkMode'
 import UserDropDownDefault from './UserDropdownDefault'
 import UserDropdownLogged from './UserDropdownLogged'
+import UserDropdownAdmin from './userDropdownAdmin'
 
 import { ColorModeContext } from '@/contexts/colorMode'
 
@@ -66,7 +67,13 @@ const Header: React.FC = () => {
             className='flex items-center no-underline text-gray-600 dark:text-gray-100'
             style={{ color: mode === 'light' ? '#4b5563' : 'white' }}
           >
-            {!USER ? <UserDropDownDefault /> : <UserDropdownLogged username={USER.username} />}
+            {!USER ? (
+              <UserDropDownDefault />
+            ) : USER && USER.role === 'ADMIN' ? (
+              <UserDropdownAdmin username={USER.username} />
+            ) : (
+              <UserDropdownLogged username={USER.username} />
+            )}
           </a>
         </div>
       </nav>

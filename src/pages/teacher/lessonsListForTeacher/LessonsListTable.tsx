@@ -1,74 +1,80 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React from 'react'
 import { Table, Tag } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 
 interface DataType {
   key: number
-  name: string
-  tags: string[]
+  lesson_name: string
+  desc: string
+  status: string
 }
 
-const columns: ColumnsType<DataType> = [
-  {
-    title: 'No.',
-    dataIndex: 'key',
-    width: '48px',
-  },
-  {
-    title: 'Lesson Name',
-    dataIndex: 'name',
-  },
-  {
-    title: 'Status',
-    key: 'tags',
-    dataIndex: 'tags',
-    width: '120px',
-    render: (_, { tags }) => (
-      <>
-        {tags.map((tag) => {
-          let color = tag.length > 5 ? 'geekblue' : 'green'
-          if (tag === 'loser') {
-            color = 'volcano'
-          }
-          if (tag === 'Active') {
-            color = 'green'
-          }
-          return (
+type LessonsList = {
+  data: { data: [] }
+  searchText: string
+}
+
+const LessonsListTable: React.FC<LessonsList> = (props) => {
+  const columns: ColumnsType<DataType> = [
+    {
+      title: 'No.',
+      dataIndex: 'index',
+      width: '48px',
+      render: (_value, _record, index) => <>{index + 1}</>,
+    },
+    {
+      title: 'Lesson Name',
+      dataIndex: 'lesson_name',
+      render: (_value, { lesson_name, desc }, _index) => <>{lesson_name + ':' + ' ' + desc}</>,
+      filteredValue: [props.searchText],
+      onFilter: (value, { lesson_name }) => String(lesson_name).toLowerCase().includes(String(value).toLowerCase()),
+    },
+    {
+      title: 'Status',
+      key: 'tags',
+      width: '160px',
+      dataIndex: 'status',
+      render: (_, { status }) => (
+        <>
+          {(status === 'active' && (
             <Tag
-              color={color}
-              key={tag}
+              color='green'
+              key='active'
             >
-              {tag.toUpperCase()}
+              {status.toUpperCase()}
             </Tag>
-          )
-        })}
-      </>
-    ),
-  },
-]
+          )) ||
+            (status === 'inactive' && (
+              <Tag
+                color='volcano'
+                key='inactive'
+              >
+                {status.toUpperCase()}
+              </Tag>
+            )) || (
+              <Tag
+                color='geekblue'
+                key='undefined'
+              >
+                {String(status).toUpperCase()}
+              </Tag>
+            )}
+        </>
+      ),
+    },
+  ]
 
-const data: DataType[] = []
-for (let i = 1; i <= 100; i++) {
-  data.push({
-    key: i,
-    name: `Lesson ${i}: Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam rem natus enim porro
-    ad! Perspiciatis iure ipsum reiciendis cupiditate temporibus dolor illum facilis itaque officia ad
-    totam, qui voluptate quisquam?`,
-    tags: ['Active'],
-  })
-}
+  let data: DataType[] = []
 
-const LessonsListTable: React.FC = () => {
-  const navigate = useNavigate()
-
-  const [hasData, setHasData] = useState(true)
+  if (props.data !== undefined) {
+    data = props.data.data
+  }
 
   return (
     <Table
       pagination={{ position: ['bottomCenter'] }}
       columns={columns}
-      dataSource={hasData ? data : []}
+      dataSource={data}
       scroll={{ y: 340 }}
       bordered
       size='small'
@@ -76,13 +82,6 @@ const LessonsListTable: React.FC = () => {
       showHeader
       footer={undefined}
       style={{ padding: '0 16px' }}
-      onRow={() => {
-        return {
-          onClick: () => {
-            navigate('/teacher/class-detail/session')
-          },
-        }
-      }}
     />
   )
 }

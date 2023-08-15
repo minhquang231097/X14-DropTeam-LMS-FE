@@ -83,7 +83,7 @@ const CourseDetail: React.FC = () => {
     },
   ]
 
-  const user = JSON.parse(localStorage.getItem('user'))
+  const user = JSON.parse(localStorage.getItem('user') as string)
   const [messageApi, contextHolder] = message.useMessage()
   const error = () => {
     messageApi.open({
@@ -136,7 +136,7 @@ const CourseDetail: React.FC = () => {
             >
               <div>
                 <img
-                  src={data && data.image.length ? data.image[0] : noImage}
+                  src={data && data.image ? data.image[0] : noImage}
                   className='w-full rounded-lg'
                 />
 

@@ -1,7 +1,7 @@
 import http from '@/utils/http'
 
-export const getClassesList = (page?: any, limit?: any) =>
-  http.get('/class', {
+export const getLessonsList = (page?: number, limit?: number) =>
+  http.get('/lesson', {
     params: {
       page: page,
       limit: limit,
