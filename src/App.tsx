@@ -49,6 +49,7 @@ import Profile from './pages/user/profile/index.tsx'
 import ChangePassword from './pages/user/profile/ChangePassword.tsx'
 
 const App: React.FC = () => {
+  const USER = JSON.parse(localStorage.getItem('user') as string)
   return (
     <>
       <Routes>
@@ -75,7 +76,7 @@ const App: React.FC = () => {
         />
         <Route
           path='/profile-detail'
-          element={<EditProfile />}
+          element={USER ? <EditProfile /> : <NotFound404 />}
         />
         <Route
           path='/forgot-password'
@@ -101,33 +102,33 @@ const App: React.FC = () => {
         {/* TEACHER */}
         <Route
           path='/teacher/classes-list'
-          element={<ClassesListForTeacher />}
+          element={USER && USER.role === 'MENTOR' ? <ClassesListForTeacher /> : <NotFound404 />}
         />
         <Route
           path='/teacher/class-detail'
-          element={<SessionListForTeacher />}
+          element={USER && USER.role === 'MENTOR' ? <SessionListForTeacher /> : <NotFound404 />}
         />
         <Route
           path='/teacher/lessons-list'
-          element={<LessonsListForTeacher />}
+          element={USER && USER.role === 'MENTOR' ? <LessonsListForTeacher /> : <NotFound404 />}
         />
         <Route
           path='/teacher/class-detail/session'
-          element={<DetailPerSession />}
+          element={USER && USER.role === 'MENTOR' ? <DetailPerSession /> : <NotFound404 />}
         />
 
         {/* ADMIN */}
         <Route
           path='/admin'
-          element={<AdminHome />}
+          element={USER && USER.role === 'ADMIN' ? <AdminHome /> : <NotFound404 />}
         />
         <Route
           path='/admin/facilities/all'
-          element={<AdminListFacilities />}
+          element={USER && USER.role === 'ADMIN' ? <AdminListFacilities /> : <NotFound404 />}
         />
         <Route
           path='/admin/facilities/show/:id'
-          element={<AdminShowFacilities />}
+          element={USER && USER.role === 'ADMIN' ? <AdminShowFacilities /> : <NotFound404 />}
         />
         <Route
           path='/admin/facilities/edit/:id'
@@ -135,35 +136,39 @@ const App: React.FC = () => {
         />
         <Route
           path='/admin/facilities/create'
-          element={<AdminCreateFacilities />}
+          element={USER && USER.role === 'ADMIN' ? <AdminCreateFacilities /> : <NotFound404 />}
         />
         <Route
           path='/admin/courses/categories'
-          element={<AdminListCategories />}
+          element={USER && USER.role === 'ADMIN' ? <AdminListCategories /> : <NotFound404 />}
         />
         <Route
           path='/admin/courses/categories/show/:id'
-          element={<AdminShowCategories />}
+          element={USER && USER.role === 'ADMIN' ? <AdminShowCategories /> : <NotFound404 />}
+        />
+        <Route
+          path='/admin/courses/categories'
+          element={USER && USER.role === 'ADMIN' ? <AdminListCategories /> : <NotFound404 />}
         />
         <Route
           path='/admin/courses/categories/create'
-          element={<AdminCreateCategories />}
+          element={USER && USER.role === 'ADMIN' ? <AdminCreateCategories /> : <NotFound404 />}
         />
         <Route
           path='/admin/courses/all'
-          element={<AdminListCourses />}
+          element={USER && USER.role === 'ADMIN' ? <AdminListCourses /> : <NotFound404 />}
         />
         <Route
           path='/admin/courses/show/:id'
-          element={<AdminShowCourses />}
+          element={USER && USER.role === 'ADMIN' ? <AdminShowCourses /> : <NotFound404 />}
         />
         <Route
           path='/admin/courses/create'
-          element={<AdminCreateCourses />}
+          element={USER && USER.role === 'ADMIN' ? <AdminCreateCourses /> : <NotFound404 />}
         />
         <Route
           path='/admin/courses/edit/:id'
-          element={<AdminEditCourses />}
+          element={USER && USER.role === 'ADMIN' ? <AdminEditCourses /> : <NotFound404 />}
         />
         <Route
           path='/admin/courses/show/:id/lessons'
@@ -215,15 +220,15 @@ const App: React.FC = () => {
         />
         <Route
           path='/admin/profile'
-          element={<AdminProfile />}
+          element={USER && USER.role === 'ADMIN' ? <AdminProfile /> : <NotFound404 />}
         />
         <Route
           path='/admin/change-password'
-          element={<AdminChangePassword />}
+          element={USER && USER.role === 'ADMIN' ? <AdminChangePassword /> : <NotFound404 />}
         />
         <Route
           path='/admin/login'
-          element={<AdminLogin />}
+          element={USER && USER.role === 'ADMIN' ? <AdminLogin /> : <NotFound404 />}
         />
         <Route
           path='*'

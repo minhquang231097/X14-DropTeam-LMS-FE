@@ -1,10 +1,28 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Header from '@/layouts/user/Header'
 import Footer from '@/layouts/user/Footer'
+import { Input } from 'antd'
 import SidebarTeacher from '@/layouts/user/SidebarTeacher'
 import DetailPerSessionTable from './DetailPerSessionTable'
+import { useQuery } from '@tanstack/react-query'
+import { useQueryString } from '@/utils/utils'
+import { getSessionById } from '@/apis/sessionBySessionId.api'
+import { getStudentsListPerSession } from '@/apis/studentsPerSession'
 
 const DetailPerSession: React.FC = () => {
+  const [searchText, setSearchText] = useState('')
+
+  const queryString: { id?: string } = useQueryString()
+  const id = String(queryString.id)
+
+  const sessionData = useQuery({
+    queryKey: ['session', id],
+    queryFn: async () => {
+      const res = await getSessionById(id)
+      return res.data.data
+    },
+  }).data
+
   return (
     <>
       <Header />
@@ -16,18 +34,21 @@ const DetailPerSession: React.FC = () => {
         >
           <div className='p-4 flex justify-between items-start'>
             <div>
-              <span className='text-xl text-gray-600 dark:text-gray-400 font-bold'>Session ...</span>
+              <span className='text-xl text-gray-600 dark:text-gray-400 font-bold'>
+                {sessionData ? sessionData.session_name : ''}
+              </span>
               <p className='m-0 text-sm text-gray-500 mt-2'>
                 Total students: <span className='text-blue-600'>10</span>
               </p>
             </div>
-            <input
-              type='text'
+            <Input.Search
               placeholder='Search Student Name ...'
-              className='h-8 dark:bg-[#0B1324] rounded-md outline-none pl-2 border-[1px] border-solid border-gray-500 dark:border-[#0B1324] focus:outline-none focus:border-sky-500 dark:focus:border-sky-500 dark:focus:border-solid dark:focus:border-[1px] focus:border-[1px] dark:text-gray-100'
+              style={{ width: 280 }}
+              onSearch={(value) => setSearchText(value)}
+              onChange={(e) => setSearchText(e.target.value)}
             />
           </div>
-          <DetailPerSessionTable />
+          <DetailPerSessionTable searchText={searchText} />
         </div>
       </div>
       <Footer />

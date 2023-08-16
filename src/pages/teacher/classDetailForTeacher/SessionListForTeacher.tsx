@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import React from 'react'
+import React, { useState } from 'react'
 import { Button } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
@@ -12,7 +12,9 @@ import { getSessionsByClassCode } from '@/apis/sessionByClassCode.api'
 import { getClassById } from '@/apis/class.api'
 
 const SessionListForTeacher: React.FC = () => {
+  const [searchText, setSearchText] = useState('')
   const navigate = useNavigate()
+
   const queryString: { class_code?: string; id?: string } = useQueryString()
   const class_code = String(queryString.class_code).toLocaleLowerCase()
   const id = String(queryString.id)
@@ -33,8 +35,6 @@ const SessionListForTeacher: React.FC = () => {
     },
   }).data
 
-  console.log(classData)
-
   return (
     <>
       <Header />
@@ -52,11 +52,38 @@ const SessionListForTeacher: React.FC = () => {
               <p className='m-0 text-sm text-gray-500 mt-2'>
                 Total sessions: <span className='text-blue-600'>{data ? data.data.length : ''}</span>
               </p>
-              <p className='m-0 text-sm text-gray-500 mt-2'>
-                Schedule: <span className='text-blue-600'>Mon & Fri</span>
+              <p className='m-0 text-sm text-gray-500 mt-2 flex'>
+                Schedule:{' '}
+                <span className='text-blue-600 flex'>
+                  {classData && classData.data.schedule
+                    ? [...classData.data.schedule].map((ele) => {
+                      if (ele === 0) {
+                        return <span className='ml-2 text-yellow-500'>Monday</span>
+                      } else if (ele === 1) {
+                        return <div className='ml-2 text-pink-500'>Tuesday</div>
+                      } else if (ele === 2) {
+                        return <div className='ml-2 text-green-500'>Wednesday</div>
+                      } else if (ele === 3) {
+                        return <div className='ml-2 text-orange-500'>Thursday</div>
+                      } else if (ele === 4) {
+                        return <div className='ml-2 text-blue-500'>Friday</div>
+                      } else if (ele === 5) {
+                        return <div className='ml-2 text-purple-500'>Saturday</div>
+                      } else if (ele === 6) {
+                        return <div className='ml-2 text-red-500'>Sunday</div>
+                      }
+                    })
+                    : 'undefined'}
+                </span>
               </p>
               <p className='m-0 text-sm text-gray-500 mt-2'>
                 Start at:{' '}
+                <span className='text-blue-600'>
+                  {classData ? new Date(classData.data.end_at).toLocaleDateString('vi-VN') : 'DD/MM/YYYY'}
+                </span>
+              </p>
+              <p className='m-0 text-sm text-gray-500 mt-2'>
+                Expected end at:{' '}
                 <span className='text-blue-600'>
                   {classData ? new Date(classData.data.start_at).toLocaleDateString('vi-VN') : 'DD/MM/YYYY'}
                 </span>
@@ -69,13 +96,17 @@ const SessionListForTeacher: React.FC = () => {
                 Lesson List
               </Button>
             </div>
-            <input
-              type='text'
-              placeholder='Search Sessions Name ...'
-              className='h-8 dark:bg-[#0B1324] rounded-md outline-none pl-2 border-[1px] border-solid border-gray-500 dark:border-[#0B1324] focus:outline-none focus:border-sky-500 dark:focus:border-sky-500 dark:focus:border-solid dark:focus:border-[1px] focus:border-[1px] dark:text-gray-100'
+            <Input.Search
+              placeholder='Search Session Name ...'
+              style={{ width: 280 }}
+              onSearch={(value) => setSearchText(value)}
+              onChange={(e) => setSearchText(e.target.value)}
             />
           </div>
-          <SessionListTable {...data} />
+          <SessionListTable
+            data={{ ...data }}
+            searchText={searchText}
+          />
         </div>
       </div>
       <Footer />

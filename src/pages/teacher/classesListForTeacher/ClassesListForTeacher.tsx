@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { Input } from 'antd'
 import { useQuery } from '@tanstack/react-query'
 import Header from '@/layouts/user/Header'
 import Footer from '@/layouts/user/Footer'
@@ -6,18 +7,29 @@ import SidebarTeacher from '@/layouts/user/SidebarTeacher'
 import ClassListTable from './ClassListTable'
 import { useQueryString } from '@/utils/utils'
 import { getClassesList } from '@/apis/classesList.api'
+import { getClassByClassCode } from '@/apis/searchClassByClassCode.api'
 
 const ClassesListForTeacher: React.FC = () => {
+  const [searchText, setSearchText] = useState('')
+
   const queryString: { page?: string } = useQueryString()
   const page = Number(queryString.page) || 1
 
   const { data } = useQuery({
     queryKey: ['classes', page],
     queryFn: async () => {
-      const res = await getClassesList(page, 10)
+      const res = await getClassesList(page, 20)
       return res.data.data
     },
   })
+
+  // const searchData = useQuery({
+  //   queryKey: ['search', searchText],
+  //   queryFn: async () => {
+  //     const res = await getClassByClassCode(String(searchText).toUpperCase())
+  //     return res.data
+  //   },
+  // }).data
 
   return (
     <>
@@ -32,16 +44,21 @@ const ClassesListForTeacher: React.FC = () => {
             <div>
               <span className='text-xl text-gray-600 dark:text-gray-400 font-bold'>Classes List For Teacher</span>
               <p className='m-0 text-sm text-gray-500 mt-2'>
-                Total classes: <span className='text-blue-600'>{data && data.count}</span>
+                Total classes: <span className='text-blue-600'>{data && data.total}</span>
               </p>
             </div>
-            <input
-              type='text'
-              placeholder='Search Classes Name ...'
-              className='h-8 dark:bg-[#0B1324] rounded-md outline-none pl-2 border-[1px] border-solid border-gray-500 dark:border-[#0B1324] focus:outline-none focus:border-sky-500 dark:focus:border-sky-500 dark:focus:border-solid dark:focus:border-[1px] focus:border-[1px] dark:text-gray-100'
+
+            <Input.Search
+              placeholder='Search Class Name ...'
+              style={{ width: 280 }}
+              onChange={(e) => setSearchText(e.target.value)}
+              onSearch={(value) => setSearchText(value)}
             />
           </div>
-          <ClassListTable {...data} />
+          <ClassListTable
+            data={{ ...data }}
+            searchText={searchText}
+          />
         </div>
       </div>
       <Footer />
