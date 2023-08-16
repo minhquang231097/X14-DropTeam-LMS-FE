@@ -84,22 +84,16 @@ const CustomContent = () => {
           <Row gutter={[16, 16]}>
             <Col span={12}>
               <Form.Item
-                label='Course Title'
-                name='title'
-                rules={[{ required: true, message: 'Please enter the title' }]}
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item
                 label='Course Code'
                 name='course_code'
                 rules={[{ required: true, message: 'Please enter the code' }]}
               >
                 <Input />
               </Form.Item>
+
               <Form.Item
-                label='Number of Sessions per Course'
-                name='session_per_course'
+                label='Duration (Hours per lesson)'
+                name='duration'
               >
                 <InputNumber style={{ width: '100%' }} />
               </Form.Item>
@@ -109,31 +103,39 @@ const CustomContent = () => {
               >
                 <InputNumber style={{ width: '100%' }} />
               </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                label='Lesson List'
-                name='lesson_list'
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item
-                label='Duration'
-                name='duration'
-              >
-                <InputNumber style={{ width: '100%' }} />
-              </Form.Item>
               <Form.Item
                 label='Level'
                 name='level'
               >
                 <InputNumber style={{ width: '100%' }} />
               </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                label='Course Title'
+                name='title'
+                rules={[{ required: true, message: 'Please enter the title' }]}
+              >
+                <Input />
+              </Form.Item>
+              <Form.Item
+                label='Sessions per Course'
+                name='session_per_course'
+              >
+                <InputNumber
+                  min={0}
+                  style={{ width: '100%' }}
+                />
+              </Form.Item>
+
               <Form.Item
                 label='Discount'
                 name='discount'
               >
-                <InputNumber style={{ width: '100%' }} />
+                <InputNumber
+                  min={0}
+                  style={{ width: '100%' }}
+                />
               </Form.Item>
             </Col>
             <Col span={24}>

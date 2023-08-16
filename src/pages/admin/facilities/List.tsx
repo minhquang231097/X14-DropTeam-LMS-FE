@@ -131,7 +131,7 @@ const CustomContent = () => {
           >
             Show
           </Button>
-          <Button
+          {/* <Button
             type='primary'
             danger
             onClick={() => {
@@ -140,7 +140,7 @@ const CustomContent = () => {
             }}
           >
             Delete
-          </Button>
+          </Button> */}
         </Space>
       ),
     },

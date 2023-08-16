@@ -123,12 +123,12 @@ const CustomContent = () => {
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item
+              {/* <Form.Item
                 label='Lesson List'
                 name='lesson_list'
               >
                 <Input />
-              </Form.Item>
+              </Form.Item> */}
               <Form.Item
                 label='Duration'
                 name='duration'

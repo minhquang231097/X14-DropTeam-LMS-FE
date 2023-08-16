@@ -49,7 +49,8 @@ const CustomContent = () => {
             >
               {workplace.name}
             </Typography.Title>
-            <Typography.Text className='mt-2 mx-1'>{workplace.address}</Typography.Text>
+            <Typography.Text className='mt-2 mx-1'>Facility Code: {workplace.workplace_code}</Typography.Text>
+            <Typography.Paragraph className='mt-2 mx-1'>{workplace.address}</Typography.Paragraph>
           </Col>
           <Col span={8}>
             <Image
@@ -59,7 +60,7 @@ const CustomContent = () => {
           </Col>
           <Divider />
           <Col span={24}>
-            <Space direction='vertical'>
+            {/* <Space direction='vertical'>
               <Typography.Title
                 level={4}
                 className='-mt-1'
@@ -67,7 +68,7 @@ const CustomContent = () => {
                 Description
               </Typography.Title>
               <Typography.Text>THIS IS THE FACILITY DESCRIPTION</Typography.Text>
-            </Space>
+            </Space> */}
           </Col>
         </Row>
         <Space
