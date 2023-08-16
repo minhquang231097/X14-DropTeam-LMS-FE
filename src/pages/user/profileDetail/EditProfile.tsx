@@ -6,11 +6,20 @@ import Footer from '@/layouts/user/Footer'
 import avatar from '@/assets/images/avatar/user.png'
 import UploadImage from '@/layouts/user/UploadImage'
 import handleUpdateUser from '@/apis/updateUser.api'
+import { useQueryString } from '@/utils/utils'
+import { useQuery } from '@tanstack/react-query'
+import { getUserProfile } from '@/apis/userProfile.api'
 
 const { Option } = Select
 
 const EditProfile: React.FC = () => {
   const navigate = useNavigate()
+
+  const queryString: { id?: string } = useQueryString()
+  const id = String(queryString.id)
+  const userData = useQuery({ queryKey: ['user', id], queryFn: async () => await getUserProfile(id) }).data?.data?.data
+
+  console.log(userData)
 
   const [editProfileValue, setEditProfileValue] = useState({
     fullname: '',
@@ -45,7 +54,9 @@ const EditProfile: React.FC = () => {
               className='w-[14%] rounded-full mr-16 border-solid border-1px border-gray-400 p-2'
             />
             <div>
-              <p className='text-[#754FFE] mb-0 text-3xl font-bold'>Username</p>
+              <p className='text-[#754FFE] mb-0 text-3xl font-bold'>
+                {userData ? userData.username : 'User Name Here ...'}
+              </p>
               <UploadImage />
             </div>
           </div>
@@ -67,7 +78,7 @@ const EditProfile: React.FC = () => {
                 <Input
                   size='large'
                   type='text'
-                  placeholder='Full Name ...'
+                  placeholder={userData ? userData.fullname : 'Your full name?'}
                   maxLength={200}
                   onChange={(e) => {
                     setEditProfileValue({ ...editProfileValue, fullname: e.target.value })
