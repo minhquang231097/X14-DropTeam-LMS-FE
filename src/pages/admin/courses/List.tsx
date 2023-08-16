@@ -38,15 +38,6 @@ const CustomContent = () => {
     },
   })
 
-  // const { data: courseData } = useQuery({
-  //   queryKey: ['course', page, 10],
-  //   queryFn: async () => {
-  //     const res = await getCoursesList(page, 10)
-  //     console.log(res.data.data)
-  //     return res.data.data
-  //   },
-  // })
-
   const handleDelete = async () => {
     try {
       await axios.delete(`/api/course/?id=${selectedCourse?._id}`)
