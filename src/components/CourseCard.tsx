@@ -45,8 +45,10 @@ const CourseCard = (course: Course) => {
             <span className='mt-[10px] text-gray-500 text-sm'>({Math.floor(Math.random() * 10000)})</span>
           </div>
           <div className='flex items-center'>
-            <p className='font-bold mr-2'>${price}</p>
-            <p className='text-gray-500 text-sm line-through'>${Number(price) * (1 - Number(discount) / 100)}</p>
+            <p className='font-bold mr-2'>${course.price}</p>
+            <p className='text-gray-500 text-sm line-through'>
+              ${Number(course.price) * (1 - Number(course.discount) / 100)}
+            </p>
           </div>
         </div>
         <div className='flex items-center justify-between border-0 border-t-[1px] border-gray-300 dark:border-[#334155] border-solid px-4'>
