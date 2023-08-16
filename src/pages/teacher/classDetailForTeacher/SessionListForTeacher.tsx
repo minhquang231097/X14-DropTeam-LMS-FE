@@ -1,11 +1,12 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import React, { useState } from 'react'
+import { Button } from 'antd'
+import { useNavigate } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
 import Header from '@/layouts/user/Header'
 import Footer from '@/layouts/user/Footer'
 import SidebarTeacher from '@/layouts/user/SidebarTeacher'
 import SessionListTable from './SessionListTable'
-import { Button, Input } from 'antd'
-import { useNavigate } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
 import { useQueryString } from '@/utils/utils'
 import { getSessionsByClassCode } from '@/apis/sessionByClassCode.api'
 import { getClassById } from '@/apis/class.api'
@@ -56,22 +57,22 @@ const SessionListForTeacher: React.FC = () => {
                 <span className='text-blue-600 flex'>
                   {classData && classData.data.schedule
                     ? [...classData.data.schedule].map((ele) => {
-                        if (ele === 0) {
-                          return <span className='ml-2 text-yellow-500'>Monday</span>
-                        } else if (ele === 1) {
-                          return <div className='ml-2 text-pink-500'>Tuesday</div>
-                        } else if (ele === 2) {
-                          return <div className='ml-2 text-green-500'>Wednesday</div>
-                        } else if (ele === 3) {
-                          return <div className='ml-2 text-orange-500'>Thursday</div>
-                        } else if (ele === 4) {
-                          return <div className='ml-2 text-blue-500'>Friday</div>
-                        } else if (ele === 5) {
-                          return <div className='ml-2 text-purple-500'>Saturday</div>
-                        } else if (ele === 6) {
-                          return <div className='ml-2 text-red-500'>Sunday</div>
-                        }
-                      })
+                      if (ele === 0) {
+                        return <span className='ml-2 text-yellow-500'>Monday</span>
+                      } else if (ele === 1) {
+                        return <div className='ml-2 text-pink-500'>Tuesday</div>
+                      } else if (ele === 2) {
+                        return <div className='ml-2 text-green-500'>Wednesday</div>
+                      } else if (ele === 3) {
+                        return <div className='ml-2 text-orange-500'>Thursday</div>
+                      } else if (ele === 4) {
+                        return <div className='ml-2 text-blue-500'>Friday</div>
+                      } else if (ele === 5) {
+                        return <div className='ml-2 text-purple-500'>Saturday</div>
+                      } else if (ele === 6) {
+                        return <div className='ml-2 text-red-500'>Sunday</div>
+                      }
+                    })
                     : 'undefined'}
                 </span>
               </p>

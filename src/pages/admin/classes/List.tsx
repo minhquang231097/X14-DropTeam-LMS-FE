@@ -1,20 +1,19 @@
 import React, { useState } from 'react'
-import { Breadcrumb, Button, Card, Image, Modal, PaginationProps, Space, Table, Typography, theme } from 'antd'
+import { Breadcrumb, Button, Card, Image, PaginationProps, Space, Table, Typography, theme } from 'antd'
 import { useNavigate } from 'react-router-dom'
-import { MdOutlineCheck, MdOutlineClose, MdAddCircleOutline } from 'react-icons/md'
+import { MdOutlineCheck, MdOutlineClose, MdAddCircleOutline, MdOutlineCircle } from 'react-icons/md'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import AdminLayout from '@/layouts/admin'
-// import { CourseItems } from '@/data/courses'
+import { ClassItems } from '@/data/classes'
 import AdminSearch from '@/components/adminSearch'
-import { getCoursesList } from '@/apis/coursesList.api'
 import { useQueryString } from '@/utils/utils'
+import { getClassesList } from '@/apis/classesList.api'
 
 interface DataType {
   _id: string
-  course_code: string
-  image?: string
-  title?: string
+  image_url?: string
+  name?: string
   location?: string
   is_active?: boolean
 }
@@ -27,28 +26,27 @@ const CustomContent = () => {
   const queryString: { page?: string } = useQueryString()
   const page = Number(queryString.page) || 1
 
-  const [selectedCourse, setSelectedCourse] = useState<DataType | null>(null)
+  // const [isActive, setIsActive] = useState(true)
+  const [selectedClass, setSelectedClass] = useState<DataType | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const { data: courseData } = useQuery({
-    queryKey: ['course', page, 10],
+  const { data: classData } = useQuery({
+    queryKey: ['class', page, 10],
     queryFn: async () => {
-      const res = await getCoursesList(page, 10)
+      const res = await getClassesList(page, 10)
       return res.data.data.list
     },
   })
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`/api/course/?id=${selectedCourse?._id}`)
+      await axios.delete(`/api/course/?id=${selectedClass?._id}`)
       // Perform any necessary actions after successful deletion
     } catch (error) {
       console.error(error)
     }
     setIsModalOpen(false)
   }
-
-  // const [isActive, setIsActive] = useState(true)
 
   const onShowSizeChange: PaginationProps['onShowSizeChange'] = (current, pageSize) => {
     console.log(current, pageSize)
@@ -57,58 +55,74 @@ const CustomContent = () => {
   const columns = [
     {
       title: 'Image',
-      dataIndex: 'image',
+      dataIndex: 'image_url',
       width: '30%',
-      render: (image: any) => (
+      render: (image_url: string) => (
         <Image
-          src={image || 'https://via.placeholder.com/500x250'}
-          alt='Course Image'
+          src={image_url}
+          alt='Class Image'
         />
       ),
     },
     {
-      title: 'Course',
-      dataIndex: 'course_code',
+      title: 'Class',
+      dataIndex: 'name',
       width: '40%',
-      render: (course_code: string, course: DataType) => (
+      render: (name: string, cls: DataType) => (
         <Space direction='vertical'>
           <Typography.Text
             strong
             style={{ fontSize: '20px' }}
           >
-            {course_code}: {course.title}
+            {name}
           </Typography.Text>
-          <Typography.Text>{course.location}</Typography.Text>
+          <Typography.Text>{cls.location}</Typography.Text>
         </Space>
       ),
     },
     {
       title: 'Status',
-      dataIndex: 'is_active',
+      dataIndex: 'status',
       width: '15%',
-      render: () => (
+      render: (status: any) => (
         <Typography.Text
           style={{
-            color: token.colorSuccessText,
+            color:
+              status === 'ON'
+                ? token.colorSuccessText
+                : status === 'OFF'
+                  ? token.colorErrorText
+                  : token.colorWarningText,
             fontSize: '18px',
             display: 'flex',
             alignItems: 'center',
           }}
         >
-          <MdOutlineCheck className='text-[24px] m-1' />
-          Active
+          {status === 'ON' ? (
+            <>
+              <MdOutlineCheck className='text-[24px] m-1' /> ACTIVE
+            </>
+          ) : status === 'OFF' ? (
+            <>
+              <MdOutlineClose className='text-[24px] m-1' /> CANCELED
+            </>
+          ) : (
+            <>
+              <MdOutlineCircle className='text-[24px] m-1' /> UPCOMING
+            </>
+          )}
         </Typography.Text>
       ),
     },
     {
       title: 'Action',
       width: '15%',
-      render: (course: DataType) => (
+      render: (cls: DataType) => (
         <Space>
           <Button
             type='primary'
             onClick={() => {
-              navigate(`/admin/courses/show/${course._id}`)
+              navigate(`/admin/classes/show/${cls._id}`)
             }}
           >
             Show
@@ -117,7 +131,7 @@ const CustomContent = () => {
             type='primary'
             danger
             onClick={() => {
-              setSelectedCourse(course)
+              setSelectedClass(class)
               setIsModalOpen(true)
             }}
           >
@@ -136,7 +150,7 @@ const CustomContent = () => {
             title: 'Home',
           },
           {
-            title: 'Courses',
+            title: 'Class',
           },
         ]}
         style={{ padding: '4px' }}
@@ -147,7 +161,7 @@ const CustomContent = () => {
             level={3}
             className='mt-0 mx-1'
           >
-            Course List
+            Classes List
           </Typography.Title>
           <Space
             className='flex'
@@ -157,7 +171,7 @@ const CustomContent = () => {
             <Button
               type='primary'
               icon={<MdAddCircleOutline className='text-[18px]' />}
-              onClick={() => navigate('/admin/courses/create')}
+              onClick={() => navigate('/admin/classes/create')}
               style={{ display: 'flex', alignItems: 'center', height: '40px', fontSize: '16px' }}
             >
               Create
@@ -166,34 +180,24 @@ const CustomContent = () => {
         </div>
         <Table
           columns={columns}
-          dataSource={courseData}
+          // dataSource={ClassItems}
           pagination={{
             position: ['bottomRight'],
             pageSizeOptions: [5, 10],
             onShowSizeChange,
             showSizeChanger: true,
-            defaultCurrent: page,
+            defaultCurrent: 1,
           }}
           bordered
           style={{ marginTop: 16 }}
         />
-        <Modal
-          title='Confirm Delete'
-          onOk={handleDelete}
-          okType='danger'
-          onCancel={() => setIsModalOpen(false)}
-          getContainer={false}
-          open={isModalOpen}
-        >
-          <Typography.Text>Are you sure you want to delete this course?</Typography.Text>
-        </Modal>
       </Card>
     </>
   )
 }
 
-const AdminListCourses: React.FC = () => {
+const AdminListClasses: React.FC = () => {
   return <AdminLayout content={<CustomContent />} />
 }
 
-export default AdminListCourses
+export default AdminListClasses

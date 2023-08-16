@@ -1,20 +1,150 @@
 import React, { useState } from 'react'
-import { Breadcrumb, Button, Card, Col, Image, Pagination, PaginationProps, Row, Space, Typography, theme } from 'antd'
+import { Breadcrumb, Button, Card, Image, PaginationProps, Space, Table, Typography, Modal, theme } from 'antd'
 import { useNavigate } from 'react-router-dom'
-import { MdOutlineCheck, MdOutlineClose, MdAddCircleOutline } from 'react-icons/md'
+import { MdAddCircleOutline, MdOutlineCheck, MdOutlineCircle, MdOutlineClose } from 'react-icons/md'
+import { useQuery } from '@tanstack/react-query'
+import axios from 'axios'
 import AdminLayout from '@/layouts/admin'
-import { FacilityItems } from '@/data/facility'
+// import { FacilityItems } from '@/data/facilities'
+import AdminSearch from '@/components/adminSearch'
+import { getWorkplacesList } from '@/apis/workplaceList.api'
+import { useQueryString } from '@/utils/utils'
+
+interface DataType {
+  _id: string
+  image_url?: string
+  name?: string
+  address?: string
+  status?: string
+}
 
 const CustomContent = () => {
   const { useToken } = theme
   const { token } = useToken()
   const navigate = useNavigate()
 
-  const [isActive, setIsActive] = useState(true)
+  const queryString: { page?: string } = useQueryString()
+  const page = Number(queryString.page) || 1
+
+  // const [isActive, setIsActive] = useState(true)
+  const [selectedFacility, setSelectedFacility] = useState<DataType | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const { data: workplaceData } = useQuery({
+    queryKey: ['workplace', page, 10],
+    queryFn: async () => {
+      const res = await getWorkplacesList(page, 10)
+      return res.data.data
+    },
+  })
+
+  const handleDelete = async () => {
+    try {
+      await axios.delete(`/api/workplace/?id=${selectedFacility?._id}`)
+      // Perform any necessary actions after successful deletion
+    } catch (error) {
+      console.error(error)
+    }
+    setIsModalOpen(false)
+  }
 
   const onShowSizeChange: PaginationProps['onShowSizeChange'] = (current, pageSize) => {
     console.log(current, pageSize)
   }
+
+  // const onChange: TableProps<DataType>['onChange'] = (pagination, filters, sorter, extra) => {
+  //   console.log('params', pagination, filters, sorter, extra)
+  // }
+
+  const columns = [
+    {
+      title: 'Image',
+      dataIndex: 'image_url',
+      width: '30%',
+      render: () => (
+        <Image
+          src='https://via.placeholder.com/500x250'
+          alt='Facility Image'
+        />
+      ),
+    },
+    {
+      title: 'Facility',
+      dataIndex: 'name',
+      width: '40%',
+      render: (name: string, facility: DataType) => (
+        <Space direction='vertical'>
+          <Typography.Text
+            strong
+            style={{ fontSize: '20px' }}
+          >
+            {name}
+          </Typography.Text>
+          <Typography.Text>{facility.address}</Typography.Text>
+        </Space>
+      ),
+    },
+    {
+      title: 'Status',
+      dataIndex: 'status',
+      width: '15%',
+      render: (status: any) => (
+        <Typography.Text
+          style={{
+            color:
+              status === 'ON'
+                ? token.colorSuccessText
+                : status === 'OFF'
+                  ? token.colorErrorText
+                  : token.colorWarningText,
+            fontSize: '18px',
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
+          {status === 'ON' ? (
+            <>
+              <MdOutlineCheck className='text-[24px] m-1' /> ACTIVE
+            </>
+          ) : status === 'OFF' ? (
+            <>
+              <MdOutlineClose className='text-[24px] m-1' /> INACTIVE
+            </>
+          ) : (
+            <>
+              <MdOutlineCircle className='text-[24px] m-1' /> UPCOMING
+            </>
+          )}
+        </Typography.Text>
+      ),
+    },
+    {
+      title: 'Action',
+      width: '15%',
+      render: (facility: DataType) => (
+        <Space>
+          <Button
+            type='primary'
+            onClick={() => {
+              navigate(`/admin/facilities/show/${facility._id}`)
+            }}
+          >
+            Show
+          </Button>
+          {/* <Button
+            type='primary'
+            danger
+            onClick={() => {
+              setSelectedFacility(facility)
+              setIsModalOpen(true)
+            }}
+          >
+            Delete
+          </Button> */}
+        </Space>
+      ),
+    },
+  ]
 
   return (
     <>
@@ -37,141 +167,46 @@ const CustomContent = () => {
           >
             Facility List
           </Typography.Title>
-          <Button
-            type='primary'
-            icon={<MdAddCircleOutline className='text-[18px]' />}
-            onClick={() => navigate('/admin/facilities/create')}
-            style={{ display: 'flex', alignItems: 'center' }}
+          <Space
+            className='flex'
+            size='middle'
           >
-            Create
-          </Button>
-        </div>
-        {FacilityItems.map((facility) => (
-          <Card
-            key={facility.key}
-            bordered
-            style={{ margin: '8px 0', border: '1px solid #4b5563' }}
-          >
-            <Row
-              gutter={16}
-              style={{ alignItems: 'center' }}
+            <AdminSearch />
+            <Button
+              type='primary'
+              icon={<MdAddCircleOutline className='text-[22px]' />}
+              onClick={() => navigate('/admin/facilities/create')}
+              style={{ display: 'flex', alignItems: 'center', height: '40px', fontSize: '16px' }}
             >
-              <Col span={6}>
-                <Image
-                  src={facility.image_url}
-                  alt={facility.name}
-                  preview={false}
-                />
-              </Col>
-              <Col span={10}>
-                <Space direction='vertical'>
-                  <Typography.Text
-                    strong
-                    style={{ fontSize: '24px' }}
-                  >
-                    {facility.name}
-                  </Typography.Text>
-                  <Typography.Text>{facility.location}</Typography.Text>
-                </Space>
-              </Col>
-              <Col span={4}>
-                <Space
-                  direction='vertical'
-                  style={{ display: 'flex', alignItems: 'center' }}
-                >
-                  <Typography.Text
-                    strong
-                    style={{ fontSize: '24px' }}
-                  >
-                    Status
-                  </Typography.Text>
-                  {facility.is_active === true ? (
-                    <Typography.Text
-                      style={{
-                        color: token.colorSuccessText,
-                        fontSize: '18px',
-                        display: 'flex',
-                        alignItems: 'center',
-                      }}
-                    >
-                      <MdOutlineCheck className='text-[24px]' />
-                      Active
-                    </Typography.Text>
-                  ) : (
-                    <Typography.Text
-                      style={{
-                        color: token.colorErrorText,
-                        fontSize: '18px',
-                        display: 'flex',
-                        alignItems: 'center',
-                      }}
-                    >
-                      <MdOutlineClose className='text-[24px]' />
-                      Inactive
-                    </Typography.Text>
-                  )}
-                </Space>
-              </Col>
-              <Col span={4}>
-                <Space
-                  direction='vertical'
-                  style={{ display: 'flex', alignItems: 'center' }}
-                >
-                  <Typography.Text
-                    strong
-                    style={{ fontSize: '24px' }}
-                  >
-                    Action
-                  </Typography.Text>
-                  <Space>
-                    <Button
-                      type='primary'
-                      onClick={() => {
-                        navigate(`/admin/facilities/show/${facility.key}`)
-                      }}
-                    >
-                      Show
-                    </Button>
-                    {facility.is_active === true ? (
-                      <Button
-                        type='primary'
-                        danger
-                        onClick={() => {
-                          // eslint-disable-next-line no-param-reassign
-                          facility.is_active = false
-                          setIsActive(!isActive)
-                        }}
-                      >
-                        Inactive
-                      </Button>
-                    ) : (
-                      <Button
-                        type='primary'
-                        onClick={() => {
-                          // eslint-disable-next-line no-param-reassign
-                          facility.is_active = true
-                          setIsActive(!isActive)
-                        }}
-                        style={{ backgroundColor: '#00b96b' }}
-                      >
-                        Active
-                      </Button>
-                    )}
-                  </Space>
-                </Space>
-              </Col>
-            </Row>
-          </Card>
-        ))}
-        <Pagination
-          showSizeChanger
-          onShowSizeChange={onShowSizeChange}
-          pageSizeOptions={[5, 10]}
-          defaultCurrent={1}
-          total={2}
-          style={{ marginTop: '16px', textAlign: 'center' }}
+              Create
+            </Button>
+          </Space>
+        </div>
+        <Table
+          columns={columns}
+          dataSource={workplaceData}
+          pagination={{
+            position: ['bottomRight'],
+            pageSizeOptions: [5, 10],
+            onShowSizeChange,
+            showSizeChanger: true,
+            defaultCurrent: page,
+            // total: 20,
+          }}
+          bordered
+          style={{ marginTop: 16 }}
         />
       </Card>
+      <Modal
+        title='Confirm Delete'
+        onOk={handleDelete}
+        okType='danger'
+        onCancel={() => setIsModalOpen(false)}
+        getContainer={false}
+        open={isModalOpen}
+      >
+        <Typography.Text>Are you sure you want to delete this facility?</Typography.Text>
+      </Modal>
     </>
   )
 }

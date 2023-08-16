@@ -3,6 +3,8 @@ import { Button, Modal, message } from 'antd'
 
 const LearnRegisterModal: React.FC = (data: any) => {
   const [open, setOpen] = useState(false)
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  const { title, course_code, price } = data
 
   const [messageApi, contextHolder] = message.useMessage()
   const error = () => {
@@ -25,7 +27,7 @@ const LearnRegisterModal: React.FC = (data: any) => {
         </Button>
       </>
       <Modal
-        title={<span className='text-xl'>Register the Course {data ? data.title : ''}</span>}
+        title={<span className='text-xl'>Register the Course {data ? title : ''}</span>}
         centered
         open={open}
         onOk={() => {
@@ -35,8 +37,7 @@ const LearnRegisterModal: React.FC = (data: any) => {
         onCancel={() => setOpen(false)}
       >
         <p>
-          Are you sure you want to register for this course? <br /> Course code: {data.course_code} <br /> Price:{' '}
-          {data.price} $
+          Are you sure you want to register for this course? <br /> Course code: {course_code} <br /> Price: {price} $
         </p>
       </Modal>
     </>
