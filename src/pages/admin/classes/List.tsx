@@ -1,13 +1,17 @@
 import React, { useState } from 'react'
 import { Breadcrumb, Button, Card, Image, PaginationProps, Space, Table, Typography, theme } from 'antd'
 import { useNavigate } from 'react-router-dom'
-import { MdOutlineCheck, MdOutlineClose, MdAddCircleOutline } from 'react-icons/md'
+import { MdOutlineCheck, MdOutlineClose, MdAddCircleOutline, MdOutlineCircle } from 'react-icons/md'
+import { useQuery } from '@tanstack/react-query'
+import axios from 'axios'
 import AdminLayout from '@/layouts/admin'
 import { ClassItems } from '@/data/classes'
 import AdminSearch from '@/components/adminSearch'
+import { useQueryString } from '@/utils/utils'
+import { getClassesList } from '@/apis/classesList.api'
 
 interface DataType {
-  key: string
+  _id: string
   image_url?: string
   name?: string
   location?: string
@@ -19,7 +23,30 @@ const CustomContent = () => {
   const { token } = useToken()
   const navigate = useNavigate()
 
-  const [isActive, setIsActive] = useState(true)
+  const queryString: { page?: string } = useQueryString()
+  const page = Number(queryString.page) || 1
+
+  // const [isActive, setIsActive] = useState(true)
+  const [selectedClass, setSelectedClass] = useState<DataType | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const { data: classData } = useQuery({
+    queryKey: ['class', page, 10],
+    queryFn: async () => {
+      const res = await getClassesList(page, 10)
+      return res.data.data.list
+    },
+  })
+
+  const handleDelete = async () => {
+    try {
+      await axios.delete(`/api/course/?id=${selectedClass?._id}`)
+      // Perform any necessary actions after successful deletion
+    } catch (error) {
+      console.error(error)
+    }
+    setIsModalOpen(false)
+  }
 
   const onShowSizeChange: PaginationProps['onShowSizeChange'] = (current, pageSize) => {
     console.log(current, pageSize)
@@ -55,26 +82,33 @@ const CustomContent = () => {
     },
     {
       title: 'Status',
-      dataIndex: 'is_active',
+      dataIndex: 'status',
       width: '15%',
-      render: (is_active: boolean) => (
+      render: (status: any) => (
         <Typography.Text
           style={{
-            color: is_active ? token.colorSuccessText : token.colorErrorText,
+            color:
+              status === 'ON'
+                ? token.colorSuccessText
+                : status === 'OFF'
+                  ? token.colorErrorText
+                  : token.colorWarningText,
             fontSize: '18px',
             display: 'flex',
             alignItems: 'center',
           }}
         >
-          {is_active ? (
+          {status === 'ON' ? (
             <>
-              <MdOutlineCheck className='text-[24px]' />
-              Active
+              <MdOutlineCheck className='text-[24px] m-1' /> ACTIVE
+            </>
+          ) : status === 'OFF' ? (
+            <>
+              <MdOutlineClose className='text-[24px] m-1' /> CANCELED
             </>
           ) : (
             <>
-              <MdOutlineClose className='text-[24px]' />
-              Inactive
+              <MdOutlineCircle className='text-[24px] m-1' /> UPCOMING
             </>
           )}
         </Typography.Text>
@@ -88,36 +122,21 @@ const CustomContent = () => {
           <Button
             type='primary'
             onClick={() => {
-              navigate(`/admin/classes/show/${cls.key}`)
+              navigate(`/admin/classes/show/${cls._id}`)
             }}
           >
             Show
           </Button>
-          {cls.is_active ? (
-            <Button
-              type='primary'
-              danger
-              onClick={() => {
-                // eslint-disable-next-line no-param-reassign
-                cls.is_active = false
-                setIsActive(!isActive)
-              }}
-            >
-              Inactive
-            </Button>
-          ) : (
-            <Button
-              type='primary'
-              onClick={() => {
-                // eslint-disable-next-line no-param-reassign
-                cls.is_active = true
-                setIsActive(!isActive)
-              }}
-              style={{ backgroundColor: '#00b96b' }}
-            >
-              Active
-            </Button>
-          )}
+          {/* <Button
+            type='primary'
+            danger
+            onClick={() => {
+              setSelectedClass(class)
+              setIsModalOpen(true)
+            }}
+          >
+            Delete
+          </Button> */}
         </Space>
       ),
     },
@@ -161,7 +180,7 @@ const CustomContent = () => {
         </div>
         <Table
           columns={columns}
-          dataSource={ClassItems}
+          // dataSource={ClassItems}
           pagination={{
             position: ['bottomRight'],
             pageSizeOptions: [5, 10],

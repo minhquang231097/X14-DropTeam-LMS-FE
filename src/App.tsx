@@ -47,6 +47,7 @@ import AdminStudentEdit from './pages/admin/userlists/StudentEdit.tsx'
 import AdminTeacherEdit from './pages/admin/userlists/TeacherEdit.tsx'
 import Profile from './pages/user/profile/index.tsx'
 import ChangePassword from './pages/user/profile/ChangePassword.tsx'
+import Forbidden403 from './pages/forbidden403/Fobidden403.tsx'
 
 const App: React.FC = () => {
   const USER = JSON.parse(localStorage.getItem('user') as string)
@@ -120,11 +121,12 @@ const App: React.FC = () => {
         {/* ADMIN */}
         <Route
           path='/admin'
-          element={USER && USER.role === 'ADMIN' ? <AdminHome /> : <NotFound404 />}
+          element={<AdminHome />}
+        // element={USER && USER.role === 'ADMIN' ? <AdminHome /> : <NotFound404 />}
         />
         <Route
           path='/admin/facilities/all'
-          element={USER && USER.role === 'ADMIN' ? <AdminListFacilities /> : <NotFound404 />}
+          element={USER && USER.role === 'ADMIN' ? <AdminListFacilities /> : <Forbidden403 />}
         />
         <Route
           path='/admin/facilities/show/:id'
