@@ -1,24 +1,10 @@
 import React from 'react'
-import ImgCrop from 'antd-img-crop'
-import {
-  Breadcrumb,
-  Card,
-  Form,
-  Input,
-  Typography,
-  Row,
-  Col,
-  Upload,
-  UploadProps,
-  Button,
-  message,
-  Space,
-  Select,
-} from 'antd'
-import { Link } from 'react-router-dom'
-import { useMutation } from '@tanstack/react-query'
+import { Breadcrumb, Card, Form, Input, Typography, Row, Col, Button, message, Space, Select } from 'antd'
+import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import http from '@/utils/http'
 import AdminLayout from '@/layouts/admin'
-import { createWorkplace } from '@/apis/workplaceCreate.api'
+import { getWorkplace } from '@/apis/workplaceByID.api'
 // import { UploadOutlined } from '@ant-design/icons'
 
 interface IWorkplace {
@@ -31,12 +17,39 @@ interface IWorkplace {
 const CustomContent = () => {
   const [form] = Form.useForm()
 
-  const { mutate, isLoading } = useMutation(createWorkplace, {
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  const { id } = useParams<{ id: string }>()
+  const navigate = useNavigate()
+
+  const updateWorkplace = async (workplace: IWorkplace) => {
+    if (!id) {
+      throw new Error('Missing id parameter')
+    }
+    await http.put('/workplace', workplace, {
+      params: {
+        id,
+      },
+    })
+  }
+
+  const { mutate, isLoading } = useMutation(updateWorkplace, {
     onSuccess: () => {
       // Perform any necessary actions after successful creation
       form.resetFields()
     },
   })
+
+  const { data: workplace } = useQuery({
+    queryKey: ['workplace'],
+    queryFn: async () => {
+      const res = await getWorkplace(id as string)
+      return res.data.data
+    },
+  })
+
+  if (!workplace) {
+    return <Typography.Text>Facility not found</Typography.Text>
+  }
 
   const handleSubmit = async (values: IWorkplace) => {
     try {
@@ -57,7 +70,7 @@ const CustomContent = () => {
             title: <Link to='/admin/facilities/all'>Facilities</Link>,
           },
           {
-            title: 'Create',
+            title: `${workplace.name}`,
           },
         ]}
         style={{ padding: '4px' }}
@@ -72,7 +85,7 @@ const CustomContent = () => {
             level={3}
             className='mt-0 mx-1'
           >
-            Create A New Facility
+            Update The Facility
           </Typography.Title>
           <Row gutter={[16, 16]}>
             <Col span={12}>
@@ -131,13 +144,18 @@ const CustomContent = () => {
               size='middle'
               style={{ display: 'flex', justifyContent: 'flex-end' }}
             >
-              <Button type='default'>Cancel</Button>
+              <Button
+                type='default'
+                onClick={() => navigate(`/admin/facilities/show/${id}`)}
+              >
+                Cancel
+              </Button>
               <Button
                 type='primary'
                 htmlType='submit'
                 loading={isLoading}
               >
-                Create
+                Update
               </Button>
             </Space>
           </Form.Item>
@@ -147,8 +165,8 @@ const CustomContent = () => {
   )
 }
 
-const AdminCreateFacilities: React.FC = () => {
+const AdminEditFacilities: React.FC = () => {
   return <AdminLayout content={<CustomContent />} />
 }
 
-export default AdminCreateFacilities
+export default AdminEditFacilities

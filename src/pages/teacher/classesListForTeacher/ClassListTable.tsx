@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Table, Tag } from 'antd'
@@ -81,71 +82,71 @@ const ClassListTable: React.FC<ClassesList> = (props) => {
         <>
           {schedule
             ? [...schedule].map((ele) => {
-                if (ele === 0) {
-                  return (
-                    <Tag
-                      color='yellow'
-                      key='active'
-                    >
-                      Mon
-                    </Tag>
-                  )
-                } else if (ele === 1) {
-                  return (
-                    <Tag
-                      color='pink'
-                      key='active'
-                    >
-                      Tue
-                    </Tag>
-                  )
-                } else if (ele === 2) {
-                  return (
-                    <Tag
-                      color='green'
-                      key='active'
-                    >
-                      Wed
-                    </Tag>
-                  )
-                } else if (ele === 3) {
-                  return (
-                    <Tag
-                      color='orange'
-                      key='active'
-                    >
-                      Thu
-                    </Tag>
-                  )
-                } else if (ele === 4) {
-                  return (
-                    <Tag
-                      color='blue'
-                      key='active'
-                    >
-                      Fri
-                    </Tag>
-                  )
-                } else if (ele === 5) {
-                  return (
-                    <Tag
-                      color='purple'
-                      key='active'
-                    >
-                      Sat
-                    </Tag>
-                  )
-                } else if (ele === 6) {
-                  return (
-                    <Tag
-                      color='red'
-                      key='active'
-                    >
-                      Sun
-                    </Tag>
-                  )
-                }
-              })
+              if (ele === 0) {
+                return (
+                  <Tag
+                    color='yellow'
+                    key='active'
+                  >
+                    Mon
+                  </Tag>
+                )
+              } else if (ele === 1) {
+                return (
+                  <Tag
+                    color='pink'
+                    key='active'
+                  >
+                    Tue
+                  </Tag>
+                )
+              } else if (ele === 2) {
+                return (
+                  <Tag
+                    color='green'
+                    key='active'
+                  >
+                    Wed
+                  </Tag>
+                )
+              } else if (ele === 3) {
+                return (
+                  <Tag
+                    color='orange'
+                    key='active'
+                  >
+                    Thu
+                  </Tag>
+                )
+              } else if (ele === 4) {
+                return (
+                  <Tag
+                    color='blue'
+                    key='active'
+                  >
+                    Fri
+                  </Tag>
+                )
+              } else if (ele === 5) {
+                return (
+                  <Tag
+                    color='purple'
+                    key='active'
+                  >
+                    Sat
+                  </Tag>
+                )
+              } else if (ele === 6) {
+                return (
+                  <Tag
+                    color='red'
+                    key='active'
+                  >
+                    Sun
+                  </Tag>
+                )
+              }
+            })
             : ''}
         </>
       ),

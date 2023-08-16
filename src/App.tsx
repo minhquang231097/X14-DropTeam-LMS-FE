@@ -34,6 +34,19 @@ import AdminShowCategories from './pages/admin/categories/Show.tsx'
 import AdminCreateCategories from './pages/admin/categories/Create.tsx'
 import AdminProfile from './pages/admin/profile/index.tsx'
 import AdminChangePassword from './pages/admin/profile/ChangePassword.tsx'
+import AdminEditFacilities from './pages/admin/facilities/Edit.tsx'
+import AdminListClasses from './pages/admin/classes/List.tsx'
+import AdminShowClasses from './pages/admin/classes/Show.tsx'
+import AdminCreateClasses from './pages/admin/classes/Create.tsx'
+import AdminEditClasses from './pages/admin/classes/Edit.tsx'
+import AdminTeachers from './pages/admin/userlists/TeacherList.tsx'
+import AdminStudents from './pages/admin/userlists/StudentList.tsx'
+import AdminLessons from './pages/admin/lessons/index.tsx'
+import AdminFeedbacks from './pages/admin/feedbacks/index.tsx'
+import AdminStudentEdit from './pages/admin/userlists/StudentEdit.tsx'
+import AdminTeacherEdit from './pages/admin/userlists/TeacherEdit.tsx'
+import Profile from './pages/user/profile/index.tsx'
+import ChangePassword from './pages/user/profile/ChangePassword.tsx'
 
 const App: React.FC = () => {
   const USER = JSON.parse(localStorage.getItem('user') as string)
@@ -77,6 +90,14 @@ const App: React.FC = () => {
           path='/reset-password'
           element={<ResetPassword />}
         />
+        <Route
+          path='/profile'
+          element={<Profile />}
+        />
+        <Route
+          path='/change-password'
+          element={<ChangePassword />}
+        />
 
         {/* TEACHER */}
         <Route
@@ -102,12 +123,16 @@ const App: React.FC = () => {
           element={USER && USER.role === 'ADMIN' ? <AdminHome /> : <NotFound404 />}
         />
         <Route
-          path='/admin/facilities'
+          path='/admin/facilities/all'
           element={USER && USER.role === 'ADMIN' ? <AdminListFacilities /> : <NotFound404 />}
         />
         <Route
           path='/admin/facilities/show/:id'
           element={USER && USER.role === 'ADMIN' ? <AdminShowFacilities /> : <NotFound404 />}
+        />
+        <Route
+          path='/admin/facilities/edit/:id'
+          element={<AdminEditFacilities />}
         />
         <Route
           path='/admin/facilities/create'
@@ -146,6 +171,54 @@ const App: React.FC = () => {
           element={USER && USER.role === 'ADMIN' ? <AdminEditCourses /> : <NotFound404 />}
         />
         <Route
+          path='/admin/courses/show/:id/lessons'
+          element={<AdminLessons />}
+        />
+        <Route
+          path='/admin/classes/all'
+          element={<AdminListClasses />}
+        />
+        <Route
+          path='/admin/classes/show/:id'
+          element={<AdminShowClasses />}
+        />
+        <Route
+          path='/admin/classes/create'
+          element={<AdminCreateClasses />}
+        />
+        <Route
+          path='/admin/classes/edit/:id'
+          element={<AdminEditClasses />}
+        />
+        <Route
+          path='/admin/users/teachers'
+          element={<AdminTeachers />}
+        />
+        <Route
+          path='/admin/users/students'
+          element={<AdminStudents />}
+        />
+        <Route
+          path='/admin/users/teachers/edit/:id'
+          element={<AdminTeacherEdit />}
+        />
+        <Route
+          path='/admin/users/students/edit/:id'
+          element={<AdminStudentEdit />}
+        />
+        <Route
+          path='/admin/classes/create'
+          element={<AdminCreateClasses />}
+        />
+        <Route
+          path='/admin/classes/edit/:id'
+          element={<AdminEditClasses />}
+        />
+        <Route
+          path='/admin/classes/feedbacks'
+          element={<AdminFeedbacks />}
+        />
+        <Route
           path='/admin/profile'
           element={USER && USER.role === 'ADMIN' ? <AdminProfile /> : <NotFound404 />}
         />
@@ -157,7 +230,6 @@ const App: React.FC = () => {
           path='/admin/login'
           element={USER && USER.role === 'ADMIN' ? <AdminLogin /> : <NotFound404 />}
         />
-
         <Route
           path='*'
           element={<NotFound404 />}

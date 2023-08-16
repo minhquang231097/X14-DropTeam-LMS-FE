@@ -1,11 +1,10 @@
+/* eslint-disable jsx-a11y/alt-text */
 import React from 'react'
 import { AiOutlineClockCircle, AiOutlineUser } from 'react-icons/ai'
 import { BiBarChart } from 'react-icons/bi'
-import { Tabs, Collapse, Button, message } from 'antd'
-import type { TabsProps } from 'antd'
-import type { CollapseProps } from 'antd'
+import { Tabs, Collapse, Button, message, TabsProps, CollapseProps } from 'antd'
 import { useQuery } from '@tanstack/react-query'
-import Sheft from '@/layouts/user/Sheft'
+import Sheft from '@/components/Sheft'
 import Header from '@/layouts/user/Header'
 import Footer from '@/layouts/user/Footer'
 import { getCourse } from '@/apis/course.api'
@@ -139,7 +138,6 @@ const CourseDetail: React.FC = () => {
                   src={data && data.image ? data.image[0] : noImage}
                   className='w-full rounded-lg'
                 />
-
                 {!user ? (
                   <>
                     {contextHolder}
