@@ -22,7 +22,7 @@ http.interceptors.request.use(
     const user = JSON.parse(localStorage.getItem('user') as string)
     if (user) {
       // eslint-disable-next-line no-param-reassign
-      config.headers.Authorization = `Bearer ${user.accessToken}`
+      config.headers.Authorization = `Bearer ${user.access_token}`
     }
     return config
   },
@@ -41,7 +41,7 @@ http.interceptors.response.use(
       originalRequest._retry = true
       const accessToken = await refreshAccessToken()
       const user = JSON.parse(localStorage.getItem('user') as string)
-      user.accessToken = accessToken
+      user.access_token = accessToken
       localStorage.setItem('user', JSON.stringify(user))
       http.defaults.headers.common.Authorization = `Bearer ${accessToken}`
       return http(originalRequest)
