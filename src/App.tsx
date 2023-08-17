@@ -30,9 +30,6 @@ import AdminListCourses from './pages/admin/courses/List.tsx'
 import AdminShowCourses from './pages/admin/courses/Show.tsx'
 import AdminCreateCourses from './pages/admin/courses/Create.tsx'
 import AdminEditCourses from './pages/admin/courses/Edit.tsx'
-import AdminListCategories from './pages/admin/categories/List.tsx'
-import AdminShowCategories from './pages/admin/categories/Show.tsx'
-import AdminCreateCategories from './pages/admin/categories/Create.tsx'
 import AdminProfile from './pages/admin/profile/index.tsx'
 import AdminChangePassword from './pages/admin/profile/ChangePassword.tsx'
 import AdminEditFacilities from './pages/admin/facilities/Edit.tsx'
@@ -48,6 +45,7 @@ import AdminStudentEdit from './pages/admin/userlists/StudentEdit.tsx'
 import AdminTeacherEdit from './pages/admin/userlists/TeacherEdit.tsx'
 import Profile from './pages/user/profile/index.tsx'
 import Forbidden403 from './pages/forbidden403/Fobidden403.tsx'
+import LoginForm from './pages/user/login/LoginForm.tsx'
 
 const App: React.FC = () => {
   const USER = JSON.parse(localStorage.getItem('user') as string)
@@ -77,7 +75,7 @@ const App: React.FC = () => {
         />
         <Route
           path='/profile-detail'
-          element={USER ? <EditProfile /> : <NotFound404 />}
+          element={USER ? <EditProfile /> : <LoginForm />}
         />
         <Route
           path='/change-password'
@@ -129,7 +127,8 @@ const App: React.FC = () => {
         />
         <Route
           path='/admin/facilities/all'
-          element={USER && USER.role === 'ADMIN' ? <AdminListFacilities /> : <Forbidden403 />}
+          element={<AdminListFacilities />}
+        // element={USER && USER.role === 'ADMIN' ? <AdminListFacilities /> : <Forbidden403 />}
         />
         <Route
           path='/admin/facilities/show/:id'

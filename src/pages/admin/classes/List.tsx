@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Breadcrumb, Button, Card, Image, PaginationProps, Space, Table, Typography, theme } from 'antd'
+import { Breadcrumb, Button, Card, Image, Modal, PaginationProps, Space, Table, TableProps, Typography, theme } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { MdOutlineCheck, MdOutlineClose, MdAddCircleOutline, MdOutlineCircle } from 'react-icons/md'
 import { useQuery } from '@tanstack/react-query'
@@ -34,22 +34,24 @@ const CustomContent = () => {
     queryKey: ['class', page, 10],
     queryFn: async () => {
       const res = await getClassesList(page, 10)
-      return res.data.data.list
+      return res.data.data
     },
   })
 
+  const onChange: TableProps<DataType>['onChange'] = (pagination, filters, sorter, extra) => {
+    console.log('params', pagination, filters, sorter, extra)
+    const { current } = pagination
+    navigate(`/admin/classes/all?page=${current}&limit=10`)
+  }
+
   const handleDelete = async () => {
     try {
-      await axios.delete(`/api/course/?id=${selectedClass?._id}`)
+      await axios.delete(`/api/classes/?id=${selectedClass?._id}`)
       // Perform any necessary actions after successful deletion
     } catch (error) {
       console.error(error)
     }
     setIsModalOpen(false)
-  }
-
-  const onShowSizeChange: PaginationProps['onShowSizeChange'] = (current, pageSize) => {
-    console.log(current, pageSize)
   }
 
   const columns = [
@@ -161,7 +163,7 @@ const CustomContent = () => {
             level={3}
             className='mt-0 mx-1'
           >
-            Classes List
+            Class List
           </Typography.Title>
           <Space
             className='flex'
@@ -178,20 +180,36 @@ const CustomContent = () => {
             </Button>
           </Space>
         </div>
-        <Table
-          columns={columns}
-          // dataSource={ClassItems}
-          pagination={{
-            position: ['bottomRight'],
-            pageSizeOptions: [5, 10],
-            onShowSizeChange,
-            showSizeChanger: true,
-            defaultCurrent: 1,
-          }}
-          bordered
-          style={{ marginTop: 16 }}
-        />
+        {classData && (
+          <Table
+            columns={columns}
+            dataSource={classData.all}
+            pagination={{
+              position: ['bottomRight'],
+              current: page,
+              defaultCurrent: 1,
+              defaultPageSize: 10,
+              pageSizeOptions: [10],
+              showSizeChanger: true,
+              showQuickJumper: true,
+              total: classData.total,
+            }}
+            onChange={onChange}
+            bordered
+            style={{ marginTop: 16 }}
+          />
+        )}
       </Card>
+      <Modal
+        title='Confirm Delete'
+        onOk={handleDelete}
+        okType='danger'
+        onCancel={() => setIsModalOpen(false)}
+        getContainer={false}
+        open={isModalOpen}
+      >
+        <Typography.Text>Are you sure you want to delete this class?</Typography.Text>
+      </Modal>
     </>
   )
 }

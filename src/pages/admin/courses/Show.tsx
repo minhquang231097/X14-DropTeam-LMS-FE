@@ -57,7 +57,7 @@ const CustomContent = () => {
                   ) : (
                     <Typography.Text className='mt-2 mx-1'>{course.price} $</Typography.Text>
                   )}{' '}
-                  {course.discount && (
+                  {course.discount > 0 && (
                     <>
                       <Typography.Text
                         strong

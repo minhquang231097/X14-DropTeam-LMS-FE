@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Breadcrumb, Button, Card, Image, PaginationProps, Space, Table, Typography, Modal, theme } from 'antd'
+import { Breadcrumb, Button, Card, Image, Space, Table, Typography, Modal, theme, TableProps } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { MdAddCircleOutline, MdOutlineCheck, MdOutlineCircle, MdOutlineClose } from 'react-icons/md'
 import { useQuery } from '@tanstack/react-query'
@@ -34,7 +34,7 @@ const CustomContent = () => {
     queryKey: ['workplace', page, 10],
     queryFn: async () => {
       const res = await getWorkplacesList(page, 10)
-      return res.data.data
+      return res.data?.data
     },
   })
 
@@ -48,13 +48,11 @@ const CustomContent = () => {
     setIsModalOpen(false)
   }
 
-  const onShowSizeChange: PaginationProps['onShowSizeChange'] = (current, pageSize) => {
-    console.log(current, pageSize)
+  const onChange: TableProps<DataType>['onChange'] = (pagination, filters, sorter, extra) => {
+    console.log('params', pagination, filters, sorter, extra)
+    const { current } = pagination
+    navigate(`/admin/facilities/all?page=${current}&limit=10`)
   }
-
-  // const onChange: TableProps<DataType>['onChange'] = (pagination, filters, sorter, extra) => {
-  //   console.log('params', pagination, filters, sorter, extra)
-  // }
 
   const columns = [
     {
@@ -182,20 +180,25 @@ const CustomContent = () => {
             </Button>
           </Space>
         </div>
-        <Table
-          columns={columns}
-          dataSource={workplaceData}
-          pagination={{
-            position: ['bottomRight'],
-            pageSizeOptions: [5, 10],
-            onShowSizeChange,
-            showSizeChanger: true,
-            defaultCurrent: page,
-            // total: 20,
-          }}
-          bordered
-          style={{ marginTop: 16 }}
-        />
+        {workplaceData && (
+          <Table
+            columns={columns}
+            dataSource={workplaceData.all}
+            pagination={{
+              position: ['bottomRight'],
+              current: page,
+              defaultCurrent: 1,
+              defaultPageSize: 10,
+              pageSizeOptions: [10],
+              showSizeChanger: true,
+              showQuickJumper: true,
+              total: workplaceData.total,
+            }}
+            onChange={onChange}
+            bordered
+            style={{ marginTop: 16 }}
+          />
+        )}
       </Card>
       <Modal
         title='Confirm Delete'

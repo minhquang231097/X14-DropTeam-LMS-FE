@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Breadcrumb, Button, Card, Image, Modal, PaginationProps, Space, Table, Typography, theme } from 'antd'
+import { Breadcrumb, Button, Card, Image, Modal, PaginationProps, Space, Table, TableProps, Typography, theme } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { MdOutlineCheck, MdOutlineClose, MdAddCircleOutline } from 'react-icons/md'
 import { useQuery } from '@tanstack/react-query'
@@ -34,9 +34,15 @@ const CustomContent = () => {
     queryKey: ['course', page, 10],
     queryFn: async () => {
       const res = await getCoursesList(page, 10)
-      return res.data.data.list
+      return res.data.data
     },
   })
+
+  const onChange: TableProps<DataType>['onChange'] = (pagination, filters, sorter, extra) => {
+    console.log('params', pagination, filters, sorter, extra)
+    const { current } = pagination
+    navigate(`/admin/courses/all?page=${current}&limit=10`)
+  }
 
   const handleDelete = async () => {
     try {
@@ -46,12 +52,6 @@ const CustomContent = () => {
       console.error(error)
     }
     setIsModalOpen(false)
-  }
-
-  // const [isActive, setIsActive] = useState(true)
-
-  const onShowSizeChange: PaginationProps['onShowSizeChange'] = (current, pageSize) => {
-    console.log(current, pageSize)
   }
 
   const columns = [
@@ -164,19 +164,25 @@ const CustomContent = () => {
             </Button>
           </Space>
         </div>
-        <Table
-          columns={columns}
-          dataSource={courseData}
-          pagination={{
-            position: ['bottomRight'],
-            pageSizeOptions: [5, 10],
-            onShowSizeChange,
-            showSizeChanger: true,
-            defaultCurrent: page,
-          }}
-          bordered
-          style={{ marginTop: 16 }}
-        />
+        {courseData && (
+          <Table
+            columns={columns}
+            dataSource={courseData.allCourses}
+            pagination={{
+              position: ['bottomRight'],
+              current: page,
+              defaultCurrent: 1,
+              defaultPageSize: 10,
+              pageSizeOptions: [10],
+              showSizeChanger: true,
+              showQuickJumper: true,
+              total: courseData.total,
+            }}
+            onChange={onChange}
+            bordered
+            style={{ marginTop: 16 }}
+          />
+        )}
         <Modal
           title='Confirm Delete'
           onOk={handleDelete}

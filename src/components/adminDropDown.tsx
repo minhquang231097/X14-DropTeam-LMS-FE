@@ -37,7 +37,7 @@ const items: MenuProps['items'] = [
     key: '3',
     label: (
       <Link
-        to='/admin/login'
+        to='/login'
         className='flex items-center text-gray-600 font-bold'
       >
         <MdOutlineLogout className='text-2xl mr-2 p-2 pl-0' />
