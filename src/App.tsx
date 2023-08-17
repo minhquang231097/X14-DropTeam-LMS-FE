@@ -29,9 +29,6 @@ import AdminListCourses from './pages/admin/courses/List.tsx'
 import AdminShowCourses from './pages/admin/courses/Show.tsx'
 import AdminCreateCourses from './pages/admin/courses/Create.tsx'
 import AdminEditCourses from './pages/admin/courses/Edit.tsx'
-import AdminListCategories from './pages/admin/categories/List.tsx'
-import AdminShowCategories from './pages/admin/categories/Show.tsx'
-import AdminCreateCategories from './pages/admin/categories/Create.tsx'
 import AdminProfile from './pages/admin/profile/index.tsx'
 import AdminChangePassword from './pages/admin/profile/ChangePassword.tsx'
 import AdminEditFacilities from './pages/admin/facilities/Edit.tsx'
@@ -48,6 +45,7 @@ import AdminTeacherEdit from './pages/admin/userlists/TeacherEdit.tsx'
 import Profile from './pages/user/profile/index.tsx'
 import ChangePassword from './pages/user/profile/ChangePassword.tsx'
 import Forbidden403 from './pages/forbidden403/Fobidden403.tsx'
+import LoginForm from './pages/user/login/LoginForm.tsx'
 
 const App: React.FC = () => {
   const USER = JSON.parse(localStorage.getItem('user') as string)
@@ -77,7 +75,7 @@ const App: React.FC = () => {
         />
         <Route
           path='/profile-detail'
-          element={USER ? <EditProfile /> : <NotFound404 />}
+          element={USER ? <EditProfile /> : <LoginForm />}
         />
         <Route
           path='/forgot-password'
@@ -103,34 +101,36 @@ const App: React.FC = () => {
         {/* TEACHER */}
         <Route
           path='/teacher/classes-list'
-          element={USER && USER.role === 'MENTOR' ? <ClassesListForTeacher /> : <NotFound404 />}
+          element={USER && USER.role === 'MENTOR' ? <ClassesListForTeacher /> : <Forbidden403 />}
         />
         <Route
           path='/teacher/class-detail'
-          element={USER && USER.role === 'MENTOR' ? <SessionListForTeacher /> : <NotFound404 />}
+          element={USER && USER.role === 'MENTOR' ? <SessionListForTeacher /> : <Forbidden403 />}
         />
         <Route
           path='/teacher/lessons-list'
-          element={USER && USER.role === 'MENTOR' ? <LessonsListForTeacher /> : <NotFound404 />}
+          element={USER && USER.role === 'MENTOR' ? <LessonsListForTeacher /> : <Forbidden403 />}
         />
         <Route
           path='/teacher/class-detail/session'
-          element={USER && USER.role === 'MENTOR' ? <DetailPerSession /> : <NotFound404 />}
+          element={USER && USER.role === 'MENTOR' ? <DetailPerSession /> : <Forbidden403 />}
         />
 
         {/* ADMIN */}
         <Route
           path='/admin'
           element={<AdminHome />}
-        // element={USER && USER.role === 'ADMIN' ? <AdminHome /> : <NotFound404 />}
+        // element={USER && USER.role === 'ADMIN' ? <AdminHome /> : <Forbidden403 />}
         />
         <Route
           path='/admin/facilities/all'
-          element={USER && USER.role === 'ADMIN' ? <AdminListFacilities /> : <Forbidden403 />}
+          element={<AdminListFacilities />}
+        // element={USER && USER.role === 'ADMIN' ? <AdminListFacilities /> : <Forbidden403 />}
         />
         <Route
           path='/admin/facilities/show/:id'
-          element={USER && USER.role === 'ADMIN' ? <AdminShowFacilities /> : <NotFound404 />}
+          element={<AdminShowFacilities />}
+        // element={USER && USER.role === 'ADMIN' ? <AdminShowFacilities /> : <Forbidden403 />}
         />
         <Route
           path='/admin/facilities/edit/:id'
@@ -138,39 +138,28 @@ const App: React.FC = () => {
         />
         <Route
           path='/admin/facilities/create'
-          element={USER && USER.role === 'ADMIN' ? <AdminCreateFacilities /> : <NotFound404 />}
-        />
-        <Route
-          path='/admin/courses/categories'
-          element={USER && USER.role === 'ADMIN' ? <AdminListCategories /> : <NotFound404 />}
-        />
-        <Route
-          path='/admin/courses/categories/show/:id'
-          element={USER && USER.role === 'ADMIN' ? <AdminShowCategories /> : <NotFound404 />}
-        />
-        <Route
-          path='/admin/courses/categories'
-          element={USER && USER.role === 'ADMIN' ? <AdminListCategories /> : <NotFound404 />}
-        />
-        <Route
-          path='/admin/courses/categories/create'
-          element={USER && USER.role === 'ADMIN' ? <AdminCreateCategories /> : <NotFound404 />}
+          element={<AdminCreateFacilities />}
+        // element={USER && USER.role === 'ADMIN' ? <AdminCreateFacilities /> : <Forbidden403 />}
         />
         <Route
           path='/admin/courses/all'
-          element={USER && USER.role === 'ADMIN' ? <AdminListCourses /> : <NotFound404 />}
+          element={<AdminListCourses />}
+        // element={USER && USER.role === 'ADMIN' ? <AdminListCourses /> : <Forbidden403 />}
         />
         <Route
           path='/admin/courses/show/:id'
-          element={USER && USER.role === 'ADMIN' ? <AdminShowCourses /> : <NotFound404 />}
+          element={<AdminShowCourses />}
+        // element={USER && USER.role === 'ADMIN' ? <AdminShowCourses /> : <Forbidden403 />}
         />
         <Route
           path='/admin/courses/create'
-          element={USER && USER.role === 'ADMIN' ? <AdminCreateCourses /> : <NotFound404 />}
+          element={<AdminCreateCourses />}
+        // element={USER && USER.role === 'ADMIN' ? <AdminCreateCourses /> : <Forbidden403 />}
         />
         <Route
           path='/admin/courses/edit/:id'
-          element={USER && USER.role === 'ADMIN' ? <AdminEditCourses /> : <NotFound404 />}
+          element={<AdminEditCourses />}
+        // element={USER && USER.role === 'ADMIN' ? <AdminEditCourses /> : <Forbidden403 />}
         />
         <Route
           path='/admin/courses/show/:id/lessons'

@@ -22,7 +22,7 @@ const CustomContent = () => {
             title: 'Home',
           },
           {
-            title: <Link to='/admin/classes/all'>Classes</Link>,
+            title: <Link to='/admin/classes/all?page=1&limit=10'>Classes</Link>,
           },
           {
             title: `${foundClass.name}`,
