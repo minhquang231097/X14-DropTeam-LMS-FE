@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
-import { Divider, Button, Form, Input, Select, DatePicker } from 'antd'
+import { Divider, Button, Form, Input, Select, DatePicker, Avatar } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import Header from '@/layouts/user/Header'
 import Footer from '@/layouts/user/Footer'
-import avatar from '@/assets/images/avatar/user.png'
 import UploadImage from '@/components/UploadImage'
 import handleUpdateUser from '@/apis/updateUser.api'
 import { useQueryString } from '@/utils/utils'
@@ -46,20 +45,25 @@ const EditProfile: React.FC = () => {
           className='dark:bg-gray-600'
         />
 
-        <div className='px-12 pt-8 '>
-          <div className='flex items-center mx-12 my-4'>
-            <img
-              src={avatar}
-              alt=''
-              className='w-[14%] rounded-full mr-16 border-solid border-1px border-gray-400 p-2'
-            />
-            <div>
-              <p className='text-[#754FFE] mb-0 text-3xl font-bold'>
-                {userData ? userData.username : 'User Name Here ...'}
-              </p>
-              <UploadImage />
-            </div>
+        <div className='px-12 pt-8'>
+          <div className='flex items-center pb-4'>
+            <Avatar
+              size={80}
+              style={{
+                backgroundColor: '#f56a00',
+                color: '#fff',
+                fontSize: '36px',
+                fontWeight: 'bold',
+                marginRight: '32px',
+              }}
+            >
+              {userData && userData.username.charAt(0).toUpperCase()}
+            </Avatar>
+            <UploadImage />
           </div>
+
+          <Divider className='dark:bg-gray-600 m-0 mb-8' />
+
           <Form
             name='register'
             className='mt-4'
@@ -97,6 +101,7 @@ const EditProfile: React.FC = () => {
                   size='large'
                   className='w-full'
                   format='DD/MM/YYYY'
+                  placeholder={userData ? userData.dob : 'Select your date of birth?'}
                   onChange={(_date: any, dateString: string) => {
                     setEditProfileValue({ ...editProfileValue, dob: dateString })
                   }}
@@ -112,7 +117,7 @@ const EditProfile: React.FC = () => {
               >
                 <Select
                   size='large'
-                  placeholder='Select your gender'
+                  placeholder={userData ? userData.gender : 'Select your gender?'}
                   onChange={(value) => {
                     setEditProfileValue({ ...editProfileValue, gender: value })
                   }}
@@ -143,7 +148,7 @@ const EditProfile: React.FC = () => {
                 <Input
                   size='large'
                   style={{ width: '100%' }}
-                  placeholder='Phone number ...'
+                  placeholder={userData ? userData.phone_number : 'Phone number ...'}
                   maxLength={10}
                   type='number'
                   onBlur={(e) => {
@@ -162,7 +167,7 @@ const EditProfile: React.FC = () => {
                 <Input
                   size='large'
                   style={{ width: '100%' }}
-                  placeholder='Your address ...'
+                  placeholder={userData ? userData.address : 'Your address ...'}
                   maxLength={200}
                   onChange={(e) => {
                     setEditProfileValue({ ...editProfileValue, address: e.target.value })
@@ -188,7 +193,7 @@ const EditProfile: React.FC = () => {
               >
                 <Input
                   size='large'
-                  placeholder='Email address here ...'
+                  placeholder={userData ? userData.email : 'Email address here ...'}
                   maxLength={200}
                   onChange={(e) => {
                     setEditProfileValue({ ...editProfileValue, email: e.target.value })

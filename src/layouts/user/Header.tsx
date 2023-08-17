@@ -34,25 +34,25 @@ const Header: React.FC = () => {
         <div className='flex lg:flex-1 justify-between'>
           <Link
             to='/'
-            className='leading-6 font-bold no-underline text-gray-600 dark:text-gray-100'
+            className='text-lg font-bold no-underline text-gray-600 dark:text-gray-100'
           >
             Home
           </Link>
           <a
             target='_blank'
-            className='leading-6 font-bold no-underline text-gray-600 dark:text-gray-100'
+            className='text-lg font-bold no-underline text-gray-600 dark:text-gray-100'
           >
             About
           </a>
           <a
             target='_blank'
-            className='leading-6 font-bold no-underline text-gray-600 dark:text-gray-100'
+            className='text-lg font-bold no-underline text-gray-600 dark:text-gray-100'
           >
             Pages
           </a>
           <Link
             to='/courses-list'
-            className='leading-6 font-bold no-underline text-gray-600 dark:text-gray-100'
+            className='text-lg font-bold no-underline text-gray-600 dark:text-gray-100'
           >
             <DropdownList />
           </Link>

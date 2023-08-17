@@ -4,7 +4,7 @@ import React from 'react'
 import { Avatar, Dropdown } from 'antd'
 import type { MenuProps } from 'antd'
 import { IoMdLogOut } from 'react-icons/io'
-import { RiUserSettingsLine } from 'react-icons/ri'
+import { RiUserSettingsLine, RiShieldKeyholeLine } from 'react-icons/ri'
 import { useNavigate } from 'react-router-dom'
 import handleLogout from '@/apis/logout.api'
 
@@ -34,6 +34,18 @@ const UserDropdownLogged: React.FC<{ username: any }> = (prop: any) => {
     },
     {
       key: '3',
+      label: (
+        <div
+          className='flex items-center text-gray-600 font-bold'
+          onClick={() => navigate('/change-password')}
+        >
+          <RiShieldKeyholeLine className='text-2xl mr-2 p-2 pl-0' />
+          Change Password
+        </div>
+      ),
+    },
+    {
+      key: '4',
       label: (
         <div
           className='flex items-center text-gray-600 font-bold'

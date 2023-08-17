@@ -2,7 +2,7 @@ import React from 'react'
 import { Avatar, Dropdown } from 'antd'
 import type { MenuProps } from 'antd'
 import { IoMdLogOut } from 'react-icons/io'
-import { RiUserSettingsLine, RiAdminLine } from 'react-icons/ri'
+import { RiUserSettingsLine, RiAdminLine, RiShieldKeyholeLine } from 'react-icons/ri'
 import { useNavigate } from 'react-router-dom'
 import handleLogout from '@/apis/logout.api'
 
@@ -13,7 +13,7 @@ const UserDropdownAdmin: React.FC<{ username: any }> = (props: any) => {
   const items: MenuProps['items'] = [
     {
       key: '1',
-      label: <div className='flex items-center justify-center text-gray-600 font-bold'>{props.username}</div>,
+      label: <div className='flex text-lg text-[#F56A00] items-center justify-center font-bold'>{props.username}</div>,
       disabled: true,
     },
     {
@@ -49,6 +49,18 @@ const UserDropdownAdmin: React.FC<{ username: any }> = (props: any) => {
     },
     {
       key: '4',
+      label: (
+        <div
+          className='flex items-center text-gray-600 font-bold'
+          onClick={() => navigate('/change-password')}
+        >
+          <RiShieldKeyholeLine className='text-2xl mr-2 p-2 pl-0' />
+          Change Password
+        </div>
+      ),
+    },
+    {
+      key: '5',
       label: (
         <div
           className='flex items-center text-gray-600 font-bold'

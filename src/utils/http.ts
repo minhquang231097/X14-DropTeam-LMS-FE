@@ -4,7 +4,7 @@ const getUser = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('
 const token = getUser.access_token
 
 const http = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8080/api/v1',
+  baseURL: 'http://localhost:8080/api/v1',
   timeout: 30000,
   headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
 })

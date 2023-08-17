@@ -14,15 +14,16 @@ const UploadImage: React.FC = () => {
     <Form layout='vertical'>
       <Form.Item
         name='upload'
-        label={<p className='my-2 font-bold dark:text-gray-300'>Avatar</p>}
+        label={<p className='font-bold dark:text-gray-300'>Your avatar</p>}
         valuePropName='fileList'
         getValueFromEvent={normFile}
       >
         <Upload
           name='image'
           listType='picture'
+          className='ml-8 w-[120px]'
         >
-          <Button icon={<UploadOutlined />}>Click me!</Button>
+          <Button icon={<UploadOutlined />}>Click to upload!</Button>
         </Upload>
       </Form.Item>
     </Form>
