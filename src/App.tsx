@@ -91,35 +91,29 @@ const App: React.FC = () => {
         />
         <Route
           path='/profile'
-          element={<Profile />}
+          element={USER ? <Profile /> : <LoginForm />}
         />
         <Route
           path='/change-password'
-          element={<ChangePassword />}
+          element={USER ? <ChangePassword /> : <LoginForm />}
         />
 
         {/* TEACHER */}
         <Route
           path='/teacher/classes-list'
-          element={
-            USER && (USER.role === 'MENTOR' || USER.role === 'ADMIN') ? <ClassesListForTeacher /> : <Forbidden403 />
-          }
+          element={USER && (USER.role === 'MENTOR' || 'ADMIN') ? <ClassesListForTeacher /> : <Forbidden403 />}
         />
         <Route
           path='/teacher/class-detail'
-          element={
-            USER && (USER.role === 'MENTOR' || USER.role === 'ADMIN') ? <SessionListForTeacher /> : <Forbidden403 />
-          }
+          element={USER && (USER.role === 'MENTOR' || 'ADMIN') ? <SessionListForTeacher /> : <Forbidden403 />}
         />
         <Route
           path='/teacher/lessons-list'
-          element={
-            USER && (USER.role === 'MENTOR' || USER.role === 'ADMIN') ? <LessonsListForTeacher /> : <Forbidden403 />
-          }
+          element={USER && (USER.role === 'MENTOR' || 'ADMIN') ? <LessonsListForTeacher /> : <Forbidden403 />}
         />
         <Route
           path='/teacher/class-detail/session'
-          element={USER && (USER.role === 'MENTOR' || USER.role === 'ADMIN') ? <DetailPerSession /> : <Forbidden403 />}
+          element={USER && (USER.role === 'MENTOR' || 'ADMIN') ? <DetailPerSession /> : <Forbidden403 />}
         />
 
         {/* ADMIN */}

@@ -9,8 +9,8 @@ const http = axios.create({
 // Function to refresh the access token using the refresh token
 async function refreshAccessToken(): Promise<string> {
   const user = JSON.parse(localStorage.getItem('user') as string)
-  console.log(user.refresh_token)
-  const response = await axios.post(`${http.defaults.baseURL}/auth/refresh`, { refreshToken: user.refresh_token })
+  console.log(user.refreshToken)
+  const response = await axios.post(`${http.defaults.baseURL}/auth/refresh`, { refreshToken: user.refreshToken })
   console.log(response)
   const { accessToken } = response.data
   console.log(response.data)
@@ -22,7 +22,7 @@ http.interceptors.request.use(
     const user = JSON.parse(localStorage.getItem('user') as string)
     if (user) {
       // eslint-disable-next-line no-param-reassign
-      config.headers.Authorization = `Bearer ${user.access_token}`
+      config.headers.Authorization = `Bearer ${user.accessToken}`
     }
     return config
   },
@@ -37,7 +37,7 @@ http.interceptors.response.use(
   },
   async (error) => {
     const originalRequest = error.config
-    if ((error.response.status === 401 || error.response.status === 403) && !originalRequest._retry) {
+    if ((error.response.status === 401 || 403) && !originalRequest._retry) {
       originalRequest._retry = true
       const accessToken = await refreshAccessToken()
       const user = JSON.parse(localStorage.getItem('user') as string)

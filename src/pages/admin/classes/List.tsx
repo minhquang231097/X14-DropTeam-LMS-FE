@@ -186,6 +186,7 @@ const CustomContent = () => {
         </div>
         {classData && (
           <Table
+            rowKey={(cls: DataType) => cls._id}
             columns={columns}
             dataSource={classData.list}
             pagination={{

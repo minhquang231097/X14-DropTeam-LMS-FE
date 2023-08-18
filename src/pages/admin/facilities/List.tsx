@@ -182,8 +182,9 @@ const CustomContent = () => {
         </div>
         {workplaceData && (
           <Table
+            rowKey={(facility: DataType) => facility._id}
             columns={columns}
-            dataSource={workplaceData.all}
+            dataSource={workplaceData.list}
             pagination={{
               position: ['bottomRight'],
               current: page,

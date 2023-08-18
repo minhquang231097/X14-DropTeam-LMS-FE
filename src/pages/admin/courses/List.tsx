@@ -165,8 +165,9 @@ const CustomContent = () => {
         </div>
         {courseData && (
           <Table
+            rowKey={(course: DataType) => course._id}
             columns={columns}
-            dataSource={courseData.allCourses}
+            dataSource={courseData.list}
             pagination={{
               position: ['bottomRight'],
               current: page,
