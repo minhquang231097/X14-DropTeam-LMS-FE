@@ -9,11 +9,11 @@ const http = axios.create({
 // Function to refresh the access token using the refresh token
 async function refreshAccessToken(): Promise<string> {
   const user = JSON.parse(localStorage.getItem('user') as string)
-  // console.log(user.refresh_token)
+  console.log(user.refresh_token)
   const response = await axios.post(`${http.defaults.baseURL}/auth/refresh`, { refreshToken: user.refresh_token })
-  // console.log(response)
+  console.log(response)
   const { accessToken } = response.data
-  // console.log(response.data)
+  console.log(response.data)
   return accessToken
 }
 

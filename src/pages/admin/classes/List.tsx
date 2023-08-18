@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
-import { Breadcrumb, Button, Card, Image, Modal, PaginationProps, Space, Table, TableProps, Typography, theme } from 'antd'
+import { Breadcrumb, Button, Card, Image, Modal, Space, Table, TableProps, Typography, theme } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { MdOutlineCheck, MdOutlineClose, MdAddCircleOutline, MdOutlineCircle } from 'react-icons/md'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import AdminLayout from '@/layouts/admin'
-import { ClassItems } from '@/data/classes'
 import AdminSearch from '@/components/adminSearch'
 import { useQueryString } from '@/utils/utils'
 import { getClassesList } from '@/apis/classesList.api'
@@ -16,6 +15,11 @@ interface DataType {
   name?: string
   location?: string
   is_active?: boolean
+  mentor: IMentor
+}
+
+interface IMentor {
+  fullname: string
 }
 
 const CustomContent = () => {
@@ -55,30 +59,30 @@ const CustomContent = () => {
   }
 
   const columns = [
-    {
-      title: 'Image',
-      dataIndex: 'image_url',
-      width: '30%',
-      render: (image_url: string) => (
-        <Image
-          src={image_url}
-          alt='Class Image'
-        />
-      ),
-    },
+    // {
+    //   title: 'Image',
+    //   dataIndex: 'image_url',
+    //   width: '30%',
+    //   render: (image_url: string) => (
+    //     <Image
+    //       src={image_url}
+    //       alt='Class Image'
+    //     />
+    //   ),
+    // },
     {
       title: 'Class',
-      dataIndex: 'name',
+      dataIndex: 'class_code',
       width: '40%',
-      render: (name: string, cls: DataType) => (
+      render: (class_code: string, cls: DataType) => (
         <Space direction='vertical'>
           <Typography.Text
             strong
             style={{ fontSize: '20px' }}
           >
-            {name}
+            {class_code}
           </Typography.Text>
-          <Typography.Text>{cls.location}</Typography.Text>
+          <Typography.Text>Mentor: {cls.mentor.fullname}</Typography.Text>
         </Space>
       ),
     },
@@ -183,7 +187,7 @@ const CustomContent = () => {
         {classData && (
           <Table
             columns={columns}
-            dataSource={classData.all}
+            dataSource={classData.list}
             pagination={{
               position: ['bottomRight'],
               current: page,
