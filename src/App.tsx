@@ -74,7 +74,7 @@ const App: React.FC = () => {
           element={<Login />}
         />
         <Route
-          path='/profile-detail'
+          path='/edit-profile'
           element={USER ? <EditProfile /> : <LoginForm />}
         />
         <Route
@@ -93,31 +93,23 @@ const App: React.FC = () => {
           path='/reset-password'
           element={<ResetPassword />}
         />
-        <Route
-          path='/profile'
-          element={<Profile />}
-        />
-        <Route
-          path='/change-password'
-          element={<ChangePassword />}
-        />
 
         {/* TEACHER */}
         <Route
           path='/teacher/classes-list'
-          element={USER && USER.role === 'MENTOR' ? <ClassesListForTeacher /> : <Forbidden403 />}
+          element={USER && (USER.role === 'MENTOR' || 'ADMIN') ? <ClassesListForTeacher /> : <Forbidden403 />}
         />
         <Route
           path='/teacher/class-detail'
-          element={USER && USER.role === 'MENTOR' ? <SessionListForTeacher /> : <Forbidden403 />}
+          element={USER && (USER.role === 'MENTOR' || 'ADMIN') ? <SessionListForTeacher /> : <Forbidden403 />}
         />
         <Route
           path='/teacher/lessons-list'
-          element={USER && USER.role === 'MENTOR' ? <LessonsListForTeacher /> : <Forbidden403 />}
+          element={USER && (USER.role === 'MENTOR' || 'ADMIN') ? <LessonsListForTeacher /> : <Forbidden403 />}
         />
         <Route
           path='/teacher/class-detail/session'
-          element={USER && USER.role === 'MENTOR' ? <DetailPerSession /> : <Forbidden403 />}
+          element={USER && (USER.role === 'MENTOR' || 'ADMIN') ? <DetailPerSession /> : <Forbidden403 />}
         />
 
         {/* ADMIN */}
@@ -127,8 +119,7 @@ const App: React.FC = () => {
         />
         <Route
           path='/admin/facilities/all'
-          element={<AdminListFacilities />}
-        // element={USER && USER.role === 'ADMIN' ? <AdminListFacilities /> : <Forbidden403 />}
+          element={USER && USER.role === 'ADMIN' ? <AdminListFacilities /> : <Forbidden403 />}
         />
         <Route
           path='/admin/facilities/show/:id'
@@ -136,7 +127,7 @@ const App: React.FC = () => {
         />
         <Route
           path='/admin/facilities/edit/:id'
-          element={<AdminEditFacilities />}
+          element={USER && USER.role === 'ADMIN' ? <AdminEditFacilities /> : <Forbidden403 />}
         />
         <Route
           path='/admin/facilities/create'
@@ -144,19 +135,19 @@ const App: React.FC = () => {
         />
         <Route
           path='/admin/courses/categories'
-          element={USER && USER.role === 'ADMIN' ? <AdminListCategories /> : <Forbidden403 />}
+          element={USER && USER.role === 'ADMIN' ? <AdminListCourses /> : <Forbidden403 />}
         />
         <Route
           path='/admin/courses/categories/show/:id'
-          element={USER && USER.role === 'ADMIN' ? <AdminShowCategories /> : <Forbidden403 />}
+          element={USER && USER.role === 'ADMIN' ? <AdminShowCourses /> : <Forbidden403 />}
         />
         <Route
           path='/admin/courses/categories'
-          element={USER && USER.role === 'ADMIN' ? <AdminListCategories /> : <Forbidden403 />}
+          element={USER && USER.role === 'ADMIN' ? <AdminListCourses /> : <Forbidden403 />}
         />
         <Route
           path='/admin/courses/categories/create'
-          element={USER && USER.role === 'ADMIN' ? <AdminCreateCategories /> : <Forbidden403 />}
+          element={USER && USER.role === 'ADMIN' ? <AdminCreateCourses /> : <Forbidden403 />}
         />
         <Route
           path='/admin/courses/all'
@@ -176,51 +167,51 @@ const App: React.FC = () => {
         />
         <Route
           path='/admin/courses/show/:id/lessons'
-          element={<AdminLessons />}
+          element={USER && USER.role === 'ADMIN' ? <AdminLessons /> : <Forbidden403 />}
         />
         <Route
           path='/admin/classes/all'
-          element={<AdminListClasses />}
+          element={USER && USER.role === 'ADMIN' ? <AdminListClasses /> : <Forbidden403 />}
         />
         <Route
           path='/admin/classes/show/:id'
-          element={<AdminShowClasses />}
+          element={USER && USER.role === 'ADMIN' ? <AdminShowClasses /> : <Forbidden403 />}
         />
         <Route
           path='/admin/classes/create'
-          element={<AdminCreateClasses />}
+          element={USER && USER.role === 'ADMIN' ? <AdminCreateClasses /> : <Forbidden403 />}
         />
         <Route
           path='/admin/classes/edit/:id'
-          element={<AdminEditClasses />}
+          element={USER && USER.role === 'ADMIN' ? <AdminEditClasses /> : <Forbidden403 />}
         />
         <Route
           path='/admin/users/teachers'
-          element={<AdminTeachers />}
+          element={USER && USER.role === 'ADMIN' ? <AdminTeachers /> : <Forbidden403 />}
         />
         <Route
           path='/admin/users/students'
-          element={<AdminStudents />}
+          element={USER && USER.role === 'ADMIN' ? <AdminStudents /> : <Forbidden403 />}
         />
         <Route
           path='/admin/users/teachers/edit/:id'
-          element={<AdminTeacherEdit />}
+          element={USER && USER.role === 'ADMIN' ? <AdminTeacherEdit /> : <Forbidden403 />}
         />
         <Route
           path='/admin/users/students/edit/:id'
-          element={<AdminStudentEdit />}
+          element={USER && USER.role === 'ADMIN' ? <AdminStudentEdit /> : <Forbidden403 />}
         />
         <Route
           path='/admin/classes/create'
-          element={<AdminCreateClasses />}
+          element={USER && USER.role === 'ADMIN' ? <AdminCreateClasses /> : <Forbidden403 />}
         />
         <Route
           path='/admin/classes/edit/:id'
-          element={<AdminEditClasses />}
+          element={USER && USER.role === 'ADMIN' ? <AdminEditClasses /> : <Forbidden403 />}
         />
         <Route
           path='/admin/classes/feedbacks'
-          element={<AdminFeedbacks />}
+          element={USER && USER.role === 'ADMIN' ? <AdminFeedbacks /> : <Forbidden403 />}
         />
         <Route
           path='/admin/profile'
