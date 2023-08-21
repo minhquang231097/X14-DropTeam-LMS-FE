@@ -7,7 +7,7 @@ import SidebarTeacher from '@/layouts/user/SidebarTeacher'
 import ClassListTable from './ClassListTable'
 import { useQueryString } from '@/utils/utils'
 import { getClassesList } from '@/apis/classesList.api'
-import { getClassByClassCode } from '@/apis/searchClassByClassCode.api'
+// import { getClassByClassCode } from '@/apis/searchClassByClassCode.api'
 
 const ClassesListForTeacher: React.FC = () => {
   const [searchText, setSearchText] = useState('')

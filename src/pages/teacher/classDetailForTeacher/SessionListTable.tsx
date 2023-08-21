@@ -6,13 +6,14 @@ import type { ColumnsType } from 'antd/es/table'
 interface DataType {
   _id: string
   key: number
-  session_name: string
+  session_code: string
   status: string
   desc: string
+  class: { class_code: string }
 }
 
 type SessionsList = {
-  data: { statusCode: number; message: any; data: [] }
+  data: { list: []; page: number; total: number; total_page: number }
   searchText: string
 }
 
@@ -26,10 +27,10 @@ const SessionListTable: React.FC<SessionsList> = (props) => {
     },
     {
       title: 'Session',
-      dataIndex: 'session_name',
+      dataIndex: 'session_code',
       width: '160px',
       filteredValue: [props.searchText],
-      onFilter: (value, { session_name }) => String(session_name).toLowerCase().includes(String(value).toLowerCase()),
+      onFilter: (value, { session_code }) => String(session_code).toLowerCase().includes(String(value).toLowerCase()),
     },
     {
       title: 'Description',
@@ -62,7 +63,7 @@ const SessionListTable: React.FC<SessionsList> = (props) => {
                 color='geekblue'
                 key='active'
               >
-                {String(status).toUpperCase()}
+                {String('unknown').toUpperCase()}
               </Tag>
             )}
         </>
@@ -85,7 +86,7 @@ const SessionListTable: React.FC<SessionsList> = (props) => {
 
   const navigate = useNavigate()
   if (props.data) {
-    data = props.data.data
+    data = props.data.list
   }
 
   return (
@@ -100,10 +101,10 @@ const SessionListTable: React.FC<SessionsList> = (props) => {
       showHeader
       footer={undefined}
       style={{ padding: '0 16px' }}
-      onRow={({ _id }) => {
+      onRow={({ _id, class: { class_code } }) => {
         return {
           onClick: () => {
-            navigate(`/teacher/class-detail/session?id=${_id}`)
+            navigate(`/teacher/class-detail/session?id=${_id}&class_code=${class_code}`)
           },
         }
       }}

@@ -7,7 +7,7 @@ import { BsPersonVideo3 } from 'react-icons/bs'
 import { useNavigate } from 'react-router-dom'
 import handleLogout from '@/apis/logout.api'
 
-const UserDropdownAdmin: React.FC<{ username: any }> = (props: any) => {
+const UserDropdownMentor: React.FC<{ username: any }> = (props: any) => {
   const navigate = useNavigate()
   const USER = JSON.parse(localStorage.getItem('user') as string)
 
@@ -26,7 +26,7 @@ const UserDropdownAdmin: React.FC<{ username: any }> = (props: any) => {
         <div
           className='flex items-center text-gray-600 font-bold'
           onClick={() => {
-            if (USER.role === 'ADMIN') {
+            if (USER.role === 'MENTOR' || 'ADMIN') {
               navigate('/teacher/classes-list')
             }
           }}
@@ -94,4 +94,4 @@ const UserDropdownAdmin: React.FC<{ username: any }> = (props: any) => {
   )
 }
 
-export default UserDropdownAdmin
+export default UserDropdownMentor

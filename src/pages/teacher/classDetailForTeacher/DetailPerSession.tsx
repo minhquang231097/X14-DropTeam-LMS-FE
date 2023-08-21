@@ -12,8 +12,9 @@ import { getStudentsListPerSession } from '@/apis/studentsPerSession'
 const DetailPerSession: React.FC = () => {
   const [searchText, setSearchText] = useState('')
 
-  const queryString: { id?: string } = useQueryString()
+  const queryString: { id?: string; class_code?: string } = useQueryString()
   const id = String(queryString.id)
+  const class_code = String(queryString.class_code)
 
   const sessionData = useQuery({
     queryKey: ['session', id],
@@ -22,6 +23,14 @@ const DetailPerSession: React.FC = () => {
       return res.data.data
     },
   }).data
+
+  const studentsData = useQuery({
+    queryKey: ['students', class_code],
+    queryFn: async () => {
+      const res = await getStudentsListPerSession(class_code)
+      return res.data.data
+    },
+  })
 
   return (
     <>
@@ -35,7 +44,7 @@ const DetailPerSession: React.FC = () => {
           <div className='p-4 flex justify-between items-start'>
             <div>
               <span className='text-xl text-gray-600 dark:text-gray-400 font-bold'>
-                {sessionData ? sessionData.session_name : ''}
+                {sessionData ? 'Session Code: ' + sessionData.session_code : 'Session Code'}
               </span>
               <p className='m-0 text-sm text-gray-500 mt-2'>
                 Total students: <span className='text-blue-600'>10</span>

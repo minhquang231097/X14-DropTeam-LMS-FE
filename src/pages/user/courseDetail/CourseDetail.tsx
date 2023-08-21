@@ -107,11 +107,15 @@ const CourseDetail: React.FC = () => {
             <div className='flex items-center justify-between'>
               <div className='flex items-center flex-1 text-white'>
                 <BiBarChart className='text-[#754FFE] text-2xl mr-2' />
-                {data ? data.level : ''}
+                {data
+                  ? String(data.level)
+                      .toLowerCase()
+                      .replace(/\b\w/g, (x) => x.toUpperCase())
+                  : ''}
               </div>
               <div className='flex items-center flex-1 text-white'>
                 <AiOutlineClockCircle className='text-[#368A29] text-2xl mr-2' />
-                {data ? data.duration : ''} minutes
+                {data ? data.session_per_course : ''} Sessions
               </div>
               <div className='flex items-center flex-1 text-white'>
                 <AiOutlineUser className='text-[#444] text-2xl mr-2' />

@@ -17,7 +17,7 @@ const LessonsListForTeacher: React.FC = () => {
     queryKey: ['classes', page],
     queryFn: async () => {
       const res = await getLessonsList(page, 10)
-      return res.data
+      return res.data.data
     },
   })
 
@@ -34,7 +34,7 @@ const LessonsListForTeacher: React.FC = () => {
             <div>
               <span className='text-xl text-gray-600 dark:text-gray-400 font-bold'>Lessons List For Teacher</span>
               <p className='m-0 text-sm text-gray-500 mt-2'>
-                Total lessons: <span className='text-blue-600'>{data ? data.data.length : ''}</span>
+                Total lessons: <span className='text-blue-600'>{data ? data.list.length : ''}</span>
               </p>
             </div>
             <Input.Search

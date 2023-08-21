@@ -7,6 +7,7 @@ import DarkMode from './DarkMode'
 import UserDropDownDefault from '../../components/UserDropdownDefault'
 import UserDropdownLogged from '../../components/UserDropdownLogged'
 import UserDropdownAdmin from '../../components/UserDropdownAdmin'
+import UserDropdownMentor from '@/components/UserDropdownMentor'
 
 import { ColorModeContext } from '@/contexts/colorMode'
 
@@ -71,6 +72,8 @@ const Header: React.FC = () => {
               <UserDropDownDefault />
             ) : USER && USER.role === 'ADMIN' ? (
               <UserDropdownAdmin username={USER.username} />
+            ) : USER && USER.role === 'MENTOR' ? (
+              <UserDropdownMentor username={USER.username} />
             ) : (
               <UserDropdownLogged username={USER.username} />
             )}

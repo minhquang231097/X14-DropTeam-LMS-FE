@@ -4,13 +4,13 @@ import type { ColumnsType } from 'antd/es/table'
 
 interface DataType {
   key: number
-  lesson_name: string
-  desc: string
+  title: string
+  content: string
   status: string
 }
 
 type LessonsList = {
-  data: { data: [] }
+  data: { list: [] }
   searchText: string
 }
 
@@ -25,9 +25,9 @@ const LessonsListTable: React.FC<LessonsList> = (props) => {
     {
       title: 'Lesson Name',
       dataIndex: 'lesson_name',
-      render: (_value, { lesson_name, desc }, _index) => <>{lesson_name + ':' + ' ' + desc}</>,
+      render: (_value, { title, content }, _index) => <>{title + ':' + ' ' + content}</>,
       filteredValue: [props.searchText],
-      onFilter: (value, { lesson_name }) => String(lesson_name).toLowerCase().includes(String(value).toLowerCase()),
+      onFilter: (value, { title }) => String(title).toLowerCase().includes(String(value).toLowerCase()),
     },
     {
       title: 'Status',
@@ -56,7 +56,7 @@ const LessonsListTable: React.FC<LessonsList> = (props) => {
                 color='geekblue'
                 key='undefined'
               >
-                {String(status).toUpperCase()}
+                {String('unknown').toUpperCase()}
               </Tag>
             )}
         </>
@@ -67,7 +67,7 @@ const LessonsListTable: React.FC<LessonsList> = (props) => {
   let data: DataType[] = []
 
   if (props.data !== undefined) {
-    data = props.data.data
+    data = props.data.list
   }
 
   return (

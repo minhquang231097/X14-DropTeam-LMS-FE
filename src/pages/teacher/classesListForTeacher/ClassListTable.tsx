@@ -8,19 +8,14 @@ interface DataType {
   _id: string
   class_code?: string
   course: { title: string }
-  workplace: string
+  workplace: { workplace_code?: string }
   schedule: []
   class_size: number
   status: string
 }
 
 type ClassesList = {
-  data: {
-    allClasses: []
-    count: number
-    page: number
-  }
-  searchData?: any
+  data: { list: []; count: number; page: number; total: number; total_page: number }
   searchText: string
 }
 
@@ -62,18 +57,19 @@ const ClassListTable: React.FC<ClassesList> = (props) => {
     {
       title: 'Workplace',
       dataIndex: 'workplace',
-      render: (_, { workplace }) => <>{workplace || 'undefined'}</>,
+      render: (_, { workplace }) => <>{workplace && workplace.workplace_code}</>,
       filters: [
         {
           text: 'hdt',
           value: 'hdt',
         },
         {
-          text: 'undefined',
+          text: 'Unknown',
           value: 'undefined',
         },
       ],
-      onFilter: (value, { workplace }) => String(workplace).toLowerCase() === String(value).toLowerCase(),
+      onFilter: (value, { workplace }) =>
+        String(workplace.workplace_code).toLowerCase() === String(value).toLowerCase(),
     },
     {
       title: 'Schedule',
@@ -182,7 +178,7 @@ const ClassListTable: React.FC<ClassesList> = (props) => {
                 color='geekblue'
                 key='active'
               >
-                {String(status).toUpperCase()}
+                {String('unknown').toUpperCase()}
               </Tag>
             )}
         </>
@@ -197,7 +193,7 @@ const ClassListTable: React.FC<ClassesList> = (props) => {
           value: 'inactive',
         },
         {
-          text: 'UNDEFINED',
+          text: 'UNKNOWN',
           value: 'undefined',
         },
       ],
@@ -209,7 +205,7 @@ const ClassListTable: React.FC<ClassesList> = (props) => {
 
   const navigate = useNavigate()
   if (props.data !== undefined) {
-    data = props.data.allClasses
+    data = props.data.list
   }
 
   return (
@@ -220,7 +216,7 @@ const ClassListTable: React.FC<ClassesList> = (props) => {
         defaultPageSize: 10,
         pageSizeOptions: [10],
         showSizeChanger: true,
-        showQuickJumper: true,
+        // showQuickJumper: true,
         // current: page,
         // total: courseData.total,
       }}

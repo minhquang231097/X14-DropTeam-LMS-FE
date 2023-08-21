@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import React, { useState } from 'react'
-import { Button } from 'antd'
+import { Button, Input } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import Header from '@/layouts/user/Header'
@@ -16,14 +16,14 @@ const SessionListForTeacher: React.FC = () => {
   const navigate = useNavigate()
 
   const queryString: { class_code?: string; id?: string } = useQueryString()
-  const class_code = String(queryString.class_code).toLocaleLowerCase()
+  const class_code = String(queryString.class_code)
   const id = String(queryString.id)
 
   const { data } = useQuery({
     queryKey: ['sessions', class_code],
     queryFn: async () => {
       const res = await getSessionsByClassCode(class_code)
-      return res.data
+      return res.data.data
     },
   })
 
@@ -47,32 +47,32 @@ const SessionListForTeacher: React.FC = () => {
           <div className='p-4 flex justify-between items-start'>
             <div>
               <span className='text-xl text-gray-600 dark:text-gray-400 font-bold'>
-                {classData ? classData.data.class_code : 'Class Name'}
+                {classData ? 'Class Code: ' + classData.data.class_code : 'Class Name'}
               </span>
               <p className='m-0 text-sm text-gray-500 mt-2'>
-                Total sessions: <span className='text-blue-600'>{data ? data.data.length : ''}</span>
+                {/* Total sessions: <span className='text-blue-600'>{data ? data.data.length : ''}</span> */}
               </p>
               <p className='m-0 text-sm text-gray-500 mt-2 flex'>
                 Schedule:{' '}
                 <span className='text-blue-600 flex'>
                   {classData && classData.data.schedule
                     ? [...classData.data.schedule].map((ele) => {
-                      if (ele === 0) {
-                        return <span className='ml-2 text-yellow-500'>Monday</span>
-                      } else if (ele === 1) {
-                        return <div className='ml-2 text-pink-500'>Tuesday</div>
-                      } else if (ele === 2) {
-                        return <div className='ml-2 text-green-500'>Wednesday</div>
-                      } else if (ele === 3) {
-                        return <div className='ml-2 text-orange-500'>Thursday</div>
-                      } else if (ele === 4) {
-                        return <div className='ml-2 text-blue-500'>Friday</div>
-                      } else if (ele === 5) {
-                        return <div className='ml-2 text-purple-500'>Saturday</div>
-                      } else if (ele === 6) {
-                        return <div className='ml-2 text-red-500'>Sunday</div>
-                      }
-                    })
+                        if (ele === 0) {
+                          return <span className='ml-2 text-yellow-500'>Monday</span>
+                        } else if (ele === 1) {
+                          return <div className='ml-2 text-pink-500'>Tuesday</div>
+                        } else if (ele === 2) {
+                          return <div className='ml-2 text-green-500'>Wednesday</div>
+                        } else if (ele === 3) {
+                          return <div className='ml-2 text-orange-500'>Thursday</div>
+                        } else if (ele === 4) {
+                          return <div className='ml-2 text-blue-500'>Friday</div>
+                        } else if (ele === 5) {
+                          return <div className='ml-2 text-purple-500'>Saturday</div>
+                        } else if (ele === 6) {
+                          return <div className='ml-2 text-red-500'>Sunday</div>
+                        }
+                      })
                     : 'undefined'}
                 </span>
               </p>
