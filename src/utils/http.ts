@@ -1,6 +1,6 @@
-import axios from 'axios'
+import axios, { AxiosInstance } from 'axios'
 
-const http = axios.create({
+const http: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8080/api/v1',
   timeout: 30000,
   headers: { 'Content-Type': 'application/json' },
@@ -9,11 +9,11 @@ const http = axios.create({
 // Function to refresh the access token using the refresh token
 async function refreshAccessToken(): Promise<string> {
   const user = JSON.parse(localStorage.getItem('user') as string)
-  console.log(user.refreshToken)
-  const response = await axios.post(`${http.defaults.baseURL}/auth/refresh`, { refreshToken: user.refreshToken })
-  console.log(response)
+  // console.log(user.refreshToken)
+  const response = await http.post(`/auth/refresh`, { refreshToken: user.refreshToken })
+  // console.log(response)
   const { accessToken } = response.data
-  console.log(response.data)
+  // console.log(response.data)
   return accessToken
 }
 
@@ -37,14 +37,17 @@ http.interceptors.response.use(
   },
   async (error) => {
     const originalRequest = error.config
-    if ((error.response.status === 401 || 403) && !originalRequest._retry) {
+    if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true
       const accessToken = await refreshAccessToken()
       const user = JSON.parse(localStorage.getItem('user') as string)
-      user.access_token = accessToken
+      user.accessToken = accessToken
       localStorage.setItem('user', JSON.stringify(user))
       http.defaults.headers.common.Authorization = `Bearer ${accessToken}`
       return http(originalRequest)
+    }
+    if (error.response.status === 403 && error.response.data) {
+      return Promise.reject(error.response.data)
     }
     return Promise.reject(error)
   },

@@ -16,6 +16,7 @@ interface DataType {
   title?: string
   location?: string
   is_active?: boolean
+  formated_date: string
 }
 
 const CustomContent = () => {
@@ -38,7 +39,7 @@ const CustomContent = () => {
   })
 
   const onChange: TableProps<DataType>['onChange'] = (pagination, filters, sorter, extra) => {
-    console.log('params', pagination, filters, sorter, extra)
+    // console.log('params', pagination, filters, sorter, extra)
     const { current } = pagination
     navigate(`/admin/courses/all?page=${current}&limit=10`)
   }
@@ -57,7 +58,7 @@ const CustomContent = () => {
     {
       title: 'Image',
       dataIndex: 'image',
-      width: '30%',
+      width: '25%',
       render: (image: any) => (
         <Image
           src={image || 'https://via.placeholder.com/500x250'}
@@ -77,14 +78,14 @@ const CustomContent = () => {
           >
             {course_code}: {course.title}
           </Typography.Text>
-          <Typography.Text>{course.location}</Typography.Text>
+          <Typography.Text>Created at: {course.formated_date}</Typography.Text>
         </Space>
       ),
     },
     {
       title: 'Status',
       dataIndex: 'is_active',
-      width: '15%',
+      width: '20%',
       render: () => (
         <Typography.Text
           style={{
