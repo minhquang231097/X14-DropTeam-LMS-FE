@@ -1,54 +1,27 @@
-import { useSpring, animated } from '@react-spring/web'
-
-const Fobidden403 = () => {
-  const props = useSpring({
-    opacity: 1,
-    from: { opacity: 0 },
-    config: { duration: 1000 },
-  })
-
+import React from 'react'
+import './forbidden403.css'
+import { useNavigate } from 'react-router-dom'
+import { Button } from 'antd'
+const Fobidden403: React.FC = () => {
+  const navigate = useNavigate()
   return (
-    <div className='flex flex-col items-center justify-center h-screen bg-gray-100'>
-      <animated.h1
-        className='text-6xl font-bold text-red-500'
-        style={props}
-      >
-        403
-      </animated.h1>
-      <animated.p
-        className='text-2xl font-medium text-gray-500'
-        style={props}
-      >
-        Forbidden
-      </animated.p>
-      <animated.div
-        className='w-64 h-64 mt-8 rounded-full bg-gray-300'
-        style={useSpring({
-          from: { opacity: 0, scale: 0 },
-          to: { opacity: 1, scale: 1 },
-          delay: 1000,
-          config: { duration: 1000 },
-        })}
-      >
-        <svg
-          viewBox='0 0 200 200'
-          xmlns='http://www.w3.org/2000/svg'
+    <div className='page_404 w-full flex flex-col items-center '>
+      <h1 className='text-center text-6xl text-[#695681] m-0'>
+        403 <br />
+        FORBIDDEN
+      </h1>
+
+      <div className='four_zero_four_bg w-full bg-no-repeat'></div>
+
+      <div className='contant_box_404 flex flex-col items-center'>
+        <p>Oops! You don't have permission to access this page.</p>
+        <Button
+          type='primary'
+          onClick={() => navigate('/', { replace: true })}
         >
-          <path
-            d='M 50 50 L 150 150 M 50 150 L 150 50'
-            stroke='red'
-            strokeWidth='10'
-            strokeLinecap='round'
-          >
-            <animate
-              attributeName='stroke-dasharray'
-              values='0 200;200 0'
-              dur='2s'
-              repeatCount='indefinite'
-            />
-          </path>
-        </svg>
-      </animated.div>
+          Comeback home!
+        </Button>
+      </div>
     </div>
   )
 }

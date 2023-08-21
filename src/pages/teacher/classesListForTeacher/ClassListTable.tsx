@@ -82,77 +82,71 @@ const ClassListTable: React.FC<ClassesList> = (props) => {
         <>
           {schedule
             ? [...schedule].map((ele) => {
-              if (ele === 0) {
-                return (
-                  <Tag
-                    color='yellow'
-                    key='active'
-                  >
-                    Mon
-                  </Tag>
-                )
-              }
-              if (ele === 1) {
-                return (
-                  <Tag
-                    color='pink'
-                    key='active'
-                  >
-                    Tue
-                  </Tag>
-                )
-              }
-              if (ele === 2) {
-                return (
-                  <Tag
-                    color='green'
-                    key='active'
-                  >
-                    Wed
-                  </Tag>
-                )
-              }
-              if (ele === 3) {
-                return (
-                  <Tag
-                    color='orange'
-                    key='active'
-                  >
-                    Thu
-                  </Tag>
-                )
-              }
-              if (ele === 4) {
-                return (
-                  <Tag
-                    color='blue'
-                    key='active'
-                  >
-                    Fri
-                  </Tag>
-                )
-              }
-              if (ele === 5) {
-                return (
-                  <Tag
-                    color='purple'
-                    key='active'
-                  >
-                    Sat
-                  </Tag>
-                )
-              }
-              if (ele === 6) {
-                return (
-                  <Tag
-                    color='red'
-                    key='active'
-                  >
-                    Sun
-                  </Tag>
-                )
-              }
-            })
+                if (ele === 0) {
+                  return (
+                    <Tag
+                      color='yellow'
+                      key='active'
+                    >
+                      Mon
+                    </Tag>
+                  )
+                } else if (ele === 1) {
+                  return (
+                    <Tag
+                      color='pink'
+                      key='active'
+                    >
+                      Tue
+                    </Tag>
+                  )
+                } else if (ele === 2) {
+                  return (
+                    <Tag
+                      color='green'
+                      key='active'
+                    >
+                      Wed
+                    </Tag>
+                  )
+                } else if (ele === 3) {
+                  return (
+                    <Tag
+                      color='orange'
+                      key='active'
+                    >
+                      Thu
+                    </Tag>
+                  )
+                } else if (ele === 4) {
+                  return (
+                    <Tag
+                      color='blue'
+                      key='active'
+                    >
+                      Fri
+                    </Tag>
+                  )
+                } else if (ele === 5) {
+                  return (
+                    <Tag
+                      color='purple'
+                      key='active'
+                    >
+                      Sat
+                    </Tag>
+                  )
+                } else if (ele === 6) {
+                  return (
+                    <Tag
+                      color='red'
+                      key='active'
+                    >
+                      Sun
+                    </Tag>
+                  )
+                }
+              })
             : ''}
         </>
       ),
@@ -220,7 +214,16 @@ const ClassListTable: React.FC<ClassesList> = (props) => {
 
   return (
     <Table
-      pagination={{ position: ['bottomCenter'] }}
+      pagination={{
+        position: ['bottomCenter'],
+        defaultCurrent: 1,
+        defaultPageSize: 10,
+        pageSizeOptions: [10],
+        showSizeChanger: true,
+        showQuickJumper: true,
+        // current: page,
+        // total: courseData.total,
+      }}
       columns={columns}
       dataSource={data}
       scroll={{ y: 340 }}

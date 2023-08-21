@@ -1,20 +1,20 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react'
 import { Avatar, Dropdown } from 'antd'
 import type { MenuProps } from 'antd'
 import { IoMdLogOut } from 'react-icons/io'
 import { RiUserSettingsLine, RiShieldKeyholeLine } from 'react-icons/ri'
+import { BsPersonVideo3 } from 'react-icons/bs'
 import { useNavigate } from 'react-router-dom'
 import handleLogout from '@/apis/logout.api'
 
-const UserDropdownLogged: React.FC<{ username: any }> = (prop: any) => {
-  const { username } = prop
+const UserDropdownAdmin: React.FC<{ username: any }> = (props: any) => {
   const navigate = useNavigate()
+  const USER = JSON.parse(localStorage.getItem('user') as string)
+
   const items: MenuProps['items'] = [
     {
       key: '1',
-      label: <div className='flex items-center justify-center text-gray-600 font-bold'>{username}</div>,
+      label: <div className='flex text-lg text-[#F56A00] items-center justify-center font-bold'>{props.username}</div>,
       disabled: true,
     },
     {
@@ -25,7 +25,26 @@ const UserDropdownLogged: React.FC<{ username: any }> = (prop: any) => {
       label: (
         <div
           className='flex items-center text-gray-600 font-bold'
-          onClick={() => navigate('/edit-profile')}
+          onClick={() => {
+            if (USER.role === 'ADMIN') {
+              navigate('/teacher/classes-list')
+            }
+          }}
+        >
+          <BsPersonVideo3 className='text-2xl mr-2 p-2 pl-0' />
+          Mentor Page
+        </div>
+      ),
+    },
+    {
+      type: 'divider',
+    },
+    {
+      key: '3',
+      label: (
+        <div
+          className='flex items-center text-gray-600 font-bold'
+          onClick={() => navigate(`/profile-detail?id=${USER.userId}`)}
         >
           <RiUserSettingsLine className='text-2xl mr-2 p-2 pl-0' />
           Edit Profile
@@ -33,7 +52,7 @@ const UserDropdownLogged: React.FC<{ username: any }> = (prop: any) => {
       ),
     },
     {
-      key: '3',
+      key: '4',
       label: (
         <div
           className='flex items-center text-gray-600 font-bold'
@@ -45,7 +64,10 @@ const UserDropdownLogged: React.FC<{ username: any }> = (prop: any) => {
       ),
     },
     {
-      key: '4',
+      type: 'divider',
+    },
+    {
+      key: '5',
       label: (
         <div
           className='flex items-center text-gray-600 font-bold'
@@ -65,11 +87,11 @@ const UserDropdownLogged: React.FC<{ username: any }> = (prop: any) => {
     >
       <a target='_blank'>
         <Avatar style={{ backgroundColor: '#f56a00', color: '#fff', fontSize: '20px', fontWeight: 'bold' }}>
-          {username.charAt(0).toUpperCase()}
+          {props.username.charAt(0).toUpperCase()}
         </Avatar>
       </a>
     </Dropdown>
   )
 }
 
-export default UserDropdownLogged
+export default UserDropdownAdmin
