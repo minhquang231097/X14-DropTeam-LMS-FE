@@ -7,7 +7,7 @@ import { MdOutlineCheck, MdOutlineClose, MdAddCircleOutline, MdOutlineCircle } f
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import AdminLayout from '@/layouts/admin'
-import AdminSearch from '@/components/adminSearch'
+import AdminSearch from '@/components/search/adminSearch'
 import { useQueryString } from '@/utils/utils'
 import { getClassesList } from '@/apis/classesList.api'
 

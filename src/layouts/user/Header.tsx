@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom'
 import { useContext } from 'react'
 import Logo from '../../assets/images/logo/logo-with-shadow.png'
-import SearchBar from '../../components/SearchBar'
-import DropdownList from '../../components/DropdownList'
+import SearchBar from '../../components/search/SearchBar'
+import DropdownList from '../../components/dropdown/DropdownList'
 import DarkMode from './DarkMode'
-import UserDropDownDefault from '../../components/UserDropdownDefault'
-import UserDropdownLogged from '../../components/UserDropdownLogged'
-import UserDropdownAdmin from '../../components/UserDropdownAdmin'
+import UserDropDownDefault from '../../components/dropdown/UserDropdownDefault'
+import UserDropdownLogged from '../../components/dropdown/UserDropdownLogged'
+import UserDropdownAdmin from '../../components/dropdown/UserDropdownAdmin'
 
 import { ColorModeContext } from '@/contexts/colorMode'
 

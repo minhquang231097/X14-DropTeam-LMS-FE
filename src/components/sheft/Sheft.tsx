@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import CourseCard from './CourseCard'
+import CourseCard from '../card/CourseCard'
 import { getCoursesList } from '@/apis/coursesList.api'
 import { useQueryString } from '@/utils/utils'
 

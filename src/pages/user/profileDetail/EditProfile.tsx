@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import Header from '@/layouts/user/Header'
 import Footer from '@/layouts/user/Footer'
 import avatar from '@/assets/images/avatar/user.png'
-import UploadImage from '@/components/UploadImage'
+import UploadImage from '@/components/upload/UploadImage'
 import handleUpdateUser from '@/apis/updateUser.api'
 
 const { Option } = Select
