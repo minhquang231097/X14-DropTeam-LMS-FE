@@ -16,7 +16,7 @@ interface DataType {
 
 type ClassesList = {
   data: {
-    allClasses: []
+    list: []
     count: number
     page: number
   }
@@ -209,7 +209,7 @@ const ClassListTable: React.FC<ClassesList> = (props) => {
 
   const navigate = useNavigate()
   if (props.data !== undefined) {
-    data = props.data.allClasses
+    data = props.data.list
   }
 
   return (

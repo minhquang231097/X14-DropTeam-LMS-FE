@@ -1,7 +1,8 @@
-import React from 'react'
-import { Breadcrumb, Card, Form, Input, Typography, Row, Col, Button, message, Space, Select } from 'antd'
+import React, { useState } from 'react'
+import { Breadcrumb, Card, Form, Input, Typography, Row, Col, Button, notification, Space, Select } from 'antd'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useMutation, useQuery } from '@tanstack/react-query'
+import { RuleObject } from 'antd/es/form'
 import http from '@/utils/http'
 import AdminLayout from '@/layouts/admin'
 import { getWorkplace } from '@/apis/workplaceByID.api'
@@ -14,18 +15,24 @@ interface IWorkplace {
   status: string
 }
 
+type StatusFacility = 'ON' | 'OFF' | 'UPCOMING'
+
 const CustomContent = () => {
   const [form] = Form.useForm()
 
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
+
+  const [nameValue, setNameValue] = useState('')
+  const [codeValue, setCodeValue] = useState('')
+  const [addressValue, setAddressValue] = useState('')
+  const [statusValue, setStatusValue] = useState<StatusFacility>('ON')
 
   const updateWorkplace = async (workplace: IWorkplace) => {
     if (!id) {
       throw new Error('Missing id parameter')
     }
-    await http.put('/workplace', workplace, {
+    await http.put(`/workplace/`, workplace, {
       params: {
         id,
       },
@@ -35,6 +42,11 @@ const CustomContent = () => {
   const { mutate, isLoading } = useMutation(updateWorkplace, {
     onSuccess: () => {
       // Perform any necessary actions after successful creation
+      form.resetFields()
+      navigate('/admin/facilities/all')
+    },
+    onError: () => {
+      // Perform any necessary actions after failed creation
       form.resetFields()
     },
   })
@@ -54,9 +66,32 @@ const CustomContent = () => {
   const handleSubmit = async (values: IWorkplace) => {
     try {
       mutate(values)
+      notification.success({
+        message: 'Update successful',
+        description: 'The facility has been updated successfully',
+      })
     } catch (error) {
-      console.error(error)
+      notification.error({
+        message: 'Update failed',
+        description: 'There was an error updating the facility',
+      })
     }
+  }
+
+  const onChange1: React.ChangeEventHandler<HTMLInputElement> = (event) => {
+    const { value } = event.target
+    setNameValue(value)
+  }
+  const onChange2: React.ChangeEventHandler<HTMLInputElement> = (event) => {
+    const { value } = event.target
+    setNameValue(value)
+  }
+  const onChange3: React.ChangeEventHandler<HTMLInputElement> = (event) => {
+    const { value } = event.target
+    setNameValue(value)
+  }
+  const onChange4 = (value: StatusFacility) => {
+    setStatusValue(value)
   }
 
   return (
@@ -80,6 +115,7 @@ const CustomContent = () => {
           form={form}
           onFinish={handleSubmit}
           layout='vertical'
+          initialValues={{ ...workplace }}
         >
           <Typography.Title
             level={3}
@@ -94,14 +130,33 @@ const CustomContent = () => {
                 name='name'
                 rules={[{ required: true, message: 'Please enter the name' }]}
               >
-                <Input />
+                <Input
+                  required
+                  value={nameValue}
+                  onChange={onChange1}
+                />
               </Form.Item>
               <Form.Item
                 label='Facility Code'
                 name='workplace_code'
-                rules={[{ required: true, message: 'Please enter the code' }]}
+                rules={[
+                  { required: true, message: 'Please enter the code' },
+                  {
+                    validator(_: RuleObject, value: string) {
+                      if (value === workplace.workplace_code) {
+                        Promise.reject(new Error('The code must be unique!'))
+                      }
+                      return Promise.resolve()
+                    },
+                  },
+                ]}
+                validateStatus={form.getFieldValue('workplace_code') === workplace.workplace_code ? 'error' : ''}
               >
-                <Input />
+                <Input
+                  required
+                  value={codeValue}
+                  onChange={onChange2}
+                />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -110,7 +165,11 @@ const CustomContent = () => {
                 name='address'
                 rules={[{ required: true, message: 'Please enter the location' }]}
               >
-                <Input />
+                <Input
+                  required
+                  value={addressValue}
+                  onChange={onChange3}
+                />
               </Form.Item>
               <Form.Item
                 label='Facility Status'
@@ -119,10 +178,12 @@ const CustomContent = () => {
               >
                 <Select
                   options={[
-                    { label: 'OFF', value: 'OFF' },
-                    { label: 'ON', value: 'ON' },
+                    { label: 'INACTIVE', value: 'OFF' },
+                    { label: 'ACTIVE', value: 'ON' },
                     { label: 'UPCOMING', value: 'UPCOMING' },
                   ]}
+                  value={statusValue}
+                  onChange={onChange4}
                 />
               </Form.Item>
             </Col>
@@ -153,6 +214,7 @@ const CustomContent = () => {
               <Button
                 type='primary'
                 htmlType='submit'
+                disabled={form.getFieldValue('workplace_code') === workplace.workplace_code}
                 loading={isLoading}
               >
                 Update

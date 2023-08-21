@@ -11,11 +11,11 @@ import {
   Upload,
   UploadProps,
   Button,
-  message,
   Space,
   InputNumber,
+  notification,
 } from 'antd'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useMutation } from '@tanstack/react-query'
 import AdminLayout from '@/layouts/admin'
 import { createCourse } from '@/apis/courseCreate.api'
@@ -37,10 +37,16 @@ interface ICourse {
 
 const CustomContent = () => {
   const [form] = Form.useForm()
+  const navigate = useNavigate()
 
   const { mutate, isLoading } = useMutation(createCourse, {
     onSuccess: () => {
       // Perform any necessary actions after successful creation
+      form.resetFields()
+      navigate('/admin/courses/all')
+    },
+    onError: () => {
+      // Perform any necessary actions after failed creation
       form.resetFields()
     },
   })
@@ -48,8 +54,15 @@ const CustomContent = () => {
   const handleSubmit = async (values: ICourse) => {
     try {
       mutate(values)
+      notification.success({
+        message: 'Update successful',
+        description: 'The course has been updated successfully',
+      })
     } catch (error) {
-      console.error(error)
+      notification.error({
+        message: 'Update failed',
+        description: 'There was an error updating the course',
+      })
     }
   }
 

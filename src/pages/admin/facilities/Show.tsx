@@ -43,14 +43,17 @@ const CustomContent = () => {
       <Card>
         <Row gutter={[16, 16]}>
           <Col span={16}>
-            <Typography.Title
-              level={3}
-              className='mt-0 mx-1'
-            >
-              {workplace.name}
-            </Typography.Title>
-            <Typography.Text className='mt-2 mx-1'>Facility Code: {workplace.workplace_code}</Typography.Text>
-            <Typography.Paragraph className='mt-2 mx-1'>{workplace.address}</Typography.Paragraph>
+            {workplace && (
+              <>
+                <Typography.Title
+                  level={3}
+                  className='mt-0 mx-1'
+                >
+                  {workplace.name} ({workplace.workplace_code})
+                </Typography.Title>
+                <Typography.Paragraph className='mt-2 mx-1'>{workplace.address}</Typography.Paragraph>
+              </>
+            )}
           </Col>
           <Col span={8}>
             <Image

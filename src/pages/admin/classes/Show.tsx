@@ -1,16 +1,28 @@
 import React from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
-import { Breadcrumb, Card, Typography, Row, Col, Image, Divider, Space, Button } from 'antd'
+import { Breadcrumb, Card, Typography, Row, Col, Image, Divider, Space, Button, Table } from 'antd'
+import { useQuery } from '@tanstack/react-query'
+import dayjs from 'dayjs'
+import customParseFormat from 'dayjs/plugin/customParseFormat'
 import AdminLayout from '@/layouts/admin'
-import { ClassItems } from '@/data/classes'
 import { ShowButtonStyle } from '../style'
+import { getClassById } from '@/apis/class.api'
+
+dayjs.extend(customParseFormat)
 
 const CustomContent = () => {
   const { id } = useParams()
   const navigate = useNavigate()
-  const foundClass = ClassItems.find((item) => item.key === id)
 
-  if (!foundClass) {
+  const { data: classByID } = useQuery({
+    queryKey: ['workplace'],
+    queryFn: async () => {
+      const res = await getClassById(id as string)
+      return res.data.data
+    },
+  })
+
+  if (!classByID) {
     return <Typography.Text>Class not found</Typography.Text>
   }
 
@@ -22,10 +34,10 @@ const CustomContent = () => {
             title: 'Home',
           },
           {
-            title: <Link to='/admin/classes/all?page=1&limit=10'>Classes</Link>,
+            title: <Link to='/admin/classes/all'>Classes</Link>,
           },
           {
-            title: `${foundClass.name}`,
+            title: `${classByID.class_code}`,
           },
         ]}
         style={{ padding: '4px' }}
@@ -37,15 +49,17 @@ const CustomContent = () => {
               level={3}
               className='mt-0 mx-1'
             >
-              {foundClass.name}
+              {classByID.class_code}
             </Typography.Title>
-            <Typography.Text className='mt-2 mx-1'>{foundClass.location}</Typography.Text>
-          </Col>
-          <Col span={8}>
-            <Image
-              src={foundClass.image_url}
-              alt={foundClass.name}
-            />
+            <Space direction='vertical'>
+              <Typography.Text className='mt-2 mx-1'>Mentor: {classByID.mentor?.fullname}</Typography.Text>
+              <Typography.Text className='mt-2 mx-1'>
+                Time: {dayjs(classByID.start_at).format('DD/MM/YYYY')} - {dayjs(classByID.end_at).format('DD/MM/YYYY')}
+              </Typography.Text>
+              <Typography.Text className='mt-2 mx-1'>
+                Schedule: {classByID.schedule.map((date: string) => dayjs(date).format('dddd')).join(', ')}
+              </Typography.Text>
+            </Space>
           </Col>
           <Divider />
           <Col span={24}>
@@ -54,9 +68,10 @@ const CustomContent = () => {
                 level={4}
                 className='-mt-1'
               >
-                Description
+                Student List
               </Typography.Title>
-              <Typography.Text>THIS IS THE CLASS DESCRIPTION</Typography.Text>
+              {/* <Typography.Text>THIS IS THE CLASS DESCRIPTION</Typography.Text> */}
+              <Table />
             </Space>
           </Col>
         </Row>
@@ -74,6 +89,7 @@ const CustomContent = () => {
           <Button
             type='primary'
             style={ShowButtonStyle}
+            onClick={() => navigate(`/admin/classes/edit/${id}`)}
           >
             Edit
           </Button>

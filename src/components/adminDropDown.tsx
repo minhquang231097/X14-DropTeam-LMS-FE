@@ -1,6 +1,6 @@
 import React from 'react'
 import type { MenuProps } from 'antd'
-import { Dropdown } from 'antd'
+import { Avatar, Dropdown } from 'antd'
 import { FaUserCircle } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import { MdLockOutline, MdOutlineLogout, MdOutlinePersonOutline } from 'react-icons/md'
@@ -49,13 +49,28 @@ const items: MenuProps['items'] = [
 ]
 
 const AdminDropDown: React.FC = () => {
+  const USER = JSON.parse(localStorage.getItem('user') as string)
+
   return (
     <Dropdown
       menu={{ items }}
       placement='bottomRight'
       arrow
     >
-      <FaUserCircle className='text-[40px] cursor-pointer flex items-center no-underline' />
+      {USER && USER.role === 'ADMIN' ? (
+        <Avatar
+          size={40}
+          style={{
+            color: 'fff',
+            fontSize: '20px',
+            fontWeight: 'bold',
+          }}
+        >
+          {USER.username.charAt(0).toUpperCase()}
+        </Avatar>
+      ) : (
+        <FaUserCircle className='text-[40px] cursor-pointer flex items-center no-underline' />
+      )}
     </Dropdown>
   )
 }

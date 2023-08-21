@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import React, { useState } from 'react'
-import { Button } from 'antd'
+import { Button, Input } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import Header from '@/layouts/user/Header'
@@ -59,17 +59,23 @@ const SessionListForTeacher: React.FC = () => {
                     ? [...classData.data.schedule].map((ele) => {
                       if (ele === 0) {
                         return <span className='ml-2 text-yellow-500'>Monday</span>
-                      } else if (ele === 1) {
+                      }
+                      if (ele === 1) {
                         return <div className='ml-2 text-pink-500'>Tuesday</div>
-                      } else if (ele === 2) {
+                      }
+                      if (ele === 2) {
                         return <div className='ml-2 text-green-500'>Wednesday</div>
-                      } else if (ele === 3) {
+                      }
+                      if (ele === 3) {
                         return <div className='ml-2 text-orange-500'>Thursday</div>
-                      } else if (ele === 4) {
+                      }
+                      if (ele === 4) {
                         return <div className='ml-2 text-blue-500'>Friday</div>
-                      } else if (ele === 5) {
+                      }
+                      if (ele === 5) {
                         return <div className='ml-2 text-purple-500'>Saturday</div>
-                      } else if (ele === 6) {
+                      }
+                      if (ele === 6) {
                         return <div className='ml-2 text-red-500'>Sunday</div>
                       }
                     })

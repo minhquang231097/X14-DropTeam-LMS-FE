@@ -1,22 +1,37 @@
 import React, { useState } from 'react'
-import { Breadcrumb, Button, Card, Image, Modal, PaginationProps, Space, Table, TableProps, Typography, theme } from 'antd'
+import dayjs from 'dayjs'
+import customParseFormat from 'dayjs/plugin/customParseFormat'
+import { Breadcrumb, Button, Card, Image, Modal, Space, Table, TableProps, Typography, theme } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { MdOutlineCheck, MdOutlineClose, MdAddCircleOutline, MdOutlineCircle } from 'react-icons/md'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import AdminLayout from '@/layouts/admin'
-import { ClassItems } from '@/data/classes'
 import AdminSearch from '@/components/adminSearch'
 import { useQueryString } from '@/utils/utils'
 import { getClassesList } from '@/apis/classesList.api'
 
+interface IMentor {
+  fullname: string
+}
+
+interface IWorkplace {
+  name: string
+}
 interface DataType {
   _id: string
   image_url?: string
-  name?: string
+  class_name?: string
   location?: string
   is_active?: boolean
+  class_size?: number
+  start_at?: string
+  end_at?: string
+  mentor?: IMentor
+  workplace?: IWorkplace
 }
+
+dayjs.extend(customParseFormat)
 
 const CustomContent = () => {
   const { useToken } = theme
@@ -25,6 +40,7 @@ const CustomContent = () => {
 
   const queryString: { page?: string } = useQueryString()
   const page = Number(queryString.page) || 1
+  const sizeReq = 10
 
   // const [isActive, setIsActive] = useState(true)
   const [selectedClass, setSelectedClass] = useState<DataType | null>(null)
@@ -39,7 +55,7 @@ const CustomContent = () => {
   })
 
   const onChange: TableProps<DataType>['onChange'] = (pagination, filters, sorter, extra) => {
-    console.log('params', pagination, filters, sorter, extra)
+    // console.log('params', pagination, filters, sorter, extra)
     const { current } = pagination
     navigate(`/admin/classes/all?page=${current}&limit=10`)
   }
@@ -56,29 +72,58 @@ const CustomContent = () => {
 
   const columns = [
     {
-      title: 'Image',
-      dataIndex: 'image_url',
-      width: '30%',
-      render: (image_url: string) => (
-        <Image
-          src={image_url}
-          alt='Class Image'
-        />
-      ),
-    },
-    {
       title: 'Class',
-      dataIndex: 'name',
-      width: '40%',
-      render: (name: string, cls: DataType) => (
+      dataIndex: 'class_code',
+      width: '30%',
+      render: (class_code: string, cls: DataType) => (
         <Space direction='vertical'>
           <Typography.Text
             strong
             style={{ fontSize: '20px' }}
           >
-            {name}
+            {class_code}
           </Typography.Text>
-          <Typography.Text>{cls.location}</Typography.Text>
+          <Typography.Text
+            strong
+            style={{ fontSize: '20px' }}
+          >
+            {cls.class_name}
+          </Typography.Text>
+          <Typography.Text>Mentor: {cls.mentor?.fullname}</Typography.Text>
+        </Space>
+      ),
+    },
+    {
+      title: 'Schedule',
+      dataIndex: 'schedule',
+      width: '30%',
+      render: (schedule: string[], cls: DataType) => (
+        <Space direction='vertical'>
+          <Typography.Text>
+            Time: {dayjs(cls.start_at).format('DD/MM/YYYY')} - {dayjs(cls.end_at).format('DD/MM/YYYY')}
+          </Typography.Text>
+          <Typography.Text>
+            Schedule: {schedule.map((date: string) => dayjs(date).format('dddd')).join(', ')}
+          </Typography.Text>
+        </Space>
+      ),
+    },
+    {
+      title: 'Facility',
+      width: '15%',
+      render: (cls: DataType) => (
+        <Space direction='vertical'>
+          <Typography.Text>{cls.workplace?.name}</Typography.Text>
+        </Space>
+      ),
+    },
+    {
+      title: 'Number of Students',
+      dataIndex: 'class_size',
+      width: '10%',
+      render: (class_size: number) => (
+        <Space direction='vertical'>
+          <Typography.Text>{class_size}</Typography.Text>
         </Space>
       ),
     },
@@ -86,13 +131,13 @@ const CustomContent = () => {
       title: 'Status',
       dataIndex: 'status',
       width: '15%',
-      render: (status: any) => (
+      render: (status: any, cls: DataType) => (
         <Typography.Text
           style={{
             color:
-              status === 'ON'
+              status === 'ON' && cls.class_size && cls.class_size >= sizeReq
                 ? token.colorSuccessText
-                : status === 'OFF'
+                : status === 'OFF' || (cls.class_size && cls.class_size < sizeReq)
                   ? token.colorErrorText
                   : token.colorWarningText,
             fontSize: '18px',
@@ -100,11 +145,11 @@ const CustomContent = () => {
             alignItems: 'center',
           }}
         >
-          {status === 'ON' ? (
+          {status === 'ON' && cls.class_size && cls.class_size >= sizeReq ? (
             <>
               <MdOutlineCheck className='text-[24px] m-1' /> ACTIVE
             </>
-          ) : status === 'OFF' ? (
+          ) : status === 'OFF' || (cls.class_size && cls.class_size < sizeReq) ? (
             <>
               <MdOutlineClose className='text-[24px] m-1' /> CANCELED
             </>
@@ -182,8 +227,9 @@ const CustomContent = () => {
         </div>
         {classData && (
           <Table
+            rowKey={(cls: DataType) => cls._id}
             columns={columns}
-            dataSource={classData.all}
+            dataSource={classData.list}
             pagination={{
               position: ['bottomRight'],
               current: page,
