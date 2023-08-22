@@ -230,7 +230,6 @@ const App: React.FC = () => {
           path='/admin/change-password'
           element={USER && USER.role === 'ADMIN' ? <AdminChangePassword /> : <Forbidden403 />}
         />
-        
         <Route
           path='*'
           element={<NotFound404 />}
