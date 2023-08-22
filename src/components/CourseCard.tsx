@@ -20,7 +20,7 @@ const CourseCard = (course: Course) => {
         <img
           src={course.image || noImage}
           alt=''
-          className='w-full'
+          className='w-full h-[160px]'
         />
         <div className='px-4'>
           <p className='font-bold leading-6'>
@@ -29,11 +29,13 @@ const CourseCard = (course: Course) => {
           <div className='flex items-center'>
             <div className='flex items-center flex-1 text-gray-500'>
               <AiOutlineClockCircle className='text-[#368A29] text-lg mr-2' />
-              {course.duration} min
+              {course.session_per_course} Sessions
             </div>
             <div className='flex items-center flex-1 text-gray-500'>
               <BiBarChart className='text-[#754FFE] text-lg mr-2' />
-              {course.level}
+              {String(course.level)
+                .toLowerCase()
+                .replace(/\b\w/g, (x) => x.toUpperCase())}
             </div>
           </div>
           <div className='flex items-center'>
@@ -47,7 +49,9 @@ const CourseCard = (course: Course) => {
           <div className='flex items-center'>
             <p className='font-bold mr-2'>${course.price}</p>
             <p className='text-gray-500 text-sm line-through'>
-              ${Number(course.price) * (1 - Number(course.discount) / 100)}
+              {Number(course.discount)
+                ? '$' + Math.floor(Number(course.price) * (1 + Number(course.discount) / 100))
+                : ''}
             </p>
           </div>
         </div>

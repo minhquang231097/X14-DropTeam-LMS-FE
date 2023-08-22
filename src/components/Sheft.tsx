@@ -15,7 +15,7 @@ const Sheft: React.FC<SheftProps> = ({ title }) => {
     queryKey: ['courses', page],
     queryFn: async () => {
       const res = await getCoursesList(page, 4)
-      return res.data.data.list
+      return res.data.data
     },
   })
   return (

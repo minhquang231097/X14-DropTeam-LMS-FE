@@ -5,7 +5,7 @@ const handleLogout = async (navigate?: any) => {
   await http
     .post('/auth/sign-out', { id })
     .then((res) => {
-      if (res.status === 200) {
+      if (res.data.statusCode === 200) {
         localStorage.removeItem('user')
         navigate('/login', { replace: true })
       }

@@ -13,7 +13,7 @@ const handleLogin = async (value: { username: string; password: string }, others
       }
 
       console.log(res)
-      if (user && res.status === 200 && res.data.id) {
+      if (user && res.data.id) {
         localStorage.setItem('user', JSON.stringify(user))
         others('/', {
           replace: true,

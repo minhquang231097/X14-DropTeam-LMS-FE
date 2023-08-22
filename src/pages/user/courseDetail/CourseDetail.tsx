@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/alt-text */
 import React from 'react'
 import { AiOutlineClockCircle, AiOutlineUser } from 'react-icons/ai'
 import { BiBarChart } from 'react-icons/bi'
@@ -38,15 +37,10 @@ const itemsCollapse: CollapseProps['items'] = [
 ]
 
 const CollapseComponent: React.FC = () => {
-  const onChange = (key: string | string[]) => {
-    console.log(key)
-  }
-
   return (
     <Collapse
       items={itemsCollapse}
       defaultActiveKey={['1']}
-      onChange={onChange}
       bordered={false}
       accordion
     />
@@ -60,15 +54,10 @@ const CourseDetail: React.FC = () => {
   const { data } = useQuery({
     queryKey: ['course', id],
     queryFn: async () => {
-      // eslint-disable-next-line @typescript-eslint/no-shadow
-      const data = await getCourse(id)
-      return data?.data.data
+      const { data } = await getCourse(id)
+      return data.data
     },
   })
-
-  const onChange = (key: string) => {
-    console.log(key)
-  }
 
   const items: TabsProps['items'] = [
     {
@@ -107,11 +96,15 @@ const CourseDetail: React.FC = () => {
             <div className='flex items-center justify-between'>
               <div className='flex items-center flex-1 text-white'>
                 <BiBarChart className='text-[#754FFE] text-2xl mr-2' />
-                {data ? data.level : ''}
+                {data
+                  ? String(data.level)
+                      .toLowerCase()
+                      .replace(/\b\w/g, (x) => x.toUpperCase())
+                  : ''}
               </div>
               <div className='flex items-center flex-1 text-white'>
                 <AiOutlineClockCircle className='text-[#368A29] text-2xl mr-2' />
-                {data ? data.duration : ''} minutes
+                {data ? data.session_per_course : ''} Sessions
               </div>
               <div className='flex items-center flex-1 text-white'>
                 <AiOutlineUser className='text-[#444] text-2xl mr-2' />
@@ -127,7 +120,6 @@ const CourseDetail: React.FC = () => {
               <Tabs
                 defaultActiveKey='1'
                 items={items}
-                onChange={onChange}
               />
             </div>
             <div

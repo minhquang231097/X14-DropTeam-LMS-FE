@@ -1,9 +1,10 @@
 import http from '@/utils/http'
 
-export const getStudentsListPerSession = (class_code: string, sessionId: string) =>
+export const getStudentsListPerSession = (class_id: string, page: string, limit: string) =>
   http.get('/user', {
     params: {
-      class_code: class_code,
-      sessionId: sessionId,
+      id: class_id,
+      page: page,
+      limit: limit,
     },
   })

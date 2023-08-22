@@ -9,7 +9,7 @@ const SidebarTeacher: React.FC = () => {
       className='col-span-1 row-span-auto p-4 bg-white dark:bg-[#1E293B] dark:border-none rounded-lg border-[1px] border-solid border-gray-200'
       style={{ boxShadow: '0 0 10px rgba(0,0,0,.18)', cursor: 'pointer', border: '1px solid rgba(0,0,0,.1)' }}
     >
-      <p className=' m-0 text-xl text-gray-600 dark:text-gray-400 font-bold px-2'>DASHBOARD</p>
+      <p className=' m-0 text-xl text-[#F56A00] font-bold px-2'>DASHBOARD</p>
       <Divider
         style={{ marginBlock: '10px' }}
         className='dark:bg-gray-600'

@@ -2,16 +2,18 @@ import React from 'react'
 import { UploadOutlined } from '@ant-design/icons'
 import { Button, Form, Upload } from 'antd'
 
-const UploadImage: React.FC = () => {
+const UploadImage: React.FC<{ imageUpload: any; setImageUpload: any }> = (props) => {
   const normFile = (e: any) => {
-    console.log('Upload event:', e)
     if (Array.isArray(e)) {
       return e
     }
     return e?.fileList
   }
   return (
-    <Form layout='vertical'>
+    <Form
+      layout='vertical'
+      className='w-[320px]'
+    >
       <Form.Item
         name='upload'
         label={<p className='font-bold dark:text-gray-300'>Your avatar</p>}
@@ -21,7 +23,10 @@ const UploadImage: React.FC = () => {
         <Upload
           name='image'
           listType='picture'
-          className='ml-8 w-[120px]'
+          className='ml-8'
+          beforeUpload={(file) => {
+            props.setImageUpload([...props.imageUpload, file])
+          }}
         >
           <Button icon={<UploadOutlined />}>Click to upload!</Button>
         </Upload>

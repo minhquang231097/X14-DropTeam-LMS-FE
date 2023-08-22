@@ -1,4 +1,3 @@
-/* eslint-disable import/extensions */
 import React from 'react'
 import './coursesList.css'
 import { useQuery } from '@tanstack/react-query'
@@ -18,7 +17,7 @@ const CoursesList: React.FC = () => {
     queryKey: ['courses', page],
     queryFn: async () => {
       const res = await getCoursesList(page, 6)
-      return res.data.data.list
+      return res.data.data
     },
   })
 

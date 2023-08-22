@@ -1,68 +1,98 @@
-import React, { useState } from 'react'
-import { Table, Tag, Select, Input } from 'antd'
+import React from 'react'
+import { Table, Tag, Select, Input, TableProps } from 'antd'
+import { useNavigate } from 'react-router-dom'
 import type { ColumnsType } from 'antd/es/table'
 
 interface DataType {
+  _id: string
   key: number
-  name: string
+  fullname: string
   email: string
+  phone_number: string
   session: string
-  phone: string
-  tags: string[]
+  status?: string
 }
 
 type StudentList = {
+  data: { count: number; data: []; page: number; statusCode: number; total: number; total_page: number }
   searchText: string
+  setSearchParams: any
+  session_code: string
+  class_id: string
 }
 
 const { TextArea } = Input
 
 const DetailPerSessionTable: React.FC<StudentList> = (props) => {
+  const navigate = useNavigate()
+
   const columns: ColumnsType<DataType> = [
     {
       title: 'No.',
-      dataIndex: 'key',
-      width: '48px',
+      dataIndex: 'index',
+      width: '40px',
+      render: (_value, _record, index) => <>{index + 1}</>,
     },
     {
       title: 'Student Name',
-      dataIndex: 'name',
+      dataIndex: 'fullname',
+      width: '140px',
       filteredValue: [props.searchText],
-      onFilter: (value, { name }) => String(name).toLowerCase().includes(String(value).toLowerCase()),
+      onFilter: (value, { fullname }) => String(fullname).toLowerCase().includes(String(value).toLowerCase()),
     },
     {
       title: 'Email',
       dataIndex: 'email',
+      width: '212px',
     },
     {
       title: 'Phone Number',
-      dataIndex: 'phone',
+      dataIndex: 'phone_number',
+      width: '120px',
     },
     {
       title: 'Status',
       key: 'tags',
-      dataIndex: 'tags',
-      render: (_, { tags }) => (
+      dataIndex: 'status',
+      width: '100px',
+      render: (_, { status }) => (
         <>
-          {tags.map((tag) => {
-            let color = tag.length > 5 ? 'geekblue' : 'green'
-            if (tag === 'loser') {
-              color = 'volcano'
-            }
-            if (tag === 'Active') {
-              color = 'green'
-            }
-            return (
+          {(status === 'completed' && (
+            <Tag
+              color='green'
+              key='active'
+            >
+              {status.toUpperCase()}
+            </Tag>
+          )) ||
+            (status === 'completed' && (
               <Tag
-                color={color}
-                key={tag}
+                color='volcano'
+                key='inactive'
               >
-                {tag.toUpperCase()}
+                {status.toUpperCase()}
               </Tag>
-            )
-          })}
+            )) || (
+              <Tag
+                color='geekblue'
+                key='active'
+              >
+                {String('unknown').toUpperCase()}
+              </Tag>
+            )}
         </>
       ),
+      filters: [
+        {
+          text: 'COMPLETED',
+          value: 'completed',
+        },
+        {
+          text: 'UNCOMPLETED',
+          value: 'uncompleted',
+        },
+      ],
+      onFilter: (value, { status }) => String(status).indexOf(String(value)) === 0,
     },
     {
       title: 'Attendance',
@@ -71,15 +101,17 @@ const DetailPerSessionTable: React.FC<StudentList> = (props) => {
           defaultValue='Select'
           style={{ width: '100%' }}
           options={[
-            { value: 'present', label: 'Present' },
-            { value: 'absent', label: 'Absent' },
+            { value: 'p', label: 'Present' },
+            { value: 'ap', label: 'Absent With Permission' },
+            { value: 'aop', label: 'Absent Without Permission' },
+            { value: 'r', label: 'Reserve' },
           ]}
         />
       ),
     },
-
     {
       title: 'Score',
+      width: '80px',
       render: () => (
         <Input
           type='number'
@@ -99,30 +131,39 @@ const DetailPerSessionTable: React.FC<StudentList> = (props) => {
     },
   ]
 
-  const data: DataType[] = []
-  for (let i = 1; i <= 12; i++) {
-    data.push({
-      key: i,
-      name: 'Dinh Cuong',
-      email: 'cuong@gmail.com',
-      phone: '0979999999',
-      session: `Session ${i}`,
-      tags: ['Active'],
-    })
+  let data: DataType[] = []
+
+  if (props.data) {
+    data = props.data.data
   }
-  const [hasData, setHasData] = useState(true)
+
+  const onChange: TableProps<DataType>['onChange'] = (pagination, _filters, _sorter, _extra) => {
+    const { current } = pagination
+    props.setSearchParams(current)
+    navigate(
+      `/teacher/class-detail/session?sesson_code=${props.session_code}&class_id=${props.class_id}&page=${current}&limit=10`,
+    )
+  }
+
   return (
     <Table
-      pagination={{ position: ['bottomCenter'] }}
+      pagination={{
+        position: ['bottomCenter'],
+        defaultCurrent: 1,
+        defaultPageSize: 10,
+        pageSizeOptions: [10],
+        showSizeChanger: true,
+        current: props.data && props.data.page,
+        total: props.data && props.data.total,
+      }}
       columns={columns}
-      dataSource={hasData ? data : []}
+      dataSource={data}
       scroll={{ y: 340 }}
       bordered
       size='small'
-      rowSelection={undefined}
-      showHeader
-      footer={undefined}
       style={{ padding: '0 16px' }}
+      rowKey={(_record) => _record._id}
+      onChange={onChange}
     />
   )
 }

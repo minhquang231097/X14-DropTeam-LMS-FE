@@ -1,8 +1,9 @@
 import http from '@/utils/http'
 
-export const getSessionsByClassCode = async (class_code?: string) =>
+export const getSessionsByClassCode = async (page?: string, limit?: string) =>
   http.get('/session', {
     params: {
-      class_code,
+      page: page,
+      limit: limit,
     },
   })

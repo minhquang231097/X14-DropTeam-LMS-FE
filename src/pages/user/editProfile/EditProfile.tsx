@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Divider, Button, Form, Input, Select, DatePicker, Avatar } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import Header from '@/layouts/user/Header'
@@ -8,6 +8,7 @@ import handleUpdateUser from '@/apis/updateUser.api'
 import { useQueryString } from '@/utils/utils'
 import { useQuery } from '@tanstack/react-query'
 import { getUserProfile } from '@/apis/userProfile.api'
+import { uploadImage } from '@/apis/uploadImage.api'
 
 const { Option } = Select
 
@@ -18,8 +19,6 @@ const EditProfile: React.FC = () => {
   const id = String(queryString.id)
   const userData = useQuery({ queryKey: ['user', id], queryFn: async () => await getUserProfile(id) }).data?.data?.data
 
-  console.log(userData)
-
   const [editProfileValue, setEditProfileValue] = useState({
     fullname: '',
     email: '',
@@ -27,7 +26,17 @@ const EditProfile: React.FC = () => {
     gender: '',
     address: '',
     phone_number: '',
+    avatar: {},
   })
+
+  const [imageUpload, setImageUpload] = useState([])
+
+  const [form] = Form.useForm()
+  useEffect(() => {
+    form.setFieldsValue({
+      fullname: 'Mario',
+    })
+  }, [])
 
   return (
     <>
@@ -57,19 +66,22 @@ const EditProfile: React.FC = () => {
                 marginRight: '32px',
               }}
             >
-              {userData && userData.username.charAt(0).toUpperCase()}
+              {userData && String(userData.username).charAt(0).toUpperCase()}
             </Avatar>
-            <UploadImage />
+            <UploadImage
+              imageUpload={imageUpload}
+              setImageUpload={setImageUpload}
+            />
           </div>
 
           <Divider className='dark:bg-gray-600 m-0 mb-8' />
 
           <Form
-            name='register'
+            name='editProfile'
             className='mt-4'
-            initialValues={{ prefix: '84' }}
             scrollToFirstError
             layout='vertical'
+            // initialValues={{ fullname: userData && userData.fullname }}
           >
             <div className='grid grid-cols-2 gap-3'>
               {/* fullname */}
@@ -82,7 +94,7 @@ const EditProfile: React.FC = () => {
                 <Input
                   size='large'
                   type='text'
-                  placeholder={userData ? userData.fullname : 'Your full name?'}
+                  placeholder={userData && userData.fullname}
                   maxLength={200}
                   onChange={(e) => {
                     setEditProfileValue({ ...editProfileValue, fullname: e.target.value })
@@ -137,7 +149,7 @@ const EditProfile: React.FC = () => {
                   { required: true, message: 'Please input your phone number!' },
                   {
                     validator(_, value) {
-                      if (!value || value.length === 10) {
+                      if (!value || value.length >= 10) {
                         return Promise.resolve()
                       }
                       return Promise.reject(new Error('Please enter 10 digit Number!'))
@@ -203,18 +215,22 @@ const EditProfile: React.FC = () => {
 
               <div className='grid grid-cols-4 gap-4'>
                 {/* submit */}
-                <Form.Item name='register'>
+                <Form.Item name='update'>
                   <Button
                     size='large'
+                    htmlType='submit'
                     className='w-full'
                     type='primary'
-                    onClick={() => handleUpdateUser(editProfileValue, navigate)}
+                    onClick={() => {
+                      // handleUpdateUser(editProfileValue, navigate)
+                      // uploadImage(imageUpload as [])
+                    }}
                   >
                     Update
                   </Button>
                 </Form.Item>
                 {/* submit */}
-                <Form.Item name='register'>
+                <Form.Item name='cancel'>
                   <Button
                     type='primary'
                     size='large'

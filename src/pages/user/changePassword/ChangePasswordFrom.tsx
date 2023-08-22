@@ -35,10 +35,10 @@ const ChangePasswordFrom: React.FC = () => {
           },
         ]}
       >
-        <Input
+        <Input.Password
           size='large'
           type='password'
-          placeholder='Your current password here ...'
+          placeholder='********'
           onChange={(e) => {
             setChangePassword({ ...changePassword, currentPassword: e.target.value })
           }}
@@ -64,13 +64,41 @@ const ChangePasswordFrom: React.FC = () => {
           },
         ]}
       >
-        <Input
+        <Input.Password
           size='large'
           type='password'
-          placeholder='Your new password here ...'
+          placeholder='********'
           onChange={(e) => {
             setChangePassword({ ...changePassword, newPassword: e.target.value })
           }}
+        />
+      </Form.Item>
+
+      {/* confirm password */}
+      <Form.Item
+        name='confirm'
+        dependencies={['password']}
+        hasFeedback
+        label={<p className='my-2 font-bold'>Confirm New Password</p>}
+        rules={[
+          {
+            required: true,
+            message: 'Please confirm your password!',
+          },
+          ({ getFieldValue }) => ({
+            validator(_, value) {
+              if (!value || getFieldValue('password') === value) {
+                return Promise.resolve()
+              }
+              return Promise.reject(new Error('The new password that you entered do not match!'))
+            },
+          }),
+        ]}
+      >
+        <Input.Password
+          size='large'
+          placeholder='********'
+          minLength={6}
         />
       </Form.Item>
 
