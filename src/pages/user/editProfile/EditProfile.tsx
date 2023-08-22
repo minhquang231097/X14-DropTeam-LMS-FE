@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { Divider, Button, Form, Input, Select, DatePicker, Avatar } from 'antd'
 import { useNavigate } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
 import Header from '@/layouts/user/Header'
 import Footer from '@/layouts/user/Footer'
-import UploadImage from '@/components/UploadImage'
+import UploadImage from '@/components/upload/UploadImage'
 import handleUpdateUser from '@/apis/updateUser.api'
 import { useQueryString } from '@/utils/utils'
-import { useQuery } from '@tanstack/react-query'
 import { getUserProfile } from '@/apis/userProfile.api'
 import { uploadImage } from '@/apis/uploadImage.api'
 
@@ -17,7 +17,7 @@ const EditProfile: React.FC = () => {
 
   const queryString: { id?: string } = useQueryString()
   const id = String(queryString.id)
-  const userData = useQuery({ queryKey: ['user', id], queryFn: async () => await getUserProfile(id) }).data?.data?.data
+  const userData = useQuery({ queryKey: ['user', id], queryFn: async () => getUserProfile(id) }).data?.data?.data
 
   const [editProfileValue, setEditProfileValue] = useState({
     fullname: '',

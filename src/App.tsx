@@ -21,8 +21,7 @@ import ChangePassword from './pages/user/changePassword/ChangePassword.tsx'
 
 // ADMIN
 // import ColorModeContextProvider from './contexts/colorMode.tsx'
-import AdminLogin from './pages/admin/login'
-import AdminHome from './pages/admin/main/index'
+import AdminHome from './pages/admin/home/index'
 import AdminListFacilities from './pages/admin/facilities/List.tsx'
 import AdminShowFacilities from './pages/admin/facilities/Show.tsx'
 import AdminCreateFacilities from './pages/admin/facilities/Create.tsx'

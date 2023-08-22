@@ -3,14 +3,14 @@ import { AiOutlineClockCircle, AiOutlineUser } from 'react-icons/ai'
 import { BiBarChart } from 'react-icons/bi'
 import { Tabs, Collapse, Button, message } from 'antd'
 import type { TabsProps, CollapseProps } from 'antd'
-import Sheft from '@/components/Sheft'
+import { useQuery } from '@tanstack/react-query'
+import Sheft from '@/components/sheft/Sheft'
 import Header from '@/layouts/user/Header'
 import Footer from '@/layouts/user/Footer'
 import LearnRegisterModal from './LearnRegisterModal'
 import noImage from '@/assets/images/courses/no-image.png'
 import { getCourse } from '@/apis/course.api'
 import { useQueryString } from '@/utils/utils'
-import { useQuery } from '@tanstack/react-query'
 
 const text = `
   A dog is a type of domesticated animal.

@@ -1,7 +1,7 @@
 import React from 'react'
-import Carousel from '@/components/Carousel'
-import Service from '@/components/Service'
-import Sheft from '@/components/Sheft'
+import Carousel from '@/components/carousel/Carousel'
+import Service from '@/components/service/Service'
+import Sheft from '@/components/sheft/Sheft'
 import Header from '@/layouts/user/Header'
 import Footer from '@/layouts/user/Footer'
 

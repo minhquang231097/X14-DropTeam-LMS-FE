@@ -6,7 +6,7 @@ import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import AdminLayout from '@/layouts/admin'
 // import { FacilityItems } from '@/data/facilities'
-import AdminSearch from '@/components/adminSearch'
+import AdminSearch from '@/components/search/adminSearch'
 import { getWorkplacesList } from '@/apis/workplaceList.api'
 import { useQueryString } from '@/utils/utils'
 

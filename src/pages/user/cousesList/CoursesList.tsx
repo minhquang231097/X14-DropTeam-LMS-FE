@@ -3,7 +3,7 @@ import './coursesList.css'
 import { useQuery } from '@tanstack/react-query'
 import { Select, Pagination, ConfigProvider } from 'antd'
 import Sidebar from '@/layouts/user/Sidebar'
-import CourseCard from '@/components/CourseCard'
+import CourseCard from '@/components/card/CourseCard'
 import Header from '@/layouts/user/Header'
 import Footer from '@/layouts/user/Footer'
 import { useQueryString } from '@/utils/utils'
@@ -75,11 +75,11 @@ const CoursesList: React.FC = () => {
             <div className='col-span-3 grid grid-cols-3 gap-6'>
               {data
                 ? data.map((course: any) => (
-                    <CourseCard
-                      {...course}
-                      key={course._id}
-                    />
-                  ))
+                  <CourseCard
+                    {...course}
+                    key={course._id}
+                  />
+                ))
                 : ''}
             </div>
             <div className='flex justify-center col-start-2 mt-10'>
