@@ -14,7 +14,7 @@ const UserDropdownLogged: React.FC<{ username: any }> = (prop: any) => {
   const items: MenuProps['items'] = [
     {
       key: '1',
-      label: <div className='flex items-center justify-center text-gray-600 font-bold'>{username}</div>,
+      label: <div className='flex items-center justify-center text-[#F56A00] font-bold'>{username}</div>,
       disabled: true,
     },
     {

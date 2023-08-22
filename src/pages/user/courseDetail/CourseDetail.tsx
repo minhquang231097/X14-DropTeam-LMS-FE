@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/alt-text */
 import React from 'react'
 import { AiOutlineClockCircle, AiOutlineUser } from 'react-icons/ai'
 import { BiBarChart } from 'react-icons/bi'
@@ -38,15 +37,10 @@ const itemsCollapse: CollapseProps['items'] = [
 ]
 
 const CollapseComponent: React.FC = () => {
-  const onChange = (key: string | string[]) => {
-    console.log(key)
-  }
-
   return (
     <Collapse
       items={itemsCollapse}
       defaultActiveKey={['1']}
-      onChange={onChange}
       bordered={false}
       accordion
     />
@@ -60,15 +54,10 @@ const CourseDetail: React.FC = () => {
   const { data } = useQuery({
     queryKey: ['course', id],
     queryFn: async () => {
-      // eslint-disable-next-line @typescript-eslint/no-shadow
-      const data = await getCourse(id)
-      return data?.data.data
+      const { data } = await getCourse(id)
+      return data.data
     },
   })
-
-  const onChange = (key: string) => {
-    console.log(key)
-  }
 
   const items: TabsProps['items'] = [
     {
@@ -131,7 +120,6 @@ const CourseDetail: React.FC = () => {
               <Tabs
                 defaultActiveKey='1'
                 items={items}
-                onChange={onChange}
               />
             </div>
             <div

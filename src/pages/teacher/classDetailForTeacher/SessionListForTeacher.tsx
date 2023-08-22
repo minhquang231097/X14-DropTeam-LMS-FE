@@ -1,13 +1,12 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 import React, { useState } from 'react'
 import { Button, Input } from 'antd'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import Header from '@/layouts/user/Header'
 import Footer from '@/layouts/user/Footer'
 import SidebarTeacher from '@/layouts/user/SidebarTeacher'
 import SessionListTable from './SessionListTable'
-import { useQueryString } from '@/utils/utils'
+// import { useQueryString } from '@/utils/utils'
 import { getSessionsByClassCode } from '@/apis/sessionByClassCode.api'
 import { getClassById } from '@/apis/class.api'
 
@@ -15,15 +14,20 @@ const SessionListForTeacher: React.FC = () => {
   const [searchText, setSearchText] = useState('')
   const navigate = useNavigate()
 
-  const queryString: { class_code?: string; id?: string } = useQueryString()
-  const class_code = String(queryString.class_code)
-  const id = String(queryString.id)
+  // const queryString: { class_code?: string; id?: string } = useQueryString()
+  // const class_code = String(queryString.class_code)
+  // const id = String(queryString.id)
+
+  const [searchParams, setSearchParams] = useSearchParams()
+  const page = searchParams.get('page') ?? '1'
+  const limit = searchParams.get('limit') ?? '10'
+  const id = searchParams.get('id') ?? ''
 
   const { data } = useQuery({
-    queryKey: ['sessions', class_code],
+    queryKey: ['sessions', page, limit],
     queryFn: async () => {
-      const res = await getSessionsByClassCode(class_code)
-      return res.data.data
+      const res = await getSessionsByClassCode(page, limit)
+      return res.data
     },
   })
 
@@ -31,7 +35,7 @@ const SessionListForTeacher: React.FC = () => {
     queryKey: ['class', id],
     queryFn: async () => {
       const res = await getClassById(id)
-      return res.data
+      return res.data.data
     },
   }).data
 
@@ -46,17 +50,17 @@ const SessionListForTeacher: React.FC = () => {
         >
           <div className='p-4 flex justify-between items-start'>
             <div>
-              <span className='text-xl text-gray-600 dark:text-gray-400 font-bold'>
-                {classData ? 'Class Code: ' + classData.data.class_code : 'Class Name'}
+              <span className='text-xl text-[#F56A00] font-bold'>
+                {classData ? 'Class Code: ' + classData.class_code : 'Class Name'}
               </span>
               <p className='m-0 text-sm text-gray-500 mt-2'>
-                {/* Total sessions: <span className='text-blue-600'>{data ? data.data.length : ''}</span> */}
+                Total sessions: <span className='text-blue-600'>{data ? data.total : ''}</span>
               </p>
               <p className='m-0 text-sm text-gray-500 mt-2 flex'>
                 Schedule:{' '}
                 <span className='text-blue-600 flex'>
-                  {classData && classData.data.schedule
-                    ? [...classData.data.schedule].map((ele) => {
+                  {classData && classData.schedule
+                    ? [...classData.schedule].map((ele) => {
                         if (ele === 0) {
                           return <span className='ml-2 text-yellow-500'>Monday</span>
                         } else if (ele === 1) {
@@ -79,13 +83,13 @@ const SessionListForTeacher: React.FC = () => {
               <p className='m-0 text-sm text-gray-500 mt-2'>
                 Start at:{' '}
                 <span className='text-blue-600'>
-                  {classData ? new Date(classData.data.end_at).toLocaleDateString('vi-VN') : 'DD/MM/YYYY'}
+                  {classData ? new Date(classData.start_at).toLocaleDateString('vi-VN') : 'DD/MM/YYYY'}
                 </span>
               </p>
               <p className='m-0 text-sm text-gray-500 mt-2'>
                 Expected end at:{' '}
                 <span className='text-blue-600'>
-                  {classData ? new Date(classData.data.start_at).toLocaleDateString('vi-VN') : 'DD/MM/YYYY'}
+                  {classData ? new Date(classData.end_at).toLocaleDateString('vi-VN') : 'DD/MM/YYYY'}
                 </span>
               </p>
               <Button
@@ -104,8 +108,10 @@ const SessionListForTeacher: React.FC = () => {
             />
           </div>
           <SessionListTable
-            data={{ ...data }}
+            data={data as any}
             searchText={searchText}
+            setSearchParams={setSearchParams}
+            classId={id}
           />
         </div>
       </div>

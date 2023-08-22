@@ -1,23 +1,29 @@
 import React, { useState } from 'react'
 import { Input } from 'antd'
+import { useSearchParams } from 'react-router-dom'
+// import { useQueryString } from '@/utils/utils'
 import Header from '@/layouts/user/Header'
 import Footer from '@/layouts/user/Footer'
 import SidebarTeacher from '@/layouts/user/SidebarTeacher'
 import LessonsListTable from './LessonsListTable'
 import { useQuery } from '@tanstack/react-query'
-import { useQueryString } from '@/utils/utils'
 import { getLessonsList } from '@/apis/lessonsList.api'
 
 const LessonsListForTeacher: React.FC = () => {
   const [searchText, setSearchText] = useState('')
-  const queryString: { page?: string } = useQueryString()
-  const page = Number(queryString.page) || 1
+
+  // const queryString: { page?: string } = useQueryString()
+  // const page = Number(queryString.page) || 1
+
+  const [searchParams, setSearchParams] = useSearchParams()
+  const page = searchParams.get('page') ?? '1'
+  const limit = searchParams.get('limit') ?? '10'
 
   const { data } = useQuery({
-    queryKey: ['classes', page],
+    queryKey: ['classes', page, limit],
     queryFn: async () => {
-      const res = await getLessonsList(page, 10)
-      return res.data.data
+      const res = await getLessonsList(page, limit)
+      return res.data
     },
   })
 
@@ -32,9 +38,9 @@ const LessonsListForTeacher: React.FC = () => {
         >
           <div className='p-4 flex justify-between items-start'>
             <div>
-              <span className='text-xl text-gray-600 dark:text-gray-400 font-bold'>Lessons List For Teacher</span>
+              <span className='text-xl text-[#F56A00] font-bold'>Lessons List For Teacher</span>
               <p className='m-0 text-sm text-gray-500 mt-2'>
-                Total lessons: <span className='text-blue-600'>{data ? data.list.length : ''}</span>
+                Total lessons: <span className='text-blue-600'>{data ? data.total : ''}</span>
               </p>
             </div>
             <Input.Search
@@ -45,8 +51,9 @@ const LessonsListForTeacher: React.FC = () => {
             />
           </div>
           <LessonsListTable
-            data={{ ...data }}
+            data={data as any}
             searchText={searchText}
+            setSearchParams={setSearchParams}
           />
         </div>
       </div>

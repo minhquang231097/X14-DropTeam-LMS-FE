@@ -49,7 +49,9 @@ const CourseCard = (course: Course) => {
           <div className='flex items-center'>
             <p className='font-bold mr-2'>${course.price}</p>
             <p className='text-gray-500 text-sm line-through'>
-              ${Number(course.price) * (1 - Number(course.discount) / 100)}
+              {Number(course.discount)
+                ? '$' + Math.floor(Number(course.price) * (1 + Number(course.discount) / 100))
+                : ''}
             </p>
           </div>
         </div>

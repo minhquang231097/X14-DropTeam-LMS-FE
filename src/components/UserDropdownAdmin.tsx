@@ -43,7 +43,7 @@ const UserDropdownAdmin: React.FC<{ username: any }> = (props: any) => {
           className='flex items-center text-gray-600 font-bold'
           onClick={() => {
             if (USER.role === 'ADMIN') {
-              navigate('/teacher/classes-list')
+              navigate('/teacher/classes-list?page=1&limit=10')
             }
           }}
         >

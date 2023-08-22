@@ -1,36 +1,44 @@
 import React, { useState } from 'react'
 import Header from '@/layouts/user/Header'
 import Footer from '@/layouts/user/Footer'
-import { Input } from 'antd'
 import SidebarTeacher from '@/layouts/user/SidebarTeacher'
 import DetailPerSessionTable from './DetailPerSessionTable'
+import { useSearchParams } from 'react-router-dom'
+// import { useQueryString } from '@/utils/utils'
+// import { getSessionById } from '@/apis/sessionBySessionId.api'
+import { Button, Input } from 'antd'
 import { useQuery } from '@tanstack/react-query'
-import { useQueryString } from '@/utils/utils'
-import { getSessionById } from '@/apis/sessionBySessionId.api'
 import { getStudentsListPerSession } from '@/apis/studentsPerSession'
+import { FaFileUpload } from 'react-icons/fa'
 
 const DetailPerSession: React.FC = () => {
   const [searchText, setSearchText] = useState('')
 
-  const queryString: { id?: string; class_code?: string } = useQueryString()
-  const id = String(queryString.id)
-  const class_code = String(queryString.class_code)
+  // const queryString: { id?: string; class_code?: string } = useQueryString()
+  // const id = String(queryString.id)
+  // const class_code = String(queryString.class_code)
 
-  const sessionData = useQuery({
-    queryKey: ['session', id],
-    queryFn: async () => {
-      const res = await getSessionById(id)
-      return res.data.data
-    },
-  }).data
+  const [searchParams, setSearchParams] = useSearchParams()
+  const session_code = searchParams.get('session_code') ?? ''
+  const class_id = searchParams.get('class_id') ?? ''
+  const page = searchParams.get('page') ?? '1'
+  const limit = searchParams.get('limit') ?? '10'
+
+  // const sessionData = useQuery({
+  //   queryKey: ['session', session_id],
+  //   queryFn: async () => {
+  //     const res = await getSessionById(session_id)
+  //     return res
+  //   },
+  // })
 
   const studentsData = useQuery({
-    queryKey: ['students', class_code],
+    queryKey: ['students', class_id, page, limit],
     queryFn: async () => {
-      const res = await getStudentsListPerSession(class_code)
-      return res.data.data
+      const res = await getStudentsListPerSession(class_id, page, limit)
+      return res.data
     },
-  })
+  }).data
 
   return (
     <>
@@ -43,21 +51,37 @@ const DetailPerSession: React.FC = () => {
         >
           <div className='p-4 flex justify-between items-start'>
             <div>
-              <span className='text-xl text-gray-600 dark:text-gray-400 font-bold'>
-                {sessionData ? 'Session Code: ' + sessionData.session_code : 'Session Code'}
+              <span className='text-xl text-[#F56A00] font-bold'>
+                {session_code ? 'Session Code: ' + session_code : 'Session Code'}
               </span>
               <p className='m-0 text-sm text-gray-500 mt-2'>
-                Total students: <span className='text-blue-600'>10</span>
+                Total students: <span className='text-blue-600'>{studentsData && studentsData.total}</span>
               </p>
             </div>
-            <Input.Search
-              placeholder='Search Student Name ...'
-              style={{ width: 280 }}
-              onSearch={(value) => setSearchText(value)}
-              onChange={(e) => setSearchText(e.target.value)}
-            />
+            <div className='flex flex-col items-end'>
+              <Input.Search
+                placeholder='Search Student Name ...'
+                style={{ width: 280 }}
+                onSearch={(value) => setSearchText(value)}
+                onChange={(e) => setSearchText(e.target.value)}
+              />
+
+              <Button
+                className='mt-3'
+                type='primary'
+                icon={<FaFileUpload className='w-6 h-6' />}
+                size='large'
+                ghost
+              ></Button>
+            </div>
           </div>
-          <DetailPerSessionTable searchText={searchText} />
+          <DetailPerSessionTable
+            data={studentsData as any}
+            searchText={searchText}
+            setSearchParams={setSearchParams}
+            session_code={session_code}
+            class_id={class_id}
+          />
         </div>
       </div>
       <Footer />

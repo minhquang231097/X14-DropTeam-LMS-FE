@@ -1,7 +1,7 @@
 /* eslint-disable react/destructuring-assignment */
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Table, Tag } from 'antd'
+import { Table, Tag, TableProps } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 
 interface DataType {
@@ -15,8 +15,9 @@ interface DataType {
 }
 
 type ClassesList = {
-  data: { list: []; count: number; page: number; total: number; total_page: number }
+  data: { count: number; data: []; page: number; statusCode: number; total: number; total_page: number }
   searchText: string
+  setSearchParams: any
 }
 
 const ClassListTable: React.FC<ClassesList> = (props) => {
@@ -205,7 +206,13 @@ const ClassListTable: React.FC<ClassesList> = (props) => {
 
   const navigate = useNavigate()
   if (props.data !== undefined) {
-    data = props.data.list
+    data = props.data.data
+  }
+
+  const onChange: TableProps<DataType>['onChange'] = (pagination, _filters, _sorter, _extra) => {
+    const { current } = pagination
+    props.setSearchParams(current)
+    navigate(`/teacher/classes-list?page=${current}&limit=10`)
   }
 
   return (
@@ -216,27 +223,23 @@ const ClassListTable: React.FC<ClassesList> = (props) => {
         defaultPageSize: 10,
         pageSizeOptions: [10],
         showSizeChanger: true,
-        // showQuickJumper: true,
-        // current: page,
-        // total: courseData.total,
+        current: props.data && props.data.page,
+        total: props.data && props.data.total,
       }}
       columns={columns}
       dataSource={data}
       scroll={{ y: 340 }}
       bordered
       size='small'
-      rowSelection={undefined}
-      showHeader
       rowKey={({ _id }) => {
         return _id
       }}
-      footer={undefined}
       style={{ padding: '0 16px' }}
-      onRow={({ _id, class_code }) => {
+      onChange={onChange}
+      onRow={({ _id }) => {
         return {
           onClick: () => {
-            navigate(`/teacher/class-detail?id=${_id}&class_code=${class_code}`)
-            navigate(0)
+            navigate(`/teacher/class-detail?id=${_id}&page=1&limit=10`)
           },
         }
       }}

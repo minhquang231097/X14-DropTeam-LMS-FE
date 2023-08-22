@@ -1,6 +1,7 @@
 import React from 'react'
-import { Table, Tag } from 'antd'
+import { Table, Tag, TableProps } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
+import { useNavigate } from 'react-router-dom'
 
 interface DataType {
   key: number
@@ -10,11 +11,14 @@ interface DataType {
 }
 
 type LessonsList = {
-  data: { list: [] }
+  data: { count: number; data: []; page: number; statusCode: number; total: number; total_page: number }
   searchText: string
+  setSearchParams: any
 }
 
 const LessonsListTable: React.FC<LessonsList> = (props) => {
+  const navigate = useNavigate()
+
   const columns: ColumnsType<DataType> = [
     {
       title: 'No.',
@@ -67,21 +71,33 @@ const LessonsListTable: React.FC<LessonsList> = (props) => {
   let data: DataType[] = []
 
   if (props.data !== undefined) {
-    data = props.data.list
+    data = props.data.data
+  }
+
+  const onChange: TableProps<DataType>['onChange'] = (pagination, _filters, _sorter, _extra) => {
+    const { current } = pagination
+    props.setSearchParams(current)
+    navigate(`/teacher/lessons-list?page=${current}&limit=10`)
   }
 
   return (
     <Table
-      pagination={{ position: ['bottomCenter'] }}
+      pagination={{
+        position: ['bottomCenter'],
+        defaultCurrent: 1,
+        defaultPageSize: 10,
+        pageSizeOptions: [10],
+        showSizeChanger: true,
+        current: props.data && props.data.page,
+        total: props.data && props.data.total,
+      }}
       columns={columns}
       dataSource={data}
       scroll={{ y: 340 }}
       bordered
       size='small'
-      rowSelection={undefined}
-      showHeader
-      footer={undefined}
       style={{ padding: '0 16px' }}
+      onChange={onChange}
     />
   )
 }

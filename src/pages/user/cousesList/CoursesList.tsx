@@ -17,7 +17,7 @@ const CoursesList: React.FC = () => {
     queryKey: ['courses', page],
     queryFn: async () => {
       const res = await getCoursesList(page, 6)
-      return res.data.data.allCourses
+      return res.data.data
     },
   })
 
