@@ -20,17 +20,23 @@ const MenuSection: React.FC = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const searchParams = new URLSearchParams(location.search)
+
   const onClick: MenuProps['onClick'] = (e) => {
-    searchParams.set('page', '1')
-    searchParams.set('limit', '10')
-    navigate(`/admin/${e.key}?${searchParams.toString()}`, { replace: true })
+    if (e.key === '') {
+      navigate('/admin')
+    }
+    if (e.key !== '') {
+      searchParams.set('page', '1')
+      searchParams.set('limit', '10')
+      navigate(`/admin/${e.key}?${searchParams.toString()}`, { replace: true })
+    }
   }
 
   const items: MenuProps['items'] = [
     getItem('Home', '', <MdOutlineHome style={{ fontSize: '24px', verticalAlign: 'middle' }} />),
 
     getItem('Users', 'users', <MdPeople style={{ fontSize: '24px', verticalAlign: 'middle' }} />, [
-      getItem('Teachers', 'users/teachers'),
+      getItem('Mentors', 'users/mentors'),
       getItem('Students', 'users/students'),
     ]),
 
@@ -54,8 +60,6 @@ const MenuSection: React.FC = () => {
       >
         <Menu
           onClick={onClick}
-          defaultSelectedKeys={['']}
-          defaultOpenKeys={['courses/all']}
           mode='inline'
           items={items}
         />

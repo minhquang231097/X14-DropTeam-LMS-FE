@@ -93,6 +93,14 @@ const App: React.FC = () => {
           path='/reset-password'
           element={<ResetPassword />}
         />
+        <Route
+          path='/profile'
+          element={USER ? <Profile /> : <LoginForm />}
+        />
+        <Route
+          path='/change-password'
+          element={USER ? <ChangePassword /> : <LoginForm />}
+        />
 
         {/* TEACHER */}
         <Route
@@ -115,6 +123,7 @@ const App: React.FC = () => {
         {/* ADMIN */}
         <Route
           path='/admin'
+          // element={<AdminHome />}
           element={USER && USER.role === 'ADMIN' ? <AdminHome /> : <Forbidden403 />}
         />
         <Route
@@ -210,7 +219,7 @@ const App: React.FC = () => {
           element={USER && USER.role === 'ADMIN' ? <AdminEditClasses /> : <Forbidden403 />}
         />
         <Route
-          path='/admin/classes/feedbacks'
+          path='/admin/feedbacks'
           element={USER && USER.role === 'ADMIN' ? <AdminFeedbacks /> : <Forbidden403 />}
         />
         <Route
@@ -221,10 +230,7 @@ const App: React.FC = () => {
           path='/admin/change-password'
           element={USER && USER.role === 'ADMIN' ? <AdminChangePassword /> : <Forbidden403 />}
         />
-        <Route
-          path='/admin/login'
-          element={USER && USER.role === 'ADMIN' ? <AdminLogin /> : <Forbidden403 />}
-        />
+        
         <Route
           path='*'
           element={<NotFound404 />}

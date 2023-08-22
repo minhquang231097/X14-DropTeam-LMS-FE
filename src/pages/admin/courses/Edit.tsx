@@ -1,5 +1,5 @@
 import React from 'react'
-import { Breadcrumb, Button, Card, Col, Form, Input, InputNumber, Row, Space, Typography } from 'antd'
+import { Breadcrumb, Button, Card, Col, Form, Input, InputNumber, Row, Space, Typography, notification } from 'antd'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import AdminLayout from '@/layouts/admin'
@@ -23,24 +23,36 @@ interface ICourse {
 const CustomContent = () => {
   const [form] = Form.useForm()
 
-  // eslint-disable-next-line @typescript-eslint/naming-convention
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
 
-  const updateWorkplace = async (course: ICourse) => {
+  const updateCourse = async (course: ICourse) => {
     if (!id) {
       throw new Error('Missing id parameter')
     }
-    await http.put('/course', course, {
+    await http.put(`/course/`, course, {
       params: {
         id,
       },
     })
   }
 
-  const { mutate, isLoading } = useMutation(updateWorkplace, {
+  const { mutate, isLoading } = useMutation(updateCourse, {
     onSuccess: () => {
       // Perform any necessary actions after successful creation
+      notification.success({
+        message: 'Update successful',
+        description: 'The course has been updated successfully',
+      })
+      form.resetFields()
+      navigate('/admin/courses/all')
+    },
+    onError: () => {
+      // Perform any necessary actions after failed creation
+      notification.error({
+        message: 'Update failed',
+        description: 'There was an error updating the course',
+      })
       form.resetFields()
     },
   })
@@ -57,13 +69,20 @@ const CustomContent = () => {
     return <Typography.Text>Course not found</Typography.Text>
   }
 
-  const handleSubmit = async (values: ICourse) => {
-    try {
-      mutate(values)
-    } catch (error) {
-      console.error(error)
-    }
-  }
+  // const handleSubmit = async (values: ICourse) => {
+  //   try {
+  //     mutate(values)
+  //     notification.success({
+  //       message: 'Update successful',
+  //       description: 'The course has been updated successfully',
+  //     })
+  //   } catch (error) {
+  //     notification.error({
+  //       message: 'Update failed',
+  //       description: 'There was an error updating the course',
+  //     })
+  //   }
+  // }
 
   return (
     <>
@@ -84,8 +103,9 @@ const CustomContent = () => {
       <Card>
         <Form
           form={form}
-          onFinish={handleSubmit}
+          onFinish={mutate}
           layout='vertical'
+          initialValues={{ ...course }}
         >
           <Typography.Title
             level={3}
@@ -100,14 +120,14 @@ const CustomContent = () => {
                 name='title'
                 rules={[{ required: true, message: 'Please enter the title' }]}
               >
-                <Input />
+                <Input required />
               </Form.Item>
               <Form.Item
                 label='Course Code'
                 name='course_code'
                 rules={[{ required: true, message: 'Please enter the code' }]}
               >
-                <Input />
+                <Input required />
               </Form.Item>
               <Form.Item
                 label='Number of Sessions per Course'
@@ -185,7 +205,7 @@ const CustomContent = () => {
                 htmlType='submit'
                 loading={isLoading}
               >
-                Create
+                Update
               </Button>
             </Space>
           </Form.Item>

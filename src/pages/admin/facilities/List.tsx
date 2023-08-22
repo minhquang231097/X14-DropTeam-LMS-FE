@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Breadcrumb, Button, Card, Image, Space, Table, Typography, Modal, theme, TableProps } from 'antd'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { MdAddCircleOutline, MdOutlineCheck, MdOutlineCircle, MdOutlineClose } from 'react-icons/md'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
@@ -13,9 +13,10 @@ import { useQueryString } from '@/utils/utils'
 interface DataType {
   _id: string
   image_url?: string
-  name?: string
-  address?: string
-  status?: string
+  name: string
+  workplace_code: string
+  address: string
+  status: string
 }
 
 const CustomContent = () => {
@@ -25,6 +26,9 @@ const CustomContent = () => {
 
   const queryString: { page?: string } = useQueryString()
   const page = Number(queryString.page) || 1
+  // const [searchParams, setSearchParams] = useSearchParams()
+
+  // const page = searchParams.get('page') ?? 1
 
   // const [isActive, setIsActive] = useState(true)
   const [selectedFacility, setSelectedFacility] = useState<DataType | null>(null)
@@ -49,7 +53,7 @@ const CustomContent = () => {
   }
 
   const onChange: TableProps<DataType>['onChange'] = (pagination, filters, sorter, extra) => {
-    console.log('params', pagination, filters, sorter, extra)
+    // console.log('params', pagination, filters, sorter, extra)
     const { current } = pagination
     navigate(`/admin/facilities/all?page=${current}&limit=10`)
   }
@@ -58,7 +62,7 @@ const CustomContent = () => {
     {
       title: 'Image',
       dataIndex: 'image_url',
-      width: '30%',
+      width: '25%',
       render: () => (
         <Image
           src='https://via.placeholder.com/500x250'
@@ -76,7 +80,7 @@ const CustomContent = () => {
             strong
             style={{ fontSize: '20px' }}
           >
-            {name}
+            {name} ({facility.workplace_code})
           </Typography.Text>
           <Typography.Text>{facility.address}</Typography.Text>
         </Space>
@@ -85,7 +89,7 @@ const CustomContent = () => {
     {
       title: 'Status',
       dataIndex: 'status',
-      width: '15%',
+      width: '20%',
       render: (status: any) => (
         <Typography.Text
           style={{
@@ -182,8 +186,9 @@ const CustomContent = () => {
         </div>
         {workplaceData && (
           <Table
+            rowKey={(facility: DataType) => facility._id}
             columns={columns}
-            dataSource={workplaceData.all}
+            dataSource={workplaceData.list}
             pagination={{
               position: ['bottomRight'],
               current: page,
