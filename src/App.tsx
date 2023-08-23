@@ -42,7 +42,7 @@ import AdminLessons from './pages/admin/lessons/index.tsx'
 import AdminFeedbacks from './pages/admin/feedbacks/index.tsx'
 import AdminStudentEdit from './pages/admin/userlists/StudentEdit.tsx'
 import AdminTeacherEdit from './pages/admin/userlists/TeacherEdit.tsx'
-import Profile from './pages/user/profile/index.tsx'
+// import Profile from './pages/user/profile/index.tsx'
 import Forbidden403 from './pages/forbidden403/Fobidden403.tsx'
 import LoginForm from './pages/user/login/LoginForm.tsx'
 
@@ -94,7 +94,7 @@ const App: React.FC = () => {
         />
         <Route
           path='/profile'
-          element={USER ? <Profile /> : <LoginForm />}
+          element={USER ? <EditProfile /> : <LoginForm />}
         />
         <Route
           path='/change-password'
