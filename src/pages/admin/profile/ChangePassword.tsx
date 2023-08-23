@@ -1,8 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button, Form, Input } from 'antd'
 import '../../user/profile/ChangePassword/ChangePassword.css'
-import { useState } from 'react';
-import handleChangePassword from '@/apis/changePassword.api';
+import handleChangePassword from '@/apis/changePassword.api'
 
 // const onFinish = (values: any) => {
 //   console.log('Success:', values)
@@ -15,7 +14,6 @@ import handleChangePassword from '@/apis/changePassword.api';
 const AdminChangePassword: React.FC = () => {
   // const [oldPassword, setOldPassword] = useState("1234");
   const [changePasswordValue, setChangePasswordValue] = useState({ oldPassword: '', newPassword: '' })
-
 
   return (
     <div className='changepassword-container'>
@@ -46,7 +44,9 @@ const AdminChangePassword: React.FC = () => {
             // }),
           ]}
         >
-          <Input.Password onChange={(event) => setChangePasswordValue({ ...changePasswordValue, oldPassword: event.target.value })} />
+          <Input.Password
+            onChange={(event) => setChangePasswordValue({ ...changePasswordValue, oldPassword: event.target.value })}
+          />
         </Form.Item>
 
         <Form.Item
@@ -57,40 +57,47 @@ const AdminChangePassword: React.FC = () => {
             () => ({
               validator(_, value) {
                 if (value.length >= 6) {
-                  return Promise.resolve();
+                  return Promise.resolve()
                 }
-                return Promise.reject(new Error('The password must be at least 6 characters long!'));
+                return Promise.reject(new Error('The password must be at least 6 characters long!'))
               },
             }),
           ]}
           hasFeedback
         >
-          <Input.Password onChange={(e)=>setChangePasswordValue({...changePasswordValue, newPassword:e.target.value})}/>
+          <Input.Password
+            onChange={(e) => setChangePasswordValue({ ...changePasswordValue, newPassword: e.target.value })}
+          />
         </Form.Item>
 
         <Form.Item
           label='Confirm Password'
           name='confirmpassword'
           hasFeedback
-          rules={[{
-            required: true,
-            message: 'Please input your password!'
-          },
-          ({ getFieldValue }) => ({
-            validator(_, value) {
-              if (!value || getFieldValue('newpassword') === value) {
-                return Promise.resolve();
-              }
-              return Promise.reject(new Error('The new password that you entered do not match!'));
+          rules={[
+            {
+              required: true,
+              message: 'Please input your password!',
             },
-          }),
+            ({ getFieldValue }) => ({
+              validator(_, value) {
+                if (!value || getFieldValue('newpassword') === value) {
+                  return Promise.resolve()
+                }
+                return Promise.reject(new Error('The new password that you entered do not match!'))
+              },
+            }),
           ]}
         >
           <Input.Password />
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <Button type='primary' htmlType='submit' onClick={()=>handleChangePassword(changePasswordValue)}>
+          <Button
+            type='primary'
+            htmlType='submit'
+            onClick={() => handleChangePassword(changePasswordValue)}
+          >
             Submit
           </Button>
         </Form.Item>

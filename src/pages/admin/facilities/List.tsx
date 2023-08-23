@@ -97,8 +97,8 @@ const CustomContent = () => {
               status === 'ON'
                 ? token.colorSuccessText
                 : status === 'OFF'
-                  ? token.colorErrorText
-                  : token.colorWarningText,
+                ? token.colorErrorText
+                : token.colorWarningText,
             fontSize: '18px',
             display: 'flex',
             alignItems: 'center',

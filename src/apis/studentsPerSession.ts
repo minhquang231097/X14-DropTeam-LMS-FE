@@ -4,7 +4,7 @@ export const getStudentsListPerSession = (class_id: string, page: string, limit:
   http.get('/user', {
     params: {
       id: class_id,
-      page: page,
-      limit: limit,
+      page,
+      limit,
     },
   })

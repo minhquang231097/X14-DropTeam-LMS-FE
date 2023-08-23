@@ -138,8 +138,8 @@ const CustomContent = () => {
               status === 'ON' && cls.class_size && cls.class_size >= sizeReq
                 ? token.colorSuccessText
                 : status === 'OFF' || (cls.class_size && cls.class_size < sizeReq)
-                  ? token.colorErrorText
-                  : token.colorWarningText,
+                ? token.colorErrorText
+                : token.colorWarningText,
             fontSize: '18px',
             display: 'flex',
             alignItems: 'center',

@@ -88,7 +88,8 @@ const ClassListTable: React.FC<ClassesList> = (props) => {
                       Mon
                     </Tag>
                   )
-                } else if (ele === 1) {
+                }
+                if (ele === 1) {
                   return (
                     <Tag
                       color='pink'
@@ -97,7 +98,8 @@ const ClassListTable: React.FC<ClassesList> = (props) => {
                       Tue
                     </Tag>
                   )
-                } else if (ele === 2) {
+                }
+                if (ele === 2) {
                   return (
                     <Tag
                       color='green'
@@ -106,7 +108,8 @@ const ClassListTable: React.FC<ClassesList> = (props) => {
                       Wed
                     </Tag>
                   )
-                } else if (ele === 3) {
+                }
+                if (ele === 3) {
                   return (
                     <Tag
                       color='orange'
@@ -115,7 +118,8 @@ const ClassListTable: React.FC<ClassesList> = (props) => {
                       Thu
                     </Tag>
                   )
-                } else if (ele === 4) {
+                }
+                if (ele === 4) {
                   return (
                     <Tag
                       color='blue'
@@ -124,7 +128,8 @@ const ClassListTable: React.FC<ClassesList> = (props) => {
                       Fri
                     </Tag>
                   )
-                } else if (ele === 5) {
+                }
+                if (ele === 5) {
                   return (
                     <Tag
                       color='purple'
@@ -133,7 +138,8 @@ const ClassListTable: React.FC<ClassesList> = (props) => {
                       Sat
                     </Tag>
                   )
-                } else if (ele === 6) {
+                }
+                if (ele === 6) {
                   return (
                     <Tag
                       color='red'

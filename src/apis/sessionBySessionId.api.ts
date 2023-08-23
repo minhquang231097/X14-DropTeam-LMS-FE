@@ -1,3 +1,3 @@
 import http from '@/utils/http'
 
-export const getSessionById = async (id: string) => await http.get(`/session/${id}`)
+export const getSessionById = async (id: string) => http.get(`/session/${id}`)

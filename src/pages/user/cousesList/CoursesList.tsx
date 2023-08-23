@@ -75,11 +75,11 @@ const CoursesList: React.FC = () => {
             <div className='col-span-3 grid grid-cols-3 gap-6'>
               {data
                 ? data.map((course: any) => (
-                  <CourseCard
-                    {...course}
-                    key={course._id}
-                  />
-                ))
+                    <CourseCard
+                      {...course}
+                      key={course._id}
+                    />
+                  ))
                 : ''}
             </div>
             <div className='flex justify-center col-start-2 mt-10'>

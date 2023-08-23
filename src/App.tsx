@@ -45,7 +45,6 @@ import AdminTeacherEdit from './pages/admin/userlists/TeacherEdit.tsx'
 // import Profile from './pages/user/profile/index.tsx'
 import Forbidden403 from './pages/forbidden403/Fobidden403.tsx'
 import LoginForm from './pages/user/login/LoginForm.tsx'
-import Statistic from './pages/admin/Statistics/Statistics.jsx'
 
 const App: React.FC = () => {
   const USER = JSON.parse(localStorage.getItem('user') as string)
@@ -230,15 +229,15 @@ const App: React.FC = () => {
           path='/admin/change-password'
           element={USER && USER.role === 'ADMIN' ? <AdminChangePassword /> : <Forbidden403 />}
         /> */}
-        <Route
-          path='/admin/dashboard'
+        {/* <Route
+          path='/admin'
           element={<Statistic />}
-        />
+        /> */}
         <Route
           path='*'
           element={<NotFound404 />}
         />
-      </Routes >
+      </Routes>
       <ScrollToTop />
     </>
   )

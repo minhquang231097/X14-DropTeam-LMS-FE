@@ -1,12 +1,14 @@
 // import React, { useState, useEffect } from 'react';
 // import ReactDOM from 'react-dom';
-import { Pie } from '@ant-design/plots';
-import { Card } from 'antd';
-interface props{
-  data:any,
+import { Pie } from '@ant-design/plots'
+import { Card } from 'antd'
+
+interface Props {
+  data: any
 }
-const Donut:React.FC<props>=(props:props) => {
-  const {data}=props;
+
+const Donut: React.FC<Props> = (props) => {
+  const { data } = props
   const config = {
     appendPadding: 10,
     data,
@@ -34,7 +36,7 @@ const Donut:React.FC<props>=(props:props) => {
       },
     ],
     statistic: {
-      title: false,
+      title: undefined,
       content: {
         style: {
           whiteSpace: 'pre-wrap',
@@ -44,12 +46,12 @@ const Donut:React.FC<props>=(props:props) => {
         content: '',
       },
     },
-  };
-  return(
+  }
+  return (
     <Card title='Traffic'>
-      <Pie {...config}/>
+      <Pie {...config} />
     </Card>
-  );
-};
+  )
+}
 
 export default Donut

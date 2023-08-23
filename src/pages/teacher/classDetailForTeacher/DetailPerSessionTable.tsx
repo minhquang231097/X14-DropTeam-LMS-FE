@@ -25,6 +25,7 @@ const { TextArea } = Input
 
 const DetailPerSessionTable: React.FC<StudentList> = (props) => {
   const navigate = useNavigate()
+  const { searchText, data, session_code, setSearchParams, class_id } = props
 
   const columns: ColumnsType<DataType> = [
     {
@@ -37,7 +38,7 @@ const DetailPerSessionTable: React.FC<StudentList> = (props) => {
       title: 'Student Name',
       dataIndex: 'fullname',
       width: '140px',
-      filteredValue: [props.searchText],
+      filteredValue: [searchText],
       onFilter: (value, { fullname }) => String(fullname).toLowerCase().includes(String(value).toLowerCase()),
     },
     {
@@ -131,18 +132,16 @@ const DetailPerSessionTable: React.FC<StudentList> = (props) => {
     },
   ]
 
-  let data: DataType[] = []
+  let sessionData: DataType[] = []
 
-  if (props.data) {
-    data = props.data.data
+  if (data) {
+    sessionData = data.data
   }
 
   const onChange: TableProps<DataType>['onChange'] = (pagination, _filters, _sorter, _extra) => {
     const { current } = pagination
-    props.setSearchParams(current)
-    navigate(
-      `/teacher/class-detail/session?sesson_code=${props.session_code}&class_id=${props.class_id}&page=${current}&limit=10`,
-    )
+    setSearchParams(current)
+    navigate(`/teacher/class-detail/session?sesson_code=${session_code}&class_id=${class_id}&page=${current}&limit=10`)
   }
 
   return (
@@ -153,11 +152,11 @@ const DetailPerSessionTable: React.FC<StudentList> = (props) => {
         defaultPageSize: 10,
         pageSizeOptions: [10],
         showSizeChanger: true,
-        current: props.data && props.data.page,
-        total: props.data && props.data.total,
+        current: data && data.page,
+        total: data && data.total,
       }}
       columns={columns}
-      dataSource={data}
+      dataSource={sessionData}
       scroll={{ y: 340 }}
       bordered
       size='small'

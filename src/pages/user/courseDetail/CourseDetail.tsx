@@ -54,6 +54,7 @@ const CourseDetail: React.FC = () => {
   const { data } = useQuery({
     queryKey: ['course', id],
     queryFn: async () => {
+      // eslint-disable-next-line @typescript-eslint/no-shadow
       const { data } = await getCourse(id)
       return data.data
     },
@@ -130,6 +131,7 @@ const CourseDetail: React.FC = () => {
                 <img
                   src={data && data.image ? data.image[0] : noImage}
                   className='w-full rounded-lg'
+                  alt=''
                 />
                 {!user ? (
                   <>
