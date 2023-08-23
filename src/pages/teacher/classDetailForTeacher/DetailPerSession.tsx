@@ -1,15 +1,15 @@
 import React, { useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
+import { Button, Input } from 'antd'
+import { useQuery } from '@tanstack/react-query'
+import { FaFileUpload } from 'react-icons/fa'
 import Header from '@/layouts/user/Header'
 import Footer from '@/layouts/user/Footer'
 import SidebarTeacher from '@/layouts/user/SidebarTeacher'
 import DetailPerSessionTable from './DetailPerSessionTable'
-import { useSearchParams } from 'react-router-dom'
 // import { useQueryString } from '@/utils/utils'
 // import { getSessionById } from '@/apis/sessionBySessionId.api'
-import { Button, Input } from 'antd'
-import { useQuery } from '@tanstack/react-query'
 import { getStudentsListPerSession } from '@/apis/studentsPerSession'
-import { FaFileUpload } from 'react-icons/fa'
 
 const DetailPerSession: React.FC = () => {
   const [searchText, setSearchText] = useState('')
@@ -52,7 +52,7 @@ const DetailPerSession: React.FC = () => {
           <div className='p-4 flex justify-between items-start'>
             <div>
               <span className='text-xl text-[#F56A00] font-bold'>
-                {session_code ? 'Session Code: ' + session_code : 'Session Code'}
+                {session_code ? `Session Code: ${session_code}` : 'Session Code'}
               </span>
               <p className='m-0 text-sm text-gray-500 mt-2'>
                 Total students: <span className='text-blue-600'>{studentsData && studentsData.total}</span>
@@ -72,7 +72,7 @@ const DetailPerSession: React.FC = () => {
                 icon={<FaFileUpload className='w-6 h-6' />}
                 size='large'
                 ghost
-              ></Button>
+              />
             </div>
           </div>
           <DetailPerSessionTable

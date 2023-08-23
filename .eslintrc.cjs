@@ -22,12 +22,14 @@ module.exports = {
     project: './tsconfig.json',
     tsconfigRootDir: __dirname,
   },
-  plugins: ['react-refresh', 'prettier', '@typescript-eslint', 'simple-import-sort'],
+  plugins: ['react-refresh', 'prettier', '@typescript-eslint', 'simple-import-sort', 'react-hooks'],
   rules: {
     'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
     'react/button-has-type': 'off',
     'no-console': 'off',
     'no-empty-function': 'off',
+    'array-callback-return': 'off',
+    'consistent-return': 'off',
     'prettier/prettier': [
       'warn',
       {
@@ -50,7 +52,9 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-empty-function': 'off',
     '@typescript-eslint/no-unused-vars': 'off',
+    '@typescript-eslint/naming-convention': 'off',
     'no-unused-vars': 'off',
+    'react-hooks/exhaustive-deps': 'warn',
     'react/jsx-no-useless-fragment': 'off',
     'react/react-in-jsx-scope': 'off',
     'react/function-component-definition': 'off',

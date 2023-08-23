@@ -20,6 +20,7 @@ type SessionsList = {
 }
 
 const SessionListTable: React.FC<SessionsList> = (props) => {
+  const { searchText, data, setSearchParams, classId } = props
   const columns: ColumnsType<DataType> = [
     {
       title: 'No.',
@@ -31,7 +32,7 @@ const SessionListTable: React.FC<SessionsList> = (props) => {
       title: 'Session',
       dataIndex: 'session_code',
       width: '160px',
-      filteredValue: [props.searchText],
+      filteredValue: [searchText],
       onFilter: (value, { session_code }) => String(session_code).toLowerCase().includes(String(value).toLowerCase()),
     },
     {
@@ -84,17 +85,17 @@ const SessionListTable: React.FC<SessionsList> = (props) => {
     },
   ]
 
-  let data: DataType[] = []
+  let sessionData: DataType[] = []
 
   const navigate = useNavigate()
-  if (props.data) {
-    data = props.data.data
+  if (data) {
+    sessionData = data.data
   }
 
   const onChange: TableProps<DataType>['onChange'] = (pagination, _filters, _sorter, _extra) => {
     const { current } = pagination
-    props.setSearchParams(current)
-    navigate(`/teacher/class-detail?id=${props.classId}&page=${current}&limit=10`)
+    setSearchParams(current)
+    navigate(`/teacher/class-detail?id=${classId}&page=${current}&limit=10`)
   }
 
   return (
@@ -105,11 +106,11 @@ const SessionListTable: React.FC<SessionsList> = (props) => {
         defaultPageSize: 10,
         pageSizeOptions: [10],
         showSizeChanger: true,
-        current: props.data && props.data.page,
-        total: props.data && props.data.total,
+        current: data && data.page,
+        total: data && data.total,
       }}
       columns={columns}
-      dataSource={data}
+      dataSource={sessionData}
       scroll={{ y: 340 }}
       bordered
       size='small'
@@ -118,9 +119,7 @@ const SessionListTable: React.FC<SessionsList> = (props) => {
       onRow={({ session_code }) => {
         return {
           onClick: () => {
-            navigate(
-              `/teacher/class-detail/session?session_code=${session_code}&class_id=${props.classId}&page=1&limit=10`,
-            )
+            navigate(`/teacher/class-detail/session?session_code=${session_code}&class_id=${classId}&page=1&limit=10`)
           },
         }
       }}

@@ -1,7 +1,7 @@
 import http from '@/utils/http'
 
 export const handleChangePassword = async (value: any, other?: any) =>
-  await http
+  http
     .put('/user', { password: value.currentPassword, newPassword: value.newPassword })
     .then((res) => {
       if (res.data.message === 'Success' && res.data.statusCode === 200) {

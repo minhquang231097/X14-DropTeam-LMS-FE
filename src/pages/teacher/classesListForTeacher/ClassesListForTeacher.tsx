@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import { Input } from 'antd'
 import { useQuery } from '@tanstack/react-query'
+import { useSearchParams } from 'react-router-dom'
 import Header from '@/layouts/user/Header'
 import Footer from '@/layouts/user/Footer'
 import SidebarTeacher from '@/layouts/user/SidebarTeacher'
 import ClassListTable from './ClassListTable'
 import { getClassesList } from '@/apis/classesList.api'
-import { useSearchParams } from 'react-router-dom'
 // import { useQueryString } from '@/utils/utils'
 // import { getClassByClassCode } from '@/apis/searchClassByClassCode.api'
 

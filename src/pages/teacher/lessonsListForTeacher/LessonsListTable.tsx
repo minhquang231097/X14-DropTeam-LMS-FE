@@ -18,6 +18,7 @@ type LessonsList = {
 
 const LessonsListTable: React.FC<LessonsList> = (props) => {
   const navigate = useNavigate()
+  const { searchText, data, setSearchParams } = props
 
   const columns: ColumnsType<DataType> = [
     {
@@ -29,8 +30,8 @@ const LessonsListTable: React.FC<LessonsList> = (props) => {
     {
       title: 'Lesson Name',
       dataIndex: 'lesson_name',
-      render: (_value, { title, content }, _index) => <>{title + ':' + ' ' + content}</>,
-      filteredValue: [props.searchText],
+      render: (_value, { title, content }, _index) => <>{`${title}: ${content}`}</>,
+      filteredValue: [searchText],
       onFilter: (value, { title }) => String(title).toLowerCase().includes(String(value).toLowerCase()),
     },
     {
@@ -68,15 +69,15 @@ const LessonsListTable: React.FC<LessonsList> = (props) => {
     },
   ]
 
-  let data: DataType[] = []
+  let lessonData: DataType[] = []
 
-  if (props.data !== undefined) {
-    data = props.data.data
+  if (data !== undefined) {
+    lessonData = data.data
   }
 
   const onChange: TableProps<DataType>['onChange'] = (pagination, _filters, _sorter, _extra) => {
     const { current } = pagination
-    props.setSearchParams(current)
+    setSearchParams(current)
     navigate(`/teacher/lessons-list?page=${current}&limit=10`)
   }
 
@@ -88,11 +89,11 @@ const LessonsListTable: React.FC<LessonsList> = (props) => {
         defaultPageSize: 10,
         pageSizeOptions: [10],
         showSizeChanger: true,
-        current: props.data && props.data.page,
-        total: props.data && props.data.total,
+        current: data && data.page,
+        total: data && data.total,
       }}
       columns={columns}
-      dataSource={data}
+      dataSource={lessonData}
       scroll={{ y: 340 }}
       bordered
       size='small'

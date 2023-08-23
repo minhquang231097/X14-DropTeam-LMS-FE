@@ -9,8 +9,8 @@ pnpm-debug.log*
 node_modules
 dist
 dist-ssr
+package-lock.json
 *.local
-tsconfig.tsbuildinfo
 
 # Editor directories and files
 .vscode/*
