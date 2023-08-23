@@ -1,24 +1,12 @@
 // import React, { useState, useEffect } from 'react';
 // import ReactDOM from 'react-dom';
 import { Pie } from '@ant-design/plots';
-import {FaRegStar} from 'react-icons/fa'
-import { Card, Space } from 'antd';
-
-const Donut = () => {
-  const data = [
-    {
-      type: `direct`,
-      value: 27,
-    },
-    {
-      type: 'Referral',
-      value: 25,
-    },
-    {
-      type: 'Organic',
-      value: 18,
-    },
-  ];
+import { Card } from 'antd';
+interface props{
+  data:any,
+}
+const Donut:React.FC<props>=(props:props) => {
+  const {data}=props;
   const config = {
     appendPadding: 10,
     data,

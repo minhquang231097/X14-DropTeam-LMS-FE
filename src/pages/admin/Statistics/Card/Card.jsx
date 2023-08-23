@@ -3,7 +3,7 @@ import { Space } from 'antd';
 import DashBoardCard from './DashBoardCard';
 import { GoBook } from 'react-icons/go';
 import { MdOutlineAttachMoney, MdOutlinePeople } from 'react-icons/md';
-const CardItem = () => (
+const CardItem = ({sale,course,student,mentor}) => (
   <Space direction="horizontal" >
     <div style={{
       display: 'flex',
@@ -12,10 +12,10 @@ const CardItem = () => (
       alignItems: 'center',
       gap: '30px',
     }}>
-      <DashBoardCard title={"Sale"} content={10000} icon={<MdOutlineAttachMoney size={23} color={'#8854C0'}/>} />
-      <DashBoardCard title={"Course"} content={100} icon={<GoBook size={23} color={'#8854C0'}/>} />
-      <DashBoardCard title={"Student"} content={1000} icon={<MdOutlinePeople size={23} color={'#8854C0'}/>} />
-      <DashBoardCard title={"Mentor"} content={10} icon={<MdOutlinePeople size={23} color={'#8854C0'}/>} />
+      <DashBoardCard title={"Sale"} content={sale} icon={<MdOutlineAttachMoney size={23} color={'#8854C0'}/>} />
+      <DashBoardCard title={"Course"} content={course} icon={<GoBook size={23} color={'#8854C0'}/>} />
+      <DashBoardCard title={"Student"} content={student} icon={<MdOutlinePeople size={23} color={'#8854C0'}/>} />
+      <DashBoardCard title={"Mentor"} content={mentor} icon={<MdOutlinePeople size={23} color={'#8854C0'}/>} />
     </div>
   </Space>
 );

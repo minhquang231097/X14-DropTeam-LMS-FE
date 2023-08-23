@@ -12,7 +12,7 @@ const DashBoardCard = ({title,content,icon}) => {
       {title} {icon}
       </div>}
     style={{
-      width: 200,
+      width: 250,
       border: '1px solid rgb(112,128,144, 0.1)',
       borderRadius: '8px',
     }}

@@ -14,7 +14,7 @@ import handleChangePassword from '@/apis/changePassword.api';
 
 const AdminChangePassword: React.FC = () => {
   // const [oldPassword, setOldPassword] = useState("1234");
-  const ID = JSON.parse(localStorage.getItem('user') as string).userId
+  // const ID = JSON.parse(localStorage.getItem('user') as string).userId
   const [changePasswordValue, setChangePasswordValue] = useState({ password: '', newPassword: '' })
   // const handleChangePassword1=()=>{
   //   console.log(changePasswordValue)
