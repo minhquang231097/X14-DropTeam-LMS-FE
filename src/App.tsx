@@ -29,7 +29,7 @@ import AdminListCourses from './pages/admin/courses/List.tsx'
 import AdminShowCourses from './pages/admin/courses/Show.tsx'
 import AdminCreateCourses from './pages/admin/courses/Create.tsx'
 import AdminEditCourses from './pages/admin/courses/Edit.tsx'
-import AdminProfile from './pages/admin/profile/index.tsx'
+// import AdminProfile from './pages/admin/profile/index.tsx'
 import AdminChangePassword from './pages/admin/profile/ChangePassword.tsx'
 import AdminEditFacilities from './pages/admin/facilities/Edit.tsx'
 import AdminListClasses from './pages/admin/classes/List.tsx'
@@ -45,6 +45,7 @@ import AdminTeacherEdit from './pages/admin/userlists/TeacherEdit.tsx'
 // import Profile from './pages/user/profile/index.tsx'
 import Forbidden403 from './pages/forbidden403/Fobidden403.tsx'
 import LoginForm from './pages/user/login/LoginForm.tsx'
+import Statistic from './pages/admin/Statistics/Statistics.jsx'
 
 const App: React.FC = () => {
   const USER = JSON.parse(localStorage.getItem('user') as string)
@@ -221,19 +222,23 @@ const App: React.FC = () => {
           path='/admin/feedbacks'
           element={USER && USER.role === 'ADMIN' ? <AdminFeedbacks /> : <Forbidden403 />}
         />
-        <Route
+        {/* <Route
           path='/admin/profile'
           element={USER && USER.role === 'ADMIN' ? <AdminProfile /> : <Forbidden403 />}
         />
         <Route
           path='/admin/change-password'
           element={USER && USER.role === 'ADMIN' ? <AdminChangePassword /> : <Forbidden403 />}
+        /> */}
+        <Route
+          path='/admin/dashboard'
+          element={<Statistic />}
         />
         <Route
           path='*'
           element={<NotFound404 />}
         />
-      </Routes>
+      </Routes >
       <ScrollToTop />
     </>
   )
