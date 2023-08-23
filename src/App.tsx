@@ -27,9 +27,11 @@ import AdminEditCourses from './pages/admin/courses/Edit.tsx'
 import AdminListCategories from './pages/admin/categories/List.tsx'
 import AdminShowCategories from './pages/admin/categories/Show.tsx'
 import AdminCreateCategories from './pages/admin/categories/Create.tsx'
-import AdminProfile from './pages/admin/profile/index.tsx'
+import AdminProfile from './pages/admin/profile/Profile/index.tsx'
 import AdminChangePassword from './pages/admin/profile/ChangePassword.tsx'
-
+import Profile from './pages/user/profile/Profile/index.tsx'
+import ChangePassword from './pages/user/profile/ChangePassword/ChangePassword.tsx'
+import Statistic from './pages/admin/Statistics/Statistics.jsx'
 const App: React.FC = () => {
   return (
     <>
@@ -71,6 +73,14 @@ const App: React.FC = () => {
           <Route
             path='/reset-password'
             element={<ResetPassword />}
+          />
+          <Route
+            path='/profile'
+            element={<Profile />}
+          />
+          <Route
+            path='/change-password'
+            element={<ChangePassword />}
           />
 
           {/* TEACHER */}
@@ -146,9 +156,14 @@ const App: React.FC = () => {
           />
 
           <Route
+            path='/admin/dashboard'
+            element={<Statistic />}
+          />
+          <Route
             path='*'
             element={<NotFound404 />}
           />
+
         </Routes>
         <ScrollToTop />
       </BrowserRouter>

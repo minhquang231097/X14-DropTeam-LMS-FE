@@ -37,6 +37,18 @@ const UserDropdownLogged: React.FC<{ username: any }> = (prop: any) => {
       label: (
         <div
           className='flex items-center text-gray-600 font-bold'
+          onClick={() => navigate('/change-password')}
+        >
+          {/* <IoMdLogOut className='text-2xl mr-2 p-2 pl-0' /> */}
+          ChangePassword
+        </div>
+      ),
+    },
+    {
+      key: '44',
+      label: (
+        <div
+          className='flex items-center text-gray-600 font-bold'
           onClick={() => handleLogout(navigate)}
         >
           <IoMdLogOut className='text-2xl mr-2 p-2 pl-0' />
