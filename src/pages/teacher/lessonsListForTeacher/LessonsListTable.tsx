@@ -30,7 +30,7 @@ const LessonsListTable: React.FC<LessonsList> = (props) => {
     {
       title: 'Lesson Name',
       dataIndex: 'lesson_name',
-      render: (_value, { title, content }, _index) => <>{title + ':' + ' ' + content}</>,
+      render: (_value, { title, content }, _index) => <>{`${title}: ${content}`}</>,
       filteredValue: [props.searchText],
       onFilter: (value, { title }) => String(title).toLowerCase().includes(String(value).toLowerCase()),
     },
@@ -89,8 +89,8 @@ const LessonsListTable: React.FC<LessonsList> = (props) => {
         defaultPageSize: 10,
         pageSizeOptions: [10, 20],
         showSizeChanger: true,
-        current: props.data && props.data.page,
-        total: props.data && props.data.total,
+        current: data && props.data.page,
+        total: data && props.data.total,
       }}
       columns={columns}
       dataSource={data}

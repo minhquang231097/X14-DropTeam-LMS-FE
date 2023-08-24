@@ -22,7 +22,7 @@ import ChangePassword from './pages/user/changePassword/ChangePassword.tsx'
 // ADMIN
 // import ColorModeContextProvider from './contexts/colorMode.tsx'
 // import AdminLogin from './pages/admin/login'
-import AdminHome from './pages/admin/main/index'
+import AdminHome from './pages/admin/home/index.tsx'
 import AdminListFacilities from './pages/admin/facilities/List.tsx'
 import AdminShowFacilities from './pages/admin/facilities/Show.tsx'
 import AdminCreateFacilities from './pages/admin/facilities/Create.tsx'
@@ -30,8 +30,6 @@ import AdminListCourses from './pages/admin/courses/List.tsx'
 import AdminShowCourses from './pages/admin/courses/Show.tsx'
 import AdminCreateCourses from './pages/admin/courses/Create.tsx'
 import AdminEditCourses from './pages/admin/courses/Edit.tsx'
-import AdminProfile from './pages/admin/profile/index.tsx'
-import AdminChangePassword from './pages/admin/profile/ChangePassword.tsx'
 import AdminEditFacilities from './pages/admin/facilities/Edit.tsx'
 import AdminListClasses from './pages/admin/classes/List.tsx'
 import AdminShowClasses from './pages/admin/classes/Show.tsx'
@@ -221,15 +219,18 @@ const App: React.FC = () => {
           path='/admin/feedbacks'
           element={USER && USER.role === 'ADMIN' ? <AdminFeedbacks /> : <Forbidden403 />}
         />
-        <Route
+        {/* <Route
           path='/admin/profile'
           element={USER && USER.role === 'ADMIN' ? <AdminProfile /> : <Forbidden403 />}
         />
         <Route
           path='/admin/change-password'
           element={USER && USER.role === 'ADMIN' ? <AdminChangePassword /> : <Forbidden403 />}
-        />
-
+        /> */}
+        {/* <Route
+          path='/admin'
+          element={<Statistic />}
+        /> */}
         <Route
           path='*'
           element={<NotFound404 />}

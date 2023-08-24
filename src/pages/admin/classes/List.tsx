@@ -7,7 +7,7 @@ import { MdOutlineCheck, MdOutlineClose, MdAddCircleOutline, MdOutlineCircle } f
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import AdminLayout from '@/layouts/admin'
-import AdminSearch from '@/components/adminSearch'
+import AdminSearch from '@/components/search/adminSearch'
 import { useQueryString } from '@/utils/utils'
 import { getClassesList } from '@/apis/classesList.api'
 
@@ -138,8 +138,8 @@ const CustomContent = () => {
               status === 'ON' && cls.class_size && cls.class_size >= sizeReq
                 ? token.colorSuccessText
                 : status === 'OFF' || (cls.class_size && cls.class_size < sizeReq)
-                  ? token.colorErrorText
-                  : token.colorWarningText,
+                ? token.colorErrorText
+                : token.colorWarningText,
             fontSize: '18px',
             display: 'flex',
             alignItems: 'center',

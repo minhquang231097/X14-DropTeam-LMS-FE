@@ -88,8 +88,8 @@ const SessionListTable: React.FC<SessionsList> = (props) => {
   let data: DataType[] = []
 
   const navigate = useNavigate()
-  if (props.data) {
-    data = props.data.data
+  if (data) {
+    data = props.searchText ? props.filteredData.data : props.data.data
   }
 
   const onChange: TableProps<DataType>['onChange'] = (pagination, _filters, _sorter, _extra) => {
@@ -106,8 +106,8 @@ const SessionListTable: React.FC<SessionsList> = (props) => {
         defaultPageSize: 10,
         pageSizeOptions: [10, 20],
         showSizeChanger: true,
-        current: props.data && props.data.page,
-        total: props.data && props.data.total,
+        current: data && props.data.page,
+        total: data && props.data.total,
       }}
       columns={columns}
       dataSource={data}

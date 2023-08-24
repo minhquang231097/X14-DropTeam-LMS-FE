@@ -158,8 +158,8 @@ const DetailPerSessionTable: React.FC<StudentList> = (props) => {
         defaultPageSize: 10,
         pageSizeOptions: [10, 20],
         showSizeChanger: true,
-        current: props.data && props.data.page,
-        total: props.data && props.data.total,
+        current: data && props.data.page,
+        total: data && props.data.total,
       }}
       columns={columns}
       dataSource={data}

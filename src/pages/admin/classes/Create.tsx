@@ -68,7 +68,7 @@ const CustomContent = () => {
     { value: 'friday', label: 'Friday' },
     { value: 'saturday', label: 'Saturday' },
     { value: 'sunday', label: 'Sunday' },
-  ];
+  ]
 
   const plainOptions = [
     { value: '1', label: 'Student 01' },

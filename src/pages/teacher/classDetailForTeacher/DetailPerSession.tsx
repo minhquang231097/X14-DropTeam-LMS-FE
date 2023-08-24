@@ -52,7 +52,7 @@ const DetailPerSession: React.FC = () => {
           <div className='p-4 flex justify-between items-start'>
             <div>
               <span className='text-xl text-[#F56A00] font-bold'>
-                {session_code ? 'Session Code: ' + session_code : 'Session Code'}
+                {session_code ? `Session Code: ${session_code}` : 'Session Code'}
               </span>
               <p className='m-0 text-sm text-gray-500 mt-2'>
                 Total students: <span className='text-blue-600'>{studentsData && studentsData.total}</span>
@@ -71,7 +71,7 @@ const DetailPerSession: React.FC = () => {
                 icon={<FaFileUpload className='w-6 h-6' />}
                 size='large'
                 ghost
-              ></Button>
+              />
             </div>
           </div>
           <DetailPerSessionTable

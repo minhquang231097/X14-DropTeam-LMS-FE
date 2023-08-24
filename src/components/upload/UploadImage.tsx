@@ -3,6 +3,7 @@ import { UploadOutlined } from '@ant-design/icons'
 import { Button, Form, Upload } from 'antd'
 
 const UploadImage: React.FC<{ imageUpload: any; setImageUpload: any }> = (props) => {
+  const { imageUpload, setImageUpload } = props
   const normFile = (e: any) => {
     if (Array.isArray(e)) {
       return e
@@ -25,7 +26,7 @@ const UploadImage: React.FC<{ imageUpload: any; setImageUpload: any }> = (props)
           listType='picture'
           className='ml-8'
           beforeUpload={(file) => {
-            props.setImageUpload([...props.imageUpload, file])
+            setImageUpload([...imageUpload, file])
           }}
         >
           <Button icon={<UploadOutlined />}>Click to upload!</Button>

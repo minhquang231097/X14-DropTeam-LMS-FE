@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import img1 from '../assets/images/carousel/carosel-1.jpg'
+import img1 from '@/assets/images/carousel/carosel-1.jpg'
 
 const contentStyle: React.CSSProperties = {
   height: '408px',

@@ -30,7 +30,7 @@ const ChangePasswordFrom: React.FC = () => {
               if (!value || value.length >= 6) {
                 return Promise.resolve()
               }
-              return Promise.reject('Please enter password at least 6 characters')
+              return Promise.reject(new Error('Please enter password at least 6 characters'))
             },
           },
         ]}
@@ -59,7 +59,7 @@ const ChangePasswordFrom: React.FC = () => {
               if (!value || value.length >= 6) {
                 return Promise.resolve()
               }
-              return Promise.reject('Please enter password at least 6 characters')
+              return Promise.reject(new Error('Please enter password at least 6 characters'))
             },
           },
         ]}
