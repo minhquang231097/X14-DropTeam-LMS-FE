@@ -6,20 +6,26 @@ import Sidebar from '@/layouts/user/Sidebar'
 import CourseCard from '@/components/CourseCard'
 import Header from '@/layouts/user/Header'
 import Footer from '@/layouts/user/Footer'
-import { useQueryString } from '@/utils/utils'
 import { getCoursesList } from '@/apis/coursesList.api'
+import { useSearchParams, useNavigate } from 'react-router-dom'
 
 const CoursesList: React.FC = () => {
-  const queryString: { page?: string } = useQueryString()
-  const page = Number(queryString.page) || 1
+  const navigate = useNavigate()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const page = searchParams.get('page') ?? 1
+  const limit = searchParams.get('limit') ?? 6
 
   const { data } = useQuery({
-    queryKey: ['courses', page],
+    queryKey: ['courses', page, limit],
     queryFn: async () => {
-      const res = await getCoursesList(page, 6)
-      return res.data.data
+      const res = await getCoursesList(page, limit)
+      return res.data
     },
   })
+
+  const onChange = (page: number, pageSize: number) => {
+    navigate(`/courses-list?page=${page}&limit=${pageSize}`)
+  }
 
   return (
     <>
@@ -53,8 +59,8 @@ const CoursesList: React.FC = () => {
         <div className='max-w-[1280px] mx-auto'>
           <div className='flex items-center justify-between mb-4 mt-10'>
             <p className='text-gray-500'>
-              Displaying <span className='text-blue-500 font-bold'>{data ? data.length : ''}</span> out of{' '}
-              <span className='text-blue-500 font-bold'> 25</span> courses
+              Displaying <span className='text-blue-500 font-bold'>{data ? data.count : ''}</span> out of{' '}
+              <span className='text-blue-500 font-bold'> {data ? data.total : ''}</span> courses
             </p>
             <Select
               placeholder='Sort by'
@@ -74,7 +80,7 @@ const CoursesList: React.FC = () => {
           <div className='col-span-3 grid grid-cols-3 row-span-1'>
             <div className='col-span-3 grid grid-cols-3 gap-6'>
               {data
-                ? data.map((course: any) => (
+                ? data.data.map((course: any) => (
                     <CourseCard
                       {...course}
                       key={course._id}
@@ -85,7 +91,12 @@ const CoursesList: React.FC = () => {
             <div className='flex justify-center col-start-2 mt-10'>
               <Pagination
                 defaultCurrent={1}
-                total={20}
+                defaultPageSize={6}
+                pageSizeOptions={[6, 9]}
+                showSizeChanger
+                current={data && data.page}
+                total={data && data.total}
+                onChange={(page, pageSize) => onChange(page, pageSize)}
               />
             </div>
           </div>

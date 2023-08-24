@@ -44,7 +44,7 @@ const UserDropdownMentor: React.FC<{ username: any }> = (props: any) => {
       label: (
         <div
           className='flex items-center text-gray-600 font-bold'
-          onClick={() => navigate(`/profile-detail?id=${USER.userId}`)}
+          onClick={() => navigate(`/edit-profile?id=${USER.userId}`)}
         >
           <RiUserSettingsLine className='text-2xl mr-2 p-2 pl-0' />
           Edit Profile

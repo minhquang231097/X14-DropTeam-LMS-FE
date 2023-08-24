@@ -17,6 +17,7 @@ type SessionsList = {
   searchText: string
   setSearchParams: any
   classId: string
+  filteredData: { data: [] }
 }
 
 const SessionListTable: React.FC<SessionsList> = (props) => {
@@ -28,7 +29,7 @@ const SessionListTable: React.FC<SessionsList> = (props) => {
       render: (_value, _record, index) => <>{index + 1}</>,
     },
     {
-      title: 'Session',
+      title: 'Session Code',
       dataIndex: 'session_code',
       width: '160px',
       filteredValue: [props.searchText],
@@ -92,9 +93,9 @@ const SessionListTable: React.FC<SessionsList> = (props) => {
   }
 
   const onChange: TableProps<DataType>['onChange'] = (pagination, _filters, _sorter, _extra) => {
-    const { current } = pagination
+    const { current, pageSize } = pagination
     props.setSearchParams(current)
-    navigate(`/teacher/class-detail?id=${props.classId}&page=${current}&limit=10`)
+    navigate(`/teacher/class-detail?id=${props.classId}&page=${current}&limit=${pageSize}`)
   }
 
   return (
@@ -103,7 +104,7 @@ const SessionListTable: React.FC<SessionsList> = (props) => {
         position: ['bottomCenter'],
         defaultCurrent: 1,
         defaultPageSize: 10,
-        pageSizeOptions: [10],
+        pageSizeOptions: [10, 20],
         showSizeChanger: true,
         current: props.data && props.data.page,
         total: props.data && props.data.total,

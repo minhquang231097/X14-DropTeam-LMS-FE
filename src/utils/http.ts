@@ -1,15 +1,14 @@
 import axios, { AxiosInstance } from 'axios'
 
-
 const http: AxiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8080/api/v1',
+  baseURL: 'http://localhost:8080/api/v1',
   timeout: 30000,
   headers: { 'Content-Type': 'application/json' },
 })
 
 // Function to refresh the access token using the refresh token
 async function refreshAccessToken(): Promise<string> {
-  const user = JSON.parse(localStorage.getItem('user') as string)
+  const user = JSON.parse(localStorage.getItem('login') as string)
   // console.log(user.refreshToken)
   const response = await http.post(`/auth/refresh`, { refreshToken: user.refreshToken })
   // console.log(response)
@@ -20,7 +19,7 @@ async function refreshAccessToken(): Promise<string> {
 
 http.interceptors.request.use(
   (config) => {
-    const user = JSON.parse(localStorage.getItem('user') as string)
+    const user = JSON.parse(localStorage.getItem('login') as string)
     if (user) {
       // eslint-disable-next-line no-param-reassign
       config.headers.Authorization = `Bearer ${user.accessToken}`
@@ -41,9 +40,9 @@ http.interceptors.response.use(
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true
       const accessToken = await refreshAccessToken()
-      const user = JSON.parse(localStorage.getItem('user') as string)
+      const user = JSON.parse(localStorage.getItem('login') as string)
       user.accessToken = accessToken
-      localStorage.setItem('user', JSON.stringify(user))
+      localStorage.setItem('login', JSON.stringify(user))
       http.defaults.headers.common.Authorization = `Bearer ${accessToken}`
       return http(originalRequest)
     }

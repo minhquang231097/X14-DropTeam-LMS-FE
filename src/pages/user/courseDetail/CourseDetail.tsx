@@ -54,8 +54,8 @@ const CourseDetail: React.FC = () => {
   const { data } = useQuery({
     queryKey: ['course', id],
     queryFn: async () => {
-      const { data } = await getCourse(id)
-      return data.data
+      const res = await getCourse(id)
+      return res.data.data
     },
   })
 

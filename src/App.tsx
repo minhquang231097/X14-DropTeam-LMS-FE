@@ -21,7 +21,7 @@ import ChangePassword from './pages/user/changePassword/ChangePassword.tsx'
 
 // ADMIN
 // import ColorModeContextProvider from './contexts/colorMode.tsx'
-import AdminLogin from './pages/admin/login'
+// import AdminLogin from './pages/admin/login'
 import AdminHome from './pages/admin/main/index'
 import AdminListFacilities from './pages/admin/facilities/List.tsx'
 import AdminShowFacilities from './pages/admin/facilities/Show.tsx'
@@ -43,7 +43,6 @@ import AdminLessons from './pages/admin/lessons/index.tsx'
 import AdminFeedbacks from './pages/admin/feedbacks/index.tsx'
 import AdminStudentEdit from './pages/admin/userlists/StudentEdit.tsx'
 import AdminTeacherEdit from './pages/admin/userlists/TeacherEdit.tsx'
-import Profile from './pages/user/profile/index.tsx'
 import Forbidden403 from './pages/forbidden403/Fobidden403.tsx'
 import LoginForm from './pages/user/login/LoginForm.tsx'
 
@@ -95,7 +94,7 @@ const App: React.FC = () => {
         />
         <Route
           path='/profile'
-          element={USER ? <Profile /> : <LoginForm />}
+          element={USER ? <EditProfile /> : <LoginForm />}
         />
         <Route
           path='/change-password'
@@ -230,7 +229,7 @@ const App: React.FC = () => {
           path='/admin/change-password'
           element={USER && USER.role === 'ADMIN' ? <AdminChangePassword /> : <Forbidden403 />}
         />
-        
+
         <Route
           path='*'
           element={<NotFound404 />}

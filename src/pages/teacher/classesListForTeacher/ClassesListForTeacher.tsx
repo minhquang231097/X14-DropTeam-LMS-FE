@@ -7,15 +7,11 @@ import SidebarTeacher from '@/layouts/user/SidebarTeacher'
 import ClassListTable from './ClassListTable'
 import { getClassesList } from '@/apis/classesList.api'
 import { useSearchParams } from 'react-router-dom'
-// import { useQueryString } from '@/utils/utils'
-// import { getClassByClassCode } from '@/apis/searchClassByClassCode.api'
+import { getClassByClassCode } from '@/apis/searchClassByClassCode.api'
 
 const ClassesListForTeacher: React.FC = () => {
   const [searchText, setSearchText] = useState('')
-
-  // const queryString: { page?: string; limit?: string } = useQueryString()
-  // const page = Number(queryString.page) || 1
-  // const limit = Number(queryString.limit) || 10
+  const [filteredData, setFilteredData] = useState([])
 
   const [searchParams, setSearchParams] = useSearchParams()
   const page = searchParams.get('page') ?? 1
@@ -29,13 +25,17 @@ const ClassesListForTeacher: React.FC = () => {
     },
   })
 
-  // const searchData = useQuery({
-  //   queryKey: ['search', searchText],
-  //   queryFn: async () => {
-  //     const res = await getClassByClassCode(String(searchText).toUpperCase())
-  //     return res.data
-  //   },
-  // }).data
+  useQuery({
+    queryKey: ['search', searchText],
+    queryFn: async () => {
+      const res = await getClassByClassCode(String(searchText).toUpperCase())
+      setFilteredData(res.data)
+    },
+  }).data
+
+  const handleSearch = (value: string) => {
+    setSearchText(value)
+  }
 
   return (
     <>
@@ -55,16 +55,17 @@ const ClassesListForTeacher: React.FC = () => {
             </div>
 
             <Input.Search
-              placeholder='Search Class Name ...'
+              placeholder='Search Class Code ...'
               style={{ width: 280 }}
-              onChange={(e) => setSearchText(e.target.value)}
-              onSearch={(value) => setSearchText(value)}
+              onChange={(e) => handleSearch(e.target.value)}
+              onSearch={handleSearch}
             />
           </div>
           <ClassListTable
             data={data as any}
             searchText={searchText}
             setSearchParams={setSearchParams}
+            filteredData={filteredData as any}
           />
         </div>
       </div>

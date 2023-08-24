@@ -14,6 +14,7 @@ type LessonsList = {
   data: { count: number; data: []; page: number; statusCode: number; total: number; total_page: number }
   searchText: string
   setSearchParams: any
+  filteredData: { data: [] }
 }
 
 const LessonsListTable: React.FC<LessonsList> = (props) => {
@@ -71,13 +72,13 @@ const LessonsListTable: React.FC<LessonsList> = (props) => {
   let data: DataType[] = []
 
   if (props.data !== undefined) {
-    data = props.data.data
+    data = props.searchText ? props.filteredData.data : props.data.data
   }
 
   const onChange: TableProps<DataType>['onChange'] = (pagination, _filters, _sorter, _extra) => {
-    const { current } = pagination
+    const { current, pageSize } = pagination
     props.setSearchParams(current)
-    navigate(`/teacher/lessons-list?page=${current}&limit=10`)
+    navigate(`/teacher/lessons-list?page=${current}&limit=${pageSize}`)
   }
 
   return (
@@ -86,7 +87,7 @@ const LessonsListTable: React.FC<LessonsList> = (props) => {
         position: ['bottomCenter'],
         defaultCurrent: 1,
         defaultPageSize: 10,
-        pageSizeOptions: [10],
+        pageSizeOptions: [10, 20],
         showSizeChanger: true,
         current: props.data && props.data.page,
         total: props.data && props.data.total,

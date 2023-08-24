@@ -6,17 +6,15 @@ import Header from '@/layouts/user/Header'
 import Footer from '@/layouts/user/Footer'
 import SidebarTeacher from '@/layouts/user/SidebarTeacher'
 import SessionListTable from './SessionListTable'
-// import { useQueryString } from '@/utils/utils'
 import { getSessionsByClassCode } from '@/apis/sessionByClassCode.api'
 import { getClassById } from '@/apis/class.api'
+import { getSessionBySessionCode } from '@/apis/searchSessionBySessionCode.api'
 
 const SessionListForTeacher: React.FC = () => {
   const [searchText, setSearchText] = useState('')
-  const navigate = useNavigate()
+  const [filteredData, setFilteredData] = useState([])
 
-  // const queryString: { class_code?: string; id?: string } = useQueryString()
-  // const class_code = String(queryString.class_code)
-  // const id = String(queryString.id)
+  const navigate = useNavigate()
 
   const [searchParams, setSearchParams] = useSearchParams()
   const page = searchParams.get('page') ?? '1'
@@ -38,6 +36,18 @@ const SessionListForTeacher: React.FC = () => {
       return res.data.data
     },
   }).data
+
+  useQuery({
+    queryKey: ['search', searchText],
+    queryFn: async () => {
+      const res = await getSessionBySessionCode(String(searchText).toUpperCase())
+      setFilteredData(res.data)
+    },
+  }).data
+
+  const handleSearch = (value: string) => {
+    setSearchText(value)
+  }
 
   return (
     <>
@@ -81,6 +91,9 @@ const SessionListForTeacher: React.FC = () => {
                 </span>
               </p>
               <p className='m-0 text-sm text-gray-500 mt-2'>
+                Workplace: <span className='text-blue-600'>{classData ? classData.workplace.name : ''}</span>
+              </p>
+              <p className='m-0 text-sm text-gray-500 mt-2'>
                 Start at:{' '}
                 <span className='text-blue-600'>
                   {classData ? new Date(classData.start_at).toLocaleDateString('vi-VN') : 'DD/MM/YYYY'}
@@ -101,10 +114,10 @@ const SessionListForTeacher: React.FC = () => {
               </Button>
             </div>
             <Input.Search
-              placeholder='Search Session Name ...'
+              placeholder='Search Session Code ...'
               style={{ width: 280 }}
-              onSearch={(value) => setSearchText(value)}
               onChange={(e) => setSearchText(e.target.value)}
+              onSearch={handleSearch}
             />
           </div>
           <SessionListTable
@@ -112,6 +125,7 @@ const SessionListForTeacher: React.FC = () => {
             searchText={searchText}
             setSearchParams={setSearchParams}
             classId={id}
+            filteredData={filteredData as any}
           />
         </div>
       </div>
