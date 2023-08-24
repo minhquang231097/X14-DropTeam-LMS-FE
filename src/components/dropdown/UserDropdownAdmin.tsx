@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react'
 import { Avatar, Dropdown } from 'antd'
 import type { MenuProps } from 'antd'
@@ -12,12 +10,11 @@ import handleLogout from '@/apis/logout.api'
 const UserDropdownAdmin: React.FC<{ username: any; avatar: any }> = (props: any) => {
   const navigate = useNavigate()
   const USER = JSON.parse(localStorage.getItem('user') as string)
-  const { username } = props
 
   const items: MenuProps['items'] = [
     {
       key: '1',
-      label: <div className='flex items-center justify-center text-gray-600 font-bold'>{username}</div>,
+      label: <div className='flex items-center justify-center text-lg text-[#F56A00] font-bold'>{props.username}</div>,
       disabled: true,
     },
     {

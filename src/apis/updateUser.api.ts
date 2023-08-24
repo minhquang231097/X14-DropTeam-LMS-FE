@@ -16,8 +16,6 @@ const handleUpdateUser = async (
   other?: any,
 ) => {
   const ID = JSON.parse(localStorage.getItem('user') as string).id
-  const TOKEN = JSON.parse(localStorage.getItem('user') as string).access_token
-  const AuthString = `Bearer ${TOKEN}`
 
   await axios
     .post('http://localhost:8080/api/v1/upload', imageUpload, {
