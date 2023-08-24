@@ -14,11 +14,11 @@ type LessonsList = {
   data: { count: number; data: []; page: number; statusCode: number; total: number; total_page: number }
   searchText: string
   setSearchParams: any
+  filteredData: { data: [] }
 }
 
 const LessonsListTable: React.FC<LessonsList> = (props) => {
   const navigate = useNavigate()
-  const { searchText, data, setSearchParams } = props
 
   const columns: ColumnsType<DataType> = [
     {
@@ -31,7 +31,7 @@ const LessonsListTable: React.FC<LessonsList> = (props) => {
       title: 'Lesson Name',
       dataIndex: 'lesson_name',
       render: (_value, { title, content }, _index) => <>{`${title}: ${content}`}</>,
-      filteredValue: [searchText],
+      filteredValue: [props.searchText],
       onFilter: (value, { title }) => String(title).toLowerCase().includes(String(value).toLowerCase()),
     },
     {
@@ -69,16 +69,16 @@ const LessonsListTable: React.FC<LessonsList> = (props) => {
     },
   ]
 
-  let lessonData: DataType[] = []
+  let data: DataType[] = []
 
-  if (data !== undefined) {
-    lessonData = data.data
+  if (props.data !== undefined) {
+    data = props.searchText ? props.filteredData.data : props.data.data
   }
 
   const onChange: TableProps<DataType>['onChange'] = (pagination, _filters, _sorter, _extra) => {
-    const { current } = pagination
-    setSearchParams(current)
-    navigate(`/teacher/lessons-list?page=${current}&limit=10`)
+    const { current, pageSize } = pagination
+    props.setSearchParams(current)
+    navigate(`/teacher/lessons-list?page=${current}&limit=${pageSize}`)
   }
 
   return (
@@ -87,13 +87,13 @@ const LessonsListTable: React.FC<LessonsList> = (props) => {
         position: ['bottomCenter'],
         defaultCurrent: 1,
         defaultPageSize: 10,
-        pageSizeOptions: [10],
+        pageSizeOptions: [10, 20],
         showSizeChanger: true,
-        current: data && data.page,
-        total: data && data.total,
+        current: data && props.data.page,
+        total: data && props.data.total,
       }}
       columns={columns}
-      dataSource={lessonData}
+      dataSource={data}
       scroll={{ y: 340 }}
       bordered
       size='small'

@@ -19,13 +19,13 @@ type StudentList = {
   setSearchParams: any
   session_code: string
   class_id: string
+  filteredData: { data: [] }
 }
 
 const { TextArea } = Input
 
 const DetailPerSessionTable: React.FC<StudentList> = (props) => {
   const navigate = useNavigate()
-  const { searchText, data, session_code, setSearchParams, class_id } = props
 
   const columns: ColumnsType<DataType> = [
     {
@@ -38,7 +38,7 @@ const DetailPerSessionTable: React.FC<StudentList> = (props) => {
       title: 'Student Name',
       dataIndex: 'fullname',
       width: '140px',
-      filteredValue: [searchText],
+      filteredValue: [props.searchText],
       onFilter: (value, { fullname }) => String(fullname).toLowerCase().includes(String(value).toLowerCase()),
     },
     {
@@ -58,25 +58,25 @@ const DetailPerSessionTable: React.FC<StudentList> = (props) => {
       width: '100px',
       render: (_, { status }) => (
         <>
-          {(status === 'completed' && (
+          {(status === 'ACTIVE' && (
             <Tag
               color='green'
-              key='active'
+              key='ACTIVE'
             >
               {status.toUpperCase()}
             </Tag>
           )) ||
-            (status === 'completed' && (
+            (status === 'INACTIVE' && (
               <Tag
                 color='volcano'
-                key='inactive'
+                key='INACTIVE'
               >
                 {status.toUpperCase()}
               </Tag>
             )) || (
               <Tag
                 color='geekblue'
-                key='active'
+                key='undefined'
               >
                 {String('unknown').toUpperCase()}
               </Tag>
@@ -85,12 +85,16 @@ const DetailPerSessionTable: React.FC<StudentList> = (props) => {
       ),
       filters: [
         {
-          text: 'COMPLETED',
-          value: 'completed',
+          text: 'ACTIVE',
+          value: 'active',
         },
         {
-          text: 'UNCOMPLETED',
-          value: 'uncompleted',
+          text: 'INACTIVE',
+          value: 'inactive',
+        },
+        {
+          text: 'UNKNOWN',
+          value: 'unknown',
         },
       ],
       onFilter: (value, { status }) => String(status).indexOf(String(value)) === 0,
@@ -102,10 +106,10 @@ const DetailPerSessionTable: React.FC<StudentList> = (props) => {
           defaultValue='Select'
           style={{ width: '100%' }}
           options={[
-            { value: 'p', label: 'Present' },
-            { value: 'ap', label: 'Absent With Permission' },
-            { value: 'aop', label: 'Absent Without Permission' },
-            { value: 'r', label: 'Reserve' },
+            { value: 'p', label: <span className='text-[#389E0D]'>Present</span> },
+            { value: 'ap', label: <span className='text-[#D46B08]'>Absent With Permission</span> },
+            { value: 'aop', label: <span className='text-[#6737B5]'>Absent Without Permission</span> },
+            { value: 'r', label: <span className='text-[#C41D7F]'>Reserve</span> },
           ]}
         />
       ),
@@ -132,16 +136,18 @@ const DetailPerSessionTable: React.FC<StudentList> = (props) => {
     },
   ]
 
-  let sessionData: DataType[] = []
+  let data: DataType[] = []
 
-  if (data) {
-    sessionData = data.data
+  if (props.data) {
+    data = props.searchText ? props.filteredData.data : props.data.data
   }
 
   const onChange: TableProps<DataType>['onChange'] = (pagination, _filters, _sorter, _extra) => {
-    const { current } = pagination
-    setSearchParams(current)
-    navigate(`/teacher/class-detail/session?sesson_code=${session_code}&class_id=${class_id}&page=${current}&limit=10`)
+    const { current, pageSize } = pagination
+    props.setSearchParams(current)
+    navigate(
+      `/teacher/class-detail/session?sesson_code=${props.session_code}&class_id=${props.class_id}&page=${current}&limit=${pageSize}`,
+    )
   }
 
   return (
@@ -150,13 +156,13 @@ const DetailPerSessionTable: React.FC<StudentList> = (props) => {
         position: ['bottomCenter'],
         defaultCurrent: 1,
         defaultPageSize: 10,
-        pageSizeOptions: [10],
+        pageSizeOptions: [10, 20],
         showSizeChanger: true,
-        current: data && data.page,
-        total: data && data.total,
+        current: data && props.data.page,
+        total: data && props.data.total,
       }}
       columns={columns}
-      dataSource={sessionData}
+      dataSource={data}
       scroll={{ y: 340 }}
       bordered
       size='small'

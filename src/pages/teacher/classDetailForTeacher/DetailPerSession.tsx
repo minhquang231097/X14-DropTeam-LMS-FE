@@ -1,36 +1,24 @@
 import React, { useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
-import { Button, Input } from 'antd'
-import { useQuery } from '@tanstack/react-query'
-import { FaFileUpload } from 'react-icons/fa'
 import Header from '@/layouts/user/Header'
 import Footer from '@/layouts/user/Footer'
 import SidebarTeacher from '@/layouts/user/SidebarTeacher'
 import DetailPerSessionTable from './DetailPerSessionTable'
-// import { useQueryString } from '@/utils/utils'
-// import { getSessionById } from '@/apis/sessionBySessionId.api'
+import { useSearchParams } from 'react-router-dom'
+import { Button, Input } from 'antd'
+import { useQuery } from '@tanstack/react-query'
 import { getStudentsListPerSession } from '@/apis/studentsPerSession'
+import { FaFileUpload } from 'react-icons/fa'
+import { searchStudentForTeacher } from '@/apis/searchStudentForTeacher.api'
 
 const DetailPerSession: React.FC = () => {
   const [searchText, setSearchText] = useState('')
-
-  // const queryString: { id?: string; class_code?: string } = useQueryString()
-  // const id = String(queryString.id)
-  // const class_code = String(queryString.class_code)
+  const [filteredData, setFilteredData] = useState([])
 
   const [searchParams, setSearchParams] = useSearchParams()
   const session_code = searchParams.get('session_code') ?? ''
   const class_id = searchParams.get('class_id') ?? ''
   const page = searchParams.get('page') ?? '1'
   const limit = searchParams.get('limit') ?? '10'
-
-  // const sessionData = useQuery({
-  //   queryKey: ['session', session_id],
-  //   queryFn: async () => {
-  //     const res = await getSessionById(session_id)
-  //     return res
-  //   },
-  // })
 
   const studentsData = useQuery({
     queryKey: ['students', class_id, page, limit],
@@ -39,6 +27,18 @@ const DetailPerSession: React.FC = () => {
       return res.data
     },
   }).data
+
+  useQuery({
+    queryKey: ['search', searchText],
+    queryFn: async () => {
+      const res = await searchStudentForTeacher(String(searchText).toUpperCase())
+      setFilteredData(res.data)
+    },
+  }).data
+
+  const handleSearch = (value: string) => {
+    setSearchText(value)
+  }
 
   return (
     <>
@@ -62,10 +62,9 @@ const DetailPerSession: React.FC = () => {
               <Input.Search
                 placeholder='Search Student Name ...'
                 style={{ width: 280 }}
-                onSearch={(value) => setSearchText(value)}
-                onChange={(e) => setSearchText(e.target.value)}
+                onChange={(e) => handleSearch(e.target.value)}
+                onSearch={handleSearch}
               />
-
               <Button
                 className='mt-3'
                 type='primary'
@@ -81,6 +80,7 @@ const DetailPerSession: React.FC = () => {
             setSearchParams={setSearchParams}
             session_code={session_code}
             class_id={class_id}
+            filteredData={filteredData as any}
           />
         </div>
       </div>

@@ -52,7 +52,7 @@ const Header: React.FC = () => {
             Pages
           </a>
           <Link
-            to='/courses-list'
+            to='/courses-list?page=1&limit=6'
             className='text-lg font-bold no-underline text-gray-600 dark:text-gray-100'
           >
             <DropdownList />
@@ -71,7 +71,10 @@ const Header: React.FC = () => {
             {!USER ? (
               <UserDropDownDefault />
             ) : USER && USER.role === 'ADMIN' ? (
-              <UserDropdownAdmin username={USER.username} />
+              <UserDropdownAdmin
+                username={USER.username}
+                avatar={USER.avatar}
+              />
             ) : USER && USER.role === 'MENTOR' ? (
               <UserDropdownMentor username={USER.username} />
             ) : (

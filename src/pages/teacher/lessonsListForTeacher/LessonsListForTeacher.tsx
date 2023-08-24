@@ -1,19 +1,17 @@
 import React, { useState } from 'react'
 import { Input } from 'antd'
 import { useSearchParams } from 'react-router-dom'
-// import { useQueryString } from '@/utils/utils'
 import { useQuery } from '@tanstack/react-query'
 import Header from '@/layouts/user/Header'
 import Footer from '@/layouts/user/Footer'
 import SidebarTeacher from '@/layouts/user/SidebarTeacher'
 import LessonsListTable from './LessonsListTable'
 import { getLessonsList } from '@/apis/lessonsList.api'
+import { getLessonByLessonCode } from '@/apis/searchLessonByLessonCode.api'
 
 const LessonsListForTeacher: React.FC = () => {
   const [searchText, setSearchText] = useState('')
-
-  // const queryString: { page?: string } = useQueryString()
-  // const page = Number(queryString.page) || 1
+  const [filteredData, setFilteredData] = useState([])
 
   const [searchParams, setSearchParams] = useSearchParams()
   const page = searchParams.get('page') ?? '1'
@@ -26,6 +24,18 @@ const LessonsListForTeacher: React.FC = () => {
       return res.data
     },
   })
+
+  useQuery({
+    queryKey: ['search', searchText],
+    queryFn: async () => {
+      const res = await getLessonByLessonCode(String(searchText).toUpperCase())
+      setFilteredData(res.data)
+    },
+  }).data
+
+  const handleSearch = (value: string) => {
+    setSearchText(value)
+  }
 
   return (
     <>
@@ -46,14 +56,15 @@ const LessonsListForTeacher: React.FC = () => {
             <Input.Search
               placeholder='Search Lesson Name ...'
               style={{ width: 280 }}
-              onSearch={(value) => setSearchText(value)}
               onChange={(e) => setSearchText(e.target.value)}
+              onSearch={handleSearch}
             />
           </div>
           <LessonsListTable
             data={data as any}
             searchText={searchText}
             setSearchParams={setSearchParams}
+            filteredData={filteredData as any}
           />
         </div>
       </div>
