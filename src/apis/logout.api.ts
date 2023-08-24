@@ -1,7 +1,7 @@
 import http from '@/utils/http'
 
 const handleLogout = async (navigate?: any) => {
-  const id = JSON.parse(localStorage.getItem('user') as string).userId
+  const id = JSON.parse(localStorage.getItem('user') as string).id
   await http
     .post('/auth/sign-out', { id })
     .then((res) => {

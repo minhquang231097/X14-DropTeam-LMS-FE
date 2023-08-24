@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react'
 import { Avatar, Dropdown } from 'antd'
 import type { MenuProps } from 'antd'
@@ -14,7 +12,7 @@ const UserDropdownLogged: React.FC<{ username: any }> = (prop: any) => {
   const items: MenuProps['items'] = [
     {
       key: '1',
-      label: <div className='flex items-center justify-center text-[#F56A00] font-bold'>{username}</div>,
+      label: <div className='flex items-center justify-center text-lg text-[#F56A00] font-bold'>{username}</div>,
       disabled: true,
     },
     {
