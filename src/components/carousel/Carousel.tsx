@@ -11,7 +11,7 @@ const contentStyle: React.CSSProperties = {
 const Carousel: React.FC = () => {
   return (
     <div style={contentStyle}>
-      <div className='relative max-w-[1280px] mx-auto'>
+      <div className='relative max-w-[1280px] mx-auto max-md:px-8'>
         <div className='absolute top-10'>
           <p className='text-5xl font-bold my-4 text-gray-100'>
             Welcome to Vite <br />

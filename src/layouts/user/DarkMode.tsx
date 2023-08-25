@@ -40,7 +40,7 @@ const DarkMode: React.FC = () => {
     <div className='w-[32px] h-[32px] cursor-pointer bg-gray-200 hover:bg-gray-300 mr-10 p-0 rounded-full flex items-center justify-center  border-none focus:outline-none dark:focus:ring-gray-700'>
       <MdDarkMode
         onClick={() => themeSwitch()}
-        className='moon text-2xl hover:text-gray-600 text-gray-400 dark:text-white'
+        className='moon text-2xl hover:text-gray-600 text-gray-400 dark:text-white max-md:text-gray-600'
       />
       <MdSunny
         onClick={() => themeSwitch()}

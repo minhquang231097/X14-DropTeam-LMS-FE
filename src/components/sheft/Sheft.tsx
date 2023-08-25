@@ -19,9 +19,11 @@ const Sheft: React.FC<SheftProps> = ({ title }) => {
     },
   })
   return (
-    <div className='max-w-[1280px] mx-auto '>
+    <div className='max-w-[1280px] mx-auto max-md:px-8'>
       <p className='text-2xl font-bold m-0 mt-[96px] mb-[30px] dark:text-gray-100'>{title}</p>
-      <div className='grid grid-cols-4 gap-6'>{data ? data.map((course: any) => <CourseCard {...course} />) : ''}</div>
+      <div className='grid grid-cols-4 gap-6 max-md:grid-cols-2 max-md:flex max-md:flex-wrap max-md:justify-evenly'>
+        {data ? data.map((course: any) => <CourseCard {...course} />) : ''}
+      </div>
     </div>
   )
 }

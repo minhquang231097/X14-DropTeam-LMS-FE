@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom'
-import { useContext } from 'react'
 import Logo from '@/assets/images/logo/logo-with-shadow.png'
 import SearchBar from '@/components/search/SearchBar'
 import DropdownList from '@/components/dropdown/DropdownList'
@@ -8,17 +7,15 @@ import UserDropDownDefault from '@/components/dropdown/UserDropdownDefault'
 import UserDropdownLogged from '@/components/dropdown/UserDropdownLogged'
 import UserDropdownAdmin from '@/components/dropdown/UserDropdownAdmin'
 import UserDropdownMentor from '@/components/dropdown/UserDropdownMentor'
-
-import { ColorModeContext } from '@/contexts/colorMode'
+import HiddenDropdown from '@/components/dropdown/HiddenDropdown'
 
 const Header: React.FC = () => {
-  const { mode } = useContext(ColorModeContext)
   const USER = JSON.parse(localStorage.getItem('user') as string)
 
   return (
     <header className='h-[56px] bg-white dark:bg-[#1E293B] flex items-center justify-between border-0 border-b-[1px] border-gray-300 border-solid dark:border-none'>
-      <nav className='max-w-[1280px] mx-auto w-full flex items-center justify-between lg:px-8'>
-        <div className='flex lg:flex-1'>
+      <nav className='max-w-[1280px] mx-auto w-full flex items-center justify-between px-8'>
+        <div className='flex flex-1'>
           <a
             href='/'
             className='-m-1.5 p-1.5 flex items-center no-underline'
@@ -32,7 +29,7 @@ const Header: React.FC = () => {
           </a>
         </div>
 
-        <div className='flex lg:flex-1 justify-between'>
+        <div className='flex flex-1 justify-between max-md:hidden'>
           <Link
             to='/'
             className='text-lg font-bold no-underline text-gray-600 dark:text-gray-100'
@@ -61,12 +58,12 @@ const Header: React.FC = () => {
 
         <SearchBar />
 
-        <div className='hidden lg:flex lg:items-center lg:flex-1 lg:justify-end'>
+        <div className='flex items-center flex-1 justify-end'>
           <DarkMode />
+          <HiddenDropdown />
           <a
             target='_blank'
             className='flex items-center no-underline text-gray-600 dark:text-gray-100'
-            style={{ color: mode === 'light' ? '#4b5563' : 'white' }}
           >
             {!USER ? (
               <UserDropDownDefault />
