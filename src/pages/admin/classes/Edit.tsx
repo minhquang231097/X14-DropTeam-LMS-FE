@@ -24,6 +24,7 @@ import customParseFormat from 'dayjs/plugin/customParseFormat'
 import AdminLayout from '@/layouts/admin'
 import http from '@/utils/http'
 import { getClassById } from '@/apis/class.api'
+import { weekdays } from '@/utils/day'
 
 interface IMentor {
   fullname: string
@@ -53,16 +54,6 @@ const CustomContent = () => {
 
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
-
-  const weekdays = [
-    { value: 'monday', label: 'Monday' },
-    { value: 'tuesday', label: 'Tuesday' },
-    { value: 'wednesday', label: 'Wednesday' },
-    { value: 'thursday', label: 'Thursday' },
-    { value: 'friday', label: 'Friday' },
-    { value: 'saturday', label: 'Saturday' },
-    { value: 'sunday', label: 'Sunday' },
-  ]
 
   const plainOptions = [
     { value: '1', label: 'Student 01' },

@@ -4,7 +4,7 @@ import { Breadcrumb, Card, Typography, Row, Col, Image, Divider, Space, Button, 
 import { useQuery } from '@tanstack/react-query'
 import AdminLayout from '@/layouts/admin'
 // import { CourseItems } from '@/data/courses'
-import { ShowButtonStyle } from '../style'
+import { ShowButtonStyle } from '@/utils/style'
 import { getCourse } from '@/apis/course.api'
 
 const CustomContent = () => {

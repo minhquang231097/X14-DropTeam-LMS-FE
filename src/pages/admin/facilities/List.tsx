@@ -38,7 +38,7 @@ const CustomContent = () => {
     queryKey: ['workplace', page, 10],
     queryFn: async () => {
       const res = await getWorkplacesList(page, 10)
-      return res.data?.data
+      return res.data
     },
   })
 
@@ -97,8 +97,8 @@ const CustomContent = () => {
               status === 'ON'
                 ? token.colorSuccessText
                 : status === 'OFF'
-                ? token.colorErrorText
-                : token.colorWarningText,
+                  ? token.colorErrorText
+                  : token.colorWarningText,
             fontSize: '18px',
             display: 'flex',
             alignItems: 'center',
@@ -188,7 +188,7 @@ const CustomContent = () => {
           <Table
             rowKey={(facility: DataType) => facility._id}
             columns={columns}
-            dataSource={workplaceData.list}
+            dataSource={workplaceData.data}
             pagination={{
               position: ['bottomRight'],
               current: page,

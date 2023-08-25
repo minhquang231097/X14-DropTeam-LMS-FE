@@ -34,7 +34,7 @@ const CustomContent = () => {
     queryKey: ['course', page, 10],
     queryFn: async () => {
       const res = await getCoursesList(page, 10)
-      return res.data.data
+      return res.data
     },
   })
 
@@ -168,7 +168,7 @@ const CustomContent = () => {
           <Table
             rowKey={(course: DataType) => course._id}
             columns={columns}
-            dataSource={courseData.list}
+            dataSource={courseData.data}
             pagination={{
               position: ['bottomRight'],
               current: page,

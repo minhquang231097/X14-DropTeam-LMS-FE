@@ -10,6 +10,7 @@ import AdminLayout from '@/layouts/admin'
 import AdminSearch from '@/components/search/adminSearch'
 import { useQueryString } from '@/utils/utils'
 import { getClassesList } from '@/apis/classesList.api'
+import { weekdays } from '@/utils/day'
 
 interface IMentor {
   fullname: string
@@ -50,7 +51,7 @@ const CustomContent = () => {
     queryKey: ['class', page, 10],
     queryFn: async () => {
       const res = await getClassesList(page, 10)
-      return res.data.data
+      return res.data
     },
   })
 
@@ -97,13 +98,19 @@ const CustomContent = () => {
       title: 'Schedule',
       dataIndex: 'schedule',
       width: '30%',
-      render: (schedule: string[], cls: DataType) => (
+      render: (schedule: number[], cls: DataType) => (
         <Space direction='vertical'>
           <Typography.Text>
             Time: {dayjs(cls.start_at).format('DD/MM/YYYY')} - {dayjs(cls.end_at).format('DD/MM/YYYY')}
           </Typography.Text>
           <Typography.Text>
-            Schedule: {schedule.map((date: string) => dayjs(date).format('dddd')).join(', ')}
+            Schedule:{' '}
+            {schedule
+              .map((day: number) => {
+                const weekday = weekdays.find((w) => w.value === day)
+                return weekday ? weekday.label : ''
+              })
+              .join(', ')}
           </Typography.Text>
         </Space>
       ),
@@ -138,8 +145,8 @@ const CustomContent = () => {
               status === 'ON' && cls.class_size && cls.class_size >= sizeReq
                 ? token.colorSuccessText
                 : status === 'OFF' || (cls.class_size && cls.class_size < sizeReq)
-                ? token.colorErrorText
-                : token.colorWarningText,
+                  ? token.colorErrorText
+                  : token.colorWarningText,
             fontSize: '18px',
             display: 'flex',
             alignItems: 'center',
@@ -229,7 +236,7 @@ const CustomContent = () => {
           <Table
             rowKey={(cls: DataType) => cls._id}
             columns={columns}
-            dataSource={classData.list}
+            dataSource={classData.data}
             pagination={{
               position: ['bottomRight'],
               current: page,

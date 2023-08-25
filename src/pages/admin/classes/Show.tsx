@@ -5,8 +5,9 @@ import { useQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import AdminLayout from '@/layouts/admin'
-import { ShowButtonStyle } from '../style'
+import { ShowButtonStyle } from '@/utils/style'
 import { getClassById } from '@/apis/class.api'
+import { weekdays } from '@/utils/day'
 
 dayjs.extend(customParseFormat)
 
@@ -57,7 +58,13 @@ const CustomContent = () => {
                 Time: {dayjs(classByID.start_at).format('DD/MM/YYYY')} - {dayjs(classByID.end_at).format('DD/MM/YYYY')}
               </Typography.Text>
               <Typography.Text className='mt-2 mx-1'>
-                Schedule: {classByID.schedule.map((date: string) => dayjs(date).format('dddd')).join(', ')}
+                Schedule:{' '}
+                {classByID
+                  .map((day: number) => {
+                    const weekday = weekdays.find((w) => w.value === day)
+                    return weekday ? weekday.label : ''
+                  })
+                  .join(', ')}
               </Typography.Text>
             </Space>
           </Col>
