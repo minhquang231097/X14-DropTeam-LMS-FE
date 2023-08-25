@@ -89,8 +89,8 @@ const LessonsListTable: React.FC<LessonsList> = (props) => {
         defaultPageSize: 10,
         pageSizeOptions: [10, 20],
         showSizeChanger: true,
-        current: data && props.data.page,
-        total: data && props.data.total,
+        current: props.data && props.data.page,
+        total: props.data && props.data.total,
       }}
       columns={columns}
       dataSource={data}
