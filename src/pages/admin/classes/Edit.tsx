@@ -100,11 +100,7 @@ const CustomContent = () => {
     if (!id) {
       throw new Error('Missing id parameter')
     }
-    await http.put(`/class/`, cls, {
-      params: {
-        id,
-      },
-    })
+    await http.put(`/class/${id}`, cls)
   }
 
   const { mutate, isLoading } = useMutation(updateClass, {

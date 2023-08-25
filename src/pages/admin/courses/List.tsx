@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom'
 import { MdOutlineCheck, MdOutlineClose, MdAddCircleOutline } from 'react-icons/md'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
+import dayjs from 'dayjs'
+import customParseFormat from 'dayjs/plugin/customParseFormat'
 import AdminLayout from '@/layouts/admin'
 import AdminSearch from '@/components/search/adminSearch'
 import { getCoursesList } from '@/apis/coursesList.api'
@@ -16,8 +18,11 @@ interface DataType {
   title?: string
   location?: string
   is_active?: boolean
+  created_at?: string
   formated_date: string
 }
+
+dayjs.extend(customParseFormat)
 
 const CustomContent = () => {
   const { useToken } = theme
@@ -61,7 +66,7 @@ const CustomContent = () => {
       width: '25%',
       render: (image: any) => (
         <Image
-          src={image || 'https://via.placeholder.com/500x250'}
+          src={image.length > 0 ? image : 'https://via.placeholder.com/500x250'}
           alt='Course Image'
         />
       ),
@@ -78,7 +83,7 @@ const CustomContent = () => {
           >
             {course_code}: {course.title}
           </Typography.Text>
-          <Typography.Text>Created at: {course.formated_date}</Typography.Text>
+          <Typography.Text>Created at: {dayjs(course.created_at).format('DD/MM/YYYY')}</Typography.Text>
         </Space>
       ),
     },

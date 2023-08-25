@@ -20,7 +20,6 @@ import DetailPerSession from './pages/teacher/classDetailForTeacher/DetailPerSes
 import ChangePassword from './pages/user/changePassword/ChangePassword.tsx'
 
 // ADMIN
-// import ColorModeContextProvider from './contexts/colorMode.tsx'
 import AdminHome from './pages/admin/home/index'
 import AdminListFacilities from './pages/admin/facilities/List.tsx'
 import AdminShowFacilities from './pages/admin/facilities/Show.tsx'
@@ -30,18 +29,18 @@ import AdminShowCourses from './pages/admin/courses/Show.tsx'
 import AdminCreateCourses from './pages/admin/courses/Create.tsx'
 import AdminEditCourses from './pages/admin/courses/Edit.tsx'
 // import AdminProfile from './pages/admin/profile/index.tsx'
-import AdminChangePassword from './pages/admin/profile/ChangePassword.tsx'
+// import AdminChangePassword from './pages/admin/profile/ChangePassword.tsx'
 import AdminEditFacilities from './pages/admin/facilities/Edit.tsx'
 import AdminListClasses from './pages/admin/classes/List.tsx'
 import AdminShowClasses from './pages/admin/classes/Show.tsx'
 import AdminCreateClasses from './pages/admin/classes/Create.tsx'
 import AdminEditClasses from './pages/admin/classes/Edit.tsx'
-import AdminTeachers from './pages/admin/userlists/TeacherList.tsx'
+import AdminMentors from './pages/admin/userlists/MentorList.tsx'
 import AdminStudents from './pages/admin/userlists/StudentList.tsx'
 import AdminLessons from './pages/admin/lessons/index.tsx'
 import AdminFeedbacks from './pages/admin/feedbacks/index.tsx'
 import AdminStudentEdit from './pages/admin/userlists/StudentEdit.tsx'
-import AdminTeacherEdit from './pages/admin/userlists/TeacherEdit.tsx'
+import AdminMentorEdit from './pages/admin/userlists/MentorEdit.tsx'
 // import Profile from './pages/user/profile/index.tsx'
 import Forbidden403 from './pages/forbidden403/Fobidden403.tsx'
 import LoginForm from './pages/user/login/LoginForm.tsx'
@@ -194,16 +193,16 @@ const App: React.FC = () => {
           element={USER && USER.role === 'ADMIN' ? <AdminEditClasses /> : <Forbidden403 />}
         />
         <Route
-          path='/admin/users/teachers'
-          element={USER && USER.role === 'ADMIN' ? <AdminTeachers /> : <Forbidden403 />}
+          path='/admin/users/mentors'
+          element={USER && USER.role === 'ADMIN' ? <AdminMentors /> : <Forbidden403 />}
         />
         <Route
           path='/admin/users/students'
           element={USER && USER.role === 'ADMIN' ? <AdminStudents /> : <Forbidden403 />}
         />
         <Route
-          path='/admin/users/teachers/edit/:id'
-          element={USER && USER.role === 'ADMIN' ? <AdminTeacherEdit /> : <Forbidden403 />}
+          path='/admin/users/mentors/edit/:id'
+          element={USER && USER.role === 'ADMIN' ? <AdminMentorEdit /> : <Forbidden403 />}
         />
         <Route
           path='/admin/users/students/edit/:id'

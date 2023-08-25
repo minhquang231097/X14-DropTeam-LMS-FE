@@ -32,12 +32,12 @@ const CustomContent = () => {
       render: (image_url: string) => (
         <Image
           src={image_url}
-          alt='teacher Image'
+          alt='Teacher Image'
         />
       ),
     },
     {
-      title: 'Teacher',
+      title: 'Mentor',
       dataIndex: 'name',
       width: '40%',
       render: (name: string, teacher: DataType) => (
@@ -130,7 +130,7 @@ const CustomContent = () => {
             title: 'Home',
           },
           {
-            title: 'Teachers',
+            title: 'Mentors',
           },
         ]}
         style={{ padding: '4px' }}
@@ -141,7 +141,7 @@ const CustomContent = () => {
             level={3}
             className='mt-0 mx-1'
           >
-            Teacher List
+            Mentor List
           </Typography.Title>
           <Button
             type='primary'

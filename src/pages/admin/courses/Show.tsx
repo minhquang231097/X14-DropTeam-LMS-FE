@@ -93,7 +93,7 @@ const CustomContent = () => {
           </Col>
           <Col span={8}>
             <Image
-              src={course.image || 'https://via.placeholder.com/500x250'}
+              src={course.image ? course.image : 'https://via.placeholder.com/500x250'}
               alt={course.title}
             />
           </Col>

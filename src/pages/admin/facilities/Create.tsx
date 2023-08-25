@@ -35,29 +35,37 @@ const CustomContent = () => {
   const { mutate, isLoading } = useMutation(createWorkplace, {
     onSuccess: () => {
       // Perform any necessary actions after successful creation
+      notification.success({
+        message: 'Update successful',
+        description: 'The facility has been updated successfully',
+      })
       form.resetFields()
       navigate('/admin/facilities/all')
     },
     onError: () => {
       // Perform any necessary actions after failed creation
-      form.resetFields()
-    },
-  })
-
-  const handleSubmit = async (values: IWorkplace) => {
-    try {
-      mutate(values)
-      notification.success({
-        message: 'Update successful',
-        description: 'The facility has been updated successfully',
-      })
-    } catch (error) {
       notification.error({
         message: 'Update failed',
         description: 'There was an error updating the facility',
       })
-    }
-  }
+      form.resetFields()
+    },
+  })
+
+  // const handleSubmit = async (values: IWorkplace) => {
+  //   try {
+  //     mutate(values)
+  //     notification.success({
+  //       message: 'Update successful',
+  //       description: 'The facility has been updated successfully',
+  //     })
+  //   } catch (error) {
+  //     notification.error({
+  //       message: 'Update failed',
+  //       description: 'There was an error updating the facility',
+  //     })
+  //   }
+  // }
 
   return (
     <>
@@ -78,7 +86,7 @@ const CustomContent = () => {
       <Card>
         <Form
           form={form}
-          onFinish={handleSubmit}
+          onFinish={mutate}
           layout='vertical'
         >
           <Typography.Title

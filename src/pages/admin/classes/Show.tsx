@@ -59,7 +59,7 @@ const CustomContent = () => {
               </Typography.Text>
               <Typography.Text className='mt-2 mx-1'>
                 Schedule:{' '}
-                {classByID
+                {classByID.schedule
                   .map((day: number) => {
                     const weekday = weekdays.find((w) => w.value === day)
                     return weekday ? weekday.label : ''
