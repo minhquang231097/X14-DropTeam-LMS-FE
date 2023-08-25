@@ -186,15 +186,15 @@ const StudentListTable: React.FC<StudentList> = (props) => {
             pagination={{
                 position: ['bottomCenter'],
                 defaultCurrent: 1,
-                defaultPageSize: 10,
-                pageSizeOptions: [10, 20],
+                defaultPageSize: 20,
+                pageSizeOptions: [10, 20, 40],
                 showSizeChanger: true,
                 current: props.data && props.data.page,
                 total: props.data && props.data.total,
             }}
             columns={columns}
             dataSource={data}
-            scroll={{ y: 340 }}
+            scroll={{ y: 600 }}
             bordered
             size='small'
             style={{ padding: '0 16px' }}
