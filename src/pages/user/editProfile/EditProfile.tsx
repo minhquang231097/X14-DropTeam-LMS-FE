@@ -45,7 +45,7 @@ const EditProfile: React.FC = () => {
     <>
       <Header />
       <div
-        className='max-w-[1280px] mx-auto my-8 bg-white dark:bg-[#1E293B] dark:border-none rounded-lg border-[1px] border-solid border-gray-200 overflow-hidden'
+        className='max-w-[1280px] max-md:w-[92%] mx-auto my-8 bg-white dark:bg-[#1E293B] dark:border-none rounded-lg border-[1px] border-solid border-gray-200 overflow-hidden'
         style={{ boxShadow: '0 0 10px rgba(0,0,0,.18)', cursor: 'pointer', border: '1px solid rgba(0,0,0,.1)' }}
       >
         <div className='px-12 pt-8'>
@@ -229,7 +229,7 @@ const EditProfile: React.FC = () => {
                 />
               </Form.Item>
 
-              <div className='grid grid-cols-4 gap-4'>
+              <div className='grid grid-cols-4 gap-4 max-md:grid-cols-3'>
                 {/* submit */}
                 <Form.Item name='update'>
                   <Button

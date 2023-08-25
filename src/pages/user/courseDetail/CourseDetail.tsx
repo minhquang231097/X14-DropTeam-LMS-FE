@@ -88,12 +88,14 @@ const CourseDetail: React.FC = () => {
         <div className='relative z-0 h-[360px] bg-gradient-to-r from-[#F3904F] to-[#3B4371] dark:bg-gradient-to-r dark:from-[#67B26F] dark:to-[#4ca2cd] flex items-center' />
         <div className='max-w-[1280px] mx-auto'>
           <div className='absolute top-28 w-[720px] text-white'>
-            <p className='text-4xl font-bold m-0'>Getting Started with {data ? data.title : ''}</p>
-            <p className='text-xl'>
-              {data ? data.title : ''} is the popular programming language which powers web pages and web applications.
-              This course will get you started coding in {data ? data.title : ''}.
-            </p>
-            <div className='flex items-center justify-between'>
+            <div className='max-md:px-8'>
+              <p className='text-4xl font-bold m-0'>Getting Started with {data ? data.title : ''}</p>
+              <p className='text-xl'>
+                {data ? data.title : ''} is the popular programming language which powers web pages and web
+                applications. This course will get you started coding in {data ? data.title : ''}.
+              </p>
+            </div>
+            <div className='flex items-center justify-between max-md:px-8'>
               <div className='flex items-center flex-1 text-white'>
                 <BiBarChart className='text-[#754FFE] text-2xl mr-2' />
                 {data
@@ -112,9 +114,9 @@ const CourseDetail: React.FC = () => {
               </div>
             </div>
           </div>
-          <div className='absolute z-10 top-80 w-full max-w-[1280px] grid grid-rows-1 grid-cols-3 gap-6'>
+          <div className='absolute z-10 top-80 w-full max-w-[1280px] grid grid-rows-1 grid-cols-3 gap-6 max-md:top-[360px] max-md:w-[96%] max-md:mx-4'>
             <div
-              className='col-span-2 row-span-1 bg-white rounded-lg p-4 py-0'
+              className='col-span-2 row-span-1 bg-white rounded-lg p-4 py-0 '
               style={{ boxShadow: '0 0 10px rgba(0,0,0,.18)', cursor: 'pointer', border: '1px solid rgba(0,0,0,.1)' }}
             >
               <Tabs
