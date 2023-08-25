@@ -38,7 +38,8 @@ const handleLogin = async (value: { username: string; password: string }, others
             })
             others(0)
           })
-          .catch(() => {
+          .catch((error) => {
+            console.log(error)
             message.error('Something went wrong!')
           })
       }

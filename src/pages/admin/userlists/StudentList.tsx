@@ -1,126 +1,40 @@
 import React, { useState } from 'react'
-import { Breadcrumb, Button, Card, Image, PaginationProps, Space, Table, Typography, theme } from 'antd'
-import { useNavigate } from 'react-router-dom'
-import { MdOutlineCheck, MdOutlineClose } from 'react-icons/md'
+import { Breadcrumb, Input, Button, Card, Image, PaginationProps, Space, Table, Typography, theme } from 'antd'
 import AdminLayout from '@/layouts/admin'
-import { StudentItems } from '@/data/students'
-
-interface DataType {
-  key: string
-  image_url?: string
-  name?: string
-  location?: string
-  is_active?: boolean
-}
+import { useQuery } from '@tanstack/react-query'
+import { getStudentsListForAdmin } from '@/apis/studentListForAdmin'
+import { useSearchParams } from 'react-router-dom'
+import { searchStudentForTeacher } from '@/apis/searchStudentForTeacher.api'
+import StudentListTable from './StudentListTable'
 
 const CustomContent = () => {
-  const { useToken } = theme
-  const { token } = useToken()
-  const navigate = useNavigate()
+  const [searchText, setSearchText] = useState('')
+  const [filteredData, setFilteredData] = useState([])
 
-  const [isActive, setIsActive] = useState(true)
+  const [searchParams, setSearchParams] = useSearchParams()
+  const user_role = searchParams.get('student') ?? ''
+  const page = searchParams.get('page') ?? '1'
+  const limit = searchParams.get('limit') ?? '10'
 
-  const onShowSizeChange: PaginationProps['onShowSizeChange'] = (current, pageSize) => {
-    console.log(current, pageSize)
+  const studentsData = useQuery({
+    queryKey: ['role', user_role, page, limit],
+    queryFn: async () => {
+      const res = await getStudentsListForAdmin('student', page, limit)
+      return res.data
+    },
+  }).data
+
+  useQuery({
+    queryKey: ['search', searchText],
+    queryFn: async () => {
+      const res = await searchStudentForTeacher(String(searchText).toUpperCase())
+      setFilteredData(res.data)
+    },
+  }).data
+
+  const handleSearch = (value: string) => {
+    setSearchText(value)
   }
-
-  const columns = [
-    {
-      title: 'Image',
-      dataIndex: 'image_url',
-      width: '30%',
-      render: (image_url: string) => (
-        <Image
-          src={image_url}
-          alt='student Image'
-        />
-      ),
-    },
-    {
-      title: 'Student',
-      dataIndex: 'name',
-      width: '40%',
-      render: (name: string, student: DataType) => (
-        <Space direction='vertical'>
-          <Typography.Text
-            strong
-            style={{ fontSize: '20px' }}
-          >
-            {name}
-          </Typography.Text>
-          <Typography.Text>{student.location}</Typography.Text>
-        </Space>
-      ),
-    },
-    {
-      title: 'Status',
-      dataIndex: 'is_active',
-      width: '15%',
-      render: (is_active: boolean) => (
-        <Typography.Text
-          style={{
-            color: is_active ? token.colorSuccessText : token.colorErrorText,
-            fontSize: '18px',
-            display: 'flex',
-            alignItems: 'center',
-          }}
-        >
-          {is_active ? (
-            <>
-              <MdOutlineCheck className='text-[24px]' />
-              Active
-            </>
-          ) : (
-            <>
-              <MdOutlineClose className='text-[24px]' />
-              Inactive
-            </>
-          )}
-        </Typography.Text>
-      ),
-    },
-    {
-      title: 'Action',
-      width: '15%',
-      render: (student: DataType) => (
-        <Space>
-          <Button
-            type='primary'
-            onClick={() => {
-              navigate(`/admin/users/students/edit/${student.key}`)
-            }}
-          >
-            Edit
-          </Button>
-          {student.is_active ? (
-            <Button
-              type='primary'
-              danger
-              onClick={() => {
-                // eslint-disable-next-line no-param-reassign
-                student.is_active = false
-                setIsActive(!isActive)
-              }}
-            >
-              Inactive
-            </Button>
-          ) : (
-            <Button
-              type='primary'
-              onClick={() => {
-                // eslint-disable-next-line no-param-reassign
-                student.is_active = true
-                setIsActive(!isActive)
-              }}
-              style={{ backgroundColor: '#00b96b' }}
-            >
-              Active
-            </Button>
-          )}
-        </Space>
-      ),
-    },
-  ]
 
   return (
     <>
@@ -143,27 +57,19 @@ const CustomContent = () => {
           >
             Student List
           </Typography.Title>
-          {/* <Button
-            type='primary'
-            icon={<MdAddCircleOutline className='text-[18px]' />}
-            onClick={() => navigate('/admin/students/create')}
-            style={{ display: 'flex', alignItems: 'center' }}
-          >
-            Create
-          </Button> */}
+          <Input.Search
+            placeholder='Search Student Name ...'
+            style={{ width: 280 }}
+            onChange={(e) => handleSearch(e.target.value)}
+            onSearch={handleSearch}
+          />
         </div>
-        <Table
-          columns={columns}
-          dataSource={StudentItems}
-          pagination={{
-            position: ['bottomRight'],
-            pageSizeOptions: [5, 10],
-            onShowSizeChange,
-            showSizeChanger: true,
-            defaultCurrent: 1,
-          }}
-          bordered
-          style={{ marginTop: 16 }}
+        <StudentListTable
+          data={studentsData as any}
+          searchText={searchText}
+          setSearchParams={setSearchParams}
+          // role={class_id}
+          filteredData={filteredData as any}
         />
       </Card>
     </>
