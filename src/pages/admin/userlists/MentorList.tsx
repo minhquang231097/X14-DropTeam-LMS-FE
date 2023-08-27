@@ -5,7 +5,7 @@ import { useSearchParams } from 'react-router-dom'
 import AdminLayout from '@/layouts/admin'
 import { getStudentsListForAdmin } from '@/apis/studentListForAdmin'
 import { searchStudentForTeacher } from '@/apis/searchStudentForTeacher.api'
-import TeacherListTable from './MentorListTable-1'
+import TeacherListTable from './MentorListTable'
 
 const CustomContent = () => {
   const [searchText, setSearchText] = useState('')
