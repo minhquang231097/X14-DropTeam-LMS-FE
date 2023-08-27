@@ -1,71 +1,68 @@
-import React, { useEffect, useState } from 'react';
-import AdminLayout from '@/layouts/admin'
-import { Breadcrumb, Input, Button, Card, Image, PaginationProps, Space, Table, Typography, theme } from 'antd'
-import VirtualList from 'rc-virtual-list';
-import { Avatar, List, message } from 'antd';
-import { getFeedback } from '@/apis/feedback.api';
+import React, { useEffect, useState } from 'react'
+import { Breadcrumb, Input, Card, Typography, Avatar, List, message } from 'antd'
+import VirtualList from 'rc-virtual-list'
 import { useQuery } from '@tanstack/react-query'
 import { useSearchParams } from 'react-router-dom'
-import { searchFeedback } from '@/apis/searchFeedback.api';
-
+import { getFeedback } from '@/apis/feedback.api'
+import AdminLayout from '@/layouts/admin'
+import { searchFeedback } from '@/apis/searchFeedback.api'
 
 interface UserItem {
-  email: string;
-  gender: string;
+  email: string
+  gender: string
   name: {
-    first: string;
-    last: string;
-    title: string;
-  };
-  nat: string;
+    first: string
+    last: string
+    title: string
+  }
+  nat: string
   picture: {
-    large: string;
-    medium: string;
-    thumbnail: string;
-  };
+    large: string
+    medium: string
+    thumbnail: string
+  }
 }
 
 type FeedbackList = {
   data: { count: number; data: []; page: number; statusCode: number; total: number; total_page: number }
   searchText: string
   setSearchParams: any
-  avatar: string;
-  username: string;
-  rate: number;
-  content: string; 
+  avatar: string
+  username: string
+  rate: number
+  content: string
   filteredData: { data: [] }
 }
 
-const fakeDataUrl =
-  'https://randomuser.me/api/?results=20&inc=name,gender,email,nat,picture&noinfo';
-const ContainerHeight = 400;
+const fakeDataUrl = 'https://randomuser.me/api/?results=20&inc=name,gender,email,nat,picture&noinfo'
+const ContainerHeight = 400
 
 const CustomContent = () => {
   const [searchText, setSearchText] = useState('')
   const [filteredData, setFilteredData] = useState([])
-  const [data, setData] = useState<UserItem[]>([]);
+  const [data, setData] = useState<UserItem[]>([])
 
-  //Example
+  // Example
 
   const appendData = () => {
     fetch(fakeDataUrl)
       .then((res) => res.json())
       .then((body) => {
-        setData(data.concat(body.results));
-        message.success(`${body.results.length} more items loaded!`);
-      });
-  };
+        setData(data.concat(body.results))
+        message.success(`${body.results.length} more items loaded!`)
+      })
+  }
 
   useEffect(() => {
-    appendData();
-  }, []);
+    appendData()
+  }, [])
 
   const onScroll = (e: React.UIEvent<HTMLElement, UIEvent>) => {
     if (e.currentTarget.scrollHeight - e.currentTarget.scrollTop === ContainerHeight) {
-      appendData();
+      appendData()
     }
-  };
-  
+  }
+
   // My code below
 
   const [searchParams, setSearchParams] = useSearchParams()
@@ -73,9 +70,9 @@ const CustomContent = () => {
   const limit = searchParams.get('limit') ?? '10'
 
   const feedbackData = useQuery({
-    queryKey: [ page, limit],
+    queryKey: [page, limit],
     queryFn: async () => {
-      const res = await getFeedback( page, limit)
+      const res = await getFeedback(page, limit)
       return res.data
     },
   }).data
@@ -125,7 +122,7 @@ const CustomContent = () => {
             data={feedbackData}
             height={600}
             itemHeight={47}
-            itemKey="username"
+            itemKey='username'
             onScroll={onScroll}
           >
             {(item: FeedbackList) => (
