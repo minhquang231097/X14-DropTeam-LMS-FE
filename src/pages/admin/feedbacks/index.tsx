@@ -34,7 +34,7 @@ type FeedbackList = {
   filteredData: { data: [] }
 }
 
-const fakeDataUrl = 'https://randomuser.me/api/?results=20&inc=name,gender,email,nat,picture&noinfo'
+// const fakeDataUrl = 'https://randomuser.me/api/?results=20&inc=name,gender,email,nat,picture&noinfo'
 const ContainerHeight = 400
 
 const CustomContent = () => {
@@ -42,26 +42,14 @@ const CustomContent = () => {
   const [filteredData, setFilteredData] = useState([])
   const [data, setData] = useState<UserItem[]>([])
 
-  // Example
-
-  const appendData = () => {
-    fetch(fakeDataUrl)
-      .then((res) => res.json())
-      .then((body) => {
-        setData(data.concat(body.results))
-        message.success(`${body.results.length} more items loaded!`)
-      })
-  }
-
-  useEffect(() => {
-    appendData()
-  }, [])
-
-  const onScroll = (e: React.UIEvent<HTMLElement, UIEvent>) => {
-    if (e.currentTarget.scrollHeight - e.currentTarget.scrollTop === ContainerHeight) {
-      appendData()
-    }
-  }
+  // const appendData = () => {
+  //   fetch(fakeDataUrl)
+  //     .then((res) => res.json())
+  //     .then((body) => {
+  //       setData(data.concat(body.results))
+  //       message.success(`${body.results.length} more items loaded!`)
+  //     })
+  // }
 
   // My code below
 
@@ -77,6 +65,13 @@ const CustomContent = () => {
     },
   }).data
 
+  const appendData = () => {
+    if (feedbackData) {
+      setData(data.concat(feedbackData.data))
+      message.success(`${feedbackData.data.length} more items loaded!`)
+    }
+  }
+
   useQuery({
     queryKey: ['search', searchText],
     queryFn: async () => {
@@ -84,6 +79,16 @@ const CustomContent = () => {
       setFilteredData(res.data)
     },
   }).data
+
+  useEffect(() => {
+    appendData()
+  }, [])
+
+  const onScroll = (e: React.UIEvent<HTMLElement, UIEvent>) => {
+    if (e.currentTarget.scrollHeight - e.currentTarget.scrollTop === ContainerHeight) {
+      appendData()
+    }
+  }
 
   const handleSearch = (value: string) => {
     setSearchText(value)
@@ -117,26 +122,28 @@ const CustomContent = () => {
             onSearch={handleSearch}
           />
         </div>
-        <List>
-          <VirtualList
-            data={feedbackData}
-            height={600}
-            itemHeight={47}
-            itemKey='username'
-            onScroll={onScroll}
-          >
-            {(item: FeedbackList) => (
-              <List.Item key={item.username}>
-                <List.Item.Meta
-                  avatar={<Avatar src={item.avatar} />}
-                  title={item.username}
-                  description={item.content}
-                />
-                <div>Content</div>
-              </List.Item>
-            )}
-          </VirtualList>
-        </List>
+        {feedbackData && (
+          <List>
+            <VirtualList
+              data={feedbackData.data}
+              height={600}
+              itemHeight={47}
+              itemKey='username'
+              onScroll={onScroll}
+            >
+              {(item: FeedbackList) => (
+                <List.Item key={item.username}>
+                  <List.Item.Meta
+                    avatar={<Avatar src={item.avatar} />}
+                    title={item.username}
+                    description={item.content}
+                  />
+                  <div>Content</div>
+                </List.Item>
+              )}
+            </VirtualList>
+          </List>
+        )}
       </Card>
     </div>
   )

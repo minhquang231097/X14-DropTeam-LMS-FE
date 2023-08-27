@@ -36,7 +36,7 @@ const MenuSection: React.FC = () => {
     getItem('Home', '', <MdOutlineHome style={{ fontSize: '24px', verticalAlign: 'middle' }} />),
 
     getItem('Users', 'users', <MdPeople style={{ fontSize: '24px', verticalAlign: 'middle' }} />, [
-      getItem('Mentors', 'users/teachers'),
+      getItem('Mentors', 'users/mentors'),
       getItem('Students', 'users/students'),
     ]),
 
