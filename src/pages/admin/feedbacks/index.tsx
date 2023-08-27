@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Breadcrumb, Input, Card, Typography, Avatar, List, message } from 'antd'
 import VirtualList from 'rc-virtual-list'
 import { useQuery } from '@tanstack/react-query'
 import { useSearchParams } from 'react-router-dom'
+import { MdSearch } from 'react-icons/md'
 import { getFeedback } from '@/apis/feedback.api'
 import AdminLayout from '@/layouts/admin'
 import { searchFeedback } from '@/apis/searchFeedback.api'
+import { ColorModeContext } from '@/contexts/colorMode'
 
 interface UserItem {
   email: string
@@ -38,20 +40,10 @@ type FeedbackList = {
 const ContainerHeight = 400
 
 const CustomContent = () => {
+  const { mode } = useContext(ColorModeContext)
   const [searchText, setSearchText] = useState('')
   const [filteredData, setFilteredData] = useState([])
   const [data, setData] = useState<UserItem[]>([])
-
-  // const appendData = () => {
-  //   fetch(fakeDataUrl)
-  //     .then((res) => res.json())
-  //     .then((body) => {
-  //       setData(data.concat(body.results))
-  //       message.success(`${body.results.length} more items loaded!`)
-  //     })
-  // }
-
-  // My code below
 
   const [searchParams, setSearchParams] = useSearchParams()
   const page = searchParams.get('page') ?? '1'
@@ -120,29 +112,36 @@ const CustomContent = () => {
             style={{ width: 280 }}
             onChange={(e) => handleSearch(e.target.value)}
             onSearch={handleSearch}
+            allowClear
+            enterButton={
+              <MdSearch className={`text-${mode === 'light' ? 'black' : 'white'} align-middle text-[24px]`} />
+            }
+            size='large'
           />
         </div>
         {feedbackData && (
-          <List>
-            <VirtualList
-              data={feedbackData.data}
-              height={600}
-              itemHeight={47}
-              itemKey='username'
-              onScroll={onScroll}
-            >
-              {(item: FeedbackList) => (
-                <List.Item key={item.username}>
-                  <List.Item.Meta
-                    avatar={<Avatar src={item.avatar} />}
-                    title={item.username}
-                    description={item.content}
-                  />
-                  <div>Content</div>
-                </List.Item>
-              )}
-            </VirtualList>
-          </List>
+          <Card style={{ marginTop: '16px' }}>
+            <List>
+              <VirtualList
+                data={feedbackData.data}
+                height={600}
+                itemHeight={47}
+                itemKey='username'
+                onScroll={onScroll}
+              >
+                {(item: FeedbackList) => (
+                  <List.Item key={item.username}>
+                    <List.Item.Meta
+                      avatar={<Avatar src={item.avatar} />}
+                      title={item.username}
+                      description={item.content}
+                    />
+                    <div>Content</div>
+                  </List.Item>
+                )}
+              </VirtualList>
+            </List>
+          </Card>
         )}
       </Card>
     </div>
