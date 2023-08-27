@@ -1,4 +1,6 @@
+import axios from 'axios'
 import http from '@/utils/http'
+import { message } from 'antd'
 
 const handleUpdateUser = async (
   value: {
@@ -8,27 +10,44 @@ const handleUpdateUser = async (
     gender: string
     address: string
     phone_number: string
+    avatar: string
   },
+  imageUpload?: any,
   other?: any,
 ) => {
-  const ID = JSON.parse(localStorage.getItem('user') as string).userId
-  const TOKEN = JSON.parse(localStorage.getItem('user') as string).access_token
-  const AuthString = `Bearer ${TOKEN}`
-  await http
-    .put(`/auth/user/info/${ID}`, JSON.stringify(value), {
+  const ID = JSON.parse(localStorage.getItem('user') as string).id
+
+  await axios
+    .post('http://localhost:8080/api/v1/upload', imageUpload, {
       headers: {
-        Authorization: AuthString,
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
       },
     })
     .then((res) => {
-      if (res.status === 200) {
-        other('/', { replace: true })
-        other(0)
+      const imageURL = res.data.data[0]
+      const valueWithImage = {
+        ...value,
+        avatar: String(imageURL),
       }
+      http
+        .put(`/user/${ID}`, JSON.stringify(valueWithImage))
+        .then((res) => {
+          if (res.status === 200) {
+            other(`/edit-profile?id=${ID}`, { replace: true })
+            other(0)
+          }
+        })
+        .catch((err) => {
+          console.log(err.response.status)
+          if (err.response.status == 422) {
+            message.error("You don't have changes!")
+          } else {
+            message.error('Something went wrong!')
+          }
+        })
     })
-    .catch((err) => {
-      console.log(err)
+    .catch(() => {
+      message.error('Something went wrong!')
     })
 }
 

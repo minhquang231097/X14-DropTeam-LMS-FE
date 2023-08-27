@@ -7,7 +7,7 @@ const Sidebar: React.FC = () => {
       className='bg-white dark:bg-[#1E293B] dark:border-none rounded-lg border-[1px] border-solid border-gray-200'
       style={{ boxShadow: '0 0 10px rgba(0,0,0,.18)', cursor: 'pointer', border: '1px solid rgba(0,0,0,.1)' }}
     >
-      <p className='font-bold m-0 py-4 px-5 dark:text-gray-100 border-0 border-b-[1px] border-solid border-gray-300 dark:border-gray-500'>
+      <p className='font-bold m-0 py-4 px-5 text-gray-500 dark:text-gray-100 border-0 border-b-[1px] border-solid border-gray-300 dark:border-gray-500'>
         Filter
       </p>
       <div className='px-5 text-gray-500  border-0 border-b-[1px] border-solid border-gray-300 dark:border-gray-500 pb-4'>

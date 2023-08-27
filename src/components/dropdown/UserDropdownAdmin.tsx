@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react'
 import { Avatar, Dropdown } from 'antd'
 import type { MenuProps } from 'antd'
@@ -9,15 +7,14 @@ import { BsPersonVideo3 } from 'react-icons/bs'
 import { useNavigate } from 'react-router-dom'
 import handleLogout from '@/apis/logout.api'
 
-const UserDropdownAdmin: React.FC<{ username: any }> = (props: any) => {
+const UserDropdownAdmin: React.FC<{ username: any; avatar: any }> = (props: any) => {
   const navigate = useNavigate()
   const USER = JSON.parse(localStorage.getItem('user') as string)
-  const { username } = props
 
   const items: MenuProps['items'] = [
     {
       key: '1',
-      label: <div className='flex items-center justify-center text-gray-600 font-bold'>{username}</div>,
+      label: <div className='flex items-center justify-center text-lg text-[#F56A00] font-bold'>{props.username}</div>,
       disabled: true,
     },
     {
@@ -63,7 +60,7 @@ const UserDropdownAdmin: React.FC<{ username: any }> = (props: any) => {
       label: (
         <div
           className='flex items-center text-gray-600 font-bold'
-          onClick={() => navigate(`/edit-profile?id=${USER.userId}`)}
+          onClick={() => navigate(`/edit-profile?id=${USER.id}`)}
         >
           <RiUserSettingsLine className='text-2xl mr-2 p-2 pl-0' />
           Edit Profile
@@ -105,8 +102,11 @@ const UserDropdownAdmin: React.FC<{ username: any }> = (props: any) => {
       arrow
     >
       <a target='_blank'>
-        <Avatar style={{ backgroundColor: '#f56a00', color: '#fff', fontSize: '20px', fontWeight: 'bold' }}>
-          {username.charAt(0).toUpperCase()}
+        <Avatar
+          src={props.avatar}
+          style={{ backgroundColor: '#f56a00', color: '#fff', fontSize: '20px', fontWeight: 'bold', border: 'none' }}
+        >
+          {props.username.charAt(0).toUpperCase()}
         </Avatar>
       </a>
     </Dropdown>

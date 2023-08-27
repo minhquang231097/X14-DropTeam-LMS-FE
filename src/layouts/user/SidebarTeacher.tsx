@@ -16,7 +16,7 @@ const SidebarTeacher: React.FC = () => {
       />
 
       <Link
-        to='/teacher/classes-list'
+        to='/teacher/classes-list?page=1&limit=10'
         className='flex items-center no-underline text-gray-600 dark:text-gray-400 hover:bg-[#E2E8F0] dark:hover:bg-[#0F172A] hover:text-[#64748B] p-2 py-4 rounded-md'
       >
         <MdOutlineClass className='mr-2 text-xl' />

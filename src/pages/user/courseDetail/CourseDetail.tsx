@@ -54,9 +54,8 @@ const CourseDetail: React.FC = () => {
   const { data } = useQuery({
     queryKey: ['course', id],
     queryFn: async () => {
-      // eslint-disable-next-line @typescript-eslint/no-shadow
-      const { data } = await getCourse(id)
-      return data.data
+      const res = await getCourse(id)
+      return res.data.data
     },
   })
 

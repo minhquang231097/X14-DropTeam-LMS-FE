@@ -17,10 +17,10 @@ type SessionsList = {
   searchText: string
   setSearchParams: any
   classId: string
+  filteredData: { data: [] }
 }
 
 const SessionListTable: React.FC<SessionsList> = (props) => {
-  const { searchText, data, setSearchParams, classId } = props
   const columns: ColumnsType<DataType> = [
     {
       title: 'No.',
@@ -29,10 +29,10 @@ const SessionListTable: React.FC<SessionsList> = (props) => {
       render: (_value, _record, index) => <>{index + 1}</>,
     },
     {
-      title: 'Session',
+      title: 'Session Code',
       dataIndex: 'session_code',
       width: '160px',
-      filteredValue: [searchText],
+      filteredValue: [props.searchText],
       onFilter: (value, { session_code }) => String(session_code).toLowerCase().includes(String(value).toLowerCase()),
     },
     {
@@ -85,17 +85,17 @@ const SessionListTable: React.FC<SessionsList> = (props) => {
     },
   ]
 
-  let sessionData: DataType[] = []
+  let data: DataType[] = []
 
   const navigate = useNavigate()
-  if (data) {
-    sessionData = data.data
+  if (props.data !== undefined) {
+    data = props.searchText ? props.filteredData.data : props.data.data
   }
 
   const onChange: TableProps<DataType>['onChange'] = (pagination, _filters, _sorter, _extra) => {
-    const { current } = pagination
-    setSearchParams(current)
-    navigate(`/teacher/class-detail?id=${classId}&page=${current}&limit=10`)
+    const { current, pageSize } = pagination
+    props.setSearchParams(current)
+    navigate(`/teacher/class-detail?id=${props.classId}&page=${current}&limit=${pageSize}`)
   }
 
   return (
@@ -104,13 +104,13 @@ const SessionListTable: React.FC<SessionsList> = (props) => {
         position: ['bottomCenter'],
         defaultCurrent: 1,
         defaultPageSize: 10,
-        pageSizeOptions: [10],
+        pageSizeOptions: [10, 20],
         showSizeChanger: true,
-        current: data && data.page,
-        total: data && data.total,
+        current: props.data && props.data.page,
+        total: props.data && props.data.total,
       }}
       columns={columns}
-      dataSource={sessionData}
+      dataSource={data}
       scroll={{ y: 340 }}
       bordered
       size='small'
@@ -119,7 +119,9 @@ const SessionListTable: React.FC<SessionsList> = (props) => {
       onRow={({ session_code }) => {
         return {
           onClick: () => {
-            navigate(`/teacher/class-detail/session?session_code=${session_code}&class_id=${classId}&page=1&limit=10`)
+            navigate(
+              `/teacher/class-detail/session?session_code=${session_code}&class_id=${props.classId}&page=1&limit=10`,
+            )
           },
         }
       }}

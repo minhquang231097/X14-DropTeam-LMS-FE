@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Divider, Button, Form, Input, Select, DatePicker, Avatar } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import Header from '@/layouts/user/Header'
 import Footer from '@/layouts/user/Footer'
 import UploadImage from '@/components/upload/UploadImage'
-import handleUpdateUser from '@/apis/updateUser.api'
 import { useQueryString } from '@/utils/utils'
 import { getUserProfile } from '@/apis/userProfile.api'
-import { uploadImage } from '@/apis/uploadImage.api'
+import handleUpdateUser from '@/apis/updateUser.api'
+import viVN from 'antd/es/date-picker/locale/vi_VN'
+import dayjs from 'dayjs'
+import 'dayjs/locale/vi'
 
 const { Option } = Select
 
@@ -17,7 +19,14 @@ const EditProfile: React.FC = () => {
 
   const queryString: { id?: string } = useQueryString()
   const id = String(queryString.id)
-  const userData = useQuery({ queryKey: ['user', id], queryFn: async () => getUserProfile(id) }).data?.data?.data
+
+  const userData = useQuery({
+    queryKey: ['user', id],
+    queryFn: async () => {
+      const { data } = await getUserProfile(id)
+      return data.data
+    },
+  }).data
 
   const [editProfileValue, setEditProfileValue] = useState({
     fullname: '',
@@ -26,17 +35,11 @@ const EditProfile: React.FC = () => {
     gender: '',
     address: '',
     phone_number: '',
-    avatar: {},
+    avatar: '',
   })
 
   const [imageUpload, setImageUpload] = useState([])
-
-  const [form] = Form.useForm()
-  useEffect(() => {
-    form.setFieldsValue({
-      fullname: 'Mario',
-    })
-  }, [])
+  const USER = JSON.parse(localStorage.getItem('user') as string)
 
   return (
     <>
@@ -57,13 +60,15 @@ const EditProfile: React.FC = () => {
         <div className='px-12 pt-8'>
           <div className='flex items-center pb-4'>
             <Avatar
-              size={80}
+              src={userData && userData.avatar}
+              size={112}
               style={{
                 backgroundColor: '#f56a00',
                 color: '#fff',
                 fontSize: '36px',
                 fontWeight: 'bold',
                 marginRight: '32px',
+                border: 'none',
               }}
             >
               {userData && String(userData.username).charAt(0).toUpperCase()}
@@ -81,7 +86,6 @@ const EditProfile: React.FC = () => {
             className='mt-4'
             scrollToFirstError
             layout='vertical'
-            // initialValues={{ fullname: userData && userData.fullname }}
           >
             <div className='grid grid-cols-2 gap-3'>
               {/* fullname */}
@@ -90,8 +94,10 @@ const EditProfile: React.FC = () => {
                 rules={[{ required: true, message: 'Please input your fullname!', whitespace: true }]}
                 hasFeedback
                 label={<p className='my-2 font-bold dark:text-gray-300'>Full Name</p>}
+                initialValue={USER && USER.fullname}
               >
                 <Input
+                  name='fullname'
                   size='large'
                   type='text'
                   placeholder={userData && userData.fullname}
@@ -108,10 +114,13 @@ const EditProfile: React.FC = () => {
                 label={<p className='my-2 font-bold dark:text-gray-300'>Date of Birth</p>}
                 rules={[{ required: true, message: 'Please input your date of birth!' }]}
                 hasFeedback
+                initialValue={dayjs(new Date(USER && USER.dob).toISOString(), 'YYYY-MM-DD')}
               >
                 <DatePicker
+                  name='dob'
                   size='large'
                   className='w-full'
+                  locale={viVN}
                   format='DD/MM/YYYY'
                   placeholder={userData ? userData.dob : 'Select your date of birth?'}
                   onChange={(_date: any, dateString: string) => {
@@ -126,6 +135,7 @@ const EditProfile: React.FC = () => {
                 rules={[{ required: true, message: 'Please select gender!' }]}
                 label={<p className='my-2 font-bold dark:text-gray-300'>Gender</p>}
                 hasFeedback
+                initialValue={USER && USER.gender}
               >
                 <Select
                   size='large'
@@ -145,6 +155,7 @@ const EditProfile: React.FC = () => {
                 name='phone'
                 label={<p className='my-2 font-bold dark:text-gray-300'>Phone number</p>}
                 hasFeedback
+                initialValue={USER && USER.phone_number}
                 rules={[
                   { required: true, message: 'Please input your phone number!' },
                   {
@@ -158,6 +169,7 @@ const EditProfile: React.FC = () => {
                 ]}
               >
                 <Input
+                  name='phone'
                   size='large'
                   style={{ width: '100%' }}
                   placeholder={userData ? userData.phone_number : 'Phone number ...'}
@@ -175,8 +187,10 @@ const EditProfile: React.FC = () => {
                 rules={[{ required: true, message: 'Please select your address!', whitespace: true }]}
                 label={<p className='my-2 font-bold dark:text-gray-300'>Address</p>}
                 hasFeedback
+                initialValue={USER && USER.address}
               >
                 <Input
+                  name='address'
                   size='large'
                   style={{ width: '100%' }}
                   placeholder={userData ? userData.address : 'Your address ...'}
@@ -202,8 +216,10 @@ const EditProfile: React.FC = () => {
                     message: 'Please input your Email!',
                   },
                 ]}
+                initialValue={USER && USER.email}
               >
                 <Input
+                  name='email'
                   size='large'
                   placeholder={userData ? userData.email : 'Email address here ...'}
                   maxLength={200}
@@ -222,8 +238,7 @@ const EditProfile: React.FC = () => {
                     className='w-full'
                     type='primary'
                     onClick={() => {
-                      // handleUpdateUser(editProfileValue, navigate)
-                      // uploadImage(imageUpload as [])
+                      handleUpdateUser(editProfileValue, imageUpload, navigate)
                     }}
                   >
                     Update
