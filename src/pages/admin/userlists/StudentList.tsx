@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { Breadcrumb, Input, Button, Card, Image, PaginationProps, Space, Table, Typography, theme } from 'antd'
-import AdminLayout from '@/layouts/admin'
-import { useQuery } from '@tanstack/react-query'
-import { getStudentsListForAdmin } from '@/apis/studentListForAdmin'
 import { useSearchParams } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
+import AdminLayout from '@/layouts/admin'
+import { getStudentsListForAdmin } from '@/apis/studentListForAdmin'
 import { searchStudentForTeacher } from '@/apis/searchStudentForTeacher.api'
 import StudentListTable from './StudentListTable'
 

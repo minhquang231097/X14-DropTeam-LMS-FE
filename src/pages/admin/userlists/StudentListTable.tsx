@@ -1,9 +1,5 @@
 import React from 'react'
-import {
-    Table, Tag,
-    // Select, Input, 
-    TableProps
-} from 'antd'
+import { Table, Tag, TableProps } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import type { ColumnsType } from 'antd/es/table'
 
@@ -31,6 +27,7 @@ type StudentList = {
 
 const StudentListTable: React.FC<StudentList> = (props) => {
     const navigate = useNavigate()
+    const { searchText, data, filteredData, setSearchParams } = props
 
     const columns: ColumnsType<DataType> = [
         {
@@ -43,7 +40,7 @@ const StudentListTable: React.FC<StudentList> = (props) => {
             title: 'Student Name',
             dataIndex: 'fullname',
             width: '140px',
-            filteredValue: [props.searchText],
+            filteredValue: [searchText],
             onFilter: (value, { fullname }) => String(fullname).toLowerCase().includes(String(value).toLowerCase()),
         },
         {
@@ -166,18 +163,18 @@ const StudentListTable: React.FC<StudentList> = (props) => {
         // },
     ]
 
-    let data: DataType[] = []
+    let studentData: DataType[] = []
 
-    if (props.data !== undefined) {
-        data = props.searchText ? props.filteredData.data : props.data.data
+    if (data !== undefined) {
+        studentData = searchText ? filteredData.data : data.data
     }
 
     const onChange: TableProps<DataType>['onChange'] = (pagination, _filters, _sorter, _extra) => {
         const { current, pageSize } = pagination
-        props.setSearchParams(current)
+        setSearchParams(current)
         navigate(
             // `/teacher/class-detail/session?sesson_code=${props.session_code}&class_id=${props.class_id}&page=${current}&limit=${pageSize}`,
-            `/admin/users/students?page=${current}&limit=${pageSize}`
+            `/admin/users/students?page=${current}&limit=${pageSize}`,
         )
     }
 
@@ -189,11 +186,11 @@ const StudentListTable: React.FC<StudentList> = (props) => {
                 defaultPageSize: 20,
                 pageSizeOptions: [10, 20, 40],
                 showSizeChanger: true,
-                current: props.data && props.data.page,
-                total: props.data && props.data.total,
+                current: data && data.page,
+                total: data && data.total,
             }}
             columns={columns}
-            dataSource={data}
+            dataSource={studentData}
             scroll={{ y: 600 }}
             bordered
             size='small'
