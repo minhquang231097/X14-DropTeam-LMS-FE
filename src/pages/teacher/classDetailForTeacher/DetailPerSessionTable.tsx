@@ -6,10 +6,7 @@ import type { ColumnsType } from 'antd/es/table'
 interface DataType {
   _id: string
   key: number
-  fullname: string
-  email: string
-  phone_number: string
-  session: string
+  student: { fullname: string; email: string; phone_number: string }
   status?: string
 }
 
@@ -32,24 +29,28 @@ const DetailPerSessionTable: React.FC<StudentList> = (props) => {
       title: 'No.',
       dataIndex: 'index',
       width: '40px',
-      render: (_value, _record, index) => <>{index + 1}</>,
+      render: (_value, _record, index) => index + 1,
     },
     {
       title: 'Student Name',
-      dataIndex: 'fullname',
+      dataIndex: 'student',
       width: '140px',
+      render: (student) => student.fullname,
       filteredValue: [props.searchText],
-      onFilter: (value, { fullname }) => String(fullname).toLowerCase().includes(String(value).toLowerCase()),
+      onFilter: (value, { student }) =>
+        student && String(student.fullname).toLowerCase().includes(String(value).toLowerCase()),
     },
     {
       title: 'Email',
-      dataIndex: 'email',
+      dataIndex: 'student',
       width: '212px',
+      render: (student) => student.email,
     },
     {
       title: 'Phone Number',
-      dataIndex: 'phone_number',
+      dataIndex: 'student',
       width: '120px',
+      render: (student) => student.phone_number,
     },
     {
       title: 'Status',
@@ -124,7 +125,6 @@ const DetailPerSessionTable: React.FC<StudentList> = (props) => {
         />
       ),
     },
-
     {
       title: 'Comment',
       render: () => (
@@ -169,6 +169,16 @@ const DetailPerSessionTable: React.FC<StudentList> = (props) => {
       style={{ padding: '0 16px' }}
       rowKey={(_record) => _record._id}
       onChange={onChange}
+      onRow={(record) => {
+        return {
+          onClick: () => {
+            console.log(record)
+          },
+          onChange: () => {
+            console.log('first')
+          },
+        }
+      }}
     />
   )
 }

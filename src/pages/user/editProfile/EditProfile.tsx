@@ -60,18 +60,25 @@ const EditProfile: React.FC = () => {
         <div className='px-12 pt-8'>
           <div className='flex items-center pb-4'>
             <Avatar
-              src={userData && userData.avatar}
+              src={
+                userData && userData.avatar
+                  ? userData.avatar
+                  : `https://xsgames.co/randomusers/avatar.php?g=pixel&key=${Math.floor(Math.random() * 10)}`
+              }
               size={112}
               style={{
-                backgroundColor: '#f56a00',
-                color: '#fff',
-                fontSize: '36px',
-                fontWeight: 'bold',
+                // backgroundColor: '#f56a00',
+                // color: '#fff',
+                // fontSize: '36px',
+                // fontWeight: 'bold',
                 marginRight: '32px',
                 border: 'none',
+                borderWidth: '1px',
+                borderColor: '#ccc',
+                borderStyle: 'solid',
               }}
             >
-              {userData && String(userData.username).charAt(0).toUpperCase()}
+              {/* {userData && String(userData.username).charAt(0).toUpperCase()} */}
             </Avatar>
             <UploadImage
               imageUpload={imageUpload}
@@ -114,7 +121,7 @@ const EditProfile: React.FC = () => {
                 label={<p className='my-2 font-bold dark:text-gray-300'>Date of Birth</p>}
                 rules={[{ required: true, message: 'Please input your date of birth!' }]}
                 hasFeedback
-                initialValue={dayjs(new Date(USER && USER.dob).toISOString(), 'YYYY-MM-DD')}
+                initialValue={dayjs(new Date(USER && USER.dob ? USER.dob : new Date()).toISOString(), 'YYYY-MM-DD')}
               >
                 <DatePicker
                   name='dob'

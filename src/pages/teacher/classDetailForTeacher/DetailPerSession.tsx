@@ -34,7 +34,7 @@ const DetailPerSession: React.FC = () => {
       const res = await searchStudentForTeacher(String(searchText).toUpperCase())
       setFilteredData(res.data)
     },
-  }).data
+  })
 
   const handleSearch = (value: string) => {
     setSearchText(value)
