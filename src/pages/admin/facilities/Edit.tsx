@@ -32,21 +32,25 @@ const CustomContent = () => {
     if (!id) {
       throw new Error('Missing id parameter')
     }
-    await http.put(`/workplace/`, workplace, {
-      params: {
-        id,
-      },
-    })
+    await http.put(`/workplace/${id}`, workplace)
   }
 
   const { mutate, isLoading } = useMutation(updateWorkplace, {
     onSuccess: () => {
       // Perform any necessary actions after successful creation
+      notification.success({
+        message: 'Update successful',
+        description: 'The facility has been updated successfully',
+      })
       form.resetFields()
       navigate('/admin/facilities/all')
     },
     onError: () => {
       // Perform any necessary actions after failed creation
+      notification.error({
+        message: 'Update failed',
+        description: 'There was an error updating the facility',
+      })
       form.resetFields()
     },
   })
@@ -63,20 +67,20 @@ const CustomContent = () => {
     return <Typography.Text>Facility not found</Typography.Text>
   }
 
-  const handleSubmit = async (values: IWorkplace) => {
-    try {
-      mutate(values)
-      notification.success({
-        message: 'Update successful',
-        description: 'The facility has been updated successfully',
-      })
-    } catch (error) {
-      notification.error({
-        message: 'Update failed',
-        description: 'There was an error updating the facility',
-      })
-    }
-  }
+  // const handleSubmit = async (values: IWorkplace) => {
+  //   try {
+  //     mutate(values)
+  //     notification.success({
+  //       message: 'Update successful',
+  //       description: 'The facility has been updated successfully',
+  //     })
+  //   } catch (error) {
+  //     notification.error({
+  //       message: 'Update failed',
+  //       description: 'There was an error updating the facility',
+  //     })
+  //   }
+  // }
 
   const onChange1: React.ChangeEventHandler<HTMLInputElement> = (event) => {
     const { value } = event.target
@@ -113,7 +117,7 @@ const CustomContent = () => {
       <Card>
         <Form
           form={form}
-          onFinish={handleSubmit}
+          onFinish={mutate}
           layout='vertical'
           initialValues={{ ...workplace }}
         >

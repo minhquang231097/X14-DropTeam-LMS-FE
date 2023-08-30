@@ -4,7 +4,7 @@ import { Breadcrumb, Card, Typography, Row, Col, Image, Divider, Space, Button, 
 import { useQuery } from '@tanstack/react-query'
 import AdminLayout from '@/layouts/admin'
 // import { CourseItems } from '@/data/courses'
-import { ShowButtonStyle } from '../style'
+import { ShowButtonStyle } from '@/utils/style'
 import { getCourse } from '@/apis/course.api'
 
 const CustomContent = () => {
@@ -93,7 +93,7 @@ const CustomContent = () => {
           </Col>
           <Col span={8}>
             <Image
-              src={course.image || 'https://via.placeholder.com/500x250'}
+              src={course.image ? course.image : 'https://via.placeholder.com/500x250'}
               alt={course.title}
             />
           </Col>

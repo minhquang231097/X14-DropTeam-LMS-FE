@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query'
 import AdminLayout from '@/layouts/admin'
 // import { FacilityItems } from '@/data/facilities'
 import { getWorkplace } from '@/apis/workplaceByID.api'
-import { ShowButtonStyle } from '../style'
+import { ShowButtonStyle } from '@/utils/style'
 
 const CustomContent = () => {
   // eslint-disable-next-line @typescript-eslint/naming-convention

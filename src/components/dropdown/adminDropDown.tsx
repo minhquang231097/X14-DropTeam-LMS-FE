@@ -3,7 +3,7 @@ import type { MenuProps } from 'antd'
 import { Avatar, Dropdown } from 'antd'
 import { FaUserCircle } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
-import { MdLockOutline, MdOutlineLogout, MdOutlinePersonOutline } from 'react-icons/md'
+import { MdLockOutline, MdOutlineLogout, MdOutlinePersonOutline, MdOutlineHome } from 'react-icons/md'
 
 const items: MenuProps['items'] = [
   {
@@ -35,6 +35,21 @@ const items: MenuProps['items'] = [
   },
   {
     key: '3',
+    label: (
+      <Link
+        to='/'
+        className='flex items-center text-gray-600 font-bold'
+      >
+        <MdOutlineHome className='text-2xl mr-2 p-2 pl-0' />
+        Home Page
+      </Link>
+    ),
+  },
+  {
+    type: 'divider',
+  },
+  {
+    key: '4',
     label: (
       <Link
         to='/login'

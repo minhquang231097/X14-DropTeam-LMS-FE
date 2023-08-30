@@ -1,25 +1,26 @@
 import React, { useState } from 'react'
 import { Breadcrumb, Input, Button, Card, Image, PaginationProps, Space, Table, Typography, theme } from 'antd'
-import { useSearchParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
+import { useSearchParams } from 'react-router-dom'
 import AdminLayout from '@/layouts/admin'
 import { getStudentsListForAdmin } from '@/apis/studentListForAdmin'
 import { searchStudentForTeacher } from '@/apis/searchStudentForTeacher.api'
-import StudentListTable from './StudentListTable'
+import TeacherListTable from './MentorListTable'
 
 const CustomContent = () => {
   const [searchText, setSearchText] = useState('')
   const [filteredData, setFilteredData] = useState([])
 
   const [searchParams, setSearchParams] = useSearchParams()
-  const user_role = searchParams.get('student') ?? ''
+  const user_role = searchParams.get('mentor') ?? ''
   const page = searchParams.get('page') ?? '1'
   const limit = searchParams.get('limit') ?? '10'
 
   const studentsData = useQuery({
     queryKey: ['role', user_role, page, limit],
     queryFn: async () => {
-      const res = await getStudentsListForAdmin('student', page, limit)
+      console.log(user_role)
+      const res = await getStudentsListForAdmin('mentor', page, limit)
       return res.data
     },
   }).data
@@ -44,7 +45,7 @@ const CustomContent = () => {
             title: 'Home',
           },
           {
-            title: 'Students',
+            title: 'Mentors',
           },
         ]}
         style={{ padding: '4px' }}
@@ -55,7 +56,7 @@ const CustomContent = () => {
             level={3}
             className='mt-0 mx-1'
           >
-            Student List
+            Mentor List
           </Typography.Title>
           <Input.Search
             placeholder='Search Student Name ...'
@@ -64,7 +65,7 @@ const CustomContent = () => {
             onSearch={handleSearch}
           />
         </div>
-        <StudentListTable
+        <TeacherListTable
           data={studentsData as any}
           searchText={searchText}
           setSearchParams={setSearchParams}

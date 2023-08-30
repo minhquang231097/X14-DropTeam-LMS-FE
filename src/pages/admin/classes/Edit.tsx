@@ -24,6 +24,9 @@ import customParseFormat from 'dayjs/plugin/customParseFormat'
 import AdminLayout from '@/layouts/admin'
 import http from '@/utils/http'
 import { getClassById } from '@/apis/class.api'
+import { weekdays } from '@/utils/day'
+import { getWorkplace } from '@/apis/workplaceByID.api'
+import { getWorkplacesList } from '@/apis/workplaceList.api'
 
 interface IMentor {
   fullname: string
@@ -53,16 +56,6 @@ const CustomContent = () => {
 
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
-
-  const weekdays = [
-    { value: 'monday', label: 'Monday' },
-    { value: 'tuesday', label: 'Tuesday' },
-    { value: 'wednesday', label: 'Wednesday' },
-    { value: 'thursday', label: 'Thursday' },
-    { value: 'friday', label: 'Friday' },
-    { value: 'saturday', label: 'Saturday' },
-    { value: 'sunday', label: 'Sunday' },
-  ]
 
   const plainOptions = [
     { value: '1', label: 'Student 01' },
@@ -109,11 +102,7 @@ const CustomContent = () => {
     if (!id) {
       throw new Error('Missing id parameter')
     }
-    await http.put(`/class/`, cls, {
-      params: {
-        id,
-      },
-    })
+    await http.put(`/class/${id}`, cls)
   }
 
   const { mutate, isLoading } = useMutation(updateClass, {
@@ -143,6 +132,22 @@ const CustomContent = () => {
       return res.data.data
     },
   })
+
+  const { data: workplace } = useQuery({
+    queryKey: ['workplace'],
+    queryFn: async () => {
+      const res = await getWorkplacesList()
+      return res.data.data
+    },
+  })
+
+  // const { data: mentor } = useQuery({
+  //   queryKey: ['mentor'],
+  //   queryFn: async () => {
+  //     const res = await getWorkplacesList()
+  //     return res.data.data
+  //   },
+  // })
 
   if (!classByID) {
     return <Typography.Text>Class not found</Typography.Text>

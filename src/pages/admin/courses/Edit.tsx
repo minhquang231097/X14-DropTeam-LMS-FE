@@ -1,5 +1,18 @@
 import React from 'react'
-import { Breadcrumb, Button, Card, Col, Form, Input, InputNumber, Row, Space, Typography, notification } from 'antd'
+import {
+  Breadcrumb,
+  Button,
+  Card,
+  Col,
+  Form,
+  Input,
+  InputNumber,
+  Row,
+  Select,
+  Space,
+  Typography,
+  notification,
+} from 'antd'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import AdminLayout from '@/layouts/admin'
@@ -30,11 +43,7 @@ const CustomContent = () => {
     if (!id) {
       throw new Error('Missing id parameter')
     }
-    await http.put(`/course/`, course, {
-      params: {
-        id,
-      },
-    })
+    await http.put(`/course/${id}`, course)
   }
 
   const { mutate, isLoading } = useMutation(updateCourse, {
@@ -159,7 +168,13 @@ const CustomContent = () => {
                 label='Level'
                 name='level'
               >
-                <InputNumber style={{ width: '100%' }} />
+                <Select
+                  options={[
+                    { value: 'BEGINNER', label: 'BEGINNER' },
+                    { value: 'INTERMEDIATE', label: 'INTERMEDIATE' },
+                    { value: 'ADVANCED', label: 'ADVANCED' },
+                  ]}
+                />
               </Form.Item>
               <Form.Item
                 label='Discount'
