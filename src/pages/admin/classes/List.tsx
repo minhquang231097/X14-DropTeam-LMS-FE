@@ -84,12 +84,12 @@ const CustomContent = () => {
           >
             {class_code}
           </Typography.Text>
-          <Typography.Text
+          {/* <Typography.Text
             strong
             style={{ fontSize: '20px' }}
           >
             {cls.class_name}
-          </Typography.Text>
+          </Typography.Text> */}
           <Typography.Text>Mentor: {cls.mentor?.fullname}</Typography.Text>
         </Space>
       ),
@@ -132,40 +132,6 @@ const CustomContent = () => {
         <Space direction='vertical'>
           <Typography.Text>{class_size}</Typography.Text>
         </Space>
-      ),
-    },
-    {
-      title: 'Status',
-      dataIndex: 'status',
-      width: '15%',
-      render: (status: any, cls: DataType) => (
-        <Typography.Text
-          style={{
-            color:
-              status === 'ON' && cls.class_size && cls.class_size >= sizeReq
-                ? token.colorSuccessText
-                : status === 'OFF' || (cls.class_size && cls.class_size < sizeReq)
-                  ? token.colorErrorText
-                  : token.colorWarningText,
-            fontSize: '18px',
-            display: 'flex',
-            alignItems: 'center',
-          }}
-        >
-          {status === 'ON' && cls.class_size && cls.class_size >= sizeReq ? (
-            <>
-              <MdOutlineCheck className='text-[24px] m-1' /> ACTIVE
-            </>
-          ) : status === 'OFF' || (cls.class_size && cls.class_size < sizeReq) ? (
-            <>
-              <MdOutlineClose className='text-[24px] m-1' /> CANCELED
-            </>
-          ) : (
-            <>
-              <MdOutlineCircle className='text-[24px] m-1' /> UPCOMING
-            </>
-          )}
-        </Typography.Text>
       ),
     },
     {

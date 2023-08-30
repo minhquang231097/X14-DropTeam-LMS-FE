@@ -25,6 +25,8 @@ import AdminLayout from '@/layouts/admin'
 import http from '@/utils/http'
 import { getClassById } from '@/apis/class.api'
 import { weekdays } from '@/utils/day'
+import { getWorkplace } from '@/apis/workplaceByID.api'
+import { getWorkplacesList } from '@/apis/workplaceList.api'
 
 interface IMentor {
   fullname: string
@@ -130,6 +132,22 @@ const CustomContent = () => {
       return res.data.data
     },
   })
+
+  const { data: workplace } = useQuery({
+    queryKey: ['workplace'],
+    queryFn: async () => {
+      const res = await getWorkplacesList()
+      return res.data.data
+    },
+  })
+
+  // const { data: mentor } = useQuery({
+  //   queryKey: ['mentor'],
+  //   queryFn: async () => {
+  //     const res = await getWorkplacesList()
+  //     return res.data.data
+  //   },
+  // })
 
   if (!classByID) {
     return <Typography.Text>Class not found</Typography.Text>

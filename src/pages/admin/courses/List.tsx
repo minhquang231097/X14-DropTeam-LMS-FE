@@ -18,7 +18,7 @@ interface DataType {
   title?: string
   location?: string
   is_active?: boolean
-  created_at?: string
+  create_at?: string
   formated_date: string
 }
 
@@ -83,7 +83,7 @@ const CustomContent = () => {
           >
             {course_code}: {course.title}
           </Typography.Text>
-          <Typography.Text>Created at: {dayjs(course.created_at).format('DD/MM/YYYY')}</Typography.Text>
+          <Typography.Text>Created at: {dayjs(course.create_at).format('DD/MM/YYYY')}</Typography.Text>
         </Space>
       ),
     },
