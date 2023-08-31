@@ -1,13 +1,17 @@
-import React from 'react'
-import { Table, Tag, Select, Input, TableProps } from 'antd'
+import React, { useState } from 'react'
+import { Table, Tag, Select, Input, TableProps, InputNumber, message, Button } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import type { ColumnsType } from 'antd/es/table'
+import { BiSolidSave } from 'react-icons/bi'
 
 interface DataType {
   _id: string
   key: number
   student: { fullname: string; email: string; phone_number: string }
   status?: string
+  attendance?: string
+  score?: number
+  comment?: string
 }
 
 type StudentList = {
@@ -17,6 +21,7 @@ type StudentList = {
   session_code: string
   class_id: string
   filteredData: { data: [] }
+  handleBeforeSubmit: any
 }
 
 const { TextArea } = Input
@@ -36,7 +41,6 @@ const DetailPerSessionTable: React.FC<StudentList> = (props) => {
       dataIndex: 'student',
       width: '140px',
       render: (student) => student.fullname,
-      filteredValue: [props.searchText],
       onFilter: (value, { student }) =>
         student && String(student.fullname).toLowerCase().includes(String(value).toLowerCase()),
     },
@@ -102,35 +106,59 @@ const DetailPerSessionTable: React.FC<StudentList> = (props) => {
     },
     {
       title: 'Attendance',
-      render: () => (
+      render: (_attendance, record) => (
         <Select
           defaultValue='Select'
           style={{ width: '100%' }}
           options={[
-            { value: 'p', label: <span className='text-[#389E0D]'>Present</span> },
-            { value: 'ap', label: <span className='text-[#D46B08]'>Absent With Permission</span> },
-            { value: 'aop', label: <span className='text-[#6737B5]'>Absent Without Permission</span> },
-            { value: 'r', label: <span className='text-[#C41D7F]'>Reserve</span> },
+            { value: 'PRESENT', label: <span className='text-[#389E0D]'>Present</span> },
+            { value: 'ABSENT WITH PERMISSION', label: <span className='text-[#D46B08]'>Absent With Permission</span> },
+            {
+              value: 'ABSENT WITHOUT PERMISSION',
+              label: <span className='text-[#6737B5]'>Absent Without Permission</span>,
+            },
+            { value: 'RESERVE', label: <span className='text-[#C41D7F]'>Reserve</span> },
           ]}
+          onChange={(value) => handleAttendanceChange(value, record)}
         />
       ),
     },
     {
       title: 'Score',
       width: '80px',
-      render: () => (
-        <Input
-          type='number'
+      render: (_score, record) => (
+        <InputNumber
           placeholder='Input score ...'
+          min={0}
+          max={10}
+          controls={false}
+          style={{ width: '100%' }}
+          required
+          onBlur={(event) => handleScoreChange(event, record)}
         />
       ),
     },
     {
       title: 'Comment',
-      render: () => (
+      render: (_comment, record) => (
         <TextArea
           rows={1}
           placeholder='Comment here ...'
+          onBlur={(event) => handleCommentChange(event, record)}
+        />
+      ),
+    },
+    {
+      title: 'Action',
+      width: '60px',
+      render: () => (
+        <Button
+          type='link'
+          icon={<BiSolidSave className='w-6 h-6 text-green-600 active:text-green-900' />}
+          onClick={() => {
+            props.handleBeforeSubmit(newAttendance)
+            message.success('Saved!')
+          }}
         />
       ),
     },
@@ -142,6 +170,59 @@ const DetailPerSessionTable: React.FC<StudentList> = (props) => {
     data = props.searchText ? props.filteredData.data : props.data.data
   }
 
+  type AttendanceObj = {
+    session_id: string
+    student_id: string
+    status?: string
+    score?: number
+    comment?: string
+  }
+
+  // Attendance Method
+  // const [attendanceValue, setAttendanceValue] = useState([])
+  const [newAttendance, setNewAttendance] = useState<AttendanceObj>()
+
+  const handleAttendanceChange = (value: any, record: any) => {
+    const studentAttendance: {
+      session_id: string
+      student_id: any
+      status: string
+    } = {
+      session_id: record._id,
+      student_id: record.student._id,
+      status: value,
+    }
+    setNewAttendance(studentAttendance)
+  }
+  localStorage.setItem('attendanceStudent', JSON.stringify(newAttendance))
+
+  const handleScoreChange = (event: any, _record?: any) => {
+    if (event.target.value === '') {
+      message.error('Please input Score as a Number!')
+    } else {
+      // const student =
+      //   newAttendance && newAttendance.find((item: { session_id: string }) => item.session_id === record._id)
+      const studentScore = { ...newAttendance, score: event.target.value }
+      // const index = newAttendance && newAttendance.findIndex((item) => item.session_id === record._id)
+      // newAttendance && newAttendance.splice(Number(index), 1, studentScore as any)
+      setNewAttendance(studentScore as any)
+    }
+    localStorage.setItem('attendanceStudent', JSON.stringify(newAttendance))
+  }
+
+  const handleCommentChange = (event: any, _record?: any) => {
+    if (event.target.value !== '') {
+      // const student =
+      //   newAttendance && newAttendance.find((item: { session_id: string }) => item.session_id === record._id)
+      const studentComment = { ...newAttendance, comment: event.target.value }
+      // const index = newAttendance && newAttendance.findIndex((item) => item.session_id === record._id)
+      // newAttendance && newAttendance.splice(Number(index), 1, studentComment as any)
+      setNewAttendance(studentComment as any)
+      localStorage.setItem('attendanceStudent', JSON.stringify(newAttendance))
+    }
+  }
+
+  // Filter Method
   const onChange: TableProps<DataType>['onChange'] = (pagination, _filters, _sorter, _extra) => {
     const { current, pageSize } = pagination
     props.setSearchParams(current)
@@ -169,16 +250,6 @@ const DetailPerSessionTable: React.FC<StudentList> = (props) => {
       style={{ padding: '0 16px' }}
       rowKey={(_record) => _record._id}
       onChange={onChange}
-      onRow={(record) => {
-        return {
-          onClick: () => {
-            console.log(record)
-          },
-          onChange: () => {
-            console.log('first')
-          },
-        }
-      }}
     />
   )
 }

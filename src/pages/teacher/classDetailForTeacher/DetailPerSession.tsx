@@ -4,40 +4,53 @@ import Footer from '@/layouts/user/Footer'
 import SidebarTeacher from '@/layouts/user/SidebarTeacher'
 import DetailPerSessionTable from './DetailPerSessionTable'
 import { useSearchParams } from 'react-router-dom'
-import { Button, Input } from 'antd'
+import { Button } from 'antd'
 import { useQuery } from '@tanstack/react-query'
 import { getStudentsListPerSession } from '@/apis/studentsPerSession'
 import { FaFileUpload } from 'react-icons/fa'
-import { searchStudentForTeacher } from '@/apis/searchStudentForTeacher.api'
+// import { createAttdendance } from '@/apis/createAttendance.api'
+import { handleSubmitAttendance } from '@/apis/submitAttendance.api'
+// import { searchStudentForTeacher } from '@/apis/searchStudentForTeacher.api'
 
 const DetailPerSession: React.FC = () => {
-  const [searchText, setSearchText] = useState('')
-  const [filteredData, setFilteredData] = useState([])
+  const [searchText, _setSearchText] = useState('')
+  const [filteredData, _setFilteredData] = useState([])
 
   const [searchParams, setSearchParams] = useSearchParams()
+  const session_id = searchParams.get('session_id') ?? ''
   const session_code = searchParams.get('session_code') ?? ''
   const class_id = searchParams.get('class_id') ?? ''
   const page = searchParams.get('page') ?? '1'
   const limit = searchParams.get('limit') ?? '10'
 
   const studentsData = useQuery({
-    queryKey: ['students', class_id, page, limit],
+    queryKey: ['students', class_id, session_id, page, limit],
     queryFn: async () => {
       const res = await getStudentsListPerSession(class_id, page, limit)
       return res.data
     },
   }).data
 
-  useQuery({
-    queryKey: ['search', searchText],
-    queryFn: async () => {
-      const res = await searchStudentForTeacher(String(searchText).toUpperCase())
-      setFilteredData(res.data)
-    },
-  })
+  // useQuery({
+  //   queryKey: ['search', searchText],
+  //   queryFn: async () => {
+  //     const res = await searchStudentForTeacher(String(searchText).toUpperCase())
+  //     setFilteredData(res.data)
+  //   },
+  // })
 
-  const handleSearch = (value: string) => {
-    setSearchText(value)
+  // const handleSearch = (value: string) => {
+  //   setSearchText(value)
+  // }
+
+  const [newDataSubmit, setNewDataSubmit] = useState<any[]>([])
+  const handleBeforeSubmit = (student: any) => {
+    setNewDataSubmit([...newDataSubmit, student])
+  }
+  console.log(newDataSubmit)
+
+  const handleSubmit = () => {
+    handleSubmitAttendance(newDataSubmit)
   }
 
   return (
@@ -59,18 +72,19 @@ const DetailPerSession: React.FC = () => {
               </p>
             </div>
             <div className='flex flex-col items-end'>
-              <Input.Search
+              {/* <Input.Search
                 placeholder='Search Student Name ...'
                 style={{ width: 280 }}
                 onChange={(e) => handleSearch(e.target.value)}
                 onSearch={handleSearch}
-              />
+              /> */}
               <Button
                 className='mt-3'
                 type='primary'
                 icon={<FaFileUpload className='w-6 h-6' />}
                 size='large'
                 ghost
+                onClick={handleSubmit}
               />
             </div>
           </div>
@@ -81,6 +95,7 @@ const DetailPerSession: React.FC = () => {
             session_code={session_code}
             class_id={class_id}
             filteredData={filteredData as any}
+            handleBeforeSubmit={handleBeforeSubmit}
           />
         </div>
       </div>
