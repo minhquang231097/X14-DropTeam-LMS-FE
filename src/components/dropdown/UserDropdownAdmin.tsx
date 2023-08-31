@@ -2,8 +2,7 @@ import React from 'react'
 import { Avatar, Dropdown } from 'antd'
 import type { MenuProps } from 'antd'
 import { IoMdLogOut } from 'react-icons/io'
-import { RiUserSettingsLine, RiAdminLine, RiShieldKeyholeLine, RiInformationLine } from 'react-icons/ri'
-import { MdConveyorBelt, MdOutlineContactSupport } from 'react-icons/md'
+import { RiUserSettingsLine, RiAdminLine, RiShieldKeyholeLine } from 'react-icons/ri'
 import { BsPersonVideo3 } from 'react-icons/bs'
 import { useNavigate } from 'react-router-dom'
 import handleLogout from '@/apis/logout.api'
@@ -104,10 +103,22 @@ const UserDropdownAdmin: React.FC<{ username: any; avatar: any }> = (props: any)
     >
       <a target='_blank'>
         <Avatar
-          src={props.avatar}
-          style={{ backgroundColor: '#f56a00', color: '#fff', fontSize: '20px', fontWeight: 'bold', border: 'none' }}
+          src={
+            props.avatar
+              ? props.avatar
+              : `https://xsgames.co/randomusers/avatar.php?g=pixel&key=${Math.floor(Math.random() * 10)}`
+          }
+          style={{
+            // backgroundColor: '#f56a00',
+            color: '#fff',
+            fontSize: '20px',
+            fontWeight: 'bold',
+            cursor: 'pointer',
+            borderWidth: '1px',
+            borderColor: '#ccc',
+          }}
         >
-          {props.username.charAt(0).toUpperCase()}
+          {/* {props.username.charAt(0).toUpperCase()} */}
         </Avatar>
       </a>
     </Dropdown>

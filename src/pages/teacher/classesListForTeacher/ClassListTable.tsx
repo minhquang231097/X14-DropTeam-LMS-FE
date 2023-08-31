@@ -17,7 +17,7 @@ type ClassesList = {
   data: { count: number; data: []; page: number; statusCode: number; total: number; total_page: number }
   setSearchParams: any
   searchText: string
-  filteredData: { data: [] }
+  filteredData: { data: []; count: number }
 }
 
 const ClassListTable: React.FC<ClassesList> = (props) => {
@@ -165,7 +165,7 @@ const ClassListTable: React.FC<ClassesList> = (props) => {
       dataIndex: 'status',
       render: (_, { status }) => (
         <>
-          {(status === 'Active' && (
+          {(status === 'ACTIVE' && (
             <Tag
               color='green'
               key='active'
@@ -173,7 +173,7 @@ const ClassListTable: React.FC<ClassesList> = (props) => {
               {status.toUpperCase()}
             </Tag>
           )) ||
-            (status === 'Inactive' && (
+            (status === 'INACTIVE' && (
               <Tag
                 color='volcano'
                 key='inactive'
@@ -230,7 +230,7 @@ const ClassListTable: React.FC<ClassesList> = (props) => {
         pageSizeOptions: [10, 20],
         showSizeChanger: true,
         current: props.data && props.data.page,
-        total: props.data && props.data.total,
+        total: props.data && (props.searchText ? props.filteredData.count : props.data.total),
       }}
       columns={columns}
       dataSource={data}

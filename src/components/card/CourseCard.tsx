@@ -18,7 +18,7 @@ const CourseCard = (course: Course) => {
         className='no-underline text-gray-800 dark:text-gray-100'
       >
         <img
-          src={image || noImage}
+          src={image.length !== 0 ? image : noImage}
           alt=''
           className='w-full h-[180px]'
         />

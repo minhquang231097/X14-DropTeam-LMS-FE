@@ -8,6 +8,7 @@ import SidebarTeacher from '@/layouts/user/SidebarTeacher'
 import LessonsListTable from './LessonsListTable'
 import { getLessonsList } from '@/apis/lessonsList.api'
 import { getLessonByLessonCode } from '@/apis/searchLessonByLessonCode.api'
+import { debounce } from 'lodash'
 
 const LessonsListForTeacher: React.FC = () => {
   const [searchText, setSearchText] = useState('')
@@ -37,6 +38,10 @@ const LessonsListForTeacher: React.FC = () => {
     setSearchText(value)
   }
 
+  const handleChange = debounce((event: any) => {
+    handleSearch(event.target.value)
+  }, 1000)
+
   return (
     <>
       <Header />
@@ -50,14 +55,14 @@ const LessonsListForTeacher: React.FC = () => {
             <div>
               <span className='text-xl text-[#F56A00] font-bold'>Lessons List For Teacher</span>
               <p className='m-0 text-sm text-gray-500 mt-2'>
-                Total lessons: <span className='text-blue-600'>{data ? data.total : ''}</span>
+                Total lessons: <span className='text-blue-600'>{searchText ? filteredData.count : data.total}</span>
               </p>
             </div>
             <Input.Search
               placeholder='Search Lesson Name ...'
               style={{ width: 280 }}
-              onChange={(e) => setSearchText(e.target.value)}
-              onSearch={handleSearch}
+              onChange={handleChange}
+              onSearch={handleChange}
             />
           </div>
           <LessonsListTable

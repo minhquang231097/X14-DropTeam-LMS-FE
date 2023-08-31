@@ -64,7 +64,8 @@ const SessionListForTeacher: React.FC = () => {
                 {classData ? `Class Code: ${classData.class_code}` : 'Class Name'}
               </span>
               <p className='m-0 text-sm text-gray-500 mt-2'>
-                Total sessions: <span className='text-blue-600'>{data ? data.total : ''}</span>
+                Total sessions:{' '}
+                <span className='text-blue-600'>{data && (searchText ? filteredData.count : data.total)}</span>
               </p>
               <p className='m-0 text-sm text-gray-500 mt-2 flex'>
                 Schedule:{' '}

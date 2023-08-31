@@ -2,7 +2,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { ConfigProvider } from 'antd'
 import { StyleProvider } from '@ant-design/cssinjs'
 import { BrowserRouter } from 'react-router-dom'
@@ -24,7 +23,6 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           </ColorModeContextProvider>
         </StyleProvider>
       </ConfigProvider>
-      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   </React.Suspense>,
 )
