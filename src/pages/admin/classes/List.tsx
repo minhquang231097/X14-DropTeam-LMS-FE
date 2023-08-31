@@ -10,6 +10,7 @@ import AdminLayout from '@/layouts/admin'
 import AdminSearch from '@/components/search/adminSearch'
 import { useQueryString } from '@/utils/utils'
 import { getClassesList } from '@/apis/classesList.api'
+import { weekdays } from '@/utils/day'
 
 interface IMentor {
   fullname: string
@@ -50,7 +51,7 @@ const CustomContent = () => {
     queryKey: ['class', page, 10],
     queryFn: async () => {
       const res = await getClassesList(page, 10)
-      return res.data.data
+      return res.data
     },
   })
 
@@ -83,12 +84,12 @@ const CustomContent = () => {
           >
             {class_code}
           </Typography.Text>
-          <Typography.Text
+          {/* <Typography.Text
             strong
             style={{ fontSize: '20px' }}
           >
             {cls.class_name}
-          </Typography.Text>
+          </Typography.Text> */}
           <Typography.Text>Mentor: {cls.mentor?.fullname}</Typography.Text>
         </Space>
       ),
@@ -97,13 +98,19 @@ const CustomContent = () => {
       title: 'Schedule',
       dataIndex: 'schedule',
       width: '30%',
-      render: (schedule: string[], cls: DataType) => (
+      render: (schedule: number[], cls: DataType) => (
         <Space direction='vertical'>
           <Typography.Text>
             Time: {dayjs(cls.start_at).format('DD/MM/YYYY')} - {dayjs(cls.end_at).format('DD/MM/YYYY')}
           </Typography.Text>
           <Typography.Text>
-            Schedule: {schedule.map((date: string) => dayjs(date).format('dddd')).join(', ')}
+            Schedule:{' '}
+            {schedule
+              .map((day: number) => {
+                const weekday = weekdays.find((w) => w.value === day)
+                return weekday ? weekday.label : ''
+              })
+              .join(', ')}
           </Typography.Text>
         </Space>
       ),
@@ -125,40 +132,6 @@ const CustomContent = () => {
         <Space direction='vertical'>
           <Typography.Text>{class_size}</Typography.Text>
         </Space>
-      ),
-    },
-    {
-      title: 'Status',
-      dataIndex: 'status',
-      width: '15%',
-      render: (status: any, cls: DataType) => (
-        <Typography.Text
-          style={{
-            color:
-              status === 'ON' && cls.class_size && cls.class_size >= sizeReq
-                ? token.colorSuccessText
-                : status === 'OFF' || (cls.class_size && cls.class_size < sizeReq)
-                ? token.colorErrorText
-                : token.colorWarningText,
-            fontSize: '18px',
-            display: 'flex',
-            alignItems: 'center',
-          }}
-        >
-          {status === 'ON' && cls.class_size && cls.class_size >= sizeReq ? (
-            <>
-              <MdOutlineCheck className='text-[24px] m-1' /> ACTIVE
-            </>
-          ) : status === 'OFF' || (cls.class_size && cls.class_size < sizeReq) ? (
-            <>
-              <MdOutlineClose className='text-[24px] m-1' /> CANCELED
-            </>
-          ) : (
-            <>
-              <MdOutlineCircle className='text-[24px] m-1' /> UPCOMING
-            </>
-          )}
-        </Typography.Text>
       ),
     },
     {
@@ -229,7 +202,7 @@ const CustomContent = () => {
           <Table
             rowKey={(cls: DataType) => cls._id}
             columns={columns}
-            dataSource={classData.list}
+            dataSource={classData.data}
             pagination={{
               position: ['bottomRight'],
               current: page,

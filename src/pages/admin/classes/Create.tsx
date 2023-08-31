@@ -103,7 +103,7 @@ const CustomContent = () => {
     queryKey: ['workplace'],
     queryFn: async () => {
       const res = await getWorkplacesList()
-      return res.data?.data.list
+      return res.data?.data
     },
   })
   console.log(workplaceData)

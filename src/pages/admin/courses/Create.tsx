@@ -14,6 +14,7 @@ import {
   Space,
   InputNumber,
   notification,
+  Select,
 } from 'antd'
 import { Link, useNavigate } from 'react-router-dom'
 import { useMutation } from '@tanstack/react-query'
@@ -42,29 +43,37 @@ const CustomContent = () => {
   const { mutate, isLoading } = useMutation(createCourse, {
     onSuccess: () => {
       // Perform any necessary actions after successful creation
+      notification.success({
+        message: 'Update successful',
+        description: 'The course has been updated successfully',
+      })
       form.resetFields()
       navigate('/admin/courses/all')
     },
     onError: () => {
       // Perform any necessary actions after failed creation
-      form.resetFields()
-    },
-  })
-
-  const handleSubmit = async (values: ICourse) => {
-    try {
-      mutate(values)
-      notification.success({
-        message: 'Update successful',
-        description: 'The course has been updated successfully',
-      })
-    } catch (error) {
       notification.error({
         message: 'Update failed',
         description: 'There was an error updating the course',
       })
-    }
-  }
+      form.resetFields()
+    },
+  })
+
+  // const handleSubmit = async (values: ICourse) => {
+  //   try {
+  //     mutate(values)
+  //     notification.success({
+  //       message: 'Update successful',
+  //       description: 'The course has been updated successfully',
+  //     })
+  //   } catch (error) {
+  //     notification.error({
+  //       message: 'Update failed',
+  //       description: 'There was an error updating the course',
+  //     })
+  //   }
+  // }
 
   return (
     <>
@@ -85,7 +94,7 @@ const CustomContent = () => {
       <Card>
         <Form
           form={form}
-          onFinish={handleSubmit}
+          onFinish={mutate}
           layout='vertical'
         >
           <Typography.Title
@@ -120,7 +129,13 @@ const CustomContent = () => {
                 label='Level'
                 name='level'
               >
-                <InputNumber style={{ width: '100%' }} />
+                <Select
+                  options={[
+                    { value: 'BEGINNER', label: 'BEGINNER' },
+                    { value: 'INTERMEDIATE', label: 'INTERMEDIATE' },
+                    { value: 'ADVANCED', label: 'ADVANCED' },
+                  ]}
+                />
               </Form.Item>
             </Col>
             <Col span={12}>

@@ -102,7 +102,7 @@ const AdminLayout: React.FC<LayoutProps> = ({ content }) => {
               <Image
                 src={Logo}
                 preview={false}
-                style={{ height: '3.5rem' }}
+                style={{ height: '3rem' }}
               />
               <Typography.Text
                 className={`font-semibold ${collapsed ? 'hidden' : ''}`}
