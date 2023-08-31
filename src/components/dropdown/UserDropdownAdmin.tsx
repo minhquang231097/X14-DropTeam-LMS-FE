@@ -109,13 +109,13 @@ const UserDropdownAdmin: React.FC<{ username: any; avatar: any }> = (props: any)
               : `https://xsgames.co/randomusers/avatar.php?g=pixel&key=${Math.floor(Math.random() * 10)}`
           }
           style={{
-            // backgroundColor: '#f56a00',
             color: '#fff',
             fontSize: '20px',
             fontWeight: 'bold',
             cursor: 'pointer',
             borderWidth: '1px',
             borderColor: '#ccc',
+            backgroundColor: '#F1F5F9',
           }}
         >
           {/* {props.username.charAt(0).toUpperCase()} */}

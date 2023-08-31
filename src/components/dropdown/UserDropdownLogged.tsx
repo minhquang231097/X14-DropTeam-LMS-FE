@@ -62,7 +62,7 @@ const UserDropdownLogged: React.FC<{ username: any }> = (prop: any) => {
       arrow
     >
       <a target='_blank'>
-        <Avatar style={{ color: '#fff', fontSize: '20px', fontWeight: 'bold' }}>
+        <Avatar style={{ color: '#fff', fontSize: '20px', fontWeight: 'bold', backgroundColor: '#F1F5F9' }}>
           {username.charAt(0).toUpperCase()}
         </Avatar>
       </a>

@@ -130,7 +130,7 @@ const CourseDetail: React.FC = () => {
             >
               <div>
                 <img
-                  src={data && data.image ? data.image[0] : noImage}
+                  src={data && data.image.length ? data.image[0] : noImage}
                   className='w-full rounded-lg'
                   alt=''
                 />
