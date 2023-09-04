@@ -11,13 +11,16 @@ import Login from './pages/user/login/Login.tsx'
 import ForgotPassword from './pages/user/forgotPassword/ForgotPassword.tsx'
 import NotFound404 from './pages/notFound404/NotFound404.tsx'
 import SendMailDone from './pages/user/forgotPassword/SendMailDone.tsx'
-import ClassesListForTeacher from './pages/teacher/classesListForTeacher/ClassesListForTeacher.tsx'
-import SessionListForTeacher from './pages/teacher/classDetailForTeacher/SessionListForTeacher.tsx'
 import EditProfile from './pages/user/editProfile/EditProfile.tsx'
 import ResetPassword from './pages/user/resetPassword/ResetPassword.tsx'
-import LessonsListForTeacher from './pages/teacher/lessonsListForTeacher/LessonsListForTeacher.tsx'
 import DetailPerSession from './pages/teacher/classDetailForTeacher/DetailPerSession.tsx'
 import ChangePassword from './pages/user/changePassword/ChangePassword.tsx'
+
+// TEACHER
+import ClassesListForTeacher from './pages/teacher/classesListForTeacher/ClassesListForTeacher.tsx'
+import SessionListForTeacher from './pages/teacher/classDetailForTeacher/SessionListForTeacher.tsx'
+import LessonsListForTeacher from './pages/teacher/lessonsListForTeacher/LessonsListForTeacher.tsx'
+import CoursesListForTeacher from './pages/teacher/coursesListForTeacher/CoursesListForTeacher.tsx'
 
 // ADMIN
 import AdminHome from './pages/admin/home/index'
@@ -113,6 +116,10 @@ const App: React.FC = () => {
         <Route
           path='/teacher/class-detail/session'
           element={USER && (USER.role === 'MENTOR' || 'ADMIN') ? <DetailPerSession /> : <Forbidden403 />}
+        />
+        <Route
+          path='/teacher/courses-list'
+          element={USER && (USER.role === 'MENTOR' || 'ADMIN') ? <CoursesListForTeacher /> : <Forbidden403 />}
         />
 
         {/* ADMIN */}

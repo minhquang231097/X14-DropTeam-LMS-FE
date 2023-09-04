@@ -12,7 +12,7 @@ import { getSessionBySessionCode } from '@/apis/searchSessionBySessionCode.api'
 
 const SessionListForTeacher: React.FC = () => {
   const [searchText, setSearchText] = useState('')
-  const [filteredData, setFilteredData] = useState([])
+  const [filteredData, setFilteredData] = useState<{ count?: any }>({})
 
   const navigate = useNavigate()
 
@@ -67,6 +67,9 @@ const SessionListForTeacher: React.FC = () => {
                 Total sessions:{' '}
                 <span className='text-blue-600'>{data && (searchText ? filteredData.count : data.total)}</span>
               </p>
+              <p className='m-0 text-sm text-gray-500 mt-2'>
+                Course: <span className='text-blue-600'>{classData ? classData.course.course_code : ''}</span>
+              </p>
               <p className='m-0 text-sm text-gray-500 mt-2 flex'>
                 Schedule:{' '}
                 <span className='text-blue-600 flex'>
@@ -112,20 +115,22 @@ const SessionListForTeacher: React.FC = () => {
                   {classData ? new Date(classData.end_at).toLocaleDateString('vi-VN') : 'DD/MM/YYYY'}
                 </span>
               </p>
+            </div>
+            <div className='flex flex-col items-end'>
+              <Input.Search
+                placeholder='Search Session Code ...'
+                style={{ width: 280 }}
+                onChange={(e) => setSearchText(e.target.value)}
+                onSearch={handleSearch}
+              />
               <Button
                 className='mt-4'
                 type='primary'
-                onClick={() => navigate('/teacher/lessons-list')}
+                onClick={() => navigate(`/teacher/lessons-list?course_id=${classData.course._id}&page=1&limit=10`)}
               >
                 Lesson List
               </Button>
             </div>
-            <Input.Search
-              placeholder='Search Session Code ...'
-              style={{ width: 280 }}
-              onChange={(e) => setSearchText(e.target.value)}
-              onSearch={handleSearch}
-            />
           </div>
           <SessionListTable
             data={data as any}

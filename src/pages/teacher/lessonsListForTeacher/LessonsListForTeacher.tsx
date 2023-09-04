@@ -8,23 +8,35 @@ import SidebarTeacher from '@/layouts/user/SidebarTeacher'
 import LessonsListTable from './LessonsListTable'
 import { getLessonsList } from '@/apis/lessonsList.api'
 import { getLessonByLessonCode } from '@/apis/searchLessonByLessonCode.api'
+import { getCourse } from '@/apis/course.api'
 import { debounce } from 'lodash'
 
 const LessonsListForTeacher: React.FC = () => {
   const [searchText, setSearchText] = useState('')
-  const [filteredData, setFilteredData] = useState([])
+  const [filteredData, setFilteredData] = useState<{ count?: any }>({})
 
   const [searchParams, setSearchParams] = useSearchParams()
+  const course_id = searchParams.get('course_id') ?? ''
   const page = searchParams.get('page') ?? '1'
   const limit = searchParams.get('limit') ?? '10'
 
   const { data } = useQuery({
-    queryKey: ['classes', page, limit],
+    queryKey: ['classes', course_id, page, limit],
     queryFn: async () => {
-      const res = await getLessonsList(page, limit)
+      const res = await getLessonsList(course_id, page, limit)
       return res.data
     },
   })
+
+  const courseData = useQuery({
+    queryKey: ['course', course_id],
+    queryFn: async () => {
+      const res = await getCourse(course_id)
+      return res.data.data
+    },
+  }).data
+
+  console.log(courseData)
 
   useQuery({
     queryKey: ['search', searchText],
@@ -55,7 +67,11 @@ const LessonsListForTeacher: React.FC = () => {
             <div>
               <span className='text-xl text-[#F56A00] font-bold'>Lessons List For Teacher</span>
               <p className='m-0 text-sm text-gray-500 mt-2'>
-                Total lessons: <span className='text-blue-600'>{searchText ? filteredData.count : data.total}</span>
+                Course: <span className='text-blue-600'>{courseData && courseData.course_code}</span>
+              </p>
+              <p className='m-0 text-sm text-gray-500 mt-2'>
+                Total lessons:{' '}
+                <span className='text-blue-600'>{searchText ? filteredData.count : data ? data.total : 0}</span>
               </p>
             </div>
             <Input.Search

@@ -6,7 +6,7 @@ import type { ColumnsType } from 'antd/es/table'
 interface DataType {
   _id: string
   class_code?: string
-  course: { title: string }
+  course: { title: string; course_code: string }
   workplace: { workplace_code?: string }
   schedule: []
   class_size: number
@@ -38,7 +38,7 @@ const ClassListTable: React.FC<ClassesList> = (props) => {
     {
       title: 'Course',
       dataIndex: 'course',
-      render: (_, { course }) => <>{course && course.title}</>,
+      render: (_, { course }) => <>{course && course.course_code}</>,
       filters: [
         {
           text: 'C4E',
@@ -185,7 +185,7 @@ const ClassListTable: React.FC<ClassesList> = (props) => {
                 color='geekblue'
                 key='active'
               >
-                {String('unknown').toUpperCase()}
+                {String('NO STATUS').toUpperCase()}
               </Tag>
             )}
         </>
@@ -200,7 +200,7 @@ const ClassListTable: React.FC<ClassesList> = (props) => {
           value: 'inactive',
         },
         {
-          text: 'UNKNOWN',
+          text: 'NO STATUS',
           value: 'undefined',
         },
       ],

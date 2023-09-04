@@ -29,10 +29,15 @@ const LessonsListTable: React.FC<LessonsList> = (props) => {
     },
     {
       title: 'Lesson Name',
-      dataIndex: 'lesson_name',
-      render: (_value, { title, content }, _index) => <>{`${title}: ${content}`}</>,
+      dataIndex: 'title',
+      width: '160px',
       filteredValue: [props.searchText],
       onFilter: (value, { title }) => String(title).toLowerCase().includes(String(value).toLowerCase()),
+    },
+    {
+      title: 'Description',
+      dataIndex: 'content',
+      render: (_, { content }) => <div className='whitespace-nowrap overflow-hidden text-ellipsis '>{content}</div>,
     },
     {
       title: 'Status',
@@ -90,7 +95,7 @@ const LessonsListTable: React.FC<LessonsList> = (props) => {
         pageSizeOptions: [10, 20],
         showSizeChanger: true,
         current: props.data && props.data.page,
-        total: props.searchText ? props.filteredData.count : props.data.total,
+        total: props.searchText ? props.filteredData.count : props.data ? props.data.total : 0,
       }}
       columns={columns}
       dataSource={data}
