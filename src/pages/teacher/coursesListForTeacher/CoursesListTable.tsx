@@ -5,22 +5,21 @@ import type { ColumnsType } from 'antd/es/table'
 
 interface DataType {
   _id: string
-  key: number
-  session_code: string
-  status: string
+  course_code?: string
+  title: string
+  level: string
+  session_per_course: number
   desc: string
-  class: { class_code: string }
 }
 
-type SessionsList = {
+type ClassesList = {
   data: { count: number; data: []; page: number; statusCode: number; total: number; total_page: number }
-  searchText: string
   setSearchParams: any
-  classId: string
+  searchText: string
   filteredData: { data: []; count: number }
 }
 
-const SessionListTable: React.FC<SessionsList> = (props) => {
+const ClassListTable: React.FC<ClassesList> = (props) => {
   const columns: ColumnsType<DataType> = [
     {
       title: 'No.',
@@ -29,59 +28,61 @@ const SessionListTable: React.FC<SessionsList> = (props) => {
       render: (_value, _record, index) => <>{index + 1}</>,
     },
     {
-      title: 'Session Code',
-      dataIndex: 'session_code',
-      width: '160px',
+      title: 'Course Code',
+      dataIndex: 'class_code',
+      width: '140px',
+      render: (_, { course_code }) => <>{course_code || ''}</>,
       filteredValue: [props.searchText],
-      onFilter: (value, { session_code }) => String(session_code).toLowerCase().includes(String(value).toLowerCase()),
+      onFilter: (value, { course_code }) => String(course_code).toLowerCase().includes(String(value).toLowerCase()),
+    },
+    {
+      title: 'Specialize',
+      dataIndex: 'title',
+      width: '180px',
+      render: (_, { title }) => <div className='whitespace-nowrap overflow-hidden text-ellipsis '>{title}</div>,
+    },
+    {
+      title: 'Level',
+      dataIndex: 'level',
+      width: '140px',
+      render: (_, { level }) => (
+        <>
+          {(level === 'BEGINNER' && (
+            <Tag
+              color='geekblue'
+              key='BEGINER'
+            >
+              {level.toUpperCase()}
+            </Tag>
+          )) ||
+            (level === 'INTERMEDIATE' && (
+              <Tag
+                color='green'
+                key='INTERMEDIATE'
+              >
+                {level.toUpperCase()}
+              </Tag>
+            )) ||
+            (level === 'ADVANCED' && (
+              <Tag
+                color='volcano'
+                key='ADVANCED'
+              >
+                {level.toUpperCase()}
+              </Tag>
+            ))}
+        </>
+      ),
+    },
+    {
+      title: 'Total Sessions',
+      dataIndex: 'session_per_course',
+      width: '120px',
     },
     {
       title: 'Description',
       dataIndex: 'desc',
-    },
-    {
-      title: 'Status',
-      key: 'tags',
-      dataIndex: 'status',
-      width: '160px',
-      render: (_, { status }) => (
-        <>
-          {(status === 'completed' && (
-            <Tag
-              color='green'
-              key='active'
-            >
-              {status.toUpperCase()}
-            </Tag>
-          )) ||
-            (status === 'completed' && (
-              <Tag
-                color='volcano'
-                key='inactive'
-              >
-                {status.toUpperCase()}
-              </Tag>
-            )) || (
-              <Tag
-                color='geekblue'
-                key='active'
-              >
-                {String('NO STATUS').toUpperCase()}
-              </Tag>
-            )}
-        </>
-      ),
-      filters: [
-        {
-          text: 'COMPLETED',
-          value: 'completed',
-        },
-        {
-          text: 'UNCOMPLETED',
-          value: 'uncompleted',
-        },
-      ],
-      onFilter: (value, { status }) => String(status).indexOf(String(value)) === 0,
+      render: (_, { desc }) => <div className='whitespace-nowrap overflow-hidden text-ellipsis '>{desc}</div>,
     },
   ]
 
@@ -95,7 +96,7 @@ const SessionListTable: React.FC<SessionsList> = (props) => {
   const onChange: TableProps<DataType>['onChange'] = (pagination, _filters, _sorter, _extra) => {
     const { current, pageSize } = pagination
     props.setSearchParams(current)
-    navigate(`/teacher/class-detail?id=${props.classId}&page=${current}&limit=${pageSize}`)
+    navigate(`/teacher/courses-list?page=${current}&limit=${pageSize}`)
   }
 
   return (
@@ -114,19 +115,13 @@ const SessionListTable: React.FC<SessionsList> = (props) => {
       scroll={{ y: 340 }}
       bordered
       size='small'
+      rowKey={({ _id }) => {
+        return _id
+      }}
       style={{ padding: '0 16px' }}
       onChange={onChange}
-      onRow={({ _id, session_code }) => {
-        return {
-          onClick: () => {
-            navigate(
-              `/teacher/class-detail/session?session_code=${session_code}&session_id=${_id}&class_id=${props.classId}&page=1&limit=10`,
-            )
-          },
-        }
-      }}
     />
   )
 }
 
-export default SessionListTable
+export default ClassListTable
