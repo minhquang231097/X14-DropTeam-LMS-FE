@@ -48,7 +48,7 @@ const CustomContent = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const { data: classData } = useQuery({
-    queryKey: ['class', page, 10],
+    queryKey: ['classes', page, 10],
     queryFn: async () => {
       const res = await getClassesList(page, 10)
       return res.data

@@ -42,13 +42,12 @@ const CustomContent = () => {
       form.resetFields()
       navigate('/admin/facilities/all')
     },
-    onError: () => {
+    onError: (error: Error) => {
       // Perform any necessary actions after failed creation
       notification.error({
         message: 'Update failed',
-        description: 'There was an error updating the facility',
+        description: error.message,
       })
-      form.resetFields()
     },
   })
 

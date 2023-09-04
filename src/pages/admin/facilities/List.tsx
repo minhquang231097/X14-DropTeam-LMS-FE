@@ -35,7 +35,7 @@ const CustomContent = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const { data: workplaceData } = useQuery({
-    queryKey: ['workplace', page, 10],
+    queryKey: ['workplaces', page, 10],
     queryFn: async () => {
       const res = await getWorkplacesList(page, 10)
       return res.data

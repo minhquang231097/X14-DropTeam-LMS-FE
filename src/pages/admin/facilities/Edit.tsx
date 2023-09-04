@@ -45,18 +45,17 @@ const CustomContent = () => {
       form.resetFields()
       navigate('/admin/facilities/all')
     },
-    onError: () => {
+    onError: (error: Error) => {
       // Perform any necessary actions after failed creation
       notification.error({
         message: 'Update failed',
-        description: 'There was an error updating the facility',
+        description: error.message,
       })
-      form.resetFields()
     },
   })
 
   const { data: workplace } = useQuery({
-    queryKey: ['workplace'],
+    queryKey: ['workplaces'],
     queryFn: async () => {
       const res = await getWorkplace(id as string)
       return res.data.data

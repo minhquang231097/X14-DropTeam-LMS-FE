@@ -16,7 +16,7 @@ const CustomContent = () => {
   const navigate = useNavigate()
 
   const { data: classByID } = useQuery({
-    queryKey: ['workplace'],
+    queryKey: ['classes'],
     queryFn: async () => {
       const res = await getClassById(id as string)
       return res.data.data

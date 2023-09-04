@@ -1,6 +1,6 @@
 import React from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
-import { Breadcrumb, Card, Typography, Row, Col, Image, Divider, Space, Button, Tag } from 'antd'
+import { Breadcrumb, Card, Typography, Row, Col, Image, Divider, Space, Button, Tag, Rate } from 'antd'
 import { useQuery } from '@tanstack/react-query'
 import AdminLayout from '@/layouts/admin'
 // import { CourseItems } from '@/data/courses'
@@ -12,7 +12,7 @@ const CustomContent = () => {
   const navigate = useNavigate()
 
   const { data: course } = useQuery({
-    queryKey: ['workplace'],
+    queryKey: ['courses'],
     queryFn: async () => {
       const res = await getCourse(id as string)
       return res.data.data
@@ -76,24 +76,15 @@ const CustomContent = () => {
                   )}
                 </Typography.Text>
                 <Typography.Text className='mt-2 mx-1'>Level: {course.level}</Typography.Text>
-                <Typography.Text className='mt-2 mx-1'>Duration: {course.duration} days</Typography.Text>
                 <Typography.Text className='mt-2 mx-1'>
                   Sessions per course: {course.session_per_course}
                 </Typography.Text>
-                <div>
-                  {/* <Rate
-                    disabled
-                    value={course.rate}
-                    className='mt-2 mx-1'
-                  />{' '} */}
-                  <Typography.Text className='mt-2 mx-1'>Rate: {course.rate}/5 stars</Typography.Text>
-                </div>
               </Space>
             </Card>
           </Col>
           <Col span={8}>
             <Image
-              src={course.image ? course.image : 'https://via.placeholder.com/500x250'}
+              src={course.image && course.image.length > 0 ? course.image : 'https://via.placeholder.com/500x250'}
               alt={course.title}
             />
           </Col>

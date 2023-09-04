@@ -25,7 +25,9 @@ import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import AdminLayout from '@/layouts/admin'
 import { createClass } from '@/apis/classCreate.api'
-import { getWorkplacesList } from '@/apis/workplaceList.api'
+import { getUserListForAdmin } from '@/apis/userForAdmin.api'
+import { getCoursesList } from '@/apis/coursesList.api'
+import { searchWorkplaceForAdmin } from '@/apis/searchWorkplaceForAdmin'
 
 interface IMentor {
   fullname: string
@@ -61,60 +63,51 @@ const CustomContent = () => {
   // Cần tối thiểu 10 học viên để tạo lớp học. Mặt khác, việc tạo lớp không được phép.
 
   const weekdays = [
-    { value: 'monday', label: 'Monday' },
-    { value: 'tuesday', label: 'Tuesday' },
-    { value: 'wednesday', label: 'Wednesday' },
-    { value: 'thursday', label: 'Thursday' },
-    { value: 'friday', label: 'Friday' },
-    { value: 'saturday', label: 'Saturday' },
-    { value: 'sunday', label: 'Sunday' },
+    { value: 0, label: 'Sunday' },
+    { value: 1, label: 'Monday' },
+    { value: 2, label: 'Tuesday' },
+    { value: 3, label: 'Wednesday' },
+    { value: 4, label: 'Thursday' },
+    { value: 5, label: 'Friday' },
+    { value: 6, label: 'Saturday' },
   ]
 
-  const plainOptions = [
-    { value: '1', label: 'Student 01' },
-    { value: '2', label: 'Student 02' },
-    { value: '3', label: 'Student 03' },
-    { value: '4', label: 'Student 04' },
-    { value: '5', label: 'Student 05' },
-    { value: '6', label: 'Student 06' },
-    { value: '7', label: 'Student 07' },
-    { value: '8', label: 'Student 08' },
-    { value: '9', label: 'Student 09' },
-    { value: '10', label: 'Student 10' },
-    { value: '11', label: 'Student 11' },
-    { value: '12', label: 'Student 12' },
-  ]
+  // const plainOptions = [
+  //   { value: '1', label: 'Student 01' },
+  //   { value: '2', label: 'Student 02' },
+  //   { value: '3', label: 'Student 03' },
+  //   { value: '4', label: 'Student 04' },
+  //   { value: '5', label: 'Student 05' },
+  //   { value: '6', label: 'Student 06' },
+  //   { value: '7', label: 'Student 07' },
+  //   { value: '8', label: 'Student 08' },
+  //   { value: '9', label: 'Student 09' },
+  //   { value: '10', label: 'Student 10' },
+  //   { value: '11', label: 'Student 11' },
+  //   { value: '12', label: 'Student 12' },
+  // ]
 
-  const defaultCheckedList = [
-    { value: '1', label: 'Student 01' },
-    { value: '2', label: 'Student 02' },
-    { value: '3', label: 'Student 03' },
-    { value: '4', label: 'Student 04' },
-    { value: '5', label: 'Student 05' },
-  ]
+  // const defaultCheckedList = [
+  //   { value: '1', label: 'Student 01' },
+  //   { value: '2', label: 'Student 02' },
+  //   { value: '3', label: 'Student 03' },
+  //   { value: '4', label: 'Student 04' },
+  //   { value: '5', label: 'Student 05' },
+  // ]
 
-  const [checkedList, setCheckedList] = useState<CheckboxValueType[]>(defaultCheckedList.map((option) => option.value))
+  // const [checkedList, setCheckedList] = useState<CheckboxValueType[]>(defaultCheckedList.map((option) => option.value))
   const [selectedWeekdays, setSelectedWeekdays] = useState<string[]>([])
 
-  const checkAll = plainOptions.length === checkedList.length
-  const indeterminate = checkedList.length > 0 && checkedList.length < plainOptions.length
+  // const checkAll = plainOptions.length === checkedList.length
+  // const indeterminate = checkedList.length > 0 && checkedList.length < plainOptions.length
 
-  const { data: workplaceData } = useQuery({
-    queryKey: ['workplace'],
-    queryFn: async () => {
-      const res = await getWorkplacesList()
-      return res.data?.data
-    },
-  })
-  console.log(workplaceData)
+  // const onCheckAllChange = (e: CheckboxChangeEvent) => {
+  //   setCheckedList(e.target.checked ? plainOptions.map((option) => option.value) : [])
+  // }
 
-  const onCheckAllChange = (e: CheckboxChangeEvent) => {
-    setCheckedList(e.target.checked ? plainOptions.map((option) => option.value) : [])
-  }
-
-  const onChange = (checkedValues: CheckboxValueType[]) => {
-    setCheckedList(checkedValues)
-  }
+  // const onChange = (checkedValues: CheckboxValueType[]) => {
+  //   setCheckedList(checkedValues)
+  // }
 
   const handleWeekdaysChange = (value: string[]) => {
     setSelectedWeekdays(value)
@@ -130,13 +123,36 @@ const CustomContent = () => {
       form.resetFields()
       navigate('/admin/classes/all')
     },
-    onError: () => {
+    onError: (error: Error) => {
       // Perform any necessary actions after failed creation
       notification.error({
         message: 'Update failed',
-        description: 'There was an error updating the class',
+        description: error.message,
       })
-      form.resetFields()
+    },
+  })
+
+  const { data: course } = useQuery({
+    queryKey: ['courses'],
+    queryFn: async () => {
+      const res = await getCoursesList()
+      return res.data.data
+    },
+  })
+
+  const { data: workplace } = useQuery({
+    queryKey: ['workplaces'],
+    queryFn: async () => {
+      const res = await searchWorkplaceForAdmin('ON')
+      return res.data.data
+    },
+  })
+
+  const { data: mentor } = useQuery({
+    queryKey: ['MENTOR'],
+    queryFn: async () => {
+      const res = await getUserListForAdmin('MENTOR')
+      return res.data.data
     },
   })
 
@@ -179,28 +195,34 @@ const CustomContent = () => {
             <Col span={12}>
               <Form.Item
                 label='Course'
-                name='course_name'
+                name='course_id'
                 rules={[{ required: true, message: 'Please enter the course name' }]}
               >
-                <Select />
+                <Select
+                  options={(course || []).map((data: { _id: string; title: string }) => ({
+                    value: data._id,
+                    label: data.title,
+                  }))}
+                  showSearch
+                />
               </Form.Item>
-              <Form.Item
+              {/* <Form.Item
                 label='Class Code'
                 name='class_code'
                 rules={[{ required: true, message: 'Please enter the code' }]}
               >
                 <Input />
-              </Form.Item>
+              </Form.Item> */}
               <Form.Item
-                label='Time'
-                name='time'
+                label='Start Date'
+                name='start_at'
                 rules={[{ required: true, message: 'Please enter the time' }]}
               >
-                <RangePicker style={{ width: '100%' }} />
+                <DatePicker style={{ width: '100%' }} />
               </Form.Item>
               <Form.Item
                 label='Total Sessions'
-                name='sessions'
+                name='total_session'
                 rules={[{ required: true, message: 'Please enter the total sessions' }]}
               >
                 <InputNumber style={{ width: '100%' }} />
@@ -209,17 +231,29 @@ const CustomContent = () => {
             <Col span={12}>
               <Form.Item
                 label='Facility'
-                name='name'
+                name='workplace_id'
                 rules={[{ required: true, message: 'Please enter the facility' }]}
               >
-                <Select />
+                <Select
+                  options={(workplace || []).map((data: { _id: string; name: string }) => ({
+                    value: data._id,
+                    label: data.name,
+                  }))}
+                  showSearch
+                />
               </Form.Item>
               <Form.Item
                 label='Mentor'
-                name='name'
+                name='mentor_id'
                 rules={[{ required: true, message: 'Please enter the mentor' }]}
               >
-                <Select />
+                <Select
+                  options={(mentor || []).map((data: { _id: string; fullname: string }) => ({
+                    value: data._id,
+                    label: data.fullname,
+                  }))}
+                  showSearch
+                />
               </Form.Item>
               <Form.Item
                 label='Schedule'
@@ -251,7 +285,7 @@ const CustomContent = () => {
                 <InputNumber style={{ width: '100%' }} />
               </Form.Item>
             </Col>
-            <Col span={24}>
+            {/* <Col span={24}>
               <Form.Item>
                 <Card>
                   <Typography.Paragraph
@@ -287,7 +321,7 @@ const CustomContent = () => {
                   </Checkbox.Group>
                 </Card>
               </Form.Item>
-            </Col>
+            </Col> */}
           </Row>
           {/* <Col
                 span={12}

@@ -13,7 +13,7 @@ const CustomContent = () => {
   const navigate = useNavigate()
 
   const { data: workplace } = useQuery({
-    queryKey: ['workplace'],
+    queryKey: ['workplaces'],
     queryFn: async () => {
       const res = await getWorkplace(id as string)
       return res.data.data

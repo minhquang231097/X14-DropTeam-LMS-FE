@@ -1,15 +1,31 @@
 import React, { useState } from 'react'
-import { Breadcrumb, Button, Card, Image, Modal, Space, Table, TableProps, Typography, theme } from 'antd'
+import {
+  Breadcrumb,
+  Button,
+  Card,
+  Image,
+  Modal,
+  Space,
+  Table,
+  TableProps,
+  Tag,
+  Typography,
+  notification,
+  theme,
+} from 'antd'
 import { useNavigate } from 'react-router-dom'
-import { MdOutlineCheck, MdOutlineClose, MdAddCircleOutline } from 'react-icons/md'
+import { MdAddCircleOutline } from 'react-icons/md'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
+import { ColumnsType } from 'antd/es/table'
 import AdminLayout from '@/layouts/admin'
 import AdminSearch from '@/components/search/adminSearch'
 import { getCoursesList } from '@/apis/coursesList.api'
 import { useQueryString } from '@/utils/utils'
+import LevelTag from '@/components/tag/LevelTag'
+import { COMMON_LEVEL } from '@/utils/level'
 
 interface DataType {
   _id: string
@@ -20,6 +36,7 @@ interface DataType {
   is_active?: boolean
   create_at?: string
   formated_date: string
+  level: COMMON_LEVEL
 }
 
 dayjs.extend(customParseFormat)
@@ -36,7 +53,7 @@ const CustomContent = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const { data: courseData } = useQuery({
-    queryKey: ['course', page, 10],
+    queryKey: ['courses', page, 10],
     queryFn: async () => {
       const res = await getCoursesList(page, 10)
       return res.data
@@ -53,17 +70,21 @@ const CustomContent = () => {
     try {
       await axios.delete(`/api/course/?id=${selectedCourse?._id}`)
       // Perform any necessary actions after successful deletion
-    } catch (error) {
-      console.error(error)
+    } catch (error: any) {
+      notification.error({
+        message: 'Delete failed',
+        description: error.message,
+      })
     }
     setIsModalOpen(false)
   }
 
-  const columns = [
+  const columns: ColumnsType<DataType> = [
     {
       title: 'Image',
       dataIndex: 'image',
       width: '25%',
+      align: 'center',
       render: (image: any) => (
         <Image
           src={image.length > 0 ? image : 'https://via.placeholder.com/500x250'}
@@ -75,6 +96,7 @@ const CustomContent = () => {
       title: 'Course',
       dataIndex: 'course_code',
       width: '40%',
+      align: 'center',
       render: (course_code: string, course: DataType) => (
         <Space direction='vertical'>
           <Typography.Text
@@ -88,26 +110,16 @@ const CustomContent = () => {
       ),
     },
     {
-      title: 'Status',
-      dataIndex: 'is_active',
-      width: '20%',
-      render: () => (
-        <Typography.Text
-          style={{
-            color: token.colorSuccessText,
-            fontSize: '18px',
-            display: 'flex',
-            alignItems: 'center',
-          }}
-        >
-          <MdOutlineCheck className='text-[24px] m-1' />
-          Active
-        </Typography.Text>
-      ),
+      title: 'Difficulty',
+      dataIndex: 'level',
+      width: '10%',
+      align: 'center',
+      render: (value: COMMON_LEVEL) => <LevelTag level={value} />,
     },
     {
       title: 'Action',
-      width: '15%',
+      width: '20%',
+      align: 'center',
       render: (course: DataType) => (
         <Space>
           <Button
