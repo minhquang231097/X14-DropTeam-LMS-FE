@@ -107,7 +107,7 @@ const SessionListTable: React.FC<SessionsList> = (props) => {
         pageSizeOptions: [10, 20],
         showSizeChanger: true,
         current: props.data && props.data.page,
-        total: props.data && props.data.total,
+        total: props.data && (props.searchText ? props.filteredData.count : props.data.total),
       }}
       columns={columns}
       dataSource={data}
@@ -116,11 +116,11 @@ const SessionListTable: React.FC<SessionsList> = (props) => {
       size='small'
       style={{ padding: '0 16px' }}
       onChange={onChange}
-      onRow={({ session_code }) => {
+      onRow={({ _id, session_code }) => {
         return {
           onClick: () => {
             navigate(
-              `/teacher/class-detail/session?session_code=${session_code}&class_id=${props.classId}&page=1&limit=10`,
+              `/teacher/class-detail/session?session_code=${session_code}&session_id=${_id}&class_id=${props.classId}&page=1&limit=10`,
             )
           },
         }

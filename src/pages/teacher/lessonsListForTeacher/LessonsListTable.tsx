@@ -14,7 +14,7 @@ type LessonsList = {
   data: { count: number; data: []; page: number; statusCode: number; total: number; total_page: number }
   searchText: string
   setSearchParams: any
-  filteredData: { data: [] }
+  filteredData: { data: []; count: number }
 }
 
 const LessonsListTable: React.FC<LessonsList> = (props) => {
@@ -90,7 +90,7 @@ const LessonsListTable: React.FC<LessonsList> = (props) => {
         pageSizeOptions: [10, 20],
         showSizeChanger: true,
         current: props.data && props.data.page,
-        total: props.data && props.data.total,
+        total: props.searchText ? props.filteredData.count : props.data.total,
       }}
       columns={columns}
       dataSource={data}

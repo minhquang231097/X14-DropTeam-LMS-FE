@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react'
 import { Avatar, Dropdown } from 'antd'
 import type { MenuProps } from 'antd'
@@ -12,12 +10,11 @@ import handleLogout from '@/apis/logout.api'
 const UserDropdownMentor: React.FC<{ username: any }> = (props: any) => {
   const navigate = useNavigate()
   const USER = JSON.parse(localStorage.getItem('user') as string)
-  const { username } = props
 
   const items: MenuProps['items'] = [
     {
       key: '1',
-      label: <div className='flex text-lg text-[#F56A00] items-center justify-center font-bold'>{username}</div>,
+      label: <div className='flex text-lg text-[#F56A00] items-center justify-center font-bold'>{props.username}</div>,
       disabled: true,
     },
     {
@@ -47,7 +44,7 @@ const UserDropdownMentor: React.FC<{ username: any }> = (props: any) => {
       label: (
         <div
           className='flex items-center text-gray-600 font-bold'
-          onClick={() => navigate(`/edit-profile?id=${USER.userId}`)}
+          onClick={() => navigate(`/edit-profile?id=${USER.id}`)}
         >
           <RiUserSettingsLine className='text-2xl mr-2 p-2 pl-0' />
           Edit Profile
@@ -89,8 +86,18 @@ const UserDropdownMentor: React.FC<{ username: any }> = (props: any) => {
       arrow
     >
       <a target='_blank'>
-        <Avatar style={{ backgroundColor: '#f56a00', color: '#fff', fontSize: '20px', fontWeight: 'bold' }}>
-          {username.charAt(0).toUpperCase()}
+        <Avatar
+          style={{
+            color: '#fff',
+            fontSize: '20px',
+            fontWeight: 'bold',
+            cursor: 'pointer',
+            borderWidth: '1px',
+            backgroundColor: '#F1F5F9',
+          }}
+          src={`https://xsgames.co/randomusers/avatar.php?g=pixel&key=${Math.floor(Math.random() * 10)}`}
+        >
+          {/* {props.username.charAt(0).toUpperCase()} */}
         </Avatar>
       </a>
     </Dropdown>

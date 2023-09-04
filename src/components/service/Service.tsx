@@ -3,10 +3,10 @@ import { HiOutlineUserGroup } from 'react-icons/hi2'
 
 const Service: React.FC = () => {
   return (
-    <div className='bg-white dark:bg-[#0B1324] py-4 shadow-md'>
+    <div className='bg-white dark:bg-[#0B1324] py-4 shadow-md max-md:px-8 max-md:text-sm'>
       <div className='max-w-[1280px] mx-auto grid grid-cols-3 items-center justify-between'>
         <div className='flex items-center justify-center'>
-          <div className='bg-[#FFEEDA] dark:bg-[#5A4327] w-12 h-12 rounded-full flex items-center justify-center mr-4'>
+          <div className='bg-[#FFEEDA] dark:bg-[#5A4327] w-12 h-12 max-md:h-10 max-md:w-10 rounded-full flex items-center justify-center mr-4'>
             <BsCameraVideo className='text-xl text-[#C28135]' />
           </div>
           <div>
@@ -16,7 +16,7 @@ const Service: React.FC = () => {
         </div>
 
         <div className='flex items-center justify-center'>
-          <div className='bg-[#FFEEDA] dark:bg-[#5A4327] w-12 h-12 rounded-full flex items-center justify-center mr-4'>
+          <div className='bg-[#FFEEDA] dark:bg-[#5A4327] w-12 h-12 max-md:h-10 max-md:w-10 rounded-full flex items-center justify-center mr-4'>
             <HiOutlineUserGroup className='text-2xl text-[#C28135]' />
           </div>
           <div>
@@ -26,7 +26,7 @@ const Service: React.FC = () => {
         </div>
 
         <div className='flex items-center justify-center'>
-          <div className='bg-[#FFEEDA] dark:bg-[#5A4327] w-12 h-12 rounded-full flex items-center justify-center mr-4'>
+          <div className='bg-[#FFEEDA] dark:bg-[#5A4327] w-12 h-12 max-md:h-10 max-md:w-10 rounded-full flex items-center justify-center mr-4'>
             <BsClock className='text-xl text-[#C28135]' />
           </div>
           <div>

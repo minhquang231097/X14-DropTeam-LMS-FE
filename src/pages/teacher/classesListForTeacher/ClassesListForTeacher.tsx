@@ -8,6 +8,7 @@ import ClassListTable from './ClassListTable'
 import { getClassesList } from '@/apis/classesList.api'
 import { useSearchParams } from 'react-router-dom'
 import { getClassByClassCode } from '@/apis/searchClassByClassCode.api'
+import { debounce } from 'lodash'
 
 const ClassesListForTeacher: React.FC = () => {
   const [searchText, setSearchText] = useState('')
@@ -37,6 +38,10 @@ const ClassesListForTeacher: React.FC = () => {
     setSearchText(value)
   }
 
+  const handleChange = debounce((event: any) => {
+    handleSearch(event.target.value)
+  }, 1000)
+
   return (
     <>
       <Header />
@@ -50,14 +55,15 @@ const ClassesListForTeacher: React.FC = () => {
             <div>
               <span className='text-xl text-[#F56A00] font-bold'>Classes List For Teacher</span>
               <p className='m-0 text-sm text-gray-500 mt-2'>
-                Total classes: <span className='text-blue-600'>{data && data.total}</span>
+                Total classes:{' '}
+                <span className='text-blue-600'>{data && (searchText ? filteredData.count : data.total)}</span>
               </p>
             </div>
 
             <Input.Search
               placeholder='Search Class Code ...'
               style={{ width: 280 }}
-              onChange={(e) => handleSearch(e.target.value)}
+              onChange={handleChange}
               onSearch={handleSearch}
             />
           </div>
