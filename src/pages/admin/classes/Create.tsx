@@ -54,10 +54,9 @@ dayjs.extend(customParseFormat)
 const CustomContent = () => {
   const [form] = Form.useForm()
   const navigate = useNavigate()
-  const { RangePicker } = DatePicker
 
-  const [options, setOptions] = useState<{ value: string; label: string }[]>([])
-  const [selectedOptions, setSelectedOptions] = useState<string[]>([])
+  const [selectedCourse, setSelectedCourse] = useState<string | undefined>(undefined)
+  const [selectedWorkplace, setSelectedWorkplace] = useState<string | undefined>(undefined)
 
   const warningText = `A minimum of 10 students is required to create a class. Otherwise, class creation is not permitted.`
   // Cần tối thiểu 10 học viên để tạo lớp học. Mặt khác, việc tạo lớp không được phép.
@@ -72,42 +71,42 @@ const CustomContent = () => {
     { value: 6, label: 'Saturday' },
   ]
 
-  // const plainOptions = [
-  //   { value: '1', label: 'Student 01' },
-  //   { value: '2', label: 'Student 02' },
-  //   { value: '3', label: 'Student 03' },
-  //   { value: '4', label: 'Student 04' },
-  //   { value: '5', label: 'Student 05' },
-  //   { value: '6', label: 'Student 06' },
-  //   { value: '7', label: 'Student 07' },
-  //   { value: '8', label: 'Student 08' },
-  //   { value: '9', label: 'Student 09' },
-  //   { value: '10', label: 'Student 10' },
-  //   { value: '11', label: 'Student 11' },
-  //   { value: '12', label: 'Student 12' },
-  // ]
+  const plainOptions = [
+    { value: '1', label: 'Student 01' },
+    { value: '2', label: 'Student 02' },
+    { value: '3', label: 'Student 03' },
+    { value: '4', label: 'Student 04' },
+    { value: '5', label: 'Student 05' },
+    { value: '6', label: 'Student 06' },
+    { value: '7', label: 'Student 07' },
+    { value: '8', label: 'Student 08' },
+    { value: '9', label: 'Student 09' },
+    { value: '10', label: 'Student 10' },
+    { value: '11', label: 'Student 11' },
+    { value: '12', label: 'Student 12' },
+  ]
 
-  // const defaultCheckedList = [
-  //   { value: '1', label: 'Student 01' },
-  //   { value: '2', label: 'Student 02' },
-  //   { value: '3', label: 'Student 03' },
-  //   { value: '4', label: 'Student 04' },
-  //   { value: '5', label: 'Student 05' },
-  // ]
+  const defaultCheckedList = [
+    { value: '1', label: 'Student 01' },
+    { value: '2', label: 'Student 02' },
+    { value: '3', label: 'Student 03' },
+    { value: '4', label: 'Student 04' },
+    { value: '5', label: 'Student 05' },
+  ]
 
-  // const [checkedList, setCheckedList] = useState<CheckboxValueType[]>(defaultCheckedList.map((option) => option.value))
+  const [checkedList, setCheckedList] = useState<CheckboxValueType[]>(defaultCheckedList.map((option) => option.value))
   const [selectedWeekdays, setSelectedWeekdays] = useState<string[]>([])
 
-  // const checkAll = plainOptions.length === checkedList.length
-  // const indeterminate = checkedList.length > 0 && checkedList.length < plainOptions.length
+  const checkAll = plainOptions.length === checkedList.length
+  const indeterminate = checkedList.length > 0 && checkedList.length < plainOptions.length
 
-  // const onCheckAllChange = (e: CheckboxChangeEvent) => {
-  //   setCheckedList(e.target.checked ? plainOptions.map((option) => option.value) : [])
-  // }
+  const onCheckAllChange = (e: CheckboxChangeEvent) => {
+    setCheckedList(e.target.checked ? plainOptions.map((option) => option.value) : [])
+  }
 
-  // const onChange = (checkedValues: CheckboxValueType[]) => {
-  //   setCheckedList(checkedValues)
-  // }
+  const onChange = (checkedValues: CheckboxValueType[]) => {
+    setCheckedList(checkedValues)
+  }
 
   const handleWeekdaysChange = (value: string[]) => {
     setSelectedWeekdays(value)
@@ -192,7 +191,10 @@ const CustomContent = () => {
             style={{ marginBottom: '1rem' }}
           />
           <Row gutter={[24, 16]}>
-            <Col span={12}>
+            <Col
+              xs={24}
+              lg={12}
+            >
               <Form.Item
                 label='Course'
                 name='course_id'
@@ -203,42 +205,8 @@ const CustomContent = () => {
                     value: data._id,
                     label: data.title,
                   }))}
-                  showSearch
-                />
-              </Form.Item>
-              {/* <Form.Item
-                label='Class Code'
-                name='class_code'
-                rules={[{ required: true, message: 'Please enter the code' }]}
-              >
-                <Input />
-              </Form.Item> */}
-              <Form.Item
-                label='Start Date'
-                name='start_at'
-                rules={[{ required: true, message: 'Please enter the time' }]}
-              >
-                <DatePicker style={{ width: '100%' }} />
-              </Form.Item>
-              <Form.Item
-                label='Total Sessions'
-                name='total_session'
-                rules={[{ required: true, message: 'Please enter the total sessions' }]}
-              >
-                <InputNumber style={{ width: '100%' }} />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                label='Facility'
-                name='workplace_id'
-                rules={[{ required: true, message: 'Please enter the facility' }]}
-              >
-                <Select
-                  options={(workplace || []).map((data: { _id: string; name: string }) => ({
-                    value: data._id,
-                    label: data.name,
-                  }))}
+                  value={selectedCourse}
+                  onChange={(value) => setSelectedCourse(value)}
                   showSearch
                 />
               </Form.Item>
@@ -252,6 +220,43 @@ const CustomContent = () => {
                     value: data._id,
                     label: data.fullname,
                   }))}
+                  showSearch
+                />
+              </Form.Item>
+              <Form.Item
+                label='Start Date'
+                name='start_at'
+                rules={[{ required: true, message: 'Please enter the start date' }]}
+              >
+                <DatePicker
+                  style={{ width: '100%' }}
+                  format='DD/MM/YYYY'
+                />
+              </Form.Item>
+              <Form.Item
+                label='Total Sessions'
+                name='total_session'
+                rules={[{ required: true, message: 'Please enter the total sessions' }]}
+              >
+                <InputNumber style={{ width: '100%' }} />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              lg={12}
+            >
+              <Form.Item
+                label='Facility'
+                name='workplace_id'
+                rules={[{ required: true, message: 'Please enter the facility' }]}
+              >
+                <Select
+                  options={(workplace || []).map((data: { _id: string; name: string }) => ({
+                    value: data._id,
+                    label: data.name,
+                  }))}
+                  value={selectedWorkplace}
+                  onChange={(value) => setSelectedWorkplace(value)}
                   showSearch
                 />
               </Form.Item>
@@ -278,6 +283,16 @@ const CustomContent = () => {
                 </Select>
               </Form.Item>
               <Form.Item
+                label='Expected End Date'
+                name='end_at'
+                rules={[{ required: true, message: 'Please enter the expected end date' }]}
+              >
+                <DatePicker
+                  style={{ width: '100%' }}
+                  format='DD/MM/YYYY'
+                />
+              </Form.Item>
+              <Form.Item
                 label='Number of Students'
                 name='class_size'
                 rules={[{ required: true, message: 'Please enter the number of students' }]}
@@ -285,43 +300,45 @@ const CustomContent = () => {
                 <InputNumber style={{ width: '100%' }} />
               </Form.Item>
             </Col>
-            {/* <Col span={24}>
-              <Form.Item>
-                <Card>
-                  <Typography.Paragraph
-                    strong
-                    style={{ fontSize: '24px' }}
-                  >
-                    Enrollment List
-                  </Typography.Paragraph>
-                  <Checkbox
-                    indeterminate={indeterminate}
-                    onChange={onCheckAllChange}
-                    checked={checkAll}
-                  >
-                    Check all
-                  </Checkbox>
-                  <Divider />
-                  <Checkbox.Group
-                    style={{ width: '100%' }}
-                    defaultValue={defaultCheckedList.map((option) => option.value)}
-                    value={checkedList}
-                    onChange={onChange}
-                  >
-                    <Row gutter={[16, 16]}>
-                      {plainOptions.map((option) => (
-                        <Col
-                          span={8}
-                          key={option.value}
-                        >
-                          <Checkbox value={option.value}>{option.label}</Checkbox>
-                        </Col>
-                      ))}
-                    </Row>
-                  </Checkbox.Group>
-                </Card>
-              </Form.Item>
-            </Col> */}
+            {selectedCourse && selectedWorkplace && (
+              <Col span={24}>
+                <Form.Item>
+                  <Card>
+                    <Typography.Paragraph
+                      strong
+                      style={{ fontSize: '24px' }}
+                    >
+                      Enrollment List
+                    </Typography.Paragraph>
+                    <Checkbox
+                      indeterminate={indeterminate}
+                      onChange={onCheckAllChange}
+                      checked={checkAll}
+                    >
+                      Check all
+                    </Checkbox>
+                    <Divider />
+                    <Checkbox.Group
+                      style={{ width: '100%' }}
+                      defaultValue={defaultCheckedList.map((option) => option.value)}
+                      value={checkedList}
+                      onChange={onChange}
+                    >
+                      <Row gutter={[16, 16]}>
+                        {plainOptions.map((option) => (
+                          <Col
+                            span={8}
+                            key={option.value}
+                          >
+                            <Checkbox value={option.value}>{option.label}</Checkbox>
+                          </Col>
+                        ))}
+                      </Row>
+                    </Checkbox.Group>
+                  </Card>
+                </Form.Item>
+              </Col>
+            )}
           </Row>
           {/* <Col
                 span={12}
@@ -340,7 +357,12 @@ const CustomContent = () => {
               size='middle'
               style={{ display: 'flex', justifyContent: 'flex-end' }}
             >
-              <Button type='default'>Cancel</Button>
+              <Button
+                type='default'
+                onClick={() => navigate('/admin/classes/all')}
+              >
+                Cancel
+              </Button>
               <Button
                 type='primary'
                 htmlType='submit'

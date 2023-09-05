@@ -1,19 +1,22 @@
 import React, { useState } from 'react'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
-import { Breadcrumb, Button, Card, Image, Modal, Space, Table, TableProps, Typography, theme } from 'antd'
-import { useNavigate } from 'react-router-dom'
-import { MdOutlineCheck, MdOutlineClose, MdAddCircleOutline, MdOutlineCircle } from 'react-icons/md'
+import { Breadcrumb, Button, Card, Image, Modal, Space, Table, TableProps, Typography, notification, theme } from 'antd'
+import { useNavigate, useSearchParams } from 'react-router-dom'
+import { MdAddCircleOutline } from 'react-icons/md'
 import { useQuery } from '@tanstack/react-query'
-import axios from 'axios'
 import AdminLayout from '@/layouts/admin'
 import AdminSearch from '@/components/search/adminSearch'
-import { useQueryString } from '@/utils/utils'
 import { getClassesList } from '@/apis/classesList.api'
 import { weekdays } from '@/utils/day'
+import http from '@/utils/http'
 
 interface IMentor {
   fullname: string
+}
+
+interface ICourse {
+  title: string
 }
 
 interface IWorkplace {
@@ -28,6 +31,7 @@ interface DataType {
   class_size?: number
   start_at?: string
   end_at?: string
+  course?: ICourse
   mentor?: IMentor
   workplace?: IWorkplace
 }
@@ -35,22 +39,22 @@ interface DataType {
 dayjs.extend(customParseFormat)
 
 const CustomContent = () => {
-  const { useToken } = theme
-  const { token } = useToken()
   const navigate = useNavigate()
 
-  const queryString: { page?: string } = useQueryString()
-  const page = Number(queryString.page) || 1
-  const sizeReq = 10
+  // const queryString: { page?: string } = useQueryString()
+  // const page = Number(queryString.page) || 1
+  const [searchParams, setSearchParams] = useSearchParams()
+  const page = searchParams.get('page') ?? 1
+  const limit = searchParams.get('limit') ?? 10
 
   // const [isActive, setIsActive] = useState(true)
   const [selectedClass, setSelectedClass] = useState<DataType | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const { data: classData } = useQuery({
-    queryKey: ['classes', page, 10],
+    queryKey: ['classes', page, limit],
     queryFn: async () => {
-      const res = await getClassesList(page, 10)
+      const res = await getClassesList(page, limit)
       return res.data
     },
   })
@@ -58,15 +62,23 @@ const CustomContent = () => {
   const onChange: TableProps<DataType>['onChange'] = (pagination, filters, sorter, extra) => {
     // console.log('params', pagination, filters, sorter, extra)
     const { current } = pagination
-    navigate(`/admin/classes/all?page=${current}&limit=10`)
+    navigate(`/admin/classes/all?page=${current}&limit=${limit}`)
   }
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`/api/classes/?id=${selectedClass?._id}`)
+      await http.delete(`/class/${selectedClass?._id}`)
       // Perform any necessary actions after successful deletion
-    } catch (error) {
-      console.error(error)
+      notification.success({
+        message: 'Delete successful',
+        description: 'The class has been deleted successfully',
+      })
+
+    } catch (error: any) {
+      notification.error({
+        message: 'Delete failed',
+        description: error.message,
+      })
     }
     setIsModalOpen(false)
   }
@@ -84,12 +96,7 @@ const CustomContent = () => {
           >
             {class_code}
           </Typography.Text>
-          {/* <Typography.Text
-            strong
-            style={{ fontSize: '20px' }}
-          >
-            {cls.class_name}
-          </Typography.Text> */}
+          <Typography.Text>Course: {cls.course?.title}</Typography.Text>
           <Typography.Text>Mentor: {cls.mentor?.fullname}</Typography.Text>
         </Space>
       ),
@@ -147,16 +154,16 @@ const CustomContent = () => {
           >
             Show
           </Button>
-          {/* <Button
+          <Button
             type='primary'
             danger
             onClick={() => {
-              setSelectedClass(class)
+              setSelectedClass(cls)
               setIsModalOpen(true)
             }}
           >
             Delete
-          </Button> */}
+          </Button>
         </Space>
       ),
     },
@@ -205,7 +212,7 @@ const CustomContent = () => {
             dataSource={classData.data}
             pagination={{
               position: ['bottomRight'],
-              current: page,
+              current: Number(page),
               defaultCurrent: 1,
               defaultPageSize: 10,
               pageSizeOptions: [10],

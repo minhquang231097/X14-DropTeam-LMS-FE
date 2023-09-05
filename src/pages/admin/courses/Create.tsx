@@ -154,7 +154,7 @@ const CustomContent = () => {
               size='middle'
               style={{ display: 'flex', justifyContent: 'flex-end' }}
             >
-              <Button type='default'>Cancel</Button>
+              <Button type='default' onClick={() => navigate('/admin/courses/all')}>Cancel</Button>
               <Button
                 type='primary'
                 htmlType='submit'

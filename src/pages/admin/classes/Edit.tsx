@@ -223,7 +223,10 @@ const CustomContent = () => {
             Edit The Class
           </Typography.Title>
           <Row gutter={[24, 16]}>
-            <Col span={12}>
+            <Col
+              xs={24}
+              lg={12}
+            >
               <Form.Item
                 label='Course'
                 name='course_id'
@@ -237,42 +240,13 @@ const CustomContent = () => {
                   showSearch
                 />
               </Form.Item>
-              <Form.Item
+              {/* <Form.Item
                 label='Class Code'
                 name='class_code'
                 rules={[{ required: true, message: 'Please enter the code' }]}
               >
                 <Input />
-              </Form.Item>
-              <Form.Item
-                label='Start Date'
-                name='start_at'
-                rules={[{ required: true, message: 'Please enter the time' }]}
-              >
-                <RangePicker style={{ width: '100%' }} />
-              </Form.Item>
-              <Form.Item
-                label='Total Sessions'
-                name='total_session'
-                rules={[{ required: true, message: 'Please enter the total sessions' }]}
-              >
-                <InputNumber style={{ width: '100%' }} />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                label='Facility'
-                name='workplace_id'
-                rules={[{ required: true, message: 'Please enter the facility' }]}
-              >
-                <Select
-                  options={(workplace || []).map((data: { _id: string; name: string }) => ({
-                    value: data._id,
-                    label: data.name,
-                  }))}
-                  showSearch
-                />
-              </Form.Item>
+              </Form.Item> */}
               <Form.Item
                 label='Mentor'
                 name='mentor_id'
@@ -282,6 +256,41 @@ const CustomContent = () => {
                   options={(mentor || []).map((data: { _id: string; fullname: string }) => ({
                     value: data._id,
                     label: data.fullname,
+                  }))}
+                  showSearch
+                />
+              </Form.Item>
+              <Form.Item
+                label='Start Date'
+                name='start_at'
+                rules={[{ required: true, message: 'Please enter the start date' }]}
+              >
+                <DatePicker
+                  style={{ width: '100%' }}
+                  format='DD/MM/YYYY'
+                />
+              </Form.Item>
+              <Form.Item
+                label='Total Sessions'
+                name='total_session'
+                rules={[{ required: true, message: 'Please enter the total sessions' }]}
+              >
+                <InputNumber style={{ width: '100%' }} />
+              </Form.Item>
+            </Col>
+            <Col
+              xs={24}
+              lg={12}
+            >
+              <Form.Item
+                label='Facility'
+                name='workplace_id'
+                rules={[{ required: true, message: 'Please enter the facility' }]}
+              >
+                <Select
+                  options={(workplace || []).map((data: { _id: string; name: string }) => ({
+                    value: data._id,
+                    label: data.name,
                   }))}
                   showSearch
                 />
@@ -307,6 +316,16 @@ const CustomContent = () => {
                     </Select.Option>
                   ))}
                 </Select>
+              </Form.Item>
+              <Form.Item
+                label='Expected End Date'
+                name='end_at'
+                rules={[{ required: true, message: 'Please enter the expected end date' }]}
+              >
+                <DatePicker
+                  style={{ width: '100%' }}
+                  format='DD/MM/YYYY'
+                />
               </Form.Item>
               <Form.Item
                 label='Number of Students'
@@ -371,7 +390,12 @@ const CustomContent = () => {
               size='middle'
               style={{ display: 'flex', justifyContent: 'flex-end' }}
             >
-              <Button type='default'>Cancel</Button>
+              <Button
+                type='default'
+                onClick={() => navigate(`/admin/classes/show/${id}`)}
+              >
+                Cancel
+              </Button>
               <Button
                 type='primary'
                 htmlType='submit'
@@ -382,7 +406,7 @@ const CustomContent = () => {
             </Space>
           </Form.Item>
         </Form>
-      </Card >
+      </Card>
     </>
   )
 }

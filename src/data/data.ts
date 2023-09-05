@@ -103,7 +103,7 @@ export const data = [
       ],
       traffic: [
         {
-          type: `direct`,
+          type: `Direct`,
           value: 30,
         },
         {

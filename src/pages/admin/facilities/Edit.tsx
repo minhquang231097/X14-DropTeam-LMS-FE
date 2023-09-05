@@ -144,16 +144,16 @@ const CustomContent = () => {
                 name='workplace_code'
                 rules={[
                   { required: true, message: 'Please enter the code' },
-                  {
-                    validator(_: RuleObject, value: string) {
-                      if (value === workplace.workplace_code) {
-                        Promise.reject(new Error('The code must be unique!'))
-                      }
-                      return Promise.resolve()
-                    },
-                  },
+                  // {
+                  //   validator(_: RuleObject, value: string) {
+                  //     if (value === workplace.workplace_code) {
+                  //       Promise.reject(new Error('The code must be unique!'))
+                  //     }
+                  //     return Promise.resolve()
+                  //   },
+                  // },
                 ]}
-                validateStatus={form.getFieldValue('workplace_code') === workplace.workplace_code ? 'error' : ''}
+              // validateStatus={form.getFieldValue('workplace_code') === workplace.workplace_code ? 'error' : ''}
               >
                 <Input
                   required
@@ -217,7 +217,6 @@ const CustomContent = () => {
               <Button
                 type='primary'
                 htmlType='submit'
-                disabled={form.getFieldValue('workplace_code') === workplace.workplace_code}
                 loading={isLoading}
               >
                 Update
