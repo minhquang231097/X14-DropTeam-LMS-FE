@@ -42,10 +42,24 @@ const CourseCard = (course: Course) => {
             <div className='flex items-center text-xl mr-1'>
               {rate
                 ? [...Array(rate)].map(() => {
-                    return <p className='m-0 mt-2 mr-1 text-[#F59E0B]'>&#9733;</p>
+                    return (
+                      <p
+                        key={Math.random()}
+                        className='m-0 mt-2 mr-1 text-[#F59E0B]'
+                      >
+                        &#9733;
+                      </p>
+                    )
                   })
                 : [...Array(5)].map(() => {
-                    return <p className='m-0 mt-2 mr-1 text-[#F59E0B]'>&#9733;</p>
+                    return (
+                      <p
+                        key={Math.random()}
+                        className='m-0 mt-2 mr-1 text-[#F59E0B]'
+                      >
+                        &#9733;
+                      </p>
+                    )
                   })}
             </div>
             <span className='mt-[10px] text-gray-500 text-sm'>({Math.floor(Math.random() * 10000)})</span>
