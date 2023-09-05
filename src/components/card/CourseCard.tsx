@@ -23,7 +23,16 @@ const CourseCard = (course: Course) => {
           className='w-full h-[180px]'
         />
         <div className='px-4'>
-          <p className='font-bold leading-6'>
+          <p
+            className='font-bold leading-6'
+            style={{
+              display: '-webkit-box',
+              WebkitLineClamp: '2',
+              WebkitBoxOrient: 'vertical',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+            }}
+          >
             {course_code}: Introduction to {title} for Beginners
           </p>
           <div className='flex items-center'>
@@ -65,20 +74,19 @@ const CourseCard = (course: Course) => {
             <span className='mt-[10px] text-gray-500 text-sm'>({Math.floor(Math.random() * 10000)})</span>
           </div>
           <div className='flex items-center'>
-            <p className='font-bold mr-2'>${price}</p>
-            <p className='text-gray-500 text-sm line-through'>
+            <p className='font-bold mr-2'>
               {Number(discount) ? `$${Math.floor(Number(price) * (1 - Number(discount) / 100))}` : ''}
             </p>
+            <p className='text-gray-500 text-sm line-through'>${price}</p>
           </div>
         </div>
         <div className='flex items-center justify-between border-0 border-t-[1px] border-gray-300 dark:border-[#334155] border-solid px-4'>
           <div className='flex items-center'>
             <img
-              src={avatar}
-              alt=''
+              src={`https://xsgames.co/randomusers/avatar.php?g=pixel&key=${Math.floor(Math.random() * 10)}`}
               className='w-8 h-8 rounded-full mr-2'
             />
-            <p className='text-gray-500'>Miston Wilson</p>
+            <p className='text-gray-500'>Senior Teacher</p>
           </div>
           <a target='_blank'>
             <Tooltip title='View Detail Course'>
