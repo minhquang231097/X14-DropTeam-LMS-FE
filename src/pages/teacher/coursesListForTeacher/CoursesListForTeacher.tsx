@@ -4,13 +4,13 @@ import { useQuery } from '@tanstack/react-query'
 import Header from '@/layouts/user/Header'
 import Footer from '@/layouts/user/Footer'
 import SidebarTeacher from '@/layouts/user/SidebarTeacher'
-import ClassListTable from './ClassListTable'
-import { getClassesList } from '@/apis/classesList.api'
+import ClassListTable from './CoursesListTable'
 import { useSearchParams } from 'react-router-dom'
-import { getClassByClassCode } from '@/apis/searchClassByClassCode.api'
+import { getCourseByCourseCode } from '@/apis/searchCourseByCouseCode.api'
+import { getCoursesList } from '@/apis/coursesList.api'
 import { debounce } from 'lodash'
 
-const ClassesListForTeacher: React.FC = () => {
+const CoursesListForTeacher: React.FC = () => {
   const [searchText, setSearchText] = useState('')
   const [filteredData, setFilteredData] = useState<{ count?: any }>({})
 
@@ -21,7 +21,7 @@ const ClassesListForTeacher: React.FC = () => {
   const { data } = useQuery({
     queryKey: ['classes', page, limit],
     queryFn: async () => {
-      const res = await getClassesList(page, limit)
+      const res = await getCoursesList(page, limit)
       return res.data
     },
   })
@@ -29,7 +29,7 @@ const ClassesListForTeacher: React.FC = () => {
   useQuery({
     queryKey: ['search', searchText],
     queryFn: async () => {
-      const res = await getClassByClassCode(String(searchText).toUpperCase())
+      const res = await getCourseByCourseCode(String(searchText).toUpperCase())
       setFilteredData(res.data)
     },
   }).data
@@ -53,15 +53,15 @@ const ClassesListForTeacher: React.FC = () => {
         >
           <div className='p-4 flex justify-between items-start'>
             <div>
-              <span className='text-xl text-[#F56A00] font-bold'>Classes List For Teacher</span>
+              <span className='text-xl text-[#F56A00] font-bold'>Courses List For Teacher</span>
               <p className='m-0 text-sm text-gray-500 mt-2'>
-                Total classes:{' '}
+                Total courses:{' '}
                 <span className='text-blue-600'>{data && (searchText ? filteredData.count : data.total)}</span>
               </p>
             </div>
 
             <Input.Search
-              placeholder='Search Class Code ...'
+              placeholder='Search Course Code ...'
               style={{ width: 280 }}
               onChange={handleChange}
               onSearch={handleSearch}
@@ -80,4 +80,4 @@ const ClassesListForTeacher: React.FC = () => {
   )
 }
 
-export default ClassesListForTeacher
+export default CoursesListForTeacher

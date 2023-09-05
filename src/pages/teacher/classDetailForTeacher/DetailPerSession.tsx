@@ -68,7 +68,7 @@ const DetailPerSession: React.FC = () => {
                 {session_code ? `Session Code: ${session_code}` : 'Session Code'}
               </span>
               <p className='m-0 text-sm text-gray-500 mt-2'>
-                Total students: <span className='text-blue-600'>{studentsData && studentsData.total}</span>
+                Total students: <span className='text-blue-600'>{studentsData ? studentsData.total : 0}</span>
               </p>
             </div>
             <div className='flex flex-col items-end'>
