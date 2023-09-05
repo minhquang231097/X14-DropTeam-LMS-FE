@@ -66,7 +66,7 @@ const LessonsListTable: React.FC<LessonsList> = (props) => {
                 color='geekblue'
                 key='undefined'
               >
-                {String('unknown').toUpperCase()}
+                {String('NO STATUS').toUpperCase()}
               </Tag>
             )}
         </>

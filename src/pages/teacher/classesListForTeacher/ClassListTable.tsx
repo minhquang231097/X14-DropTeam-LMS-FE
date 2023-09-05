@@ -39,38 +39,38 @@ const ClassListTable: React.FC<ClassesList> = (props) => {
       title: 'Course',
       dataIndex: 'course',
       render: (_, { course }) => <>{course && course.course_code}</>,
-      filters: [
-        {
-          text: 'C4E',
-          value: 'c4e',
-        },
-        {
-          text: 'WEB',
-          value: 'web',
-        },
-        {
-          text: 'UI/UX',
-          value: 'Code',
-        },
-      ],
-      onFilter: (value, { course }) => String(course).toLowerCase() === String(value).toLowerCase(),
+      // filters: [
+      //   {
+      //     text: 'C4E',
+      //     value: 'c4e',
+      //   },
+      //   {
+      //     text: 'WEB',
+      //     value: 'web',
+      //   },
+      //   {
+      //     text: 'UI/UX',
+      //     value: 'Code',
+      //   },
+      // ],
+      // onFilter: (value, { course }) => String(course).toLowerCase() === String(value).toLowerCase(),
     },
     {
       title: 'Workplace',
       dataIndex: 'workplace',
       render: (_, { workplace }) => <>{workplace && workplace.workplace_code}</>,
-      filters: [
-        {
-          text: 'hdt',
-          value: 'hdt',
-        },
-        {
-          text: 'Unknown',
-          value: 'undefined',
-        },
-      ],
-      onFilter: (value, { workplace }) =>
-        String(workplace.workplace_code).toLowerCase() === String(value).toLowerCase(),
+      // filters: [
+      //   {
+      //     text: 'hdt',
+      //     value: 'hdt',
+      //   },
+      //   {
+      //     text: 'Unknown',
+      //     value: 'undefined',
+      //   },
+      // ],
+      // onFilter: (value, { workplace }) =>
+      //   String(workplace.workplace_code).toLowerCase() === String(value).toLowerCase(),
     },
     {
       title: 'Schedule',
@@ -190,21 +190,21 @@ const ClassListTable: React.FC<ClassesList> = (props) => {
             )}
         </>
       ),
-      filters: [
-        {
-          text: 'ACTIVE',
-          value: 'active',
-        },
-        {
-          text: 'INACTIVE',
-          value: 'inactive',
-        },
-        {
-          text: 'NO STATUS',
-          value: 'undefined',
-        },
-      ],
-      onFilter: (value, { status }) => String(status).toLowerCase() === String(value).toLowerCase(),
+      // filters: [
+      //   {
+      //     text: 'ACTIVE',
+      //     value: 'active',
+      //   },
+      //   {
+      //     text: 'INACTIVE',
+      //     value: 'inactive',
+      //   },
+      //   {
+      //     text: 'NO STATUS',
+      //     value: 'undefined',
+      //   },
+      // ],
+      // onFilter: (value, { status }) => String(status).toLowerCase() === String(value).toLowerCase(),
     },
   ]
 

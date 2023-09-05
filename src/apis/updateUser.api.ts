@@ -5,18 +5,18 @@ import { getUserProfile } from './userProfile.api'
 
 const handleUpdateUser = async (
   value: {
-    fullname: string
-    email: string
-    dob: string
-    gender: string
-    address: string
-    phone_number: string
+    fullname?: string
+    email?: string
+    dob?: string
+    gender?: string
+    address?: string
+    phone_number?: string
     avatar?: string
   },
   imageUpload?: any,
   other?: any,
 ) => {
-  const ID = JSON.parse(localStorage.getItem('user') as string).id
+  const USER = JSON.parse(localStorage.getItem('user') as string)
 
   if (imageUpload.length > 0) {
     await axios
@@ -28,16 +28,21 @@ const handleUpdateUser = async (
       .then((res) => {
         const imageURl = res.data.data[0]
         const valueWithImage = {
-          ...value,
+          fullname: value.fullname ? value.fullname : USER.fullname,
+          email: value.email ? value.email : USER.email,
+          dob: value.dob ? value.dob : USER.dob,
+          gender: value.gender ? value.gender : USER.gender,
+          address: value.address ? value.address : USER.address,
+          phone_number: value.phone_number ? value.phone_number : USER.phone_number,
           avatar: String(imageURl),
         }
 
         http
-          .put(`/user/${ID}`, JSON.stringify(valueWithImage))
+          .put(`/user`, JSON.stringify(valueWithImage))
           .then((res) => {
             console.log(res)
             if (res.status === 200) {
-              getUserProfile(ID).then((res) => {
+              getUserProfile(USER.id).then((res) => {
                 const userData = res.data.data
                 const userInfo = {
                   id: userData._id,
@@ -53,7 +58,7 @@ const handleUpdateUser = async (
                 }
                 localStorage.setItem('user', JSON.stringify(userInfo))
 
-                other(`/edit-profile?id=${ID}`, { replace: true })
+                other(`/edit-profile?id=${USER.id}`, { replace: true })
                 other(0)
               })
             }
@@ -63,12 +68,19 @@ const handleUpdateUser = async (
           })
       })
   } else {
+    const updateValue = {
+      fullname: value.fullname ? value.fullname : USER.fullname,
+      email: value.email ? value.email : USER.email,
+      dob: value.dob ? value.dob : USER.dob,
+      gender: value.gender ? value.gender : USER.gender,
+      address: value.address ? value.address : USER.address,
+      phone_number: value.phone_number ? value.phone_number : USER.phone_number,
+    }
     http
-      .put(`/user/${ID}`, JSON.stringify(value))
+      .put(`/user`, JSON.stringify(updateValue))
       .then((res) => {
-        console.log(res)
         if (res.status === 200) {
-          getUserProfile(ID).then((res) => {
+          getUserProfile(USER.id).then((res) => {
             const userData = res.data.data
             const userInfo = {
               id: userData._id,
@@ -84,7 +96,7 @@ const handleUpdateUser = async (
             }
             localStorage.setItem('user', JSON.stringify(userInfo))
 
-            other(`/edit-profile?id=${ID}`, { replace: true })
+            other(`/edit-profile?id=${USER.id}`, { replace: true })
             other(0)
           })
         }
