@@ -57,7 +57,7 @@ const CoursesList: React.FC = () => {
           <p className='max-w-[1280px] mx-auto text-white text-4xl font-bold m-0'>Courses List</p>
         </div>
         <div className='max-w-[1280px] mx-auto'>
-          <div className='flex items-center justify-between mb-4 mt-10 max-md:px-8'>
+          <div className='flex items-center justify-between mb-4 mt-10 max-xl:px-8'>
             <p className='text-gray-500'>
               Displaying <span className='text-blue-500 font-bold'>{data ? data.count : ''}</span> out of{' '}
               <span className='text-blue-500 font-bold'> {data ? data.total : ''}</span> courses
@@ -72,13 +72,13 @@ const CoursesList: React.FC = () => {
             />
           </div>
         </div>
-        <div className='max-w-[1280px] mx-auto mb-[96px] grid grid-rows-1 grid-cols-4 gap-6 max-md:px-8 max-md:grid-cols-1'>
-          <div className='row-span-1 max-md:hidden'>
+        <div className='max-w-[1280px] mx-auto mb-[96px] grid grid-rows-1 grid-cols-4 gap-6 max-xl:px-8 max-xl:grid-cols-1'>
+          <div className='row-span-1 max-xl:hidden'>
             <Sidebar />
           </div>
 
-          <div className='col-span-3 grid grid-cols-3 row-span-1 max-md:grid-cols-1'>
-            <div className='col-span-3 grid grid-cols-3 gap-6 max-md:col-span-2 max-md:grid-cols-2 max-md:flex max-md:flex-wrap max-md:justify-evenly'>
+          <div className='col-span-3 grid grid-cols-3 row-span-1 max-xl:grid-cols-1'>
+            <div className='col-span-3 grid grid-cols-3 gap-6 max-xl:col-span-2 max-xl:grid-cols-2 max-xl:flex max-xl:flex-wrap max-xl:justify-evenly'>
               {data
                 ? data.data.map((course: any) => (
                     <CourseCard
@@ -88,7 +88,7 @@ const CoursesList: React.FC = () => {
                   ))
                 : ''}
             </div>
-            <div className='flex justify-center col-start-2 mt-10'>
+            <div className='flex justify-center col-start-2 mt-10 max-xl:col-start-1'>
               <Pagination
                 defaultCurrent={1}
                 defaultPageSize={6}

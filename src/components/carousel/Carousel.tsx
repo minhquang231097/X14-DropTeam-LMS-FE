@@ -11,13 +11,13 @@ const contentStyle: React.CSSProperties = {
 const Carousel: React.FC = () => {
   return (
     <div style={contentStyle}>
-      <div className='relative max-w-[1280px] mx-auto max-md:px-8'>
+      <div className='relative max-w-[1280px] mx-auto max-xl:px-8'>
         <div className='absolute top-10'>
-          <p className='text-5xl font-bold my-4 text-gray-100'>
+          <p className='text-5xl font-bold my-4 text-gray-100 max-xl:text-3xl'>
             Welcome to Vite <br />
             Education System
           </p>
-          <p className='text-2xl font-bold my-2 text-gray-300'>
+          <p className='text-2xl font-bold my-2 text-gray-300 max-xl:text-xl'>
             Hand-picked Instructor and expertly crafted courses, <br /> designed for the modern students and
             entrepreneur.
           </p>

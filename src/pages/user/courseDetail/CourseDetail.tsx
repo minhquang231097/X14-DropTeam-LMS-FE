@@ -89,7 +89,7 @@ const CourseDetail: React.FC = () => {
         <div className='max-w-[1280px] mx-auto'>
           <div className='absolute top-28 w-[720px] text-white'>
             <div className='max-md:px-8'>
-              <p className='text-4xl font-bold m-0'>Getting Started with {data ? data.title : ''}</p>
+              <p className='text-3xl font-bold m-0'>Getting Started with {data ? data.title : ''}</p>
               <p className='text-xl'>
                 {data ? data.title : ''} is the popular programming language which powers web pages and web
                 applications. This course will get you started coding in {data ? data.title : ''}.
