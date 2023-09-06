@@ -50,33 +50,54 @@ const CustomContent = () => {
             </Typography.Title>
             <Card>
               <Space direction='vertical'>
-                <Typography.Text className='mt-2 mx-1'>
+                <Typography.Text
+                  className='mt-2 mx-1'
+                  style={{ fontSize: '18px' }}
+                >
                   Price:{' '}
                   {course.discount ? (
-                    <Typography.Text className='mt-2 mx-1 line-through'>{course.price} $</Typography.Text>
+                    <Typography.Text
+                      className='mt-2 mx-1 line-through'
+                      style={{ fontSize: '18px' }}
+                    >
+                      {course.price} $
+                    </Typography.Text>
                   ) : (
-                    <Typography.Text className='mt-2 mx-1'>{course.price} $</Typography.Text>
+                    <Typography.Text
+                      className='mt-2 mx-1'
+                      style={{ fontSize: '18px' }}
+                    >
+                      {course.price} $
+                    </Typography.Text>
                   )}{' '}
                   {course.discount > 0 && (
                     <>
                       <Typography.Text
                         strong
                         className='mt-2 mx-1'
-                        style={{ fontSize: '20px' }}
+                        style={{ fontSize: '22px' }}
                       >
                         {(1 - course.discount / 100) * course.price} $
                       </Typography.Text>
                       <Tag
                         color='blue'
-                        style={{ fontSize: '14px', margin: '0 4px' }}
+                        style={{ fontSize: '16px', padding: '4px', margin: '0 4px' }}
                       >
                         - {course.discount} %
                       </Tag>
                     </>
                   )}
                 </Typography.Text>
-                <Typography.Text className='mt-2 mx-1'>Level: {course.level}</Typography.Text>
-                <Typography.Text className='mt-2 mx-1'>
+                <Typography.Text
+                  className='mt-2 mx-1'
+                  style={{ fontSize: '18px' }}
+                >
+                  Level: {course.level}
+                </Typography.Text>
+                <Typography.Text
+                  className='mt-2 mx-1'
+                  style={{ fontSize: '18px' }}
+                >
                   Sessions per course: {course.session_per_course}
                 </Typography.Text>
               </Space>

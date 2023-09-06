@@ -1,31 +1,17 @@
 import React, { useState } from 'react'
-import {
-  Breadcrumb,
-  Button,
-  Card,
-  Image,
-  Modal,
-  Space,
-  Table,
-  TableProps,
-  Tag,
-  Typography,
-  notification,
-  theme,
-} from 'antd'
-import { useNavigate } from 'react-router-dom'
+import { Breadcrumb, Button, Card, Image, Modal, Space, Table, TableProps, Typography, notification } from 'antd'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { MdAddCircleOutline } from 'react-icons/md'
 import { useQuery } from '@tanstack/react-query'
-import axios from 'axios'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import { ColumnsType } from 'antd/es/table'
 import AdminLayout from '@/layouts/admin'
 import AdminSearch from '@/components/search/adminSearch'
 import { getCoursesList } from '@/apis/coursesList.api'
-import { useQueryString } from '@/utils/utils'
 import LevelTag from '@/components/tag/LevelTag'
 import { COMMON_LEVEL } from '@/utils/level'
+import http from '@/utils/http'
 
 interface DataType {
   _id: string
@@ -42,40 +28,46 @@ interface DataType {
 dayjs.extend(customParseFormat)
 
 const CustomContent = () => {
-  const { useToken } = theme
-  const { token } = useToken()
   const navigate = useNavigate()
 
-  const queryString: { page?: string } = useQueryString()
-  const page = Number(queryString.page) || 1
+  // const queryString: { page?: string } = useQueryString()
+  // const page = Number(queryString.page) || 1
+  const [searchParams, setSearchParams] = useSearchParams()
+  const page = searchParams.get('page') ?? 1
+  const limit = searchParams.get('limit') ?? 10
 
   const [selectedCourse, setSelectedCourse] = useState<DataType | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const { data: courseData } = useQuery({
-    queryKey: ['courses', page, 10],
+    queryKey: ['courses', page, limit],
     queryFn: async () => {
-      const res = await getCoursesList(page, 10)
+      const res = await getCoursesList(page, limit)
       return res.data
     },
   })
 
   const onChange: TableProps<DataType>['onChange'] = (pagination, filters, sorter, extra) => {
     // console.log('params', pagination, filters, sorter, extra)
-    const { current } = pagination
-    navigate(`/admin/courses/all?page=${current}&limit=10`)
+    const { current, pageSize } = pagination
+    navigate(`/admin/courses/all?page=${current}&limit=${pageSize}`)
   }
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`/api/course/?id=${selectedCourse?._id}`)
+      await http.delete(`/course/${selectedCourse?._id}`)
       // Perform any necessary actions after successful deletion
+      notification.success({
+        message: 'Delete successful',
+        description: 'The course has been deleted successfully',
+      })
     } catch (error: any) {
       notification.error({
         message: 'Delete failed',
         description: error.message,
       })
     }
+
     setIsModalOpen(false)
   }
 
@@ -83,8 +75,7 @@ const CustomContent = () => {
     {
       title: 'Image',
       dataIndex: 'image',
-      width: '25%',
-      align: 'center',
+      width: '30%',
       render: (image: any) => (
         <Image
           src={image.length > 0 ? image : 'https://via.placeholder.com/500x250'}
@@ -96,7 +87,7 @@ const CustomContent = () => {
       title: 'Course',
       dataIndex: 'course_code',
       width: '40%',
-      align: 'center',
+      sorter: true,
       render: (course_code: string, course: DataType) => (
         <Space direction='vertical'>
           <Typography.Text
@@ -113,13 +104,17 @@ const CustomContent = () => {
       title: 'Difficulty',
       dataIndex: 'level',
       width: '10%',
-      align: 'center',
-      render: (value: COMMON_LEVEL) => <LevelTag level={value} />,
+      sorter: true,
+      render: (value: COMMON_LEVEL) => (
+        <LevelTag
+          level={value}
+          style={{ fontSize: '14px', padding: '4px 8px' }}
+        />
+      ),
     },
     {
       title: 'Action',
-      width: '20%',
-      align: 'center',
+      width: '15%',
       render: (course: DataType) => (
         <Space>
           <Button
@@ -130,7 +125,7 @@ const CustomContent = () => {
           >
             Show
           </Button>
-          {/* <Button
+          <Button
             type='primary'
             danger
             onClick={() => {
@@ -139,7 +134,7 @@ const CustomContent = () => {
             }}
           >
             Delete
-          </Button> */}
+          </Button>
         </Space>
       ),
     },
@@ -188,10 +183,11 @@ const CustomContent = () => {
             dataSource={courseData.data}
             pagination={{
               position: ['bottomRight'],
-              current: page,
+              current: Number(page),
+              pageSize: Number(limit),
               defaultCurrent: 1,
               defaultPageSize: 10,
-              pageSizeOptions: [10],
+              pageSizeOptions: [5, 10, 20],
               showSizeChanger: true,
               showQuickJumper: true,
               total: courseData.total,

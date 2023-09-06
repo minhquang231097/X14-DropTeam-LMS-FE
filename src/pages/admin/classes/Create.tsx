@@ -28,6 +28,7 @@ import { createClass } from '@/apis/classCreate.api'
 import { getUserListForAdmin } from '@/apis/userForAdmin.api'
 import { getCoursesList } from '@/apis/coursesList.api'
 import { searchWorkplaceForAdmin } from '@/apis/searchWorkplaceForAdmin'
+import { getCourse } from '@/apis/course.api'
 
 interface IMentor {
   fullname: string
@@ -155,6 +156,20 @@ const CustomContent = () => {
     },
   })
 
+  const OnCourseChange = (value: string) => {
+    setSelectedCourse(value)
+    // const { data: courseByID } = useQuery({
+    //   queryKey: ['courseByID'],
+    //   queryFn: async () => {
+    //     const res = await getCourse(value)
+    //     return res.data.data
+    //   },
+    // })
+    // console.log(courseByID)
+  }
+
+  console.log(selectedCourse)
+
   return (
     <>
       <Breadcrumb
@@ -176,6 +191,7 @@ const CustomContent = () => {
           form={form}
           onFinish={mutate}
           layout='vertical'
+        // initialValues={{ total_session: selectedCourse ? 0 : 2 }}
         >
           <Typography.Title
             level={3}
@@ -206,7 +222,7 @@ const CustomContent = () => {
                     label: data.title,
                   }))}
                   value={selectedCourse}
-                  onChange={(value) => setSelectedCourse(value)}
+                  onChange={OnCourseChange}
                   showSearch
                 />
               </Form.Item>

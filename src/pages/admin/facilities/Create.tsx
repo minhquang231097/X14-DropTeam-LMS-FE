@@ -126,8 +126,8 @@ const CustomContent = () => {
               >
                 <Select
                   options={[
-                    { label: 'OFF', value: 'OFF' },
-                    { label: 'ON', value: 'ON' },
+                    { label: 'INACTIVE', value: 'OFF' },
+                    { label: 'ACTIVE', value: 'ON' },
                     { label: 'UPCOMING', value: 'UPCOMING' },
                   ]}
                 />

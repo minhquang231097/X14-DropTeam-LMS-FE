@@ -1,6 +1,6 @@
 import React from 'react'
 import { Tag } from 'antd'
-import { COMMON_LEVEL } from '@/utils/level'
+import { COMMON_STATUS } from '@/utils/status'
 
 const tagStyle: React.CSSProperties = {
   paddingLeft: 4,
@@ -11,26 +11,26 @@ const tagStyle: React.CSSProperties = {
 }
 
 interface IProps {
-  level: COMMON_LEVEL
+  status: COMMON_STATUS
   style?: React.CSSProperties
 }
 
-const LevelTag = ({ level, style }: IProps) => {
+const StatusTag = ({ status, style }: IProps) => {
   let color
   let label
 
-  switch (level) {
-    case COMMON_LEVEL.BEGINNER:
+  switch (status) {
+    case (COMMON_STATUS.ACTIVE, COMMON_STATUS.ON):
       color = 'green'
-      label = 'BEGINNER'
+      label = 'ACTIVE'
       break
-    case COMMON_LEVEL.INTERMEDIATE:
+    case COMMON_STATUS.UPCOMING:
       color = 'yellow'
-      label = 'INTERMEDIATE'
+      label = 'UPCOMING'
       break
-    case COMMON_LEVEL.ADVANCED:
+    case (COMMON_STATUS.INACTIVE, COMMON_STATUS.OFF):
       color = 'red'
-      label = 'ADVANCED'
+      label = 'INACTIVE'
       break
     default:
       break
@@ -46,4 +46,4 @@ const LevelTag = ({ level, style }: IProps) => {
   )
 }
 
-export default LevelTag
+export default StatusTag

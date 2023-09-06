@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
-import { Breadcrumb, Button, Card, Image, Space, Table, Typography, Modal, theme, TableProps } from 'antd'
+import { Breadcrumb, Button, Card, Image, Space, Table, Typography, Modal, theme, TableProps, notification } from 'antd'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { MdAddCircleOutline, MdOutlineCheck, MdOutlineCircle, MdOutlineClose } from 'react-icons/md'
+import { MdAddCircleOutline } from 'react-icons/md'
 import { useQuery } from '@tanstack/react-query'
-import axios from 'axios'
 import AdminLayout from '@/layouts/admin'
-// import { FacilityItems } from '@/data/facilities'
 import AdminSearch from '@/components/search/adminSearch'
 import { getWorkplacesList } from '@/apis/workplaceList.api'
-import { useQueryString } from '@/utils/utils'
+import { COMMON_STATUS } from '@/utils/status'
+import StatusTag from '@/components/tag/StatusTag'
+import http from '@/utils/http'
 
 interface DataType {
   _id: string
@@ -20,52 +20,56 @@ interface DataType {
 }
 
 const CustomContent = () => {
-  const { useToken } = theme
-  const { token } = useToken()
   const navigate = useNavigate()
 
-  const queryString: { page?: string } = useQueryString()
-  const page = Number(queryString.page) || 1
-  // const [searchParams, setSearchParams] = useSearchParams()
+  // const queryString: { page?: string } = useQueryString()
+  // const page = Number(queryString.page) || 1
+  const [searchParams, setSearchParams] = useSearchParams()
+  const page = searchParams.get('page') ?? 1
+  const limit = searchParams.get('limit') ?? 10
 
-  // const page = searchParams.get('page') ?? 1
-
-  // const [isActive, setIsActive] = useState(true)
   const [selectedFacility, setSelectedFacility] = useState<DataType | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const { data: workplaceData } = useQuery({
-    queryKey: ['workplaces', page, 10],
+    queryKey: ['workplaces', page, limit],
     queryFn: async () => {
-      const res = await getWorkplacesList(page, 10)
+      const res = await getWorkplacesList(page, limit)
       return res.data
     },
   })
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`/api/workplace/?id=${selectedFacility?._id}`)
+      await http.delete(`/workplace/${selectedFacility?._id}`)
       // Perform any necessary actions after successful deletion
-    } catch (error) {
-      console.error(error)
+      notification.success({
+        message: 'Delete successful',
+        description: 'The workplace has been deleted successfully',
+      })
+    } catch (error: any) {
+      notification.error({
+        message: 'Delete failed',
+        description: error.message,
+      })
     }
     setIsModalOpen(false)
   }
 
   const onChange: TableProps<DataType>['onChange'] = (pagination, filters, sorter, extra) => {
     // console.log('params', pagination, filters, sorter, extra)
-    const { current } = pagination
-    navigate(`/admin/facilities/all?page=${current}&limit=10`)
+    const { current, pageSize } = pagination
+    navigate(`/admin/facilities/all?page=${current}&limit=${pageSize}`)
   }
 
   const columns = [
     {
       title: 'Image',
       dataIndex: 'image_url',
-      width: '25%',
+      width: '30%',
       render: () => (
         <Image
-          src='https://via.placeholder.com/500x250'
+          src='https://res.cloudinary.com/dar4pvqx2/image/upload/v1693931926/vitebanner_wtcoum.jpg'
           alt='Facility Image'
         />
       ),
@@ -74,6 +78,7 @@ const CustomContent = () => {
       title: 'Facility',
       dataIndex: 'name',
       width: '40%',
+      sorter: true,
       render: (name: string, facility: DataType) => (
         <Space direction='vertical'>
           <Typography.Text
@@ -89,35 +94,13 @@ const CustomContent = () => {
     {
       title: 'Status',
       dataIndex: 'status',
-      width: '20%',
-      render: (status: any) => (
-        <Typography.Text
-          style={{
-            color:
-              status === 'ON'
-                ? token.colorSuccessText
-                : status === 'OFF'
-                  ? token.colorErrorText
-                  : token.colorWarningText,
-            fontSize: '18px',
-            display: 'flex',
-            alignItems: 'center',
-          }}
-        >
-          {status === 'ON' ? (
-            <>
-              <MdOutlineCheck className='text-[24px] m-1' /> ACTIVE
-            </>
-          ) : status === 'OFF' ? (
-            <>
-              <MdOutlineClose className='text-[24px] m-1' /> INACTIVE
-            </>
-          ) : (
-            <>
-              <MdOutlineCircle className='text-[24px] m-1' /> UPCOMING
-            </>
-          )}
-        </Typography.Text>
+      width: '10%',
+      sorter: true,
+      render: (value: COMMON_STATUS) => (
+        <StatusTag
+          status={value}
+          style={{ fontSize: '14px', padding: '4px 8px' }}
+        />
       ),
     },
     {
@@ -133,7 +116,7 @@ const CustomContent = () => {
           >
             Show
           </Button>
-          {/* <Button
+          <Button
             type='primary'
             danger
             onClick={() => {
@@ -142,7 +125,7 @@ const CustomContent = () => {
             }}
           >
             Delete
-          </Button> */}
+          </Button>
         </Space>
       ),
     },
@@ -191,10 +174,11 @@ const CustomContent = () => {
             dataSource={workplaceData.data}
             pagination={{
               position: ['bottomRight'],
-              current: page,
+              current: Number(page),
+              pageSize: Number(limit),
               defaultCurrent: 1,
               defaultPageSize: 10,
-              pageSizeOptions: [10],
+              pageSizeOptions: [5, 10, 20],
               showSizeChanger: true,
               showQuickJumper: true,
               total: workplaceData.total,

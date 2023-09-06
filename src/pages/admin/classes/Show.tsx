@@ -64,20 +64,26 @@ const CustomContent = () => {
             <Space direction='vertical'>
               <Typography.Text
                 className='mt-2 mx-1'
-                strong
+                style={{ fontSize: '18px' }}
               >
                 Course: {classByID.course?.title}
               </Typography.Text>
               <Typography.Text
                 className='mt-2 mx-1'
-                strong
+                style={{ fontSize: '18px' }}
               >
                 Mentor: {classByID.mentor?.fullname}
               </Typography.Text>
-              <Typography.Text className='mt-2 mx-1'>
+              <Typography.Text
+                className='mt-2 mx-1'
+                style={{ fontSize: '18px' }}
+              >
                 Time: {dayjs(classByID.start_at).format('DD/MM/YYYY')} - {dayjs(classByID.end_at).format('DD/MM/YYYY')}
               </Typography.Text>
-              <Typography.Text className='mt-2 mx-1'>
+              <Typography.Text
+                className='mt-2 mx-1'
+                style={{ fontSize: '18px' }}
+              >
                 Schedule:{' '}
                 {classByID.schedule
                   .map((day: number) => {

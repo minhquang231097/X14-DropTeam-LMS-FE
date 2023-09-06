@@ -56,6 +56,7 @@ module.exports = {
     '@typescript-eslint/no-unused-expressions': 'off',
     'no-unused-vars': 'off',
     'react-hooks/exhaustive-deps': 'warn',
+    'react/require-default-props': 'off',
     'react/jsx-no-useless-fragment': 'off',
     'react/react-in-jsx-scope': 'off',
     'react/function-component-definition': 'off',

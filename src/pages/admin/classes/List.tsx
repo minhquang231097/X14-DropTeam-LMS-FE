@@ -61,8 +61,8 @@ const CustomContent = () => {
 
   const onChange: TableProps<DataType>['onChange'] = (pagination, filters, sorter, extra) => {
     // console.log('params', pagination, filters, sorter, extra)
-    const { current } = pagination
-    navigate(`/admin/classes/all?page=${current}&limit=${limit}`)
+    const { current, pageSize } = pagination
+    navigate(`/admin/classes/all?page=${current}&limit=${pageSize}`)
   }
 
   const handleDelete = async () => {
@@ -88,6 +88,7 @@ const CustomContent = () => {
       title: 'Class',
       dataIndex: 'class_code',
       width: '30%',
+      sorter: true,
       render: (class_code: string, cls: DataType) => (
         <Space direction='vertical'>
           <Typography.Text
@@ -104,7 +105,8 @@ const CustomContent = () => {
     {
       title: 'Schedule',
       dataIndex: 'schedule',
-      width: '30%',
+      width: '25%',
+      sorter: true,
       render: (schedule: number[], cls: DataType) => (
         <Space direction='vertical'>
           <Typography.Text>
@@ -124,7 +126,8 @@ const CustomContent = () => {
     },
     {
       title: 'Facility',
-      width: '15%',
+      width: '20%',
+      sorter: true,
       render: (cls: DataType) => (
         <Space direction='vertical'>
           <Typography.Text>{cls.workplace?.name}</Typography.Text>
@@ -135,6 +138,7 @@ const CustomContent = () => {
       title: 'Number of Students',
       dataIndex: 'class_size',
       width: '10%',
+      sorter: true,
       render: (class_size: number) => (
         <Space direction='vertical'>
           <Typography.Text>{class_size}</Typography.Text>
@@ -213,9 +217,10 @@ const CustomContent = () => {
             pagination={{
               position: ['bottomRight'],
               current: Number(page),
+              pageSize: Number(limit),
               defaultCurrent: 1,
               defaultPageSize: 10,
-              pageSizeOptions: [10],
+              pageSizeOptions: [5, 10, 20],
               showSizeChanger: true,
               showQuickJumper: true,
               total: classData.total,
