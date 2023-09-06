@@ -22,6 +22,7 @@ const HeaderDashBoard: React.FC<Props> = (props) => {
       <Typography.Title
         level={2}
         className='mt-0 mx-1'
+        style={{ marginBlock: 0 }}
       >
         Dashboard
       </Typography.Title>

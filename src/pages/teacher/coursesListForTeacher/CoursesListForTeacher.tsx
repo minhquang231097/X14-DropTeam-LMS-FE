@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
 import { Input } from 'antd'
 import { useQuery } from '@tanstack/react-query'
+import { useSearchParams } from 'react-router-dom'
+import { debounce } from 'lodash'
 import Header from '@/layouts/user/Header'
 import Footer from '@/layouts/user/Footer'
 import SidebarTeacher from '@/layouts/user/SidebarTeacher'
 import ClassListTable from './CoursesListTable'
-import { useSearchParams } from 'react-router-dom'
 import { getCourseByCourseCode } from '@/apis/searchCourseByCouseCode.api'
 import { getCoursesList } from '@/apis/coursesList.api'
-import { debounce } from 'lodash'
 
 const CoursesListForTeacher: React.FC = () => {
   const [searchText, setSearchText] = useState('')

@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { Breadcrumb, Button, Card, Image, Space, Table, Typography, Modal, theme, TableProps, notification } from 'antd'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { MdAddCircleOutline } from 'react-icons/md'
 import { useQuery } from '@tanstack/react-query'
+import { DeleteOutlined, EyeOutlined } from '@ant-design/icons'
 import AdminLayout from '@/layouts/admin'
 import AdminSearch from '@/components/search/adminSearch'
 import { getWorkplacesList } from '@/apis/workplaceList.api'
@@ -57,16 +58,15 @@ const CustomContent = () => {
   }
 
   const onChange: TableProps<DataType>['onChange'] = (pagination, filters, sorter, extra) => {
-    // console.log('params', pagination, filters, sorter, extra)
     const { current, pageSize } = pagination
     navigate(`/admin/facilities/all?page=${current}&limit=${pageSize}`)
   }
 
   const columns = [
     {
-      title: 'Image',
+      title: <Typography.Text style={{ fontSize: '18px' }}>Image</Typography.Text>,
       dataIndex: 'image_url',
-      width: '30%',
+      width: '25%',
       render: () => (
         <Image
           src='https://res.cloudinary.com/dar4pvqx2/image/upload/v1693931926/vitebanner_wtcoum.jpg'
@@ -75,15 +75,15 @@ const CustomContent = () => {
       ),
     },
     {
-      title: 'Facility',
+      title: <Typography.Text style={{ fontSize: '18px' }}>Facility</Typography.Text>,
       dataIndex: 'name',
-      width: '40%',
+      width: '45%',
       sorter: true,
       render: (name: string, facility: DataType) => (
         <Space direction='vertical'>
           <Typography.Text
             strong
-            style={{ fontSize: '20px' }}
+            style={{ fontSize: '22px' }}
           >
             {name} ({facility.workplace_code})
           </Typography.Text>
@@ -92,7 +92,7 @@ const CustomContent = () => {
       ),
     },
     {
-      title: 'Status',
+      title: <Typography.Text style={{ fontSize: '18px' }}>Status</Typography.Text>,
       dataIndex: 'status',
       width: '10%',
       sorter: true,
@@ -104,27 +104,29 @@ const CustomContent = () => {
       ),
     },
     {
-      title: 'Action',
+      title: <Typography.Text style={{ fontSize: '18px' }}>Action</Typography.Text>,
       width: '15%',
       render: (facility: DataType) => (
         <Space>
           <Button
             type='primary'
+            size='large'
             onClick={() => {
               navigate(`/admin/facilities/show/${facility._id}`)
             }}
           >
-            Show
+            <EyeOutlined style={{ color: 'white', fontSize: '22px' }} />
           </Button>
           <Button
             type='primary'
+            size='large'
             danger
             onClick={() => {
               setSelectedFacility(facility)
               setIsModalOpen(true)
             }}
           >
-            Delete
+            <DeleteOutlined style={{ color: 'white', fontSize: '22px' }} />
           </Button>
         </Space>
       ),
@@ -136,13 +138,13 @@ const CustomContent = () => {
       <Breadcrumb
         items={[
           {
-            title: 'Home',
+            title: <Link to='/admin'>Home</Link>,
           },
           {
             title: 'Facilities',
           },
         ]}
-        style={{ padding: '4px' }}
+        style={{ padding: '4px', fontSize: '16px' }}
       />
       <Card>
         <div className='flex justify-between'>
@@ -184,7 +186,6 @@ const CustomContent = () => {
               total: workplaceData.total,
             }}
             onChange={onChange}
-            bordered
             style={{ marginTop: 16 }}
           />
         )}

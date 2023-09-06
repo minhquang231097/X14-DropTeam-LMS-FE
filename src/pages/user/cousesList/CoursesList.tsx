@@ -2,12 +2,12 @@ import React from 'react'
 import './coursesList.css'
 import { useQuery } from '@tanstack/react-query'
 import { Select, Pagination, ConfigProvider } from 'antd'
+import { useSearchParams, useNavigate } from 'react-router-dom'
 import Sidebar from '@/layouts/user/Sidebar'
 import CourseCard from '@/components/card/CourseCard'
 import Header from '@/layouts/user/Header'
 import Footer from '@/layouts/user/Footer'
 import { getCoursesList } from '@/apis/coursesList.api'
-import { useSearchParams, useNavigate } from 'react-router-dom'
 
 const CoursesList: React.FC = () => {
   const navigate = useNavigate()

@@ -29,7 +29,7 @@ const CustomContent = () => {
       <Breadcrumb
         items={[
           {
-            title: 'Home',
+            title: <Link to='/admin'>Home</Link>,
           },
           {
             title: <Link to='/admin/facilities/all'>Facilities</Link>,
@@ -38,7 +38,7 @@ const CustomContent = () => {
             title: `${workplace.name}`,
           },
         ]}
-        style={{ padding: '4px' }}
+        style={{ padding: '4px', fontSize: '16px' }}
       />
       <Card>
         <Row gutter={[16, 16]}>
@@ -71,17 +71,6 @@ const CustomContent = () => {
             />
           </Col>
           <Divider />
-          <Col span={24}>
-            {/* <Space direction='vertical'>
-              <Typography.Title
-                level={4}
-                className='-mt-1'
-              >
-                Description
-              </Typography.Title>
-              <Typography.Text>THIS IS THE FACILITY DESCRIPTION</Typography.Text>
-            </Space> */}
-          </Col>
         </Row>
         <Space
           size='middle'

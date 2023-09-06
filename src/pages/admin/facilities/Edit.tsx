@@ -102,7 +102,7 @@ const CustomContent = () => {
       <Breadcrumb
         items={[
           {
-            title: 'Home',
+            title: <Link to='/admin'>Home</Link>,
           },
           {
             title: <Link to='/admin/facilities/all'>Facilities</Link>,
@@ -111,7 +111,7 @@ const CustomContent = () => {
             title: `${workplace.name}`,
           },
         ]}
-        style={{ padding: '4px' }}
+        style={{ padding: '4px', fontSize: '16px' }}
       />
       <Card>
         <Form
@@ -153,7 +153,7 @@ const CustomContent = () => {
                   //   },
                   // },
                 ]}
-              // validateStatus={form.getFieldValue('workplace_code') === workplace.workplace_code ? 'error' : ''}
+                // validateStatus={form.getFieldValue('workplace_code') === workplace.workplace_code ? 'error' : ''}
               >
                 <Input
                   required

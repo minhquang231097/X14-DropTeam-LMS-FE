@@ -2,9 +2,10 @@ import React, { useState } from 'react'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import { Breadcrumb, Button, Card, Image, Modal, Space, Table, TableProps, Typography, notification, theme } from 'antd'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { MdAddCircleOutline } from 'react-icons/md'
 import { useQuery } from '@tanstack/react-query'
+import { DeleteOutlined, EyeOutlined } from '@ant-design/icons'
 import AdminLayout from '@/layouts/admin'
 import AdminSearch from '@/components/search/adminSearch'
 import { getClassesList } from '@/apis/classesList.api'
@@ -73,7 +74,6 @@ const CustomContent = () => {
         message: 'Delete successful',
         description: 'The class has been deleted successfully',
       })
-
     } catch (error: any) {
       notification.error({
         message: 'Delete failed',
@@ -85,27 +85,38 @@ const CustomContent = () => {
 
   const columns = [
     {
-      title: 'Class',
+      title: <Typography.Text style={{ fontSize: '18px' }}>Image</Typography.Text>,
+      dataIndex: 'image_url',
+      width: '20%',
+      render: () => (
+        <Image
+          src='https://res.cloudinary.com/dar4pvqx2/image/upload/v1693931926/vitebanner_wtcoum.jpg'
+          alt='Facility Image'
+        />
+      ),
+    },
+    {
+      title: <Typography.Text style={{ fontSize: '18px' }}>Class</Typography.Text>,
       dataIndex: 'class_code',
-      width: '30%',
+      width: '20%',
       sorter: true,
       render: (class_code: string, cls: DataType) => (
         <Space direction='vertical'>
           <Typography.Text
             strong
-            style={{ fontSize: '20px' }}
+            style={{ fontSize: '22px' }}
           >
             {class_code}
           </Typography.Text>
-          <Typography.Text>Course: {cls.course?.title}</Typography.Text>
+          <Typography.Text strong>{cls.course?.title}</Typography.Text>
           <Typography.Text>Mentor: {cls.mentor?.fullname}</Typography.Text>
         </Space>
       ),
     },
     {
-      title: 'Schedule',
+      title: <Typography.Text style={{ fontSize: '18px' }}>Schedule</Typography.Text>,
       dataIndex: 'schedule',
-      width: '25%',
+      width: '20%',
       sorter: true,
       render: (schedule: number[], cls: DataType) => (
         <Space direction='vertical'>
@@ -125,8 +136,8 @@ const CustomContent = () => {
       ),
     },
     {
-      title: 'Facility',
-      width: '20%',
+      title: <Typography.Text style={{ fontSize: '18px' }}>Facility</Typography.Text>,
+      width: '15%',
       sorter: true,
       render: (cls: DataType) => (
         <Space direction='vertical'>
@@ -135,9 +146,9 @@ const CustomContent = () => {
       ),
     },
     {
-      title: 'Number of Students',
+      title: <Typography.Text style={{ fontSize: '18px' }}>Number of Students</Typography.Text>,
       dataIndex: 'class_size',
-      width: '10%',
+      width: '15%',
       sorter: true,
       render: (class_size: number) => (
         <Space direction='vertical'>
@@ -146,27 +157,29 @@ const CustomContent = () => {
       ),
     },
     {
-      title: 'Action',
-      width: '15%',
+      title: <Typography.Text style={{ fontSize: '18px' }}>Action</Typography.Text>,
+      width: '10%',
       render: (cls: DataType) => (
         <Space>
           <Button
             type='primary'
+            size='large'
             onClick={() => {
               navigate(`/admin/classes/show/${cls._id}`)
             }}
           >
-            Show
+            <EyeOutlined style={{ color: 'white', fontSize: '22px' }} />
           </Button>
           <Button
             type='primary'
+            size='large'
             danger
             onClick={() => {
               setSelectedClass(cls)
               setIsModalOpen(true)
             }}
           >
-            Delete
+            <DeleteOutlined style={{ color: 'white', fontSize: '22px' }} />
           </Button>
         </Space>
       ),
@@ -178,13 +191,13 @@ const CustomContent = () => {
       <Breadcrumb
         items={[
           {
-            title: 'Home',
+            title: <Link to='/admin'>Home</Link>,
           },
           {
             title: 'Class',
           },
         ]}
-        style={{ padding: '4px' }}
+        style={{ padding: '4px', fontSize: '16px' }}
       />
       <Card>
         <div className='flex justify-between'>
@@ -226,7 +239,6 @@ const CustomContent = () => {
               total: classData.total,
             }}
             onChange={onChange}
-            bordered
             style={{ marginTop: 16 }}
           />
         )}

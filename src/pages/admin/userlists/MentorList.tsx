@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Breadcrumb, Input, Button, Card, Image, PaginationProps, Space, Table, Typography, theme } from 'antd'
 import { useQuery } from '@tanstack/react-query'
-import { useSearchParams } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import AdminLayout from '@/layouts/admin'
 import { getStudentsListForAdmin } from '@/apis/studentListForAdmin'
 import { searchStudentForTeacher } from '@/apis/searchStudentForTeacher.api'
@@ -42,13 +42,13 @@ const CustomContent = () => {
       <Breadcrumb
         items={[
           {
-            title: 'Home',
+            title: <Link to='/admin'>Home</Link>,
           },
           {
             title: 'Mentors',
           },
         ]}
-        style={{ padding: '4px' }}
+        style={{ padding: '4px', fontSize: '16px' }}
       />
       <Card>
         <div className='flex justify-between'>
