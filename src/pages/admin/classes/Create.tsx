@@ -25,7 +25,10 @@ import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import AdminLayout from '@/layouts/admin'
 import { createClass } from '@/apis/classCreate.api'
-import { getWorkplacesList } from '@/apis/workplaceList.api'
+import { getUserListForAdmin } from '@/apis/userForAdmin.api'
+import { getCoursesList } from '@/apis/coursesList.api'
+import { searchWorkplaceForAdmin } from '@/apis/searchWorkplaceForAdmin'
+import { getCourse } from '@/apis/course.api'
 
 interface IMentor {
   fullname: string
@@ -52,22 +55,21 @@ dayjs.extend(customParseFormat)
 const CustomContent = () => {
   const [form] = Form.useForm()
   const navigate = useNavigate()
-  const { RangePicker } = DatePicker
 
-  const [options, setOptions] = useState<{ value: string; label: string }[]>([])
-  const [selectedOptions, setSelectedOptions] = useState<string[]>([])
+  const [selectedCourse, setSelectedCourse] = useState<string | undefined>(undefined)
+  const [selectedWorkplace, setSelectedWorkplace] = useState<string | undefined>(undefined)
 
   const warningText = `A minimum of 10 students is required to create a class. Otherwise, class creation is not permitted.`
   // Cần tối thiểu 10 học viên để tạo lớp học. Mặt khác, việc tạo lớp không được phép.
 
   const weekdays = [
-    { value: 'monday', label: 'Monday' },
-    { value: 'tuesday', label: 'Tuesday' },
-    { value: 'wednesday', label: 'Wednesday' },
-    { value: 'thursday', label: 'Thursday' },
-    { value: 'friday', label: 'Friday' },
-    { value: 'saturday', label: 'Saturday' },
-    { value: 'sunday', label: 'Sunday' },
+    { value: 0, label: 'Sunday' },
+    { value: 1, label: 'Monday' },
+    { value: 2, label: 'Tuesday' },
+    { value: 3, label: 'Wednesday' },
+    { value: 4, label: 'Thursday' },
+    { value: 5, label: 'Friday' },
+    { value: 6, label: 'Saturday' },
   ]
 
   const plainOptions = [
@@ -99,15 +101,6 @@ const CustomContent = () => {
   const checkAll = plainOptions.length === checkedList.length
   const indeterminate = checkedList.length > 0 && checkedList.length < plainOptions.length
 
-  const { data: workplaceData } = useQuery({
-    queryKey: ['workplace'],
-    queryFn: async () => {
-      const res = await getWorkplacesList()
-      return res.data?.data
-    },
-  })
-  console.log(workplaceData)
-
   const onCheckAllChange = (e: CheckboxChangeEvent) => {
     setCheckedList(e.target.checked ? plainOptions.map((option) => option.value) : [])
   }
@@ -130,15 +123,52 @@ const CustomContent = () => {
       form.resetFields()
       navigate('/admin/classes/all')
     },
-    onError: () => {
+    onError: (error: Error) => {
       // Perform any necessary actions after failed creation
       notification.error({
         message: 'Update failed',
-        description: 'There was an error updating the class',
+        description: error.message,
       })
-      form.resetFields()
     },
   })
+
+  const { data: course } = useQuery({
+    queryKey: ['courses'],
+    queryFn: async () => {
+      const res = await getCoursesList()
+      return res.data.data
+    },
+  })
+
+  const { data: workplace } = useQuery({
+    queryKey: ['workplaces'],
+    queryFn: async () => {
+      const res = await searchWorkplaceForAdmin('ON')
+      return res.data.data
+    },
+  })
+
+  const { data: mentor } = useQuery({
+    queryKey: ['MENTOR'],
+    queryFn: async () => {
+      const res = await getUserListForAdmin('MENTOR')
+      return res.data.data
+    },
+  })
+
+  const OnCourseChange = (value: string) => {
+    setSelectedCourse(value)
+    // const { data: courseByID } = useQuery({
+    //   queryKey: ['courseByID'],
+    //   queryFn: async () => {
+    //     const res = await getCourse(value)
+    //     return res.data.data
+    //   },
+    // })
+    // console.log(courseByID)
+  }
+
+  console.log(selectedCourse)
 
   return (
     <>
@@ -161,6 +191,7 @@ const CustomContent = () => {
           form={form}
           onFinish={mutate}
           layout='vertical'
+        // initialValues={{ total_session: selectedCourse ? 0 : 2 }}
         >
           <Typography.Title
             level={3}
@@ -176,50 +207,74 @@ const CustomContent = () => {
             style={{ marginBottom: '1rem' }}
           />
           <Row gutter={[24, 16]}>
-            <Col span={12}>
+            <Col
+              xs={24}
+              lg={12}
+            >
               <Form.Item
                 label='Course'
-                name='course_name'
+                name='course_id'
                 rules={[{ required: true, message: 'Please enter the course name' }]}
               >
-                <Select />
+                <Select
+                  options={(course || []).map((data: { _id: string; title: string }) => ({
+                    value: data._id,
+                    label: data.title,
+                  }))}
+                  value={selectedCourse}
+                  onChange={OnCourseChange}
+                  showSearch
+                />
               </Form.Item>
               <Form.Item
-                label='Class Code'
-                name='class_code'
-                rules={[{ required: true, message: 'Please enter the code' }]}
+                label='Mentor'
+                name='mentor_id'
+                rules={[{ required: true, message: 'Please enter the mentor' }]}
               >
-                <Input />
+                <Select
+                  options={(mentor || []).map((data: { _id: string; fullname: string }) => ({
+                    value: data._id,
+                    label: data.fullname,
+                  }))}
+                  showSearch
+                />
               </Form.Item>
               <Form.Item
-                label='Time'
-                name='time'
-                rules={[{ required: true, message: 'Please enter the time' }]}
+                label='Start Date'
+                name='start_at'
+                rules={[{ required: true, message: 'Please enter the start date' }]}
               >
-                <RangePicker style={{ width: '100%' }} />
+                <DatePicker
+                  style={{ width: '100%' }}
+                  format='DD/MM/YYYY'
+                />
               </Form.Item>
               <Form.Item
                 label='Total Sessions'
-                name='sessions'
+                name='total_session'
                 rules={[{ required: true, message: 'Please enter the total sessions' }]}
               >
                 <InputNumber style={{ width: '100%' }} />
               </Form.Item>
             </Col>
-            <Col span={12}>
+            <Col
+              xs={24}
+              lg={12}
+            >
               <Form.Item
                 label='Facility'
-                name='name'
+                name='workplace_id'
                 rules={[{ required: true, message: 'Please enter the facility' }]}
               >
-                <Select />
-              </Form.Item>
-              <Form.Item
-                label='Mentor'
-                name='name'
-                rules={[{ required: true, message: 'Please enter the mentor' }]}
-              >
-                <Select />
+                <Select
+                  options={(workplace || []).map((data: { _id: string; name: string }) => ({
+                    value: data._id,
+                    label: data.name,
+                  }))}
+                  value={selectedWorkplace}
+                  onChange={(value) => setSelectedWorkplace(value)}
+                  showSearch
+                />
               </Form.Item>
               <Form.Item
                 label='Schedule'
@@ -244,6 +299,16 @@ const CustomContent = () => {
                 </Select>
               </Form.Item>
               <Form.Item
+                label='Expected End Date'
+                name='end_at'
+                rules={[{ required: true, message: 'Please enter the expected end date' }]}
+              >
+                <DatePicker
+                  style={{ width: '100%' }}
+                  format='DD/MM/YYYY'
+                />
+              </Form.Item>
+              <Form.Item
                 label='Number of Students'
                 name='class_size'
                 rules={[{ required: true, message: 'Please enter the number of students' }]}
@@ -251,43 +316,45 @@ const CustomContent = () => {
                 <InputNumber style={{ width: '100%' }} />
               </Form.Item>
             </Col>
-            <Col span={24}>
-              <Form.Item>
-                <Card>
-                  <Typography.Paragraph
-                    strong
-                    style={{ fontSize: '24px' }}
-                  >
-                    Enrollment List
-                  </Typography.Paragraph>
-                  <Checkbox
-                    indeterminate={indeterminate}
-                    onChange={onCheckAllChange}
-                    checked={checkAll}
-                  >
-                    Check all
-                  </Checkbox>
-                  <Divider />
-                  <Checkbox.Group
-                    style={{ width: '100%' }}
-                    defaultValue={defaultCheckedList.map((option) => option.value)}
-                    value={checkedList}
-                    onChange={onChange}
-                  >
-                    <Row gutter={[16, 16]}>
-                      {plainOptions.map((option) => (
-                        <Col
-                          span={8}
-                          key={option.value}
-                        >
-                          <Checkbox value={option.value}>{option.label}</Checkbox>
-                        </Col>
-                      ))}
-                    </Row>
-                  </Checkbox.Group>
-                </Card>
-              </Form.Item>
-            </Col>
+            {selectedCourse && selectedWorkplace && (
+              <Col span={24}>
+                <Form.Item>
+                  <Card>
+                    <Typography.Paragraph
+                      strong
+                      style={{ fontSize: '24px' }}
+                    >
+                      Enrollment List
+                    </Typography.Paragraph>
+                    <Checkbox
+                      indeterminate={indeterminate}
+                      onChange={onCheckAllChange}
+                      checked={checkAll}
+                    >
+                      Check all
+                    </Checkbox>
+                    <Divider />
+                    <Checkbox.Group
+                      style={{ width: '100%' }}
+                      defaultValue={defaultCheckedList.map((option) => option.value)}
+                      value={checkedList}
+                      onChange={onChange}
+                    >
+                      <Row gutter={[16, 16]}>
+                        {plainOptions.map((option) => (
+                          <Col
+                            span={8}
+                            key={option.value}
+                          >
+                            <Checkbox value={option.value}>{option.label}</Checkbox>
+                          </Col>
+                        ))}
+                      </Row>
+                    </Checkbox.Group>
+                  </Card>
+                </Form.Item>
+              </Col>
+            )}
           </Row>
           {/* <Col
                 span={12}
@@ -306,7 +373,12 @@ const CustomContent = () => {
               size='middle'
               style={{ display: 'flex', justifyContent: 'flex-end' }}
             >
-              <Button type='default'>Cancel</Button>
+              <Button
+                type='default'
+                onClick={() => navigate('/admin/classes/all')}
+              >
+                Cancel
+              </Button>
               <Button
                 type='primary'
                 htmlType='submit'

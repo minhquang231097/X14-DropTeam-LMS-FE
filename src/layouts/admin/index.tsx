@@ -130,25 +130,8 @@ const AdminLayout: React.FC<LayoutProps> = ({ content }) => {
                     height: 64,
                   }}
                 />
-                {/* <Search
-                  placeholder='Search Entire Dashboard'
-                  allowClear
-                  enterButton={
-                    <MdSearch className={`text-${mode === 'light' ? 'black' : 'white'} align-middle text-[24px]`} />
-                  }
-                  size='large'
-                  onSearch={onSearch}
-                  style={{ display: 'flex' }}
-                /> */}
               </Space>
               <Space size='middle'>
-                {/* <Button
-                  shape='circle'
-                  icon={
-                    <MdTranslate className={`text-${mode === 'light' ? 'black' : 'white'} align-middle text-[24px]`} />
-                  }
-                  style={ButtonStyle}
-                /> */}
                 <Button
                   shape='circle'
                   icon={

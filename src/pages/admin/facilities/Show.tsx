@@ -3,9 +3,9 @@ import { useParams, Link, useNavigate } from 'react-router-dom'
 import { Breadcrumb, Card, Typography, Row, Col, Image, Divider, Space, Button } from 'antd'
 import { useQuery } from '@tanstack/react-query'
 import AdminLayout from '@/layouts/admin'
-// import { FacilityItems } from '@/data/facilities'
 import { getWorkplace } from '@/apis/workplaceByID.api'
 import { ShowButtonStyle } from '@/utils/style'
+import StatusTag from '@/components/tag/StatusTag'
 
 const CustomContent = () => {
   // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -13,7 +13,7 @@ const CustomContent = () => {
   const navigate = useNavigate()
 
   const { data: workplace } = useQuery({
-    queryKey: ['workplace'],
+    queryKey: ['workplaces'],
     queryFn: async () => {
       const res = await getWorkplace(id as string)
       return res.data.data
@@ -51,13 +51,22 @@ const CustomContent = () => {
                 >
                   {workplace.name} ({workplace.workplace_code})
                 </Typography.Title>
-                <Typography.Paragraph className='mt-2 mx-1'>{workplace.address}</Typography.Paragraph>
+                <Typography.Paragraph
+                  className='mt-2 mx-1'
+                  style={{ fontSize: '18px' }}
+                >
+                  Location: {workplace.address}
+                </Typography.Paragraph>
+                <StatusTag
+                  status={workplace.status}
+                  style={{ fontSize: '18px', padding: '8px' }}
+                />
               </>
             )}
           </Col>
           <Col span={8}>
             <Image
-              src='https://via.placeholder.com/500x250'
+              src='https://res.cloudinary.com/dar4pvqx2/image/upload/v1693931926/vitebanner_wtcoum.jpg'
               alt={workplace.name}
             />
           </Col>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Card } from 'antd'
 import Chart from '@/components/chart/Chart'
 import Donut from '@/components/chart/Donut'
 import CardItem from '@/components/dashboard/Card'
@@ -11,40 +12,41 @@ const CustomContent = () => {
   const [year, setYear] = useState('2021')
   const filterData = data.find((e) => e.year === year)?.data
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        gap: '30px',
-        // padding:'30px'
-      }}
-    >
-      <HeaderDashBoard
-        data={data}
-        setYear={setYear}
-      />
-      <CardItem
-        sale={filterData?.sale}
-        mentor={filterData?.mentor}
-        student={filterData?.student}
-        course={filterData?.course}
-      />
+    <Card>
       <div
         style={{
           display: 'flex',
-          flexDirection: 'row',
+          flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
           gap: '30px',
         }}
       >
-        <Chart data={filterData?.earning} />
-        <Rating data={filterData?.rating} />
-        <Donut data={filterData?.traffic} />
+        <HeaderDashBoard
+          data={data}
+          setYear={setYear}
+        />
+        <CardItem
+          sale={filterData?.sale}
+          mentor={filterData?.mentor}
+          student={filterData?.student}
+          course={filterData?.course}
+        />
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: '30px',
+          }}
+        >
+          <Chart data={filterData?.earning} />
+          <Rating data={filterData?.rating} />
+          <Donut data={filterData?.traffic} />
+        </div>
       </div>
-    </div>
+    </Card>
   )
 }
 

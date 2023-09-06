@@ -1,6 +1,6 @@
 import React from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
-import { Breadcrumb, Card, Typography, Row, Col, Image, Divider, Space, Button, Tag } from 'antd'
+import { Breadcrumb, Card, Typography, Row, Col, Image, Divider, Space, Button, Tag, Rate } from 'antd'
 import { useQuery } from '@tanstack/react-query'
 import AdminLayout from '@/layouts/admin'
 // import { CourseItems } from '@/data/courses'
@@ -12,7 +12,7 @@ const CustomContent = () => {
   const navigate = useNavigate()
 
   const { data: course } = useQuery({
-    queryKey: ['workplace'],
+    queryKey: ['courses'],
     queryFn: async () => {
       const res = await getCourse(id as string)
       return res.data.data
@@ -50,50 +50,62 @@ const CustomContent = () => {
             </Typography.Title>
             <Card>
               <Space direction='vertical'>
-                <Typography.Text className='mt-2 mx-1'>
+                <Typography.Text
+                  className='mt-2 mx-1'
+                  style={{ fontSize: '18px' }}
+                >
                   Price:{' '}
                   {course.discount ? (
-                    <Typography.Text className='mt-2 mx-1 line-through'>{course.price} $</Typography.Text>
+                    <Typography.Text
+                      className='mt-2 mx-1 line-through'
+                      style={{ fontSize: '18px' }}
+                    >
+                      {course.price} $
+                    </Typography.Text>
                   ) : (
-                    <Typography.Text className='mt-2 mx-1'>{course.price} $</Typography.Text>
+                    <Typography.Text
+                      className='mt-2 mx-1'
+                      style={{ fontSize: '18px' }}
+                    >
+                      {course.price} $
+                    </Typography.Text>
                   )}{' '}
                   {course.discount > 0 && (
                     <>
                       <Typography.Text
                         strong
                         className='mt-2 mx-1'
-                        style={{ fontSize: '20px' }}
+                        style={{ fontSize: '22px' }}
                       >
                         {(1 - course.discount / 100) * course.price} $
                       </Typography.Text>
                       <Tag
                         color='blue'
-                        style={{ fontSize: '14px', margin: '0 4px' }}
+                        style={{ fontSize: '16px', padding: '4px', margin: '0 4px' }}
                       >
                         - {course.discount} %
                       </Tag>
                     </>
                   )}
                 </Typography.Text>
-                <Typography.Text className='mt-2 mx-1'>Level: {course.level}</Typography.Text>
-                <Typography.Text className='mt-2 mx-1'>Duration: {course.duration} days</Typography.Text>
-                <Typography.Text className='mt-2 mx-1'>
+                <Typography.Text
+                  className='mt-2 mx-1'
+                  style={{ fontSize: '18px' }}
+                >
+                  Level: {course.level}
+                </Typography.Text>
+                <Typography.Text
+                  className='mt-2 mx-1'
+                  style={{ fontSize: '18px' }}
+                >
                   Sessions per course: {course.session_per_course}
                 </Typography.Text>
-                <div>
-                  {/* <Rate
-                    disabled
-                    value={course.rate}
-                    className='mt-2 mx-1'
-                  />{' '} */}
-                  <Typography.Text className='mt-2 mx-1'>Rate: {course.rate}/5 stars</Typography.Text>
-                </div>
               </Space>
             </Card>
           </Col>
           <Col span={8}>
             <Image
-              src={course.image ? course.image : 'https://via.placeholder.com/500x250'}
+              src={course.image && course.image.length > 0 ? course.image : 'https://via.placeholder.com/500x250'}
               alt={course.title}
             />
           </Col>
