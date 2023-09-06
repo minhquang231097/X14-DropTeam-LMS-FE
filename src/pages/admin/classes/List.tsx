@@ -146,9 +146,9 @@ const CustomContent = () => {
       ),
     },
     {
-      title: <Typography.Text style={{ fontSize: '18px' }}>Number of Students</Typography.Text>,
+      title: <Typography.Text style={{ fontSize: '14px' }}>Number of Students</Typography.Text>,
       dataIndex: 'class_size',
-      width: '15%',
+      width: '10%',
       sorter: true,
       render: (class_size: number) => (
         <Space direction='vertical'>
@@ -168,7 +168,7 @@ const CustomContent = () => {
               navigate(`/admin/classes/show/${cls._id}`)
             }}
           >
-            <EyeOutlined style={{ color: 'white', fontSize: '22px' }} />
+            <EyeOutlined className='text-white text-[22px]' />
           </Button>
           <Button
             type='primary'
@@ -179,7 +179,7 @@ const CustomContent = () => {
               setIsModalOpen(true)
             }}
           >
-            <DeleteOutlined style={{ color: 'white', fontSize: '22px' }} />
+            <DeleteOutlined className='text-white text-[22px]' />
           </Button>
         </Space>
       ),
@@ -214,11 +214,10 @@ const CustomContent = () => {
             <AdminSearch />
             <Button
               type='primary'
-              icon={<MdAddCircleOutline className='text-[18px]' />}
               onClick={() => navigate('/admin/classes/create')}
               style={{ display: 'flex', alignItems: 'center', height: '40px', fontSize: '16px' }}
             >
-              Create
+              <MdAddCircleOutline className='text-[22px]' />
             </Button>
           </Space>
         </div>

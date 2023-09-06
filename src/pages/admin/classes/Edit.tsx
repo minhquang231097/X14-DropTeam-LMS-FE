@@ -240,13 +240,6 @@ const CustomContent = () => {
                   showSearch
                 />
               </Form.Item>
-              {/* <Form.Item
-                label='Class Code'
-                name='class_code'
-                rules={[{ required: true, message: 'Please enter the code' }]}
-              >
-                <Input />
-              </Form.Item> */}
               <Form.Item
                 label='Mentor'
                 name='mentor_id'
@@ -335,43 +328,6 @@ const CustomContent = () => {
                 <InputNumber style={{ width: '100%' }} />
               </Form.Item>
             </Col>
-            {/* <Col span={24}>
-              <Form.Item>
-                <Card>
-                  <Typography.Paragraph
-                    strong
-                    style={{ fontSize: '24px' }}
-                  >
-                    Enrollment List
-                  </Typography.Paragraph>
-                  <Checkbox
-                    indeterminate={indeterminate}
-                    onChange={onCheckAllChange}
-                    checked={checkAll}
-                  >
-                    Check all
-                  </Checkbox>
-                  <Divider />
-                  <Checkbox.Group
-                    style={{ width: '100%' }}
-                    defaultValue={defaultCheckedList.map((option) => option.value)}
-                    value={checkedList}
-                    onChange={onChange}
-                  >
-                    <Row gutter={[16, 16]}>
-                      {plainOptions.map((option) => (
-                        <Col
-                          span={8}
-                          key={option.value}
-                        >
-                          <Checkbox value={option.value}>{option.label}</Checkbox>
-                        </Col>
-                      ))}
-                    </Row>
-                  </Checkbox.Group>
-                </Card>
-              </Form.Item>
-            </Col> */}
           </Row>
           {/* <Col
                 span={12}

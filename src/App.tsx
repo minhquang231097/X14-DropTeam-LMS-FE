@@ -44,7 +44,7 @@ import AdminStudentEdit from './pages/admin/userlists/StudentEdit.tsx'
 import AdminMentorEdit from './pages/admin/userlists/MentorEdit.tsx'
 import Forbidden403 from './pages/forbidden403/Fobidden403.tsx'
 import LoginForm from './pages/user/login/LoginForm.tsx'
-import AdminRegisterCourse from './pages/admin/registercourse/index.tsx'
+import AdminRegisterCourse from './pages/admin/registercourses/index.tsx'
 
 const App: React.FC = () => {
   const USER = JSON.parse(localStorage.getItem('user') as string)

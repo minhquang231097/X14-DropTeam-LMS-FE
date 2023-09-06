@@ -77,7 +77,7 @@ const CustomContent = () => {
     {
       title: <Typography.Text style={{ fontSize: '18px' }}>Facility</Typography.Text>,
       dataIndex: 'name',
-      width: '45%',
+      width: '50%',
       sorter: true,
       render: (name: string, facility: DataType) => (
         <Space direction='vertical'>
@@ -105,7 +105,7 @@ const CustomContent = () => {
     },
     {
       title: <Typography.Text style={{ fontSize: '18px' }}>Action</Typography.Text>,
-      width: '15%',
+      width: '10%',
       render: (facility: DataType) => (
         <Space>
           <Button
@@ -115,7 +115,7 @@ const CustomContent = () => {
               navigate(`/admin/facilities/show/${facility._id}`)
             }}
           >
-            <EyeOutlined style={{ color: 'white', fontSize: '22px' }} />
+            <EyeOutlined className='text-white text-[22px]' />
           </Button>
           <Button
             type='primary'
@@ -126,7 +126,7 @@ const CustomContent = () => {
               setIsModalOpen(true)
             }}
           >
-            <DeleteOutlined style={{ color: 'white', fontSize: '22px' }} />
+            <DeleteOutlined className='text-white text-[22px]' />
           </Button>
         </Space>
       ),
@@ -161,11 +161,10 @@ const CustomContent = () => {
             <AdminSearch />
             <Button
               type='primary'
-              icon={<MdAddCircleOutline className='text-[22px]' />}
               onClick={() => navigate('/admin/facilities/create')}
               style={{ display: 'flex', alignItems: 'center', height: '40px', fontSize: '16px' }}
             >
-              Create
+              <MdAddCircleOutline className='text-[22px]' />
             </Button>
           </Space>
         </div>

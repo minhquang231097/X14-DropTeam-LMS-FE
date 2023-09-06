@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Alert,
   Breadcrumb,
@@ -28,7 +28,10 @@ import { createClass } from '@/apis/classCreate.api'
 import { getUserListForAdmin } from '@/apis/userForAdmin.api'
 import { getCoursesList } from '@/apis/coursesList.api'
 import { searchWorkplaceForAdmin } from '@/apis/searchWorkplaceForAdmin'
+import { getRegisterCourseList } from '@/apis/registerCourse.api'
 import { getCourse } from '@/apis/course.api'
+import { weekdays } from '@/utils/day'
+import { addStudentToClass } from '@/apis/addStudentToClass.api'
 
 interface IMentor {
   fullname: string
@@ -56,62 +59,57 @@ const CustomContent = () => {
   const [form] = Form.useForm()
   const navigate = useNavigate()
 
+  // the values of selectedCourse and selectedWorkplace respectively return the corresponding Id
   const [selectedCourse, setSelectedCourse] = useState<string | undefined>(undefined)
   const [selectedWorkplace, setSelectedWorkplace] = useState<string | undefined>(undefined)
 
   const warningText = `A minimum of 10 students is required to create a class. Otherwise, class creation is not permitted.`
   // Cần tối thiểu 10 học viên để tạo lớp học. Mặt khác, việc tạo lớp không được phép.
 
-  const weekdays = [
-    { value: 0, label: 'Sunday' },
-    { value: 1, label: 'Monday' },
-    { value: 2, label: 'Tuesday' },
-    { value: 3, label: 'Wednesday' },
-    { value: 4, label: 'Thursday' },
-    { value: 5, label: 'Friday' },
-    { value: 6, label: 'Saturday' },
-  ]
-
-  const plainOptions = [
-    { value: '1', label: 'Student 01' },
-    { value: '2', label: 'Student 02' },
-    { value: '3', label: 'Student 03' },
-    { value: '4', label: 'Student 04' },
-    { value: '5', label: 'Student 05' },
-    { value: '6', label: 'Student 06' },
-    { value: '7', label: 'Student 07' },
-    { value: '8', label: 'Student 08' },
-    { value: '9', label: 'Student 09' },
-    { value: '10', label: 'Student 10' },
-    { value: '11', label: 'Student 11' },
-    { value: '12', label: 'Student 12' },
-  ]
-
-  const defaultCheckedList = [
-    { value: '1', label: 'Student 01' },
-    { value: '2', label: 'Student 02' },
-    { value: '3', label: 'Student 03' },
-    { value: '4', label: 'Student 04' },
-    { value: '5', label: 'Student 05' },
-  ]
-
-  const [checkedList, setCheckedList] = useState<CheckboxValueType[]>(defaultCheckedList.map((option) => option.value))
+  // const [checkedList, setCheckedList] = useState<CheckboxValueType[]>(defaultCheckedList.map((option) => option.value))
   const [selectedWeekdays, setSelectedWeekdays] = useState<string[]>([])
-
-  const checkAll = plainOptions.length === checkedList.length
-  const indeterminate = checkedList.length > 0 && checkedList.length < plainOptions.length
-
-  const onCheckAllChange = (e: CheckboxChangeEvent) => {
-    setCheckedList(e.target.checked ? plainOptions.map((option) => option.value) : [])
-  }
-
-  const onChange = (checkedValues: CheckboxValueType[]) => {
-    setCheckedList(checkedValues)
-  }
 
   const handleWeekdaysChange = (value: string[]) => {
     setSelectedWeekdays(value)
   }
+
+  // const { mutate, isLoading } = useMutation(
+  //   async (formData: any) => {
+  //     const addedData = {
+  //       student_id: formData.student_id,
+  //       class_id: formData.class_id,
+  //     }
+  //     const classData = {
+  //       course_id: formData.course_id,
+  //       mentor_id: formData.mentor_id,
+  //       start_at: formData.start_at,
+  //       total_session: formData.total_session,
+  //       workplace_id: formData.workplace_id,
+  //       schedule: formData.schedule,
+  //       end_at: formData.end_at,
+  //       class_size: formData.class_size,
+  //     }
+  //     await Promise.all([addStudentToClass(addedData), createClass(classData)])
+  //   },
+  //   {
+  //     onSuccess: () => {
+  //       // Perform any necessary actions after successful creation
+  //       notification.success({
+  //         message: 'Update successful',
+  //         description: 'The class has been updated successfully',
+  //       })
+  //       form.resetFields()
+  //       navigate('/admin/classes/all')
+  //     },
+  //     onError: (error: Error) => {
+  //       // Perform any necessary actions after failed creation
+  //       notification.error({
+  //         message: 'Update failed',
+  //         description: error.message,
+  //       })
+  //     },
+  //   },
+  // )
 
   const { mutate, isLoading } = useMutation(createClass, {
     onSuccess: () => {
@@ -140,6 +138,15 @@ const CustomContent = () => {
     },
   })
 
+  const { data: courseSessionById } = useQuery({
+    queryKey: ['courseById', selectedCourse],
+    queryFn: async () => {
+      const res = await getCourse(selectedCourse as string)
+      return res.data.data
+    },
+    enabled: !!selectedCourse,
+  })
+
   const { data: workplace } = useQuery({
     queryKey: ['workplaces'],
     queryFn: async () => {
@@ -156,19 +163,39 @@ const CustomContent = () => {
     },
   })
 
-  const OnCourseChange = (value: string) => {
-    setSelectedCourse(value)
-    // const { data: courseByID } = useQuery({
-    //   queryKey: ['courseByID'],
-    //   queryFn: async () => {
-    //     const res = await getCourse(value)
-    //     return res.data.data
-    //   },
-    // })
-    // console.log(courseByID)
+  const { data: filteredStudents } = useQuery({
+    queryKey: ['regist-course', selectedWorkplace, selectedCourse],
+    queryFn: async () => {
+      const res = await getRegisterCourseList(selectedWorkplace, selectedCourse)
+      return res.data.data
+    },
+    enabled: !!selectedWorkplace && !!selectedCourse,
+  })
+
+  const studentDataOptions = (filteredStudents || []).map((data: { _id: string; fullname: string }) => ({
+    value: data._id,
+    label: data.fullname,
+  }))
+
+  const [checkedList, setCheckedList] = useState<CheckboxValueType[]>([])
+  const [indeterminate, setIndeterminate] = useState<boolean>(false)
+  const [checkAll, setCheckAll] = useState<boolean>(false)
+
+  useEffect(() => {
+    form?.setFieldValue('total_session', courseSessionById?.session_per_course)
+  }, [courseSessionById, form])
+
+  const onChange = (list: CheckboxValueType[]) => {
+    setCheckedList(list)
+    setIndeterminate(!!list.length && list.length < studentDataOptions.length)
+    setCheckAll(list.length === studentDataOptions.length)
   }
 
-  console.log(selectedCourse)
+  const onCheckAllChange = (e: CheckboxChangeEvent) => {
+    setCheckedList(e.target.checked ? studentDataOptions.map((option: any) => option.value) : [])
+    setIndeterminate(false)
+    setCheckAll(e.target.checked)
+  }
 
   return (
     <>
@@ -191,7 +218,7 @@ const CustomContent = () => {
           form={form}
           onFinish={mutate}
           layout='vertical'
-          // initialValues={{ total_session: selectedCourse ? 0 : 2 }}
+          initialValues={{ total_session: courseSessionById?.session_per_course }}
         >
           <Typography.Title
             level={3}
@@ -222,7 +249,7 @@ const CustomContent = () => {
                     label: data.title,
                   }))}
                   value={selectedCourse}
-                  onChange={OnCourseChange}
+                  onChange={(value) => setSelectedCourse(value)}
                   showSearch
                 />
               </Form.Item>
@@ -336,12 +363,12 @@ const CustomContent = () => {
                     <Divider />
                     <Checkbox.Group
                       style={{ width: '100%' }}
-                      defaultValue={defaultCheckedList.map((option) => option.value)}
+                      defaultValue={studentDataOptions.map((option: any) => option.value)}
                       value={checkedList}
                       onChange={onChange}
                     >
                       <Row gutter={[16, 16]}>
-                        {plainOptions.map((option) => (
+                        {studentDataOptions.map((option: any) => (
                           <Col
                             span={8}
                             key={option.value}
