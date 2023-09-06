@@ -1,10 +1,12 @@
 import React from 'react'
 import AdminLayout from '@/layouts/admin'
 
-const CustomContent = () => <div>THIS IS THE MAIN ADMIN CONTENT</div>
+const CustomContent = () => {
+  return <div>CustomContent</div>
+}
 
-const AdminLessons: React.FC = () => {
+const AdminLessonEdit: React.FC = () => {
   return <AdminLayout content={<CustomContent />} />
 }
 
-export default AdminLessons
+export default AdminLessonEdit

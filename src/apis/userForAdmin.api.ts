@@ -1,6 +1,6 @@
 import http from '@/utils/http'
 
-export const getUserListForAdmin = (role_user: string, page?: string, limit?: string) =>
+export const getUserListForAdmin = (role_user: string, page?: any, limit?: any) =>
   http.get('/user', {
     params: {
       role: role_user,

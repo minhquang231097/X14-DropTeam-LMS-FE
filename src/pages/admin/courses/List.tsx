@@ -104,7 +104,7 @@ const CustomContent = () => {
     {
       title: <Typography.Text style={{ fontSize: '18px' }}>Difficulty</Typography.Text>,
       dataIndex: 'level',
-      width: '10%',
+      width: '15%',
       sorter: true,
       render: (value: COMMON_LEVEL) => (
         <LevelTag
@@ -115,7 +115,7 @@ const CustomContent = () => {
     },
     {
       title: <Typography.Text style={{ fontSize: '18px' }}>Action</Typography.Text>,
-      width: '15%',
+      width: '10%',
       render: (course: DataType) => (
         <Space>
           <Button
@@ -125,7 +125,7 @@ const CustomContent = () => {
               navigate(`/admin/courses/show/${course._id}`)
             }}
           >
-            <EyeOutlined style={{ color: 'white', fontSize: '22px' }} />
+            <EyeOutlined className='text-white text-[22px]' />
           </Button>
           <Button
             type='primary'
@@ -136,7 +136,7 @@ const CustomContent = () => {
               setIsModalOpen(true)
             }}
           >
-            <DeleteOutlined style={{ color: 'white', fontSize: '22px' }} />
+            <DeleteOutlined className='text-white text-[22px]' />
           </Button>
         </Space>
       ),
@@ -171,11 +171,10 @@ const CustomContent = () => {
             <AdminSearch />
             <Button
               type='primary'
-              icon={<MdAddCircleOutline className='text-[18px]' />}
               onClick={() => navigate('/admin/courses/create')}
               style={{ display: 'flex', alignItems: 'center', height: '40px', fontSize: '16px' }}
             >
-              Create
+              <MdAddCircleOutline className='text-[22px]' />
             </Button>
           </Space>
         </div>

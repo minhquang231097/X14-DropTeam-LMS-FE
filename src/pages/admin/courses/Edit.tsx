@@ -111,9 +111,9 @@ const CustomContent = () => {
               <Form.Item
                 label='Course Code'
                 name='course_code'
-                rules={[{ required: true, message: 'Please enter the code' }]}
+                rules={[{ required: true }]}
               >
-                <Input />
+                <Input readOnly />
               </Form.Item>
               <Form.Item
                 label='Sessions per Course'

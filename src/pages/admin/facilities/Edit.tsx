@@ -142,23 +142,13 @@ const CustomContent = () => {
               <Form.Item
                 label='Facility Code'
                 name='workplace_code'
-                rules={[
-                  { required: true, message: 'Please enter the code' },
-                  // {
-                  //   validator(_: RuleObject, value: string) {
-                  //     if (value === workplace.workplace_code) {
-                  //       Promise.reject(new Error('The code must be unique!'))
-                  //     }
-                  //     return Promise.resolve()
-                  //   },
-                  // },
-                ]}
-                // validateStatus={form.getFieldValue('workplace_code') === workplace.workplace_code ? 'error' : ''}
+                rules={[{ required: true }]}
               >
                 <Input
-                  required
-                  value={codeValue}
-                  onChange={onChange2}
+                  readOnly
+                  // required
+                  // value={codeValue}
+                  // onChange={onChange2}
                 />
               </Form.Item>
             </Col>
