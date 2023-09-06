@@ -17,7 +17,7 @@ import {
   Typography,
   notification,
 } from 'antd'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { CheckboxChangeEvent } from 'antd/es/checkbox'
 import { CheckboxValueType } from 'antd/es/checkbox/Group'
@@ -58,6 +58,10 @@ dayjs.extend(customParseFormat)
 const CustomContent = () => {
   const [form] = Form.useForm()
   const navigate = useNavigate()
+
+  const [searchParams, setSearchParams] = useSearchParams()
+  const page = searchParams.get('page') ?? 1
+  const limit = searchParams.get('limit') ?? 50
 
   // the values of selectedCourse and selectedWorkplace respectively return the corresponding Id
   const [selectedCourse, setSelectedCourse] = useState<string | undefined>(undefined)
@@ -131,7 +135,7 @@ const CustomContent = () => {
   })
 
   const { data: course } = useQuery({
-    queryKey: ['courses'],
+    queryKey: ['courses', page, limit],
     queryFn: async () => {
       const res = await getCoursesList()
       return res.data.data
@@ -156,17 +160,17 @@ const CustomContent = () => {
   })
 
   const { data: mentor } = useQuery({
-    queryKey: ['MENTOR'],
+    queryKey: ['MENTOR', page, limit],
     queryFn: async () => {
-      const res = await getUserListForAdmin('MENTOR')
+      const res = await getUserListForAdmin('MENTOR', page, limit)
       return res.data.data
     },
   })
 
   const { data: filteredStudents } = useQuery({
-    queryKey: ['regist-course', selectedWorkplace, selectedCourse],
+    queryKey: ['regist-course', selectedWorkplace, selectedCourse, page, limit],
     queryFn: async () => {
-      const res = await getRegisterCourseList(selectedWorkplace, selectedCourse)
+      const res = await getRegisterCourseList(selectedWorkplace, selectedCourse, page, limit)
       return res.data.data
     },
     enabled: !!selectedWorkplace && !!selectedCourse,

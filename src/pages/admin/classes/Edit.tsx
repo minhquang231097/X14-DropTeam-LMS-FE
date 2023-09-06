@@ -15,7 +15,7 @@ import {
   Typography,
   notification,
 } from 'antd'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { CheckboxValueType } from 'antd/es/checkbox/Group'
 import Checkbox, { CheckboxChangeEvent } from 'antd/es/checkbox'
@@ -53,10 +53,12 @@ dayjs.extend(customParseFormat)
 
 const CustomContent = () => {
   const [form] = Form.useForm()
-  const { RangePicker } = DatePicker
-
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
+
+  const [searchParams, setSearchParams] = useSearchParams()
+  const page = searchParams.get('page') ?? 1
+  const limit = searchParams.get('limit') ?? 50
 
   const weekdays = [
     { value: 0, label: 'Sunday' },
@@ -67,29 +69,6 @@ const CustomContent = () => {
     { value: 5, label: 'Friday' },
     { value: 6, label: 'Saturday' },
   ]
-
-  // const plainOptions = [
-  //   { value: '1', label: 'Student 01' },
-  //   { value: '2', label: 'Student 02' },
-  //   { value: '3', label: 'Student 03' },
-  //   { value: '4', label: 'Student 04' },
-  //   { value: '5', label: 'Student 05' },
-  //   { value: '6', label: 'Student 06' },
-  //   { value: '7', label: 'Student 07' },
-  //   { value: '8', label: 'Student 08' },
-  //   { value: '9', label: 'Student 09' },
-  //   { value: '10', label: 'Student 10' },
-  //   { value: '11', label: 'Student 11' },
-  //   { value: '12', label: 'Student 12' },
-  // ]
-
-  // const defaultCheckedList = [
-  //   { value: '1', label: 'Student 01' },
-  //   { value: '2', label: 'Student 02' },
-  //   { value: '3', label: 'Student 03' },
-  //   { value: '4', label: 'Student 04' },
-  //   { value: '5', label: 'Student 05' },
-  // ]
 
   // const [checkedList, setCheckedList] = useState<CheckboxValueType[]>(defaultCheckedList.map((option) => option.value))
   const [selectedWeekdays, setSelectedWeekdays] = useState<string[]>([])
@@ -144,9 +123,9 @@ const CustomContent = () => {
   })
 
   const { data: course } = useQuery({
-    queryKey: ['courses'],
+    queryKey: ['courses', page, limit],
     queryFn: async () => {
-      const res = await getCoursesList()
+      const res = await getCoursesList(page, limit)
       return res.data.data
     },
   })
@@ -160,9 +139,9 @@ const CustomContent = () => {
   })
 
   const { data: mentor } = useQuery({
-    queryKey: ['MENTOR'],
+    queryKey: ['MENTOR', page, limit],
     queryFn: async () => {
-      const res = await getUserListForAdmin('MENTOR')
+      const res = await getUserListForAdmin('MENTOR', page, limit)
       return res.data.data
     },
   })
