@@ -3,7 +3,6 @@ import { BiBarChart, BiMessageSquareDetail } from 'react-icons/bi'
 import { Tooltip } from 'antd'
 import { Link } from 'react-router-dom'
 import { Course } from '@/types/course.type'
-import avatar from '@/assets/images/teacher/a.jpg'
 import noImage from '@/assets/images/courses/no-image.png'
 
 const CourseCard = (course: Course) => {
@@ -33,7 +32,7 @@ const CourseCard = (course: Course) => {
               textOverflow: 'ellipsis',
             }}
           >
-            {course_code}: Introduction to {title} for Beginners
+            {course_code}: {title} for Everyone
           </p>
           <div className='flex items-center'>
             <div className='flex items-center flex-1 text-gray-500'>
@@ -75,9 +74,11 @@ const CourseCard = (course: Course) => {
           </div>
           <div className='flex items-center'>
             <p className='font-bold mr-2'>
-              {Number(discount) ? `$${Math.floor(Number(price) * (1 - Number(discount) / 100))}` : ''}
+              {Number(discount)
+                ? `${'$'}${Math.floor(Number(price) * (1 - Number(discount) / 100))}`
+                : `${'$'}${price}`}
             </p>
-            <p className='text-gray-500 text-sm line-through'>${price}</p>
+            <p className='text-gray-500 text-sm line-through'>{Number(discount) ? `${price}` : ''}</p>
           </div>
         </div>
         <div className='flex items-center justify-between border-0 border-t-[1px] border-gray-300 dark:border-[#334155] border-solid px-4'>

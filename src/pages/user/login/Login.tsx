@@ -10,7 +10,7 @@ const Login: React.FC = () => {
     <>
       <Header />
       <div className='w-full pt-20 pb-[96px] bg-gradient-to-r from-[#FEAC6E] via-[#C779D0] to-[#4BC0C8] dark:bg-gradient-to-r dark:from-[#12c2e9] dark:via-[#c491ed] dark:to-[#f7797d]'>
-        <div className='bg-white w-[480px] p-10 pb-4 rounded-lg mx-auto'>
+        <div className='bg-white w-[480px] max-md:w-[69%] p-10 pb-4 rounded-lg mx-auto'>
           <img
             src={Logo}
             alt=''

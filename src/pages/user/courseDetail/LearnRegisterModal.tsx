@@ -1,43 +1,78 @@
 import React, { useState } from 'react'
-import { Button, Modal, message } from 'antd'
+import { Button, Modal, Select, SelectProps } from 'antd'
+import { handleUserRegistCourse } from '@/apis/userRegistCourse.api'
+import { getWorkplacesList } from '@/apis/workplaceList.api'
+import { useQuery } from '@tanstack/react-query'
+import { useSearchParams, useNavigate } from 'react-router-dom'
 
 const LearnRegisterModal: React.FC = (data: any) => {
+  const navigate = useNavigate()
   const [open, setOpen] = useState(false)
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  const { title, course_code, price } = data
+  const { title, course_code, price, discount, level, session_per_course, _id } = data
 
-  const [messageApi, contextHolder] = message.useMessage()
-  const error = () => {
-    messageApi.open({
-      type: 'success',
-      content: 'Successfully registered for the course!',
-    })
+  const regist = () => {
+    handleUserRegistCourse()
   }
+
+  const workplaceData = useQuery({
+    queryKey: ['workplace'],
+    queryFn: async () => {
+      const res = await getWorkplacesList(1, 50)
+      return res.data.data
+    },
+  }).data
+
+  console.log(workplaceData)
+
+  const options: SelectProps['options'] = []
+
   return (
     <>
-      <>
-        {contextHolder}
-        <Button
-          type='primary'
-          size='large'
-          className='w-full mt-4'
-          onClick={() => setOpen(true)}
-        >
-          Learn
-        </Button>
-      </>
+      <Button
+        type='primary'
+        size='large'
+        className='w-full mt-4'
+        onClick={() => setOpen(true)}
+      >
+        Learn
+      </Button>
       <Modal
         title={<span className='text-xl'>Register the Course {data ? title : ''}</span>}
         centered
         open={open}
         onOk={() => {
           setOpen(false)
-          error()
+          regist()
         }}
         onCancel={() => setOpen(false)}
       >
         <p>
-          Are you sure you want to register for this course? <br /> Course code: {course_code} <br /> Price: {price} $
+          <span className='text-green-600'>Are you sure you want to register for this course? </span>
+          <br />
+          <br /> Course code: <span className='text-blue-500'>{course_code}</span>
+          <br />
+          <br /> Course level:{' '}
+          <span className='text-blue-500'>
+            {String(level)
+              .toLowerCase()
+              .replace(/\b\w/g, (x) => x.toUpperCase())}
+          </span>
+          <br />
+          <br /> Total sessions: <span className='text-blue-500'>{session_per_course}</span>
+          <br />
+          <br /> Price:{' '}
+          <span className='text-yellow-500'>
+            {Number(discount) ? `$${Math.floor(Number(price) * (1 - Number(discount) / 100))}` : `$${price}`}{' '}
+          </span>
+          <span className='text-red-500 m-0 p-0 text-xs line-through'>{Number(discount) ? `${price}` : ''}</span>
+          <br />
+          <br />
+          Please choose a facility:{' '}
+          <Select
+            // onChange={handleChange}
+            style={{ width: 120 }}
+            options={options}
+          />
         </p>
       </Modal>
     </>

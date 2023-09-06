@@ -3,7 +3,7 @@ import { FiSearch } from 'react-icons/fi'
 
 const SearchBar: React.FC = () => {
   return (
-    <div className='relative flex items-center ml-10 max-md:hidden'>
+    <div className='relative flex items-center ml-10 max-2xl:hidden'>
       <FiSearch className='absolute left-3 text-gray-400' />
       <input
         type='text'
