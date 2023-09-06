@@ -6,6 +6,7 @@ import AdminLayout from '@/layouts/admin'
 // import { CourseItems } from '@/data/courses'
 import { ShowButtonStyle } from '@/utils/style'
 import { getCourse } from '@/apis/course.api'
+import LevelTag from '@/components/tag/LevelTag'
 
 const CustomContent = () => {
   const { id } = useParams()
@@ -28,7 +29,7 @@ const CustomContent = () => {
       <Breadcrumb
         items={[
           {
-            title: 'Home',
+            title: <Link to='/admin'>Home</Link>,
           },
           {
             title: <Link to='/admin/courses/all'>Courses</Link>,
@@ -37,7 +38,7 @@ const CustomContent = () => {
             title: `${course.course_code}: ${course.title}`,
           },
         ]}
-        style={{ padding: '4px' }}
+        style={{ padding: '4px', fontSize: '16px' }}
       />
       <Card>
         <Row gutter={[16, 16]}>
@@ -92,7 +93,11 @@ const CustomContent = () => {
                   className='mt-2 mx-1'
                   style={{ fontSize: '18px' }}
                 >
-                  Level: {course.level}
+                  Level:{' '}
+                  <LevelTag
+                    level={course.level}
+                    style={{ fontSize: '16px', padding: '4px 8px', margin: '0px 8px' }}
+                  />
                 </Typography.Text>
                 <Typography.Text
                   className='mt-2 mx-1'

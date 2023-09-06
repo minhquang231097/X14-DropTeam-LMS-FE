@@ -1,6 +1,6 @@
 import axios from 'axios'
-import http from '@/utils/http'
 import { message } from 'antd'
+import http from '@/utils/http'
 import { getUserProfile } from './userProfile.api'
 
 const handleUpdateUser = async (

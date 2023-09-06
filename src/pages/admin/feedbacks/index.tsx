@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Breadcrumb, Input, Card, Typography, Avatar, List, message } from 'antd'
 import VirtualList from 'rc-virtual-list'
 import { useQuery } from '@tanstack/react-query'
-import { useSearchParams } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { MdSearch } from 'react-icons/md'
 import { getFeedback } from '@/apis/feedback.api'
 import AdminLayout from '@/layouts/admin'
@@ -91,13 +91,13 @@ const CustomContent = () => {
       <Breadcrumb
         items={[
           {
-            title: 'Home',
+            title: <Link to='/admin'>Home</Link>,
           },
           {
             title: 'Feedback',
           },
         ]}
-        style={{ padding: '4px' }}
+        style={{ padding: '4px', fontSize: '16px' }}
       />
       <Card>
         <div className='flex justify-between'>

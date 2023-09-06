@@ -175,7 +175,7 @@ const CustomContent = () => {
       <Breadcrumb
         items={[
           {
-            title: 'Home',
+            title: <Link to='/admin'>Home</Link>,
           },
           {
             title: <Link to='/admin/classes/all'>Classes</Link>,
@@ -184,14 +184,14 @@ const CustomContent = () => {
             title: 'Create',
           },
         ]}
-        style={{ padding: '4px' }}
+        style={{ padding: '4px', fontSize: '16px' }}
       />
       <Card>
         <Form
           form={form}
           onFinish={mutate}
           layout='vertical'
-        // initialValues={{ total_session: selectedCourse ? 0 : 2 }}
+          // initialValues={{ total_session: selectedCourse ? 0 : 2 }}
         >
           <Typography.Title
             level={3}

@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Input } from 'antd'
 import { useSearchParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
+import { debounce } from 'lodash'
 import Header from '@/layouts/user/Header'
 import Footer from '@/layouts/user/Footer'
 import SidebarTeacher from '@/layouts/user/SidebarTeacher'
@@ -9,7 +10,6 @@ import LessonsListTable from './LessonsListTable'
 import { getLessonsList } from '@/apis/lessonsList.api'
 import { getLessonByLessonCode } from '@/apis/searchLessonByLessonCode.api'
 import { getCourse } from '@/apis/course.api'
-import { debounce } from 'lodash'
 
 const LessonsListForTeacher: React.FC = () => {
   const [searchText, setSearchText] = useState('')

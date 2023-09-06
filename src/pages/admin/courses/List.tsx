@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import { Breadcrumb, Button, Card, Image, Modal, Space, Table, TableProps, Typography, notification } from 'antd'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { MdAddCircleOutline } from 'react-icons/md'
 import { useQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import { ColumnsType } from 'antd/es/table'
+import { DeleteOutlined, EyeOutlined } from '@ant-design/icons'
 import AdminLayout from '@/layouts/admin'
 import AdminSearch from '@/components/search/adminSearch'
 import { getCoursesList } from '@/apis/coursesList.api'
@@ -73,9 +74,9 @@ const CustomContent = () => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: 'Image',
+      title: <Typography.Text style={{ fontSize: '18px' }}>Image</Typography.Text>,
       dataIndex: 'image',
-      width: '30%',
+      width: '25%',
       render: (image: any) => (
         <Image
           src={image.length > 0 ? image : 'https://via.placeholder.com/500x250'}
@@ -84,15 +85,15 @@ const CustomContent = () => {
       ),
     },
     {
-      title: 'Course',
+      title: <Typography.Text style={{ fontSize: '18px' }}>Course</Typography.Text>,
       dataIndex: 'course_code',
-      width: '40%',
+      width: '45%',
       sorter: true,
       render: (course_code: string, course: DataType) => (
         <Space direction='vertical'>
           <Typography.Text
             strong
-            style={{ fontSize: '20px' }}
+            style={{ fontSize: '22px' }}
           >
             {course_code}: {course.title}
           </Typography.Text>
@@ -101,7 +102,7 @@ const CustomContent = () => {
       ),
     },
     {
-      title: 'Difficulty',
+      title: <Typography.Text style={{ fontSize: '18px' }}>Difficulty</Typography.Text>,
       dataIndex: 'level',
       width: '10%',
       sorter: true,
@@ -113,27 +114,29 @@ const CustomContent = () => {
       ),
     },
     {
-      title: 'Action',
+      title: <Typography.Text style={{ fontSize: '18px' }}>Action</Typography.Text>,
       width: '15%',
       render: (course: DataType) => (
         <Space>
           <Button
             type='primary'
+            size='large'
             onClick={() => {
               navigate(`/admin/courses/show/${course._id}`)
             }}
           >
-            Show
+            <EyeOutlined style={{ color: 'white', fontSize: '22px' }} />
           </Button>
           <Button
             type='primary'
+            size='large'
             danger
             onClick={() => {
               setSelectedCourse(course)
               setIsModalOpen(true)
             }}
           >
-            Delete
+            <DeleteOutlined style={{ color: 'white', fontSize: '22px' }} />
           </Button>
         </Space>
       ),
@@ -145,13 +148,13 @@ const CustomContent = () => {
       <Breadcrumb
         items={[
           {
-            title: 'Home',
+            title: <Link to='/admin'>Home</Link>,
           },
           {
             title: 'Courses',
           },
         ]}
-        style={{ padding: '4px' }}
+        style={{ padding: '4px', fontSize: '16px' }}
       />
       <Card>
         <div className='flex justify-between'>
@@ -193,7 +196,6 @@ const CustomContent = () => {
               total: courseData.total,
             }}
             onChange={onChange}
-            bordered
             style={{ marginTop: 16 }}
           />
         )}

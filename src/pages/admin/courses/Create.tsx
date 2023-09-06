@@ -50,7 +50,7 @@ const CustomContent = () => {
       <Breadcrumb
         items={[
           {
-            title: 'Home',
+            title: <Link to='/admin'>Home</Link>,
           },
           {
             title: <Link to='/admin/courses/all'>Courses</Link>,
@@ -59,7 +59,7 @@ const CustomContent = () => {
             title: 'Create',
           },
         ]}
-        style={{ padding: '4px' }}
+        style={{ padding: '4px', fontSize: '16px' }}
       />
       <Card>
         <Form
@@ -154,7 +154,12 @@ const CustomContent = () => {
               size='middle'
               style={{ display: 'flex', justifyContent: 'flex-end' }}
             >
-              <Button type='default' onClick={() => navigate('/admin/courses/all')}>Cancel</Button>
+              <Button
+                type='default'
+                onClick={() => navigate('/admin/courses/all')}
+              >
+                Cancel
+              </Button>
               <Button
                 type='primary'
                 htmlType='submit'
