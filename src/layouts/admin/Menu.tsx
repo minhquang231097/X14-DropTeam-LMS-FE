@@ -1,5 +1,13 @@
 import { ConfigProvider, Menu, MenuProps } from 'antd'
-import { MdClass, MdMenuBook, MdOutlineFeedback, MdOutlineHome, MdPeople, MdPlace } from 'react-icons/md'
+import {
+  MdClass,
+  MdMenuBook,
+  MdOutlineFeedback,
+  MdOutlineHome,
+  MdOutlineNoteAlt,
+  MdPeople,
+  MdPlace,
+} from 'react-icons/md'
 import React from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import './menu.css'
@@ -22,10 +30,13 @@ const MenuSection: React.FC = () => {
   const searchParams = new URLSearchParams(location.search)
 
   const onClick: MenuProps['onClick'] = (e) => {
-    if (e.key === '') {
+    if (e.key === '' || e.key === '') {
       navigate('/admin')
     }
-    if (e.key !== '') {
+    if (e.key === 'courses/register-course') {
+      navigate('/admin/courses/register-course')
+    }
+    if (e.key !== '' && e.key !== 'courses/register-course') {
       searchParams.set('page', '1')
       searchParams.set('limit', '10')
       navigate(`/admin/${e.key}?${searchParams.toString()}`, { replace: true })
@@ -40,11 +51,17 @@ const MenuSection: React.FC = () => {
       getItem('Students', 'users/students'),
     ]),
 
-    getItem('Courses', 'courses/all', <MdMenuBook style={{ fontSize: '24px', verticalAlign: 'middle' }} />),
+    getItem('Courses', 'courses', <MdMenuBook style={{ fontSize: '24px', verticalAlign: 'middle' }} />, [
+      getItem('All Courses', 'courses/all'),
+      getItem('Register Course', 'courses/register-course'),
+    ]),
 
     getItem('Classes', 'classes/all', <MdClass style={{ fontSize: '24px', verticalAlign: 'middle' }} />),
+
     getItem('Facilities', 'facilities/all', <MdPlace style={{ fontSize: '24px', verticalAlign: 'middle' }} />),
+
     getItem('Feedbacks', 'feedbacks', <MdOutlineFeedback style={{ fontSize: '24px', verticalAlign: 'middle' }} />),
+
     // getItem('Analytics', 'analytics', <MdBarChart style={{ fontSize: '24px', verticalAlign: 'middle' }} />),
     // getItem('Calendar', 'calendar', <MdOutlineCalendarToday style={{ fontSize: '24px', verticalAlign: 'middle' }} />),
   ]

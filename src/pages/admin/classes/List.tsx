@@ -1,19 +1,24 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
-import { Breadcrumb, Button, Card, Image, Modal, Space, Table, TableProps, Typography, theme } from 'antd'
-import { useNavigate } from 'react-router-dom'
-import { MdOutlineCheck, MdOutlineClose, MdAddCircleOutline, MdOutlineCircle } from 'react-icons/md'
+import { Breadcrumb, Button, Card, Image, Modal, Space, Table, TableProps, Typography, notification, theme } from 'antd'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
+import { MdAddCircleOutline } from 'react-icons/md'
 import { useQuery } from '@tanstack/react-query'
-import axios from 'axios'
+import { DeleteOutlined, EyeOutlined } from '@ant-design/icons'
+import type { ColumnsType } from 'antd/es/table'
 import AdminLayout from '@/layouts/admin'
 import AdminSearch from '@/components/search/adminSearch'
-import { useQueryString } from '@/utils/utils'
 import { getClassesList } from '@/apis/classesList.api'
 import { weekdays } from '@/utils/day'
+import http from '@/utils/http'
 
 interface IMentor {
   fullname: string
+}
+
+interface ICourse {
+  title: string
 }
 
 interface IWorkplace {
@@ -26,8 +31,10 @@ interface DataType {
   location?: string
   is_active?: boolean
   class_size?: number
+  create_at?: string
   start_at?: string
   end_at?: string
+  course?: ICourse
   mentor?: IMentor
   workplace?: IWorkplace
 }
@@ -35,69 +42,115 @@ interface DataType {
 dayjs.extend(customParseFormat)
 
 const CustomContent = () => {
-  const { useToken } = theme
-  const { token } = useToken()
   const navigate = useNavigate()
 
-  const queryString: { page?: string } = useQueryString()
-  const page = Number(queryString.page) || 1
-  const sizeReq = 10
+  // const queryString: { page?: string } = useQueryString()
+  // const page = Number(queryString.page) || 1
+  const [searchParams, setSearchParams] = useSearchParams()
+  const page = searchParams.get('page') ?? 1
+  const limit = searchParams.get('limit') ?? 10
+  const search = searchParams.get('search') ?? null
 
   // const [isActive, setIsActive] = useState(true)
   const [selectedClass, setSelectedClass] = useState<DataType | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [filteredData, setFilteredData] = useState<any>(null)
 
   const { data: classData } = useQuery({
-    queryKey: ['class', page, 10],
+    queryKey: ['classes', page, limit],
     queryFn: async () => {
-      const res = await getClassesList(page, 10)
+      const res = await getClassesList(page, limit)
       return res.data
     },
   })
 
+  useEffect(() => {
+    if (classData) {
+      setFilteredData(classData)
+    }
+  }, [classData])
+
+  useEffect(() => {
+    if (search) {
+      const filtered = classData?.data.filter(
+        (item: any) =>
+          item.class_code.toLowerCase().includes(search.toLowerCase()) ||
+          item.course.title.toLowerCase().includes(search.toLowerCase()),
+      )
+      setFilteredData({ data: filtered, total: classData?.total })
+    } else {
+      navigate(`/admin/classes/all?page=${page}&limit=${limit}`)
+      setFilteredData({ data: classData?.data, total: classData?.total })
+    }
+  }, [limit, page, search, classData])
+
   const onChange: TableProps<DataType>['onChange'] = (pagination, filters, sorter, extra) => {
-    // console.log('params', pagination, filters, sorter, extra)
-    const { current } = pagination
-    navigate(`/admin/classes/all?page=${current}&limit=10`)
+    const { current, pageSize } = pagination
+    const searchParam = search ? `&search=${search}` : ''
+    navigate(`/admin/classes/all?page=${current}&limit=${pageSize}${searchParam}`)
+  }
+
+  const handleSearch = (value: string) => {
+    setSearchParams({ search: value })
   }
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`/api/classes/?id=${selectedClass?._id}`)
+      await http.delete(`/class/${selectedClass?._id}`)
       // Perform any necessary actions after successful deletion
-    } catch (error) {
-      console.error(error)
+      notification.success({
+        message: 'Delete successful',
+        description: 'The class has been deleted successfully',
+      })
+    } catch (error: any) {
+      notification.error({
+        message: 'Delete failed',
+        description: error.message,
+      })
     }
     setIsModalOpen(false)
   }
 
-  const columns = [
+  const columns: ColumnsType<DataType> = [
     {
-      title: 'Class',
+      title: <Typography.Text style={{ fontSize: '18px' }}>Image</Typography.Text>,
+      dataIndex: 'image_url',
+      width: '12.5%',
+      render: () => (
+        <Image
+          src='https://res.cloudinary.com/dar4pvqx2/image/upload/v1693931926/vitebanner_wtcoum.jpg'
+          alt='Facility Image'
+        />
+      ),
+    },
+    {
+      title: <Typography.Text style={{ fontSize: '18px' }}>Class</Typography.Text>,
       dataIndex: 'class_code',
-      width: '30%',
+      width: '25%',
       render: (class_code: string, cls: DataType) => (
         <Space direction='vertical'>
           <Typography.Text
             strong
-            style={{ fontSize: '20px' }}
+            style={{ fontSize: '22px' }}
           >
             {class_code}
           </Typography.Text>
-          {/* <Typography.Text
-            strong
-            style={{ fontSize: '20px' }}
-          >
-            {cls.class_name}
-          </Typography.Text> */}
-          <Typography.Text>Mentor: {cls.mentor?.fullname}</Typography.Text>
+          <Typography.Text strong>{cls.course?.title}</Typography.Text>
+          <Typography.Text>Created at: {dayjs(cls.create_at).format('DD/MM/YYYY')}</Typography.Text>
         </Space>
       ),
+      sorter: (a, b) => {
+        const dateA: any = a.create_at ? dayjs(a.create_at) : dayjs('')
+        const dateB: any = b.create_at ? dayjs(b.create_at) : dayjs('')
+        return dateA - dateB
+      },
+      defaultSortOrder: 'descend',
     },
     {
-      title: 'Schedule',
+      title: <Typography.Text style={{ fontSize: '18px' }}>Schedule</Typography.Text>,
       dataIndex: 'schedule',
-      width: '30%',
+      width: '20%',
+      sorter: true,
       render: (schedule: number[], cls: DataType) => (
         <Space direction='vertical'>
           <Typography.Text>
@@ -116,8 +169,9 @@ const CustomContent = () => {
       ),
     },
     {
-      title: 'Facility',
+      title: <Typography.Text style={{ fontSize: '18px' }}>Facility</Typography.Text>,
       width: '15%',
+      sorter: true,
       render: (cls: DataType) => (
         <Space direction='vertical'>
           <Typography.Text>{cls.workplace?.name}</Typography.Text>
@@ -125,9 +179,10 @@ const CustomContent = () => {
       ),
     },
     {
-      title: 'Number of Students',
+      title: <Typography.Text style={{ fontSize: '14px' }}>Number of Students</Typography.Text>,
       dataIndex: 'class_size',
       width: '10%',
+      sorter: true,
       render: (class_size: number) => (
         <Space direction='vertical'>
           <Typography.Text>{class_size}</Typography.Text>
@@ -135,28 +190,30 @@ const CustomContent = () => {
       ),
     },
     {
-      title: 'Action',
-      width: '15%',
+      title: <Typography.Text style={{ fontSize: '18px' }}>Action</Typography.Text>,
+      width: '10%',
       render: (cls: DataType) => (
         <Space>
           <Button
             type='primary'
+            size='large'
             onClick={() => {
               navigate(`/admin/classes/show/${cls._id}`)
             }}
           >
-            Show
+            <EyeOutlined className='text-white text-[22px]' />
           </Button>
-          {/* <Button
+          <Button
             type='primary'
+            size='large'
             danger
             onClick={() => {
-              setSelectedClass(class)
+              setSelectedClass(cls)
               setIsModalOpen(true)
             }}
           >
-            Delete
-          </Button> */}
+            <DeleteOutlined className='text-white text-[22px]' />
+          </Button>
         </Space>
       ),
     },
@@ -167,13 +224,13 @@ const CustomContent = () => {
       <Breadcrumb
         items={[
           {
-            title: 'Home',
+            title: <Link to='/admin'>Home</Link>,
           },
           {
             title: 'Class',
           },
         ]}
-        style={{ padding: '4px' }}
+        style={{ padding: '4px', fontSize: '16px' }}
       />
       <Card>
         <div className='flex justify-between'>
@@ -187,14 +244,17 @@ const CustomContent = () => {
             className='flex'
             size='middle'
           >
-            <AdminSearch />
+            <AdminSearch
+              endpoint='class'
+              keysearch={search ?? ''}
+              onChangeInput={handleSearch}
+            />
             <Button
               type='primary'
-              icon={<MdAddCircleOutline className='text-[18px]' />}
               onClick={() => navigate('/admin/classes/create')}
               style={{ display: 'flex', alignItems: 'center', height: '40px', fontSize: '16px' }}
             >
-              Create
+              <MdAddCircleOutline className='text-[22px]' />
             </Button>
           </Space>
         </div>
@@ -202,19 +262,19 @@ const CustomContent = () => {
           <Table
             rowKey={(cls: DataType) => cls._id}
             columns={columns}
-            dataSource={classData.data}
+            dataSource={search ? filteredData?.data : classData.data}
             pagination={{
               position: ['bottomRight'],
-              current: page,
+              current: Number(page),
+              pageSize: Number(limit),
               defaultCurrent: 1,
               defaultPageSize: 10,
-              pageSizeOptions: [10],
+              pageSizeOptions: [5, 10, 20],
               showSizeChanger: true,
               showQuickJumper: true,
-              total: classData.total,
+              total: search ? filteredData?.total : classData.total,
             }}
             onChange={onChange}
-            bordered
             style={{ marginTop: 16 }}
           />
         )}

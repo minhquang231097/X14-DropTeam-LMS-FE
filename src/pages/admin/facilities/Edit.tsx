@@ -45,18 +45,17 @@ const CustomContent = () => {
       form.resetFields()
       navigate('/admin/facilities/all')
     },
-    onError: () => {
+    onError: (error: Error) => {
       // Perform any necessary actions after failed creation
       notification.error({
         message: 'Update failed',
-        description: 'There was an error updating the facility',
+        description: error.message,
       })
-      form.resetFields()
     },
   })
 
   const { data: workplace } = useQuery({
-    queryKey: ['workplace'],
+    queryKey: ['workplaces'],
     queryFn: async () => {
       const res = await getWorkplace(id as string)
       return res.data.data
@@ -103,7 +102,7 @@ const CustomContent = () => {
       <Breadcrumb
         items={[
           {
-            title: 'Home',
+            title: <Link to='/admin'>Home</Link>,
           },
           {
             title: <Link to='/admin/facilities/all'>Facilities</Link>,
@@ -112,7 +111,7 @@ const CustomContent = () => {
             title: `${workplace.name}`,
           },
         ]}
-        style={{ padding: '4px' }}
+        style={{ padding: '4px', fontSize: '16px' }}
       />
       <Card>
         <Form
@@ -143,23 +142,13 @@ const CustomContent = () => {
               <Form.Item
                 label='Facility Code'
                 name='workplace_code'
-                rules={[
-                  { required: true, message: 'Please enter the code' },
-                  {
-                    validator(_: RuleObject, value: string) {
-                      if (value === workplace.workplace_code) {
-                        Promise.reject(new Error('The code must be unique!'))
-                      }
-                      return Promise.resolve()
-                    },
-                  },
-                ]}
-                validateStatus={form.getFieldValue('workplace_code') === workplace.workplace_code ? 'error' : ''}
+                rules={[{ required: true }]}
               >
                 <Input
-                  required
-                  value={codeValue}
-                  onChange={onChange2}
+                  readOnly
+                  // required
+                  // value={codeValue}
+                  // onChange={onChange2}
                 />
               </Form.Item>
             </Col>
@@ -218,7 +207,6 @@ const CustomContent = () => {
               <Button
                 type='primary'
                 htmlType='submit'
-                disabled={form.getFieldValue('workplace_code') === workplace.workplace_code}
                 loading={isLoading}
               >
                 Update

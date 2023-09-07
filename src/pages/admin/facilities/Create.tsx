@@ -42,13 +42,12 @@ const CustomContent = () => {
       form.resetFields()
       navigate('/admin/facilities/all')
     },
-    onError: () => {
+    onError: (error: Error) => {
       // Perform any necessary actions after failed creation
       notification.error({
         message: 'Update failed',
-        description: 'There was an error updating the facility',
+        description: error.message,
       })
-      form.resetFields()
     },
   })
 
@@ -72,7 +71,7 @@ const CustomContent = () => {
       <Breadcrumb
         items={[
           {
-            title: 'Home',
+            title: <Link to='/admin'>Home</Link>,
           },
           {
             title: <Link to='/admin/facilities/all'>Facilities</Link>,
@@ -81,7 +80,7 @@ const CustomContent = () => {
             title: 'Create',
           },
         ]}
-        style={{ padding: '4px' }}
+        style={{ padding: '4px', fontSize: '16px' }}
       />
       <Card>
         <Form
@@ -127,8 +126,8 @@ const CustomContent = () => {
               >
                 <Select
                   options={[
-                    { label: 'OFF', value: 'OFF' },
-                    { label: 'ON', value: 'ON' },
+                    { label: 'INACTIVE', value: 'OFF' },
+                    { label: 'ACTIVE', value: 'ON' },
                     { label: 'UPCOMING', value: 'UPCOMING' },
                   ]}
                 />

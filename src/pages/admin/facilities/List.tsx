@@ -1,14 +1,20 @@
-import React, { useState } from 'react'
-import { Breadcrumb, Button, Card, Image, Space, Table, Typography, Modal, theme, TableProps } from 'antd'
-import { useNavigate, useSearchParams } from 'react-router-dom'
-import { MdAddCircleOutline, MdOutlineCheck, MdOutlineCircle, MdOutlineClose } from 'react-icons/md'
+import React, { useEffect, useState } from 'react'
+import { Breadcrumb, Button, Card, Image, Space, Table, Typography, Modal, theme, TableProps, notification } from 'antd'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
+import { MdAddCircleOutline } from 'react-icons/md'
 import { useQuery } from '@tanstack/react-query'
-import axios from 'axios'
+import { DeleteOutlined, EyeOutlined } from '@ant-design/icons'
+import type { ColumnsType } from 'antd/es/table'
+import dayjs from 'dayjs'
+import customParseFormat from 'dayjs/plugin/customParseFormat'
 import AdminLayout from '@/layouts/admin'
-// import { FacilityItems } from '@/data/facilities'
 import AdminSearch from '@/components/search/adminSearch'
 import { getWorkplacesList } from '@/apis/workplaceList.api'
-import { useQueryString } from '@/utils/utils'
+import { COMMON_STATUS } from '@/utils/status'
+import StatusTag from '@/components/tag/StatusTag'
+import http from '@/utils/http'
+
+dayjs.extend(customParseFormat)
 
 interface DataType {
   _id: string
@@ -17,132 +23,162 @@ interface DataType {
   workplace_code: string
   address: string
   status: string
+  create_at: string
 }
 
 const CustomContent = () => {
-  const { useToken } = theme
-  const { token } = useToken()
   const navigate = useNavigate()
 
-  const queryString: { page?: string } = useQueryString()
-  const page = Number(queryString.page) || 1
-  // const [searchParams, setSearchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const page = searchParams.get('page') ?? 1
+  const limit = searchParams.get('limit') ?? 10
+  const search = searchParams.get('search') ?? null
 
-  // const page = searchParams.get('page') ?? 1
-
-  // const [isActive, setIsActive] = useState(true)
   const [selectedFacility, setSelectedFacility] = useState<DataType | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [filteredData, setFilteredData] = useState<any>(null)
 
   const { data: workplaceData } = useQuery({
-    queryKey: ['workplace', page, 10],
+    queryKey: ['workplaces', page, limit],
     queryFn: async () => {
-      const res = await getWorkplacesList(page, 10)
+      const res = await getWorkplacesList(page, limit)
       return res.data
     },
   })
 
+  useEffect(() => {
+    if (workplaceData) {
+      setFilteredData(workplaceData.data)
+    }
+  }, [workplaceData])
+
+  useEffect(() => {
+    if (search) {
+      const filtered = workplaceData?.data.filter(
+        (item: any) =>
+          item.name.toLowerCase().includes(search.toLowerCase()) ||
+          item.workplace_code.toLowerCase().includes(search.toLowerCase()),
+      )
+      setFilteredData({ data: filtered, total: workplaceData?.total })
+    } else {
+      navigate(`/admin/facilities/all?page=${page}&limit=${limit}`)
+      setFilteredData({ data: workplaceData?.data, total: workplaceData?.total })
+    }
+  }, [limit, page, search, workplaceData])
+
   const handleDelete = async () => {
     try {
-      await axios.delete(`/api/workplace/?id=${selectedFacility?._id}`)
+      await http.delete(`/workplace/${selectedFacility?._id}`)
       // Perform any necessary actions after successful deletion
-    } catch (error) {
-      console.error(error)
+      notification.success({
+        message: 'Delete successful',
+        description: 'The workplace has been deleted successfully',
+      })
+    } catch (error: any) {
+      notification.error({
+        message: 'Delete failed',
+        description: error.message,
+      })
     }
     setIsModalOpen(false)
   }
 
   const onChange: TableProps<DataType>['onChange'] = (pagination, filters, sorter, extra) => {
-    // console.log('params', pagination, filters, sorter, extra)
-    const { current } = pagination
-    navigate(`/admin/facilities/all?page=${current}&limit=10`)
+    const { current, pageSize } = pagination
+    const searchParam = search ? `&search=${search}` : ''
+    navigate(`/admin/facilities/all?page=${current}&limit=${pageSize}${searchParam}`)
   }
 
-  const columns = [
+  const handleSearch = (value: string) => {
+    setSearchParams({ search: value })
+  }
+
+  const columns: ColumnsType<DataType> = [
     {
-      title: 'Image',
+      title: <Typography.Text style={{ fontSize: '18px' }}>Image</Typography.Text>,
       dataIndex: 'image_url',
-      width: '25%',
+      width: '12.5%',
       render: () => (
         <Image
-          src='https://via.placeholder.com/500x250'
+          src='https://res.cloudinary.com/dar4pvqx2/image/upload/v1693931926/vitebanner_wtcoum.jpg'
           alt='Facility Image'
         />
       ),
     },
     {
-      title: 'Facility',
+      title: <Typography.Text style={{ fontSize: '18px' }}>Facility</Typography.Text>,
       dataIndex: 'name',
-      width: '40%',
+      width: '50%',
       render: (name: string, facility: DataType) => (
         <Space direction='vertical'>
           <Typography.Text
             strong
-            style={{ fontSize: '20px' }}
+            style={{ fontSize: '22px' }}
           >
             {name} ({facility.workplace_code})
           </Typography.Text>
-          <Typography.Text>{facility.address}</Typography.Text>
+          {/* <Typography.Text>{facility.address}</Typography.Text> */}
+          <Typography.Text>Created at: {dayjs(facility.create_at).format('DD/MM/YYYY')}</Typography.Text>
         </Space>
       ),
+      sorter: (a, b) => {
+        const dateA: any = a.create_at ? dayjs(a.create_at) : dayjs('')
+        const dateB: any = b.create_at ? dayjs(b.create_at) : dayjs('')
+        return dateA - dateB
+      },
+      defaultSortOrder: 'descend',
     },
     {
-      title: 'Status',
+      title: <Typography.Text style={{ fontSize: '18px' }}>Status</Typography.Text>,
       dataIndex: 'status',
-      width: '20%',
-      render: (status: any) => (
-        <Typography.Text
-          style={{
-            color:
-              status === 'ON'
-                ? token.colorSuccessText
-                : status === 'OFF'
-                  ? token.colorErrorText
-                  : token.colorWarningText,
-            fontSize: '18px',
-            display: 'flex',
-            alignItems: 'center',
-          }}
-        >
-          {status === 'ON' ? (
-            <>
-              <MdOutlineCheck className='text-[24px] m-1' /> ACTIVE
-            </>
-          ) : status === 'OFF' ? (
-            <>
-              <MdOutlineClose className='text-[24px] m-1' /> INACTIVE
-            </>
-          ) : (
-            <>
-              <MdOutlineCircle className='text-[24px] m-1' /> UPCOMING
-            </>
-          )}
-        </Typography.Text>
+      width: '10%',
+      render: (value: COMMON_STATUS) => (
+        <StatusTag
+          status={value}
+          style={{ fontSize: '14px', padding: '4px 8px' }}
+        />
       ),
+      filters: [
+        {
+          text: 'ACTIVE',
+          value: 'ON',
+        },
+        {
+          text: 'INACTIVE',
+          value: 'OFF',
+        },
+        {
+          text: 'UPCOMING',
+          value: 'UPCOMING',
+        },
+      ],
+      onFilter: (value, { status }) => String(status).indexOf(String(value)) === 0,
     },
     {
-      title: 'Action',
-      width: '15%',
+      title: <Typography.Text style={{ fontSize: '18px' }}>Action</Typography.Text>,
+      width: '10%',
       render: (facility: DataType) => (
         <Space>
           <Button
             type='primary'
+            size='large'
             onClick={() => {
               navigate(`/admin/facilities/show/${facility._id}`)
             }}
           >
-            Show
+            <EyeOutlined className='text-white text-[22px]' />
           </Button>
-          {/* <Button
+          <Button
             type='primary'
+            size='large'
             danger
             onClick={() => {
               setSelectedFacility(facility)
               setIsModalOpen(true)
             }}
           >
-            Delete
-          </Button> */}
+            <DeleteOutlined className='text-white text-[22px]' />
+          </Button>
         </Space>
       ),
     },
@@ -153,13 +189,13 @@ const CustomContent = () => {
       <Breadcrumb
         items={[
           {
-            title: 'Home',
+            title: <Link to='/admin'>Home</Link>,
           },
           {
             title: 'Facilities',
           },
         ]}
-        style={{ padding: '4px' }}
+        style={{ padding: '4px', fontSize: '16px' }}
       />
       <Card>
         <div className='flex justify-between'>
@@ -173,14 +209,17 @@ const CustomContent = () => {
             className='flex'
             size='middle'
           >
-            <AdminSearch />
+            <AdminSearch
+              endpoint='workplace'
+              keysearch={search ?? ''}
+              onChangeInput={handleSearch}
+            />
             <Button
               type='primary'
-              icon={<MdAddCircleOutline className='text-[22px]' />}
               onClick={() => navigate('/admin/facilities/create')}
               style={{ display: 'flex', alignItems: 'center', height: '40px', fontSize: '16px' }}
             >
-              Create
+              <MdAddCircleOutline className='text-[22px]' />
             </Button>
           </Space>
         </div>
@@ -188,19 +227,19 @@ const CustomContent = () => {
           <Table
             rowKey={(facility: DataType) => facility._id}
             columns={columns}
-            dataSource={workplaceData.data}
+            dataSource={search ? filteredData?.data : workplaceData.data}
             pagination={{
               position: ['bottomRight'],
-              current: page,
+              current: Number(page),
+              pageSize: Number(limit),
               defaultCurrent: 1,
               defaultPageSize: 10,
-              pageSizeOptions: [10],
+              pageSizeOptions: [5, 10, 20],
               showSizeChanger: true,
               showQuickJumper: true,
-              total: workplaceData.total,
+              total: search ? filteredData?.total : workplaceData?.total,
             }}
             onChange={onChange}
-            bordered
             style={{ marginTop: 16 }}
           />
         )}

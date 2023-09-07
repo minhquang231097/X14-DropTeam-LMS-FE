@@ -1,6 +1,6 @@
 import React from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
-import { Breadcrumb, Card, Typography, Row, Col, Image, Divider, Space, Button, Table } from 'antd'
+import { Breadcrumb, Card, Typography, Row, Col, Divider, Space, Button, Table } from 'antd'
 import { useQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
@@ -8,6 +8,7 @@ import AdminLayout from '@/layouts/admin'
 import { ShowButtonStyle } from '@/utils/style'
 import { getClassById } from '@/apis/class.api'
 import { weekdays } from '@/utils/day'
+import { getStudentsByClassID } from '@/apis/studentsByClassId.api'
 
 dayjs.extend(customParseFormat)
 
@@ -16,9 +17,17 @@ const CustomContent = () => {
   const navigate = useNavigate()
 
   const { data: classByID } = useQuery({
-    queryKey: ['workplace'],
+    queryKey: ['classes'],
     queryFn: async () => {
       const res = await getClassById(id as string)
+      return res.data.data
+    },
+  })
+
+  const { data: studentsByClassID } = useQuery({
+    queryKey: ['studentByclassID'],
+    queryFn: async () => {
+      const res = await getStudentsByClassID(id as string)
       return res.data.data
     },
   })
@@ -32,7 +41,7 @@ const CustomContent = () => {
       <Breadcrumb
         items={[
           {
-            title: 'Home',
+            title: <Link to='/admin'>Home</Link>,
           },
           {
             title: <Link to='/admin/classes/all'>Classes</Link>,
@@ -41,7 +50,7 @@ const CustomContent = () => {
             title: `${classByID.class_code}`,
           },
         ]}
-        style={{ padding: '4px' }}
+        style={{ padding: '4px', fontSize: '16px' }}
       />
       <Card>
         <Row gutter={[16, 16]}>
@@ -53,11 +62,28 @@ const CustomContent = () => {
               {classByID.class_code}
             </Typography.Title>
             <Space direction='vertical'>
-              <Typography.Text className='mt-2 mx-1'>Mentor: {classByID.mentor?.fullname}</Typography.Text>
-              <Typography.Text className='mt-2 mx-1'>
+              <Typography.Text
+                className='mt-2 mx-1'
+                style={{ fontSize: '18px' }}
+              >
+                Course: {classByID.course?.title}
+              </Typography.Text>
+              <Typography.Text
+                className='mt-2 mx-1'
+                style={{ fontSize: '18px' }}
+              >
+                Mentor: {classByID.mentor?.fullname}
+              </Typography.Text>
+              <Typography.Text
+                className='mt-2 mx-1'
+                style={{ fontSize: '18px' }}
+              >
                 Time: {dayjs(classByID.start_at).format('DD/MM/YYYY')} - {dayjs(classByID.end_at).format('DD/MM/YYYY')}
               </Typography.Text>
-              <Typography.Text className='mt-2 mx-1'>
+              <Typography.Text
+                className='mt-2 mx-1'
+                style={{ fontSize: '18px' }}
+              >
                 Schedule:{' '}
                 {classByID.schedule
                   .map((day: number) => {

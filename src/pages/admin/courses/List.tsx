@@ -1,15 +1,18 @@
-import React, { useState } from 'react'
-import { Breadcrumb, Button, Card, Image, Modal, Space, Table, TableProps, Typography, theme } from 'antd'
-import { useNavigate } from 'react-router-dom'
-import { MdOutlineCheck, MdOutlineClose, MdAddCircleOutline } from 'react-icons/md'
+import React, { useEffect, useState } from 'react'
+import { Breadcrumb, Button, Card, Image, Modal, Space, Table, TableProps, Typography, notification } from 'antd'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
+import { MdAddCircleOutline } from 'react-icons/md'
 import { useQuery } from '@tanstack/react-query'
-import axios from 'axios'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
+import { ColumnsType } from 'antd/es/table'
+import { DeleteOutlined, EyeOutlined } from '@ant-design/icons'
 import AdminLayout from '@/layouts/admin'
 import AdminSearch from '@/components/search/adminSearch'
 import { getCoursesList } from '@/apis/coursesList.api'
-import { useQueryString } from '@/utils/utils'
+import LevelTag from '@/components/tag/LevelTag'
+import { COMMON_LEVEL } from '@/utils/level'
+import http from '@/utils/http'
 
 interface DataType {
   _id: string
@@ -20,50 +23,83 @@ interface DataType {
   is_active?: boolean
   create_at?: string
   formated_date: string
+  level: COMMON_LEVEL
 }
 
 dayjs.extend(customParseFormat)
 
 const CustomContent = () => {
-  const { useToken } = theme
-  const { token } = useToken()
   const navigate = useNavigate()
-
-  const queryString: { page?: string } = useQueryString()
-  const page = Number(queryString.page) || 1
+  const [searchParams, setSearchParams] = useSearchParams()
+  const page = searchParams.get('page') ?? 1
+  const limit = searchParams.get('limit') ?? 10
+  const search = searchParams.get('search') ?? null
 
   const [selectedCourse, setSelectedCourse] = useState<DataType | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [filteredData, setFilteredData] = useState<any>(null)
 
   const { data: courseData } = useQuery({
-    queryKey: ['course', page, 10],
+    queryKey: ['courses', page, limit],
     queryFn: async () => {
-      const res = await getCoursesList(page, 10)
+      const res = await getCoursesList(page, limit)
       return res.data
     },
   })
 
+  useEffect(() => {
+    if (courseData) {
+      setFilteredData(courseData.data)
+    }
+  }, [courseData])
+
+  useEffect(() => {
+    if (search) {
+      const filtered = courseData?.data.filter(
+        (item: any) =>
+          item.course_code.toLowerCase().includes(search.toLowerCase()) ||
+          item.title.toLowerCase().includes(search.toLowerCase()),
+      )
+      setFilteredData({ data: filtered, total: courseData?.total })
+    } else {
+      navigate(`/admin/courses/all?page=${page}&limit=${limit}`)
+      setFilteredData({ data: courseData?.data, total: courseData?.total })
+    }
+  }, [limit, page, search, courseData])
+
   const onChange: TableProps<DataType>['onChange'] = (pagination, filters, sorter, extra) => {
-    // console.log('params', pagination, filters, sorter, extra)
-    const { current } = pagination
-    navigate(`/admin/courses/all?page=${current}&limit=10`)
+    const { current, pageSize } = pagination
+    const searchParam = search ? `&search=${search}` : ''
+    navigate(`/admin/courses/all?page=${current}&limit=${pageSize}${searchParam}`)
+  }
+
+  const handleSearch = (value: string) => {
+    setSearchParams({ search: value })
   }
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`/api/course/?id=${selectedCourse?._id}`)
+      await http.delete(`/course/${selectedCourse?._id}`)
       // Perform any necessary actions after successful deletion
-    } catch (error) {
-      console.error(error)
+      notification.success({
+        message: 'Delete successful',
+        description: 'The course has been deleted successfully',
+      })
+    } catch (error: any) {
+      notification.error({
+        message: 'Delete failed',
+        description: error.message,
+      })
     }
+
     setIsModalOpen(false)
   }
 
-  const columns = [
+  const columns: ColumnsType<DataType> = [
     {
-      title: 'Image',
+      title: <Typography.Text style={{ fontSize: '18px' }}>Image</Typography.Text>,
       dataIndex: 'image',
-      width: '25%',
+      width: '12.5%',
       render: (image: any) => (
         <Image
           src={image.length > 0 ? image : 'https://via.placeholder.com/500x250'}
@@ -72,62 +108,78 @@ const CustomContent = () => {
       ),
     },
     {
-      title: 'Course',
+      title: <Typography.Text style={{ fontSize: '18px' }}>Course</Typography.Text>,
       dataIndex: 'course_code',
-      width: '40%',
+      width: '45%',
       render: (course_code: string, course: DataType) => (
         <Space direction='vertical'>
           <Typography.Text
             strong
-            style={{ fontSize: '20px' }}
+            style={{ fontSize: '22px' }}
           >
             {course_code}: {course.title}
           </Typography.Text>
           <Typography.Text>Created at: {dayjs(course.create_at).format('DD/MM/YYYY')}</Typography.Text>
         </Space>
       ),
+      sorter: (a, b) => {
+        const dateA: any = a.create_at ? dayjs(a.create_at) : dayjs('')
+        const dateB: any = b.create_at ? dayjs(b.create_at) : dayjs('')
+        return dateA - dateB
+      },
+      defaultSortOrder: 'descend',
     },
     {
-      title: 'Status',
-      dataIndex: 'is_active',
-      width: '20%',
-      render: () => (
-        <Typography.Text
-          style={{
-            color: token.colorSuccessText,
-            fontSize: '18px',
-            display: 'flex',
-            alignItems: 'center',
-          }}
-        >
-          <MdOutlineCheck className='text-[24px] m-1' />
-          Active
-        </Typography.Text>
-      ),
-    },
-    {
-      title: 'Action',
+      title: <Typography.Text style={{ fontSize: '18px' }}>Difficulty</Typography.Text>,
+      dataIndex: 'level',
       width: '15%',
+      render: (value: COMMON_LEVEL) => (
+        <LevelTag
+          level={value}
+          style={{ fontSize: '14px', padding: '4px 8px' }}
+        />
+      ),
+      filters: [
+        {
+          text: 'BEGINNER',
+          value: 'BEGINNER',
+        },
+        {
+          text: 'INTERMEDIATE',
+          value: 'INTERMEDIATE',
+        },
+        {
+          text: 'ADVANCED',
+          value: 'ADVANCED',
+        },
+      ],
+      onFilter: (value, { level }) => String(level).indexOf(String(value)) === 0,
+    },
+    {
+      title: <Typography.Text style={{ fontSize: '18px' }}>Action</Typography.Text>,
+      width: '10%',
       render: (course: DataType) => (
         <Space>
           <Button
             type='primary'
+            size='large'
             onClick={() => {
               navigate(`/admin/courses/show/${course._id}`)
             }}
           >
-            Show
+            <EyeOutlined className='text-white text-[22px]' />
           </Button>
-          {/* <Button
+          <Button
             type='primary'
+            size='large'
             danger
             onClick={() => {
               setSelectedCourse(course)
               setIsModalOpen(true)
             }}
           >
-            Delete
-          </Button> */}
+            <DeleteOutlined className='text-white text-[22px]' />
+          </Button>
         </Space>
       ),
     },
@@ -138,13 +190,13 @@ const CustomContent = () => {
       <Breadcrumb
         items={[
           {
-            title: 'Home',
+            title: <Link to='/admin'>Home</Link>,
           },
           {
             title: 'Courses',
           },
         ]}
-        style={{ padding: '4px' }}
+        style={{ padding: '4px', fontSize: '16px' }}
       />
       <Card>
         <div className='flex justify-between'>
@@ -158,14 +210,17 @@ const CustomContent = () => {
             className='flex'
             size='middle'
           >
-            <AdminSearch />
+            <AdminSearch
+              endpoint='course'
+              keysearch={search ?? ''}
+              onChangeInput={handleSearch}
+            />
             <Button
               type='primary'
-              icon={<MdAddCircleOutline className='text-[18px]' />}
               onClick={() => navigate('/admin/courses/create')}
               style={{ display: 'flex', alignItems: 'center', height: '40px', fontSize: '16px' }}
             >
-              Create
+              <MdAddCircleOutline className='text-[22px]' />
             </Button>
           </Space>
         </div>
@@ -173,19 +228,19 @@ const CustomContent = () => {
           <Table
             rowKey={(course: DataType) => course._id}
             columns={columns}
-            dataSource={courseData.data}
+            dataSource={search ? filteredData?.data : courseData.data}
             pagination={{
               position: ['bottomRight'],
-              current: page,
+              current: Number(page),
+              pageSize: Number(limit),
               defaultCurrent: 1,
               defaultPageSize: 10,
-              pageSizeOptions: [10],
+              pageSizeOptions: [5, 10, 20],
               showSizeChanger: true,
               showQuickJumper: true,
-              total: courseData.total,
+              total: search ? filteredData?.total : courseData.total,
             }}
             onChange={onChange}
-            bordered
             style={{ marginTop: 16 }}
           />
         )}

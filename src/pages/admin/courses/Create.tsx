@@ -22,20 +22,6 @@ import AdminLayout from '@/layouts/admin'
 import { createCourse } from '@/apis/courseCreate.api'
 // import { UploadOutlined } from '@ant-design/icons'
 
-interface ICourse {
-  course_code: string
-  title: string
-  image?: []
-  desc?: string
-  lesson_list?: []
-  session_per_course?: number
-  price?: number
-  duration?: number
-  level?: number
-  rate?: number
-  discount?: number
-}
-
 const CustomContent = () => {
   const [form] = Form.useForm()
   const navigate = useNavigate()
@@ -50,37 +36,21 @@ const CustomContent = () => {
       form.resetFields()
       navigate('/admin/courses/all')
     },
-    onError: () => {
+    onError: (error: Error) => {
       // Perform any necessary actions after failed creation
       notification.error({
         message: 'Update failed',
-        description: 'There was an error updating the course',
+        description: error.message,
       })
-      form.resetFields()
     },
   })
-
-  // const handleSubmit = async (values: ICourse) => {
-  //   try {
-  //     mutate(values)
-  //     notification.success({
-  //       message: 'Update successful',
-  //       description: 'The course has been updated successfully',
-  //     })
-  //   } catch (error) {
-  //     notification.error({
-  //       message: 'Update failed',
-  //       description: 'There was an error updating the course',
-  //     })
-  //   }
-  // }
 
   return (
     <>
       <Breadcrumb
         items={[
           {
-            title: 'Home',
+            title: <Link to='/admin'>Home</Link>,
           },
           {
             title: <Link to='/admin/courses/all'>Courses</Link>,
@@ -89,7 +59,7 @@ const CustomContent = () => {
             title: 'Create',
           },
         ]}
-        style={{ padding: '4px' }}
+        style={{ padding: '4px', fontSize: '16px' }}
       />
       <Card>
         <Form
@@ -112,18 +82,29 @@ const CustomContent = () => {
               >
                 <Input />
               </Form.Item>
-
               <Form.Item
-                label='Duration (Hours per lesson)'
-                name='duration'
+                label='Sessions per Course'
+                name='session_per_course'
               >
-                <InputNumber style={{ width: '100%' }} />
+                <InputNumber
+                  min={0}
+                  style={{ width: '100%' }}
+                />
               </Form.Item>
               <Form.Item
                 label='Price'
                 name='price'
               >
                 <InputNumber style={{ width: '100%' }} />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                label='Course Title'
+                name='title'
+                rules={[{ required: true, message: 'Please enter the title' }]}
+              >
+                <Input />
               </Form.Item>
               <Form.Item
                 label='Level'
@@ -137,25 +118,6 @@ const CustomContent = () => {
                   ]}
                 />
               </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                label='Course Title'
-                name='title'
-                rules={[{ required: true, message: 'Please enter the title' }]}
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item
-                label='Sessions per Course'
-                name='session_per_course'
-              >
-                <InputNumber
-                  min={0}
-                  style={{ width: '100%' }}
-                />
-              </Form.Item>
-
               <Form.Item
                 label='Discount'
                 name='discount'
@@ -192,7 +154,12 @@ const CustomContent = () => {
               size='middle'
               style={{ display: 'flex', justifyContent: 'flex-end' }}
             >
-              <Button type='default'>Cancel</Button>
+              <Button
+                type='default'
+                onClick={() => navigate('/admin/courses/all')}
+              >
+                Cancel
+              </Button>
               <Button
                 type='primary'
                 htmlType='submit'

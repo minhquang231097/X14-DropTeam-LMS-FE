@@ -56,18 +56,17 @@ const CustomContent = () => {
       form.resetFields()
       navigate('/admin/courses/all')
     },
-    onError: () => {
+    onError: (error: Error) => {
       // Perform any necessary actions after failed creation
       notification.error({
         message: 'Update failed',
-        description: 'There was an error updating the course',
+        description: error.message,
       })
-      form.resetFields()
     },
   })
 
   const { data: course } = useQuery({
-    queryKey: ['course'],
+    queryKey: ['courses'],
     queryFn: async () => {
       const res = await getCourse(id as string)
       return res.data.data
@@ -78,27 +77,12 @@ const CustomContent = () => {
     return <Typography.Text>Course not found</Typography.Text>
   }
 
-  // const handleSubmit = async (values: ICourse) => {
-  //   try {
-  //     mutate(values)
-  //     notification.success({
-  //       message: 'Update successful',
-  //       description: 'The course has been updated successfully',
-  //     })
-  //   } catch (error) {
-  //     notification.error({
-  //       message: 'Update failed',
-  //       description: 'There was an error updating the course',
-  //     })
-  //   }
-  // }
-
   return (
     <>
       <Breadcrumb
         items={[
           {
-            title: 'Home',
+            title: <Link to='/admin'>Home</Link>,
           },
           {
             title: <Link to='/admin/courses/all'>Courses</Link>,
@@ -107,7 +91,7 @@ const CustomContent = () => {
             title: `${course.course_code}: ${course.title}`,
           },
         ]}
-        style={{ padding: '4px' }}
+        style={{ padding: '4px', fontSize: '16px' }}
       />
       <Card>
         <Form
@@ -125,24 +109,20 @@ const CustomContent = () => {
           <Row gutter={[16, 16]}>
             <Col span={12}>
               <Form.Item
-                label='Course Title'
-                name='title'
-                rules={[{ required: true, message: 'Please enter the title' }]}
-              >
-                <Input required />
-              </Form.Item>
-              <Form.Item
                 label='Course Code'
                 name='course_code'
-                rules={[{ required: true, message: 'Please enter the code' }]}
+                rules={[{ required: true }]}
               >
-                <Input required />
+                <Input readOnly />
               </Form.Item>
               <Form.Item
-                label='Number of Sessions per Course'
+                label='Sessions per Course'
                 name='session_per_course'
               >
-                <InputNumber style={{ width: '100%' }} />
+                <InputNumber
+                  min={0}
+                  style={{ width: '100%' }}
+                />
               </Form.Item>
               <Form.Item
                 label='Price'
@@ -152,17 +132,12 @@ const CustomContent = () => {
               </Form.Item>
             </Col>
             <Col span={12}>
-              {/* <Form.Item
-                label='Lesson List'
-                name='lesson_list'
+              <Form.Item
+                label='Course Title'
+                name='title'
+                rules={[{ required: true, message: 'Please enter the title' }]}
               >
                 <Input />
-              </Form.Item> */}
-              <Form.Item
-                label='Duration'
-                name='duration'
-              >
-                <InputNumber style={{ width: '100%' }} />
               </Form.Item>
               <Form.Item
                 label='Level'
@@ -180,7 +155,10 @@ const CustomContent = () => {
                 label='Discount'
                 name='discount'
               >
-                <InputNumber style={{ width: '100%' }} />
+                <InputNumber
+                  min={0}
+                  style={{ width: '100%' }}
+                />
               </Form.Item>
             </Col>
             <Col span={24}>

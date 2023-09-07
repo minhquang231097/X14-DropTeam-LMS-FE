@@ -1,18 +1,20 @@
 import React from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
-import { Breadcrumb, Card, Typography, Row, Col, Image, Divider, Space, Button, Tag } from 'antd'
+import { Breadcrumb, Card, Typography, Row, Col, Image, Divider, Space, Button, Tag, Rate } from 'antd'
 import { useQuery } from '@tanstack/react-query'
+import { MdStarOutline } from 'react-icons/md'
 import AdminLayout from '@/layouts/admin'
-// import { CourseItems } from '@/data/courses'
 import { ShowButtonStyle } from '@/utils/style'
 import { getCourse } from '@/apis/course.api'
+import LevelTag from '@/components/tag/LevelTag'
+import AdminLessonList from '../lessons/List'
 
 const CustomContent = () => {
-  const { id } = useParams()
+  const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
 
   const { data: course } = useQuery({
-    queryKey: ['workplace'],
+    queryKey: ['courses'],
     queryFn: async () => {
       const res = await getCourse(id as string)
       return res.data.data
@@ -28,7 +30,7 @@ const CustomContent = () => {
       <Breadcrumb
         items={[
           {
-            title: 'Home',
+            title: <Link to='/admin'>Home</Link>,
           },
           {
             title: <Link to='/admin/courses/all'>Courses</Link>,
@@ -37,7 +39,7 @@ const CustomContent = () => {
             title: `${course.course_code}: ${course.title}`,
           },
         ]}
-        style={{ padding: '4px' }}
+        style={{ padding: '4px', fontSize: '16px' }}
       />
       <Card>
         <Row gutter={[16, 16]}>
@@ -50,55 +52,82 @@ const CustomContent = () => {
             </Typography.Title>
             <Card>
               <Space direction='vertical'>
-                <Typography.Text className='mt-2 mx-1'>
+                <Typography.Text
+                  className='mt-2 mx-1'
+                  style={{ fontSize: '18px' }}
+                >
                   Price:{' '}
                   {course.discount ? (
-                    <Typography.Text className='mt-2 mx-1 line-through'>{course.price} $</Typography.Text>
+                    <Typography.Text
+                      className='mt-2 mx-1 line-through'
+                      style={{ fontSize: '18px' }}
+                    >
+                      {course.price} $
+                    </Typography.Text>
                   ) : (
-                    <Typography.Text className='mt-2 mx-1'>{course.price} $</Typography.Text>
+                    <Typography.Text
+                      className='mt-2 mx-1'
+                      style={{ fontSize: '18px' }}
+                    >
+                      {course.price} $
+                    </Typography.Text>
                   )}{' '}
                   {course.discount > 0 && (
                     <>
                       <Typography.Text
                         strong
                         className='mt-2 mx-1'
-                        style={{ fontSize: '20px' }}
+                        style={{ fontSize: '22px' }}
                       >
-                        {(1 - course.discount / 100) * course.price} $
+                        {Math.round((1 - course.discount / 100) * course.price)} $
                       </Typography.Text>
                       <Tag
                         color='blue'
-                        style={{ fontSize: '14px', margin: '0 4px' }}
+                        style={{ fontSize: '16px', padding: '4px', margin: '0 4px' }}
                       >
                         - {course.discount} %
                       </Tag>
                     </>
                   )}
                 </Typography.Text>
-                <Typography.Text className='mt-2 mx-1'>Level: {course.level}</Typography.Text>
-                <Typography.Text className='mt-2 mx-1'>Duration: {course.duration} days</Typography.Text>
-                <Typography.Text className='mt-2 mx-1'>
+                <Typography.Text
+                  className='mt-2 mx-1'
+                  style={{ fontSize: '18px' }}
+                >
+                  Level:{' '}
+                  <LevelTag
+                    level={course.level}
+                    style={{ fontSize: '16px', padding: '4px 8px', margin: '0px 8px' }}
+                  />
+                </Typography.Text>
+                <Typography.Text
+                  className='mt-2 mx-1'
+                  style={{ fontSize: '18px' }}
+                >
                   Sessions per course: {course.session_per_course}
                 </Typography.Text>
-                <div>
-                  {/* <Rate
-                    disabled
-                    value={course.rate}
-                    className='mt-2 mx-1'
-                  />{' '} */}
-                  <Typography.Text className='mt-2 mx-1'>Rate: {course.rate}/5 stars</Typography.Text>
-                </div>
+                <Rate
+                  disabled
+                  character={<MdStarOutline className='text-[24px]' />}
+                  value={course.rate}
+                />
+                {/* <Typography.Text
+                  className='mt-2 mx-1'
+                  style={{ fontSize: '18px' }}
+                >
+                  Sessions per course: {course.session_per_course}
+                </Typography.Text> */}
               </Space>
             </Card>
           </Col>
           <Col span={8}>
             <Image
-              src={course.image ? course.image : 'https://via.placeholder.com/500x250'}
+              src={course.image && course.image.length > 0 ? course.image : 'https://via.placeholder.com/500x250'}
               alt={course.title}
             />
           </Col>
-          <Divider />
-          <Col span={24}>
+          {/* <Divider /> */}
+          {/* <Col span={24}>
             <Space direction='vertical'>
               <Typography.Title
                 level={4}
@@ -109,6 +138,19 @@ const CustomContent = () => {
               <Typography.Text>{course.desc}</Typography.Text>
             </Space>
           </Col>
+          <Divider />
+          <Col span={24}>
+            <Space direction='vertical'>
+              <Typography.Title
+                level={4}
+                className='-mt-1'
+              >
+                Lesson List
+              </Typography.Title>
+              {/* <Typography.Text>{course.desc}</Typography.Text> 
+            </Space>
+          </Col> */}
+          <AdminLessonList />
         </Row>
         <Space
           size='middle'

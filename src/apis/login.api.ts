@@ -1,6 +1,6 @@
+import { message } from 'antd'
 import http from '@/utils/http'
 import { getUserProfile } from './userProfile.api'
-import { message } from 'antd'
 
 const handleLogin = async (value: { username: string; password: string }, others?: any) => {
   await http

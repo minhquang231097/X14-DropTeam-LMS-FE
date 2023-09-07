@@ -38,12 +38,13 @@ import AdminCreateClasses from './pages/admin/classes/Create.tsx'
 import AdminEditClasses from './pages/admin/classes/Edit.tsx'
 import AdminMentors from './pages/admin/userlists/MentorList.tsx'
 import AdminStudents from './pages/admin/userlists/StudentList.tsx'
-import AdminLessons from './pages/admin/lessons/index.tsx'
+import AdminLessons from './pages/admin/lessons/Edit.tsx'
 import AdminFeedbacks from './pages/admin/feedbacks/index.tsx'
 import AdminStudentEdit from './pages/admin/userlists/StudentEdit.tsx'
 import AdminMentorEdit from './pages/admin/userlists/MentorEdit.tsx'
 import Forbidden403 from './pages/forbidden403/Fobidden403.tsx'
 import LoginForm from './pages/user/login/LoginForm.tsx'
+import AdminRegisterCourse from './pages/admin/registercourses/index.tsx'
 
 const App: React.FC = () => {
   const USER = JSON.parse(localStorage.getItem('user') as string)
@@ -223,6 +224,10 @@ const App: React.FC = () => {
         <Route
           path='/admin/feedbacks'
           element={USER && USER.role === 'ADMIN' ? <AdminFeedbacks /> : <Forbidden403 />}
+        />
+        <Route
+          path='/admin/courses/register-course'
+          element={USER && USER.role === 'ADMIN' ? <AdminRegisterCourse /> : <Forbidden403 />}
         />
         {/* <Route
           path='/admin/profile'

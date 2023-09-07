@@ -10,7 +10,7 @@ const items: MenuProps['items'] = [
     key: '1',
     label: (
       <Link
-        to='/admin/profile'
+        to='/profile'
         className='flex items-center text-gray-600 font-bold'
       >
         <MdOutlinePersonOutline className='text-2xl mr-2 p-2 pl-0' />
@@ -22,7 +22,7 @@ const items: MenuProps['items'] = [
     key: '2',
     label: (
       <Link
-        to='/admin/change-password'
+        to='/change-password'
         className='flex items-center text-gray-600 font-bold'
       >
         <MdLockOutline className='text-2xl mr-2 p-2 pl-0' />
