@@ -139,7 +139,7 @@ const App: React.FC = () => {
           path='/reset-password'
           element={
             <Suspense fallback={<Spin />}>
-              <ChangePassword />
+              <ResetPassword />
             </Suspense>
           }
         />
