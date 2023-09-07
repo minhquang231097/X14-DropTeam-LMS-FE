@@ -3,16 +3,13 @@ import { Button, Modal, Select, SelectProps } from 'antd'
 import { handleUserRegistCourse } from '@/apis/userRegistCourse.api'
 import { getWorkplacesList } from '@/apis/workplaceList.api'
 import { useQuery } from '@tanstack/react-query'
-import { useSearchParams, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 const LearnRegisterModal: React.FC = (data: any) => {
+  const { title, course_code, price, discount, level, session_per_course, _id } = data
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
-  const { title, course_code, price, discount, level, session_per_course, _id } = data
-
-  const regist = () => {
-    handleUserRegistCourse()
-  }
+  const [workplaceId, setWorkplaceId] = useState('64f746f5a6ea2f374d13dee1')
 
   const workplaceData = useQuery({
     queryKey: ['workplace'],
@@ -22,9 +19,23 @@ const LearnRegisterModal: React.FC = (data: any) => {
     },
   }).data
 
-  console.log(workplaceData)
-
   const options: SelectProps['options'] = []
+
+  workplaceData &&
+    workplaceData.map((item: any) => {
+      options.push({
+        value: item._id,
+        label: item.name,
+      })
+    })
+
+  const handleChange = (value: string | string[]) => {
+    setWorkplaceId(value as any)
+  }
+
+  const regist = () => {
+    handleUserRegistCourse(_id, workplaceId, navigate)
+  }
 
   return (
     <>
@@ -69,10 +80,13 @@ const LearnRegisterModal: React.FC = (data: any) => {
           <br />
           Please choose a facility:{' '}
           <Select
-            // onChange={handleChange}
-            style={{ width: 120 }}
+            defaultValue={options[0] as any}
+            onChange={handleChange}
+            style={{ width: 280 }}
             options={options}
           />
+          <br />
+          <br />
         </p>
       </Modal>
     </>
