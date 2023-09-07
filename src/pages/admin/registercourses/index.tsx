@@ -15,11 +15,13 @@ const CustomContent = () => {
   const [selectedCourse, setSelectedCourse] = useState<string | undefined>(undefined)
   const [selectedWorkplace, setSelectedWorkplace] = useState<string | undefined>(undefined)
   const [selectedStudent, setSelectedStudent] = useState<string | undefined>(undefined)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
   const [searchParams, setSearchParams] = useSearchParams()
   const page = searchParams.get('page') ?? 1
   const limit = searchParams.get('limit') ?? 50
 
-  const { mutate, isLoading } = useMutation(registerCourseForAdmin, {
+  const { mutate } = useMutation(registerCourseForAdmin, {
     onSuccess: () => {
       // Perform any necessary actions after successful creation
       notification.success({
@@ -74,6 +76,18 @@ const CustomContent = () => {
     // console.log(courseByID)
   }
 
+  const showModal = () => {
+    setIsModalOpen(true)
+  }
+
+  const handleOk = () => {
+    setIsModalOpen(false)
+  }
+
+  const handleCancel = () => {
+    setIsModalOpen(false)
+  }
+
   return (
     <>
       <Breadcrumb
@@ -87,21 +101,17 @@ const CustomContent = () => {
         ]}
         style={{ padding: '4px', fontSize: '16px' }}
       />
-      <Card>
-        {/* <Typography.Title
+      {/* <Typography.Title
           level={3}
           className='mt-0 mx-1'
         >
           Register For New Student
         </Typography.Title> */}
-        <Button
-          type='primary'
-          htmlType='submit'
-          loading={isLoading}
-        >
-          Register For New Student
-        </Button>
-        {/* <Form
+      <Card>
+        <Button type='default'>Register For New Student</Button>
+      </Card>
+
+      {/* <Form
           form={form}
           onFinish={mutate}
           layout='vertical'
@@ -200,7 +210,6 @@ const CustomContent = () => {
             </Space>
           </Form.Item>
         </Form> */}
-      </Card>
     </>
   )
 }
