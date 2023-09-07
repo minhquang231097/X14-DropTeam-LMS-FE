@@ -2,14 +2,15 @@ import React from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import { Breadcrumb, Card, Typography, Row, Col, Image, Divider, Space, Button, Tag, Rate } from 'antd'
 import { useQuery } from '@tanstack/react-query'
+import { MdStarOutline } from 'react-icons/md'
 import AdminLayout from '@/layouts/admin'
-// import { CourseItems } from '@/data/courses'
 import { ShowButtonStyle } from '@/utils/style'
 import { getCourse } from '@/apis/course.api'
 import LevelTag from '@/components/tag/LevelTag'
+import AdminLessonList from '../lessons/List'
 
 const CustomContent = () => {
-  const { id } = useParams()
+  const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
 
   const { data: course } = useQuery({
@@ -78,7 +79,7 @@ const CustomContent = () => {
                         className='mt-2 mx-1'
                         style={{ fontSize: '22px' }}
                       >
-                        {(1 - course.discount / 100) * course.price} $
+                        {Math.round((1 - course.discount / 100) * course.price)} $
                       </Typography.Text>
                       <Tag
                         color='blue'
@@ -105,6 +106,17 @@ const CustomContent = () => {
                 >
                   Sessions per course: {course.session_per_course}
                 </Typography.Text>
+                <Rate
+                  disabled
+                  character={<MdStarOutline className='text-[24px]' />}
+                  value={course.rate}
+                />
+                {/* <Typography.Text
+                  className='mt-2 mx-1'
+                  style={{ fontSize: '18px' }}
+                >
+                  Sessions per course: {course.session_per_course}
+                </Typography.Text> */}
               </Space>
             </Card>
           </Col>
@@ -114,8 +126,8 @@ const CustomContent = () => {
               alt={course.title}
             />
           </Col>
-          <Divider />
-          <Col span={24}>
+          {/* <Divider /> */}
+          {/* <Col span={24}>
             <Space direction='vertical'>
               <Typography.Title
                 level={4}
@@ -126,6 +138,19 @@ const CustomContent = () => {
               <Typography.Text>{course.desc}</Typography.Text>
             </Space>
           </Col>
+          <Divider />
+          <Col span={24}>
+            <Space direction='vertical'>
+              <Typography.Title
+                level={4}
+                className='-mt-1'
+              >
+                Lesson List
+              </Typography.Title>
+              {/* <Typography.Text>{course.desc}</Typography.Text> 
+            </Space>
+          </Col> */}
+          <AdminLessonList />
         </Row>
         <Space
           size='middle'

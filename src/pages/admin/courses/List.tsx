@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Breadcrumb, Button, Card, Image, Modal, Space, Table, TableProps, Typography, notification } from 'antd'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { MdAddCircleOutline } from 'react-icons/md'
@@ -30,15 +30,14 @@ dayjs.extend(customParseFormat)
 
 const CustomContent = () => {
   const navigate = useNavigate()
-
-  // const queryString: { page?: string } = useQueryString()
-  // const page = Number(queryString.page) || 1
   const [searchParams, setSearchParams] = useSearchParams()
   const page = searchParams.get('page') ?? 1
   const limit = searchParams.get('limit') ?? 10
+  const search = searchParams.get('search') ?? null
 
   const [selectedCourse, setSelectedCourse] = useState<DataType | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [filteredData, setFilteredData] = useState<any>(null)
 
   const { data: courseData } = useQuery({
     queryKey: ['courses', page, limit],
@@ -48,10 +47,34 @@ const CustomContent = () => {
     },
   })
 
+  useEffect(() => {
+    if (courseData) {
+      setFilteredData(courseData.data)
+    }
+  }, [courseData])
+
+  useEffect(() => {
+    if (search) {
+      const filtered = courseData?.data.filter(
+        (item: any) =>
+          item.course_code.toLowerCase().includes(search.toLowerCase()) ||
+          item.title.toLowerCase().includes(search.toLowerCase()),
+      )
+      setFilteredData({ data: filtered, total: courseData?.total })
+    } else {
+      navigate(`/admin/courses/all?page=${page}&limit=${limit}`)
+      setFilteredData({ data: courseData?.data, total: courseData?.total })
+    }
+  }, [limit, page, search, courseData])
+
   const onChange: TableProps<DataType>['onChange'] = (pagination, filters, sorter, extra) => {
-    // console.log('params', pagination, filters, sorter, extra)
     const { current, pageSize } = pagination
-    navigate(`/admin/courses/all?page=${current}&limit=${pageSize}`)
+    const searchParam = search ? `&search=${search}` : ''
+    navigate(`/admin/courses/all?page=${current}&limit=${pageSize}${searchParam}`)
+  }
+
+  const handleSearch = (value: string) => {
+    setSearchParams({ search: value })
   }
 
   const handleDelete = async () => {
@@ -76,7 +99,7 @@ const CustomContent = () => {
     {
       title: <Typography.Text style={{ fontSize: '18px' }}>Image</Typography.Text>,
       dataIndex: 'image',
-      width: '25%',
+      width: '12.5%',
       render: (image: any) => (
         <Image
           src={image.length > 0 ? image : 'https://via.placeholder.com/500x250'}
@@ -88,7 +111,6 @@ const CustomContent = () => {
       title: <Typography.Text style={{ fontSize: '18px' }}>Course</Typography.Text>,
       dataIndex: 'course_code',
       width: '45%',
-      sorter: true,
       render: (course_code: string, course: DataType) => (
         <Space direction='vertical'>
           <Typography.Text
@@ -100,18 +122,38 @@ const CustomContent = () => {
           <Typography.Text>Created at: {dayjs(course.create_at).format('DD/MM/YYYY')}</Typography.Text>
         </Space>
       ),
+      sorter: (a, b) => {
+        const dateA: any = a.create_at ? dayjs(a.create_at) : dayjs('')
+        const dateB: any = b.create_at ? dayjs(b.create_at) : dayjs('')
+        return dateA - dateB
+      },
+      defaultSortOrder: 'descend',
     },
     {
       title: <Typography.Text style={{ fontSize: '18px' }}>Difficulty</Typography.Text>,
       dataIndex: 'level',
       width: '15%',
-      sorter: true,
       render: (value: COMMON_LEVEL) => (
         <LevelTag
           level={value}
           style={{ fontSize: '14px', padding: '4px 8px' }}
         />
       ),
+      filters: [
+        {
+          text: 'BEGINNER',
+          value: 'BEGINNER',
+        },
+        {
+          text: 'INTERMEDIATE',
+          value: 'INTERMEDIATE',
+        },
+        {
+          text: 'ADVANCED',
+          value: 'ADVANCED',
+        },
+      ],
+      onFilter: (value, { level }) => String(level).indexOf(String(value)) === 0,
     },
     {
       title: <Typography.Text style={{ fontSize: '18px' }}>Action</Typography.Text>,
@@ -168,7 +210,11 @@ const CustomContent = () => {
             className='flex'
             size='middle'
           >
-            <AdminSearch />
+            <AdminSearch
+              endpoint='course'
+              keysearch={search ?? ''}
+              onChangeInput={handleSearch}
+            />
             <Button
               type='primary'
               onClick={() => navigate('/admin/courses/create')}
@@ -182,7 +228,7 @@ const CustomContent = () => {
           <Table
             rowKey={(course: DataType) => course._id}
             columns={columns}
-            dataSource={courseData.data}
+            dataSource={search ? filteredData?.data : courseData.data}
             pagination={{
               position: ['bottomRight'],
               current: Number(page),
@@ -192,7 +238,7 @@ const CustomContent = () => {
               pageSizeOptions: [5, 10, 20],
               showSizeChanger: true,
               showQuickJumper: true,
-              total: courseData.total,
+              total: search ? filteredData?.total : courseData.total,
             }}
             onChange={onChange}
             style={{ marginTop: 16 }}
