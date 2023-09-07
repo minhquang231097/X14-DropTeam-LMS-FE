@@ -86,7 +86,6 @@ const LearnRegisterModal: React.FC = (data: any) => {
             options={options}
           />
           <br />
-          <br />
         </p>
       </Modal>
     </>

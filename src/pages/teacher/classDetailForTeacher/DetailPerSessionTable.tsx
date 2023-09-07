@@ -12,6 +12,7 @@ interface DataType {
   attendance?: string
   score?: number
   comment?: string
+  disabled?: boolean
 }
 
 type StudentList = {
@@ -108,6 +109,7 @@ const DetailPerSessionTable: React.FC<StudentList> = (props) => {
       title: 'Attendance',
       render: (_attendance, record) => (
         <Select
+          disabled={record.disabled}
           defaultValue='Select'
           style={{ width: '100%' }}
           options={[
@@ -128,6 +130,7 @@ const DetailPerSessionTable: React.FC<StudentList> = (props) => {
       width: '80px',
       render: (_score, record) => (
         <InputNumber
+          disabled={record.disabled}
           placeholder='Input score ...'
           min={0}
           max={10}
@@ -142,6 +145,7 @@ const DetailPerSessionTable: React.FC<StudentList> = (props) => {
       title: 'Comment',
       render: (_comment, record) => (
         <TextArea
+          disabled={record.disabled}
           rows={1}
           placeholder='Comment here ...'
           onBlur={(event) => handleCommentChange(event, record)}
@@ -151,12 +155,13 @@ const DetailPerSessionTable: React.FC<StudentList> = (props) => {
     {
       title: 'Action',
       width: '60px',
-      render: () => (
+      render: (_value, record) => (
         <Button
           type='link'
           icon={<BiSolidSave className='w-6 h-6 text-green-600 active:text-green-900' />}
           onClick={() => {
             props.handleBeforeSubmit(newAttendance)
+            handleDisableRow(record)
             message.success('Saved!')
           }}
         />
@@ -179,7 +184,6 @@ const DetailPerSessionTable: React.FC<StudentList> = (props) => {
   }
 
   // Attendance Method
-  // const [attendanceValue, setAttendanceValue] = useState([])
   const [newAttendance, setNewAttendance] = useState<AttendanceObj>()
 
   const handleAttendanceChange = (value: any, record: any) => {
@@ -200,11 +204,7 @@ const DetailPerSessionTable: React.FC<StudentList> = (props) => {
     if (event.target.value === '') {
       message.error('Please input Score as a Number!')
     } else {
-      // const student =
-      //   newAttendance && newAttendance.find((item: { session_id: string }) => item.session_id === record._id)
       const studentScore = { ...newAttendance, score: event.target.value }
-      // const index = newAttendance && newAttendance.findIndex((item) => item.session_id === record._id)
-      // newAttendance && newAttendance.splice(Number(index), 1, studentScore as any)
       setNewAttendance(studentScore as any)
     }
     localStorage.setItem('attendanceStudent', JSON.stringify(newAttendance))
@@ -212,11 +212,7 @@ const DetailPerSessionTable: React.FC<StudentList> = (props) => {
 
   const handleCommentChange = (event: any, _record?: any) => {
     if (event.target.value !== '') {
-      // const student =
-      //   newAttendance && newAttendance.find((item: { session_id: string }) => item.session_id === record._id)
       const studentComment = { ...newAttendance, comment: event.target.value }
-      // const index = newAttendance && newAttendance.findIndex((item) => item.session_id === record._id)
-      // newAttendance && newAttendance.splice(Number(index), 1, studentComment as any)
       setNewAttendance(studentComment as any)
       localStorage.setItem('attendanceStudent', JSON.stringify(newAttendance))
     }
@@ -229,6 +225,10 @@ const DetailPerSessionTable: React.FC<StudentList> = (props) => {
     navigate(
       `/teacher/class-detail/session?sesson_code=${props.session_code}&class_id=${props.class_id}&page=${current}&limit=${pageSize}`,
     )
+  }
+
+  const handleDisableRow = (record: DataType) => {
+    record.disabled = true
   }
 
   return (

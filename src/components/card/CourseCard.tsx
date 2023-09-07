@@ -85,7 +85,7 @@ const CourseCard = (course: Course) => {
           <div className='flex items-center'>
             <img
               src={`https://xsgames.co/randomusers/avatar.php?g=pixel&key=${Math.floor(Math.random() * 10)}`}
-              className='w-8 h-8 rounded-full mr-2'
+              className='w-8 h-8 rounded-full mr-2 border-[1px] border-solid border-[#ccc]'
             />
             <p className='text-gray-500'>Senior Teacher</p>
           </div>

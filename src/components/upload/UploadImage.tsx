@@ -86,6 +86,7 @@ const UploadImage: React.FC<{ imageUpload: any; setImageUpload: any }> = (props)
         defaultFileList={USER && USER.avatar ? [{ uid: 'avt', name: 'Avatar', status: 'done', url: USER.avatar }] : []}
         beforeUpload={(file) => {
           setImageUpload([...imageUpload, file])
+          return false
         }}
       >
         {fileList.length >= 1 ? null : uploadButton}
