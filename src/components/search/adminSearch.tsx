@@ -2,13 +2,29 @@ import { useContext, useEffect, useState } from 'react'
 import { Input } from 'antd'
 import { MdSearch } from 'react-icons/md'
 import { debounce } from 'lodash'
+import { useQuery } from '@tanstack/react-query'
 import { ColorModeContext } from '@/contexts/colorMode'
-import { UseSearchQuery } from '@/hooks/useSearchQuery'
+import http from '@/utils/http'
 
 interface SearchProps {
   endpoint: string
   keysearch: string
   onChangeInput: (value: string) => void
+}
+
+const UseSearchQuery = (endpoint: string, keysearch?: string) => {
+  return useQuery({
+    queryKey: [`${endpoint}`, keysearch],
+    queryFn: async () => {
+      const res = await http.get(`/${endpoint}`, {
+        params: {
+          search: keysearch,
+        },
+      })
+      return res.data.data
+    },
+    enabled: !!keysearch,
+  })
 }
 
 const AdminSearch: React.FC<SearchProps> = ({ endpoint, keysearch, onChangeInput }) => {
