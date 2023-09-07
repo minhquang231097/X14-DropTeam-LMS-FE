@@ -36,7 +36,9 @@ const AdminSearch: React.FC<SearchProps> = ({ endpoint, keysearch, onChangeInput
 
   useEffect(() => {
     if (searched) {
-      searchQuery.refetch()
+      debounce(() => {
+        searchQuery.refetch()
+      }, 1000)
     }
   }, [searchQuery, searched])
 
