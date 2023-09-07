@@ -11,7 +11,7 @@ const Register: React.FC = () => {
       <Header />
       <div className='w-full pt-20 pb-[96px] bg-gradient-to-r from-[#24C6DC] to-[#514A9D] dark:bg-gradient-to-r dark:from-[#1A2980] dark:to-[#26D0CE]'>
         <div
-          className='bg-white w-[1000px] max-md:w-[78%] p-10 pb-4 rounded-lg mx-auto'
+          className='bg-white w-[1000px] max-xl:w-[78%] p-10 pb-4 rounded-lg mx-auto'
           style={{ boxShadow: '0 0 10px rgba(0,0,0,.18)', cursor: 'pointer', border: '1px solid rgba(0,0,0,.14)' }}
         >
           <img

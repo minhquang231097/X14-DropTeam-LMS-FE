@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom'
 import Logo from '@/assets/images/logo/logo-with-shadow.png'
 import SearchBar from '@/components/search/SearchBar'
-import DropdownList from '@/components/dropdown/DropdownList'
 import DarkMode from './DarkMode'
 import UserDropDownDefault from '@/components/dropdown/UserDropdownDefault'
 import UserDropdownLogged from '@/components/dropdown/UserDropdownLogged'
@@ -25,34 +24,36 @@ const Header: React.FC = () => {
               src={Logo}
               alt=''
             />
-            <span className='text-2xl font-bold text-gray-600 dark:text-gray-100'>Vite Education</span>
+            <span className='text-2xl font-bold text-gray-600 dark:text-gray-100 max-lg:text-[20px] max-sm:hidden'>
+              Vite Education
+            </span>
           </a>
         </div>
 
         <div className='flex flex-1 justify-between max-md:hidden'>
           <Link
             to='/'
-            className='text-lg font-bold no-underline text-gray-600 dark:text-gray-100'
+            className='text-lg max-lg:text-[14px] font-bold no-underline text-gray-600 dark:text-gray-100'
           >
             Home
           </Link>
           <a
             target='_blank'
-            className='text-lg font-bold no-underline text-gray-600 dark:text-gray-100'
+            className='text-lg max-lg:text-[14px] font-bold no-underline text-gray-600 dark:text-gray-100'
           >
             About
           </a>
           <a
             target='_blank'
-            className='text-lg font-bold no-underline text-gray-600 dark:text-gray-100'
+            className='text-lg max-lg:text-[14px] font-bold no-underline text-gray-600 dark:text-gray-100'
           >
             Pages
           </a>
           <Link
             to='/courses-list?page=1&limit=6'
-            className='text-lg font-bold no-underline text-gray-600 dark:text-gray-100'
+            className='text-lg max-lg:text-[14px] font-bold no-underline text-gray-600 dark:text-gray-100'
           >
-            <DropdownList />
+            Courses
           </Link>
         </div>
 
