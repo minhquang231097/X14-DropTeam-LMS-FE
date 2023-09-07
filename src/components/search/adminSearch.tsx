@@ -24,6 +24,8 @@ const UseSearchQuery = (endpoint: string, keysearch?: string) => {
       return res.data.data
     },
     enabled: !!keysearch,
+    staleTime: 2000,
+    refetchInterval: 2000,
   })
 }
 
