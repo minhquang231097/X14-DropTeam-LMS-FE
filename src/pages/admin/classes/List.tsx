@@ -87,7 +87,7 @@ const CustomContent = () => {
     {
       title: <Typography.Text style={{ fontSize: '18px' }}>Image</Typography.Text>,
       dataIndex: 'image_url',
-      width: '20%',
+      width: '12.5%',
       render: () => (
         <Image
           src='https://res.cloudinary.com/dar4pvqx2/image/upload/v1693931926/vitebanner_wtcoum.jpg'
@@ -98,7 +98,7 @@ const CustomContent = () => {
     {
       title: <Typography.Text style={{ fontSize: '18px' }}>Class</Typography.Text>,
       dataIndex: 'class_code',
-      width: '20%',
+      width: '25%',
       sorter: true,
       render: (class_code: string, cls: DataType) => (
         <Space direction='vertical'>
@@ -109,7 +109,6 @@ const CustomContent = () => {
             {class_code}
           </Typography.Text>
           <Typography.Text strong>{cls.course?.title}</Typography.Text>
-          <Typography.Text>Mentor: {cls.mentor?.fullname}</Typography.Text>
         </Space>
       ),
     },

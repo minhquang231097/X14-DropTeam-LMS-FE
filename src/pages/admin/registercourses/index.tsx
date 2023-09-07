@@ -88,7 +88,20 @@ const CustomContent = () => {
         style={{ padding: '4px', fontSize: '16px' }}
       />
       <Card>
-        <Form
+        {/* <Typography.Title
+          level={3}
+          className='mt-0 mx-1'
+        >
+          Register For New Student
+        </Typography.Title> */}
+        <Button
+          type='primary'
+          htmlType='submit'
+          loading={isLoading}
+        >
+          Register For New Student
+        </Button>
+        {/* <Form
           form={form}
           onFinish={mutate}
           layout='vertical'
@@ -186,7 +199,7 @@ const CustomContent = () => {
               </Button>
             </Space>
           </Form.Item>
-        </Form>
+        </Form> */}
       </Card>
     </>
   )

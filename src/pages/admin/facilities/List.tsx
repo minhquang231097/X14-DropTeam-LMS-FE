@@ -66,7 +66,7 @@ const CustomContent = () => {
     {
       title: <Typography.Text style={{ fontSize: '18px' }}>Image</Typography.Text>,
       dataIndex: 'image_url',
-      width: '25%',
+      width: '12.5%',
       render: () => (
         <Image
           src='https://res.cloudinary.com/dar4pvqx2/image/upload/v1693931926/vitebanner_wtcoum.jpg'
@@ -158,7 +158,7 @@ const CustomContent = () => {
             className='flex'
             size='middle'
           >
-            <AdminSearch />
+            <AdminSearch endpoint='workplace' />
             <Button
               type='primary'
               onClick={() => navigate('/admin/facilities/create')}

@@ -108,7 +108,7 @@ const CustomContent = () => {
                 </Typography.Text>
                 <Rate
                   disabled
-                  character={<MdStarOutline className='text-[24px]' />} // character is required + needs suitable icon for better performance
+                  character={<MdStarOutline className='text-[24px]' />}
                   value={course.rate}
                 />
                 {/* <Typography.Text

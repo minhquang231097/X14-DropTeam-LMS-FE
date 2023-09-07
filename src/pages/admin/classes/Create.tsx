@@ -347,7 +347,7 @@ const CustomContent = () => {
                 <InputNumber style={{ width: '100%' }} />
               </Form.Item>
             </Col>
-            {selectedCourse && selectedWorkplace && (
+            {/* {selectedCourse && selectedWorkplace && (
               <Col span={24}>
                 <Form.Item>
                   <Card>
@@ -385,7 +385,7 @@ const CustomContent = () => {
                   </Card>
                 </Form.Item>
               </Col>
-            )}
+            )} */}
           </Row>
           {/* <Col
                 span={12}
