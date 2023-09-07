@@ -69,6 +69,7 @@ const UserDropdownLogged: React.FC<{ username: any }> = (prop: any) => {
             fontWeight: 'bold',
             cursor: 'pointer',
             borderWidth: '1px',
+            borderColor: '#ccc',
             backgroundColor: '#F1F5F9',
           }}
           src={`https://xsgames.co/randomusers/avatar.php?g=pixel&key=${Math.floor(Math.random() * 10)}`}
