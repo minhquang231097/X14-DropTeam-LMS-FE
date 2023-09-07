@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import { Breadcrumb, Button, Card, Image, Modal, Space, Table, TableProps, Typography, notification, theme } from 'antd'
@@ -6,6 +6,7 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { MdAddCircleOutline } from 'react-icons/md'
 import { useQuery } from '@tanstack/react-query'
 import { DeleteOutlined, EyeOutlined } from '@ant-design/icons'
+import type { ColumnsType } from 'antd/es/table'
 import AdminLayout from '@/layouts/admin'
 import AdminSearch from '@/components/search/adminSearch'
 import { getClassesList } from '@/apis/classesList.api'
@@ -30,6 +31,7 @@ interface DataType {
   location?: string
   is_active?: boolean
   class_size?: number
+  create_at?: string
   start_at?: string
   end_at?: string
   course?: ICourse
@@ -47,10 +49,12 @@ const CustomContent = () => {
   const [searchParams, setSearchParams] = useSearchParams()
   const page = searchParams.get('page') ?? 1
   const limit = searchParams.get('limit') ?? 10
+  const search = searchParams.get('search') ?? null
 
   // const [isActive, setIsActive] = useState(true)
   const [selectedClass, setSelectedClass] = useState<DataType | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [filteredData, setFilteredData] = useState<any>(null)
 
   const { data: classData } = useQuery({
     queryKey: ['classes', page, limit],
@@ -60,10 +64,34 @@ const CustomContent = () => {
     },
   })
 
+  useEffect(() => {
+    if (classData) {
+      setFilteredData(classData)
+    }
+  }, [classData])
+
+  useEffect(() => {
+    if (search) {
+      const filtered = classData?.data.filter(
+        (item: any) =>
+          item.class_code.toLowerCase().includes(search.toLowerCase()) ||
+          item.course.title.toLowerCase().includes(search.toLowerCase()),
+      )
+      setFilteredData({ data: filtered, total: classData?.total })
+    } else {
+      navigate(`/admin/classes/all?page=${page}&limit=${limit}`)
+      setFilteredData({ data: classData?.data, total: classData?.total })
+    }
+  }, [limit, page, search, classData])
+
   const onChange: TableProps<DataType>['onChange'] = (pagination, filters, sorter, extra) => {
-    // console.log('params', pagination, filters, sorter, extra)
     const { current, pageSize } = pagination
-    navigate(`/admin/classes/all?page=${current}&limit=${pageSize}`)
+    const searchParam = search ? `&search=${search}` : ''
+    navigate(`/admin/classes/all?page=${current}&limit=${pageSize}${searchParam}`)
+  }
+
+  const handleSearch = (value: string) => {
+    setSearchParams({ search: value })
   }
 
   const handleDelete = async () => {
@@ -83,7 +111,7 @@ const CustomContent = () => {
     setIsModalOpen(false)
   }
 
-  const columns = [
+  const columns: ColumnsType<DataType> = [
     {
       title: <Typography.Text style={{ fontSize: '18px' }}>Image</Typography.Text>,
       dataIndex: 'image_url',
@@ -99,7 +127,6 @@ const CustomContent = () => {
       title: <Typography.Text style={{ fontSize: '18px' }}>Class</Typography.Text>,
       dataIndex: 'class_code',
       width: '25%',
-      sorter: true,
       render: (class_code: string, cls: DataType) => (
         <Space direction='vertical'>
           <Typography.Text
@@ -109,8 +136,15 @@ const CustomContent = () => {
             {class_code}
           </Typography.Text>
           <Typography.Text strong>{cls.course?.title}</Typography.Text>
+          <Typography.Text>Created at: {dayjs(cls.create_at).format('DD/MM/YYYY')}</Typography.Text>
         </Space>
       ),
+      sorter: (a, b) => {
+        const dateA: any = a.create_at ? dayjs(a.create_at) : dayjs('')
+        const dateB: any = b.create_at ? dayjs(b.create_at) : dayjs('')
+        return dateA - dateB
+      },
+      defaultSortOrder: 'descend',
     },
     {
       title: <Typography.Text style={{ fontSize: '18px' }}>Schedule</Typography.Text>,
@@ -210,7 +244,11 @@ const CustomContent = () => {
             className='flex'
             size='middle'
           >
-            <AdminSearch />
+            <AdminSearch
+              endpoint='class'
+              keysearch={search ?? ''}
+              onChangeInput={handleSearch}
+            />
             <Button
               type='primary'
               onClick={() => navigate('/admin/classes/create')}
@@ -224,7 +262,7 @@ const CustomContent = () => {
           <Table
             rowKey={(cls: DataType) => cls._id}
             columns={columns}
-            dataSource={classData.data}
+            dataSource={search ? filteredData?.data : classData.data}
             pagination={{
               position: ['bottomRight'],
               current: Number(page),
@@ -234,7 +272,7 @@ const CustomContent = () => {
               pageSizeOptions: [5, 10, 20],
               showSizeChanger: true,
               showQuickJumper: true,
-              total: classData.total,
+              total: search ? filteredData?.total : classData.total,
             }}
             onChange={onChange}
             style={{ marginTop: 16 }}
