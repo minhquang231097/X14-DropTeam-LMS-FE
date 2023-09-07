@@ -3,7 +3,7 @@ import Header from '@/layouts/user/Header'
 import Footer from '@/layouts/user/Footer'
 import SidebarTeacher from '@/layouts/user/SidebarTeacher'
 import DetailPerSessionTable from './DetailPerSessionTable'
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams, useNavigate } from 'react-router-dom'
 import { Button } from 'antd'
 import { useQuery } from '@tanstack/react-query'
 import { getStudentsListPerSession } from '@/apis/studentsPerSession'
@@ -15,6 +15,7 @@ import { handleSubmitAttendance } from '@/apis/submitAttendance.api'
 const DetailPerSession: React.FC = () => {
   const [searchText, _setSearchText] = useState('')
   const [filteredData, _setFilteredData] = useState([])
+  const navigate = useNavigate()
 
   const [searchParams, setSearchParams] = useSearchParams()
   const session_id = searchParams.get('session_id') ?? ''
@@ -47,10 +48,9 @@ const DetailPerSession: React.FC = () => {
   const handleBeforeSubmit = (student: any) => {
     setNewDataSubmit([...newDataSubmit, student])
   }
-  console.log(newDataSubmit)
 
   const handleSubmit = () => {
-    handleSubmitAttendance(newDataSubmit)
+    handleSubmitAttendance(newDataSubmit, navigate)
   }
 
   return (

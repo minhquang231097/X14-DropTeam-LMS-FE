@@ -10,42 +10,8 @@ import Footer from '@/layouts/user/Footer'
 import LearnRegisterModal from './LearnRegisterModal'
 import noImage from '@/assets/images/courses/no-image.png'
 import { getCourse } from '@/apis/course.api'
+import { getLessonsList } from '@/apis/lessonsList.api'
 import { useQueryString } from '@/utils/utils'
-
-const text = `
-  A dog is a type of domesticated animal.
-  Known for its loyalty and faithfulness,
-  it can be found as a welcome guest in many households across the world.
-`
-
-const itemsCollapse: CollapseProps['items'] = [
-  {
-    key: '1',
-    label: 'Lesson 1',
-    children: <p>{text}</p>,
-  },
-  {
-    key: '2',
-    label: 'Lesson 2',
-    children: <p>{text}</p>,
-  },
-  {
-    key: '3',
-    label: 'Lesson 3',
-    children: <p>{text}</p>,
-  },
-]
-
-const CollapseComponent: React.FC = () => {
-  return (
-    <Collapse
-      items={itemsCollapse}
-      defaultActiveKey={['1']}
-      bordered={false}
-      accordion
-    />
-  )
-}
 
 const CourseDetail: React.FC = () => {
   const queryString: { id?: string } = useQueryString()
@@ -59,6 +25,34 @@ const CourseDetail: React.FC = () => {
     },
   })
 
+  const lessonsData = useQuery({
+    queryKey: ['lessons', id],
+    queryFn: async () => {
+      const res = await getLessonsList(id, 1, 50)
+      return res.data.data
+    },
+  }).data
+
+  const itemsCollapse: CollapseProps['items'] = []
+
+  lessonsData &&
+    lessonsData.map((item: any) => {
+      itemsCollapse.push({
+        key: item.id,
+        label: item.title,
+        children: <p>{item.content}</p>,
+      })
+    })
+
+  const CollapseComponent: React.FC = () => {
+    return (
+      <Collapse
+        items={itemsCollapse}
+        accordion
+      />
+    )
+  }
+
   const items: TabsProps['items'] = [
     {
       key: '1',
@@ -68,7 +62,11 @@ const CourseDetail: React.FC = () => {
     {
       key: '2',
       label: `Contents`,
-      children: <CollapseComponent />,
+      children: (
+        <div className='pb-4'>
+          <CollapseComponent />
+        </div>
+      ),
     },
   ]
 
@@ -114,9 +112,9 @@ const CourseDetail: React.FC = () => {
               </div>
             </div>
           </div>
-          <div className='absolute z-10 top-80 w-full max-w-[1280px] grid grid-rows-1 grid-cols-3 gap-6 max-md:top-[360px] max-md:w-[96%] max-md:mx-4'>
+          <div className='absolute z-10 top-[360px] w-full max-w-[1280px] grid grid-cols-3 gap-6 max-md:top-[360px] max-md:w-[96%] max-md:mx-4'>
             <div
-              className='col-span-2 row-span-1 bg-white rounded-lg p-4 py-0 '
+              className='col-span-2 bg-white rounded-lg p-4 py-0'
               style={{ boxShadow: '0 0 10px rgba(0,0,0,.18)', cursor: 'pointer', border: '1px solid rgba(0,0,0,.1)' }}
             >
               <Tabs
@@ -124,14 +122,15 @@ const CourseDetail: React.FC = () => {
                 items={items}
               />
             </div>
+
             <div
-              className='col-span-1 row-span-1 bg-white rounded-lg p-4'
+              className='bg-white rounded-lg p-4 h-[272px]'
               style={{ boxShadow: '0 0 10px rgba(0,0,0,.18)', cursor: 'pointer', border: '1px solid rgba(0,0,0,.1)' }}
             >
               <div>
                 <img
                   src={data && data.image.length ? data.image[0] : noImage}
-                  className='w-full rounded-lg'
+                  className='w-full h-[212px] rounded-lg'
                   alt=''
                 />
                 {!user ? (

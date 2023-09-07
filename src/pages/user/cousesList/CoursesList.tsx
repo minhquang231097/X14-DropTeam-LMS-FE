@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './coursesList.css'
 import { useQuery } from '@tanstack/react-query'
 import { Select, Pagination, ConfigProvider } from 'antd'
@@ -8,9 +8,11 @@ import Header from '@/layouts/user/Header'
 import Footer from '@/layouts/user/Footer'
 import { getCoursesList } from '@/apis/coursesList.api'
 import { useSearchParams, useNavigate } from 'react-router-dom'
+import { handleSortByForCourse } from '@/apis/sortByForCourse.api'
 
 const CoursesList: React.FC = () => {
   const navigate = useNavigate()
+
   const [searchParams, setSearchParams] = useSearchParams()
   const page = searchParams.get('page') ?? 1
   const limit = searchParams.get('limit') ?? 6
@@ -25,6 +27,12 @@ const CoursesList: React.FC = () => {
 
   const onChange = (page: number, pageSize: number) => {
     navigate(`/courses-list?page=${page}&limit=${pageSize}`)
+  }
+
+  const [sortByValue, setSortByValue] = useState('')
+
+  const handleSortBy = (value: string) => {
+    setSortByValue(value)
   }
 
   return (
@@ -65,9 +73,11 @@ const CoursesList: React.FC = () => {
             <Select
               placeholder='Sort by'
               style={{ width: 120 }}
+              onChange={handleSortBy}
               options={[
-                { value: 'newest', label: 'Newest' },
-                { value: 'free', label: 'Free' },
+                { value: 'create_at', label: 'Newest' },
+                { value: 'course_code', label: 'Course Code' },
+                { value: 'price', label: 'Price' },
               ]}
             />
           </div>
