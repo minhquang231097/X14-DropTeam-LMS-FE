@@ -6,6 +6,7 @@ import { RuleObject } from 'antd/es/form'
 import http from '@/utils/http'
 import AdminLayout from '@/layouts/admin'
 import { getWorkplace } from '@/apis/workplaceByID.api'
+import { InputNoSpace } from '@/components/input/InputNoSpace'
 // import { UploadOutlined } from '@ant-design/icons'
 
 interface IWorkplace {
@@ -144,12 +145,7 @@ const CustomContent = () => {
                 name='workplace_code'
                 rules={[{ required: true }]}
               >
-                <Input
-                  readOnly
-                  // required
-                  // value={codeValue}
-                  // onChange={onChange2}
-                />
+                <InputNoSpace readOnly />
               </Form.Item>
             </Col>
             <Col span={12}>

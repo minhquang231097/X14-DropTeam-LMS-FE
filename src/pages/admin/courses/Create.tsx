@@ -20,6 +20,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useMutation } from '@tanstack/react-query'
 import AdminLayout from '@/layouts/admin'
 import { createCourse } from '@/apis/courseCreate.api'
+import { InputNoSpace } from '@/components/input/InputNoSpace'
 // import { UploadOutlined } from '@ant-design/icons'
 
 const CustomContent = () => {
@@ -80,13 +81,14 @@ const CustomContent = () => {
                 name='course_code'
                 rules={[{ required: true, message: 'Please enter the code' }]}
               >
-                <Input />
+                <InputNoSpace placeholder='Type...' />
               </Form.Item>
               <Form.Item
                 label='Sessions per Course'
                 name='session_per_course'
               >
                 <InputNumber
+                  placeholder='Type...'
                   min={0}
                   style={{ width: '100%' }}
                 />
@@ -95,7 +97,10 @@ const CustomContent = () => {
                 label='Price'
                 name='price'
               >
-                <InputNumber style={{ width: '100%' }} />
+                <InputNumber
+                  style={{ width: '100%' }}
+                  placeholder='Type...'
+                />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -104,7 +109,7 @@ const CustomContent = () => {
                 name='title'
                 rules={[{ required: true, message: 'Please enter the title' }]}
               >
-                <Input />
+                <Input placeholder='Type...' />
               </Form.Item>
               <Form.Item
                 label='Level'
@@ -116,6 +121,7 @@ const CustomContent = () => {
                     { value: 'INTERMEDIATE', label: 'INTERMEDIATE' },
                     { value: 'ADVANCED', label: 'ADVANCED' },
                   ]}
+                  placeholder='Select'
                 />
               </Form.Item>
               <Form.Item
@@ -123,6 +129,7 @@ const CustomContent = () => {
                 name='discount'
               >
                 <InputNumber
+                  placeholder='Type...'
                   min={0}
                   style={{ width: '100%' }}
                 />
@@ -133,7 +140,7 @@ const CustomContent = () => {
                 label='Course Description'
                 name='desc'
               >
-                <Input.TextArea />
+                <Input.TextArea placeholder='Type...' />
               </Form.Item>
             </Col>
           </Row>

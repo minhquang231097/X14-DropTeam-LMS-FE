@@ -19,6 +19,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useMutation } from '@tanstack/react-query'
 import AdminLayout from '@/layouts/admin'
 import { createWorkplace } from '@/apis/workplaceCreate.api'
+import { InputNoSpace } from '@/components/input/InputNoSpace'
 // import { UploadOutlined } from '@ant-design/icons'
 
 interface IWorkplace {
@@ -101,14 +102,14 @@ const CustomContent = () => {
                 name='name'
                 rules={[{ required: true, message: 'Please enter the name' }]}
               >
-                <Input />
+                <InputNoSpace placeholder='Type...' />
               </Form.Item>
               <Form.Item
                 label='Facility Code'
                 name='workplace_code'
                 rules={[{ required: true, message: 'Please enter the code' }]}
               >
-                <Input />
+                <Input placeholder='Type...' />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -117,7 +118,7 @@ const CustomContent = () => {
                 name='address'
                 rules={[{ required: true, message: 'Please enter the location' }]}
               >
-                <Input />
+                <Input placeholder='Type...' />
               </Form.Item>
               <Form.Item
                 label='Facility Status'
@@ -130,6 +131,7 @@ const CustomContent = () => {
                     { label: 'ACTIVE', value: 'ON' },
                     { label: 'UPCOMING', value: 'UPCOMING' },
                   ]}
+                  placeholder='Select'
                 />
               </Form.Item>
             </Col>
