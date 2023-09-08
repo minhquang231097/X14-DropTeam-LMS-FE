@@ -22,9 +22,9 @@ const SessionListForTeacher: React.FC = () => {
   const id = searchParams.get('id') ?? ''
 
   const { data } = useQuery({
-    queryKey: ['sessions', page, limit],
+    queryKey: ['sessions', id, page, limit],
     queryFn: async () => {
-      const res = await getSessionsByClassCode(page, limit)
+      const res = await getSessionsByClassCode(id, page)
       return res.data
     },
   })
