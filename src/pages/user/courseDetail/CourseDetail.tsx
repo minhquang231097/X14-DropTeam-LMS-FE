@@ -45,11 +45,13 @@ const CourseDetail: React.FC = () => {
     })
 
   const CollapseComponent: React.FC = () => {
-    return (
+    return lessonsData ? (
       <Collapse
         items={itemsCollapse}
         accordion
       />
+    ) : (
+      ''
     )
   }
 
