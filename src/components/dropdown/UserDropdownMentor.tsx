@@ -7,7 +7,7 @@ import { BsPersonVideo3 } from 'react-icons/bs'
 import { useNavigate } from 'react-router-dom'
 import handleLogout from '@/apis/logout.api'
 
-const UserDropdownMentor: React.FC<{ username: any }> = (props: any) => {
+const UserDropdownMentor: React.FC<{ username: any; avatar: any }> = (props: any) => {
   const navigate = useNavigate()
   const USER = JSON.parse(localStorage.getItem('login') as string)
 
@@ -96,10 +96,12 @@ const UserDropdownMentor: React.FC<{ username: any }> = (props: any) => {
             borderColor: '#ccc',
             backgroundColor: '#F1F5F9',
           }}
-          src={`https://xsgames.co/randomusers/avatar.php?g=pixel&key=${Math.floor(Math.random() * 10)}`}
-        >
-          {/* {props.username.charAt(0).toUpperCase()} */}
-        </Avatar>
+          src={
+            props.avatar
+              ? props.avatar
+              : `https://xsgames.co/randomusers/avatar.php?g=pixel&key=${Math.floor(Math.random() * 10)}`
+          }
+        ></Avatar>
       </a>
     </Dropdown>
   )
