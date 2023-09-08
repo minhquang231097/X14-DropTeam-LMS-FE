@@ -74,9 +74,15 @@ const Header: React.FC = () => {
                 avatar={USER.avatar}
               />
             ) : USER && USER.role === 'MENTOR' ? (
-              <UserDropdownMentor username={USER.username} />
+              <UserDropdownMentor
+                username={USER.username}
+                avatar={USER.avatar}
+              />
             ) : (
-              <UserDropdownLogged username={USER.username} />
+              <UserDropdownLogged
+                username={USER.username}
+                avatar={USER.avatar}
+              />
             )}
           </a>
         </div>

@@ -117,9 +117,7 @@ const UserDropdownAdmin: React.FC<{ username: any; avatar: any }> = (props: any)
             borderColor: '#ccc',
             backgroundColor: '#F1F5F9',
           }}
-        >
-          {/* {props.username.charAt(0).toUpperCase()} */}
-        </Avatar>
+        ></Avatar>
       </a>
     </Dropdown>
   )

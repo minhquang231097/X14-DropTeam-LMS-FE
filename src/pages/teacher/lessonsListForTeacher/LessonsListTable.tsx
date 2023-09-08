@@ -15,6 +15,7 @@ type LessonsList = {
   searchText: string
   setSearchParams: any
   filteredData: { data: []; count: number }
+  course_id: string
 }
 
 const LessonsListTable: React.FC<LessonsList> = (props) => {
@@ -30,7 +31,7 @@ const LessonsListTable: React.FC<LessonsList> = (props) => {
     {
       title: 'Lesson Name',
       dataIndex: 'title',
-      width: '160px',
+      width: '200px',
       filteredValue: [props.searchText],
       onFilter: (value, { title }) => String(title).toLowerCase().includes(String(value).toLowerCase()),
     },
@@ -83,7 +84,7 @@ const LessonsListTable: React.FC<LessonsList> = (props) => {
   const onChange: TableProps<DataType>['onChange'] = (pagination, _filters, _sorter, _extra) => {
     const { current, pageSize } = pagination
     props.setSearchParams(current)
-    navigate(`/teacher/lessons-list?page=${current}&limit=${pageSize}`)
+    navigate(`/teacher/lessons-list?course_id=${props.course_id}&page=${current}&limit=${pageSize}`)
   }
 
   return (

@@ -47,8 +47,13 @@ const Sidebar: React.FC<{ handleFilterLevel?: any; handleFilterRate?: any }> = (
         <div className='flex flex-col'>
           <Radio.Group
             onChange={props.handleFilterRate}
-            defaultValue={null}
+            defaultValue={''}
           >
+            <div className='mb-2'>
+              <Radio value=''>
+                <p className='m-0 text-md text-[#F59E0B]'>All Rate</p>
+              </Radio>
+            </div>
             <div className='mb-2'>
               <Radio value='5'>
                 <p className='m-0 text-xl text-[#F59E0B]'>&#9733;&#9733;&#9733;&#9733;&#9733;</p>
