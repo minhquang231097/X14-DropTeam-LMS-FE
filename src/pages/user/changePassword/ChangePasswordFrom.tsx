@@ -77,7 +77,7 @@ const ChangePasswordFrom: React.FC = () => {
       {/* confirm password */}
       <Form.Item
         name='confirm'
-        dependencies={['password']}
+        dependencies={['newPassword']}
         hasFeedback
         label={<p className='my-2 font-bold'>Confirm New Password</p>}
         rules={[
@@ -87,7 +87,7 @@ const ChangePasswordFrom: React.FC = () => {
           },
           ({ getFieldValue }) => ({
             validator(_, value) {
-              if (!value || getFieldValue('password') === value) {
+              if (!value || getFieldValue('newPassword') === value) {
                 return Promise.resolve()
               }
               return Promise.reject(new Error('The new password that you entered do not match!'))
