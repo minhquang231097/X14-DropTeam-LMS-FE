@@ -4,11 +4,8 @@ import {
   Breadcrumb,
   Button,
   Card,
-  Checkbox,
   Col,
-  Divider,
   Form,
-  Input,
   InputNumber,
   DatePicker,
   Row,
@@ -19,8 +16,6 @@ import {
 } from 'antd'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { CheckboxChangeEvent } from 'antd/es/checkbox'
-import { CheckboxValueType } from 'antd/es/checkbox/Group'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import AdminLayout from '@/layouts/admin'
@@ -28,10 +23,8 @@ import { createClass } from '@/apis/classCreate.api'
 import { getUserListForAdmin } from '@/apis/userForAdmin.api'
 import { getCoursesList } from '@/apis/coursesList.api'
 import { searchWorkplaceForAdmin } from '@/apis/searchWorkplaceForAdmin'
-import { getRegisterCourseList } from '@/apis/registerCourse.api'
 import { getCourse } from '@/apis/course.api'
 import { weekdays } from '@/utils/day'
-import { addStudentToClass } from '@/apis/addStudentToClass.api'
 
 interface IMentor {
   fullname: string
@@ -167,39 +160,39 @@ const CustomContent = () => {
     },
   })
 
-  const { data: filteredStudents } = useQuery({
-    queryKey: ['regist-course', selectedWorkplace, selectedCourse, page, limit],
-    queryFn: async () => {
-      const res = await getRegisterCourseList(selectedWorkplace, selectedCourse, page, limit)
-      return res.data.data
-    },
-    enabled: !!selectedWorkplace && !!selectedCourse,
-  })
+  // const { data: filteredStudents } = useQuery({
+  //   queryKey: ['regist-course', selectedWorkplace, selectedCourse, page, limit],
+  //   queryFn: async () => {
+  //     const res = await getRegisterCourseList(selectedWorkplace, selectedCourse, page, limit)
+  //     return res.data.data
+  //   },
+  //   enabled: !!selectedWorkplace && !!selectedCourse,
+  // })
 
-  const studentDataOptions = (filteredStudents || []).map((data: { _id: string; fullname: string }) => ({
-    value: data._id,
-    label: data.fullname,
-  }))
+  // const studentDataOptions = (filteredStudents || []).map((data: { _id: string; fullname: string }) => ({
+  //   value: data._id,
+  //   label: data.fullname,
+  // }))
 
-  const [checkedList, setCheckedList] = useState<CheckboxValueType[]>([])
-  const [indeterminate, setIndeterminate] = useState<boolean>(false)
-  const [checkAll, setCheckAll] = useState<boolean>(false)
+  // const [checkedList, setCheckedList] = useState<CheckboxValueType[]>([])
+  // const [indeterminate, setIndeterminate] = useState<boolean>(false)
+  // const [checkAll, setCheckAll] = useState<boolean>(false)
 
   useEffect(() => {
     form?.setFieldValue('total_session', courseSessionById?.session_per_course)
   }, [courseSessionById, form])
 
-  const onChange = (list: CheckboxValueType[]) => {
-    setCheckedList(list)
-    setIndeterminate(!!list.length && list.length < studentDataOptions.length)
-    setCheckAll(list.length === studentDataOptions.length)
-  }
+  // const onChange = (list: CheckboxValueType[]) => {
+  //   setCheckedList(list)
+  //   setIndeterminate(!!list.length && list.length < studentDataOptions.length)
+  //   setCheckAll(list.length === studentDataOptions.length)
+  // }
 
-  const onCheckAllChange = (e: CheckboxChangeEvent) => {
-    setCheckedList(e.target.checked ? studentDataOptions.map((option: any) => option.value) : [])
-    setIndeterminate(false)
-    setCheckAll(e.target.checked)
-  }
+  // const onCheckAllChange = (e: CheckboxChangeEvent) => {
+  //   setCheckedList(e.target.checked ? studentDataOptions.map((option: any) => option.value) : [])
+  //   setIndeterminate(false)
+  //   setCheckAll(e.target.checked)
+  // }
 
   return (
     <>
@@ -254,6 +247,7 @@ const CustomContent = () => {
                   }))}
                   value={selectedCourse}
                   onChange={(value) => setSelectedCourse(value)}
+                  placeholder='Select'
                   showSearch
                 />
               </Form.Item>
@@ -267,6 +261,7 @@ const CustomContent = () => {
                     value: data._id,
                     label: data.fullname,
                   }))}
+                  placeholder='Select'
                   showSearch
                 />
               </Form.Item>
@@ -285,7 +280,24 @@ const CustomContent = () => {
                 name='total_session'
                 rules={[{ required: true, message: 'Please enter the total sessions' }]}
               >
-                <InputNumber style={{ width: '100%' }} />
+                <InputNumber
+                  style={{ width: '100%' }}
+                  placeholder='Type...'
+                />
+              </Form.Item>
+              <Form.Item
+                label='Class Status'
+                name='status'
+                rules={[{ required: true, message: 'Please select the status' }]}
+              >
+                <Select
+                  options={[
+                    { label: 'INACTIVE', value: 'OFF' },
+                    { label: 'ACTIVE', value: 'ON' },
+                    { label: 'UPCOMING', value: 'UPCOMING' },
+                  ]}
+                  placeholder='Select'
+                />
               </Form.Item>
             </Col>
             <Col
@@ -344,10 +356,14 @@ const CustomContent = () => {
                 name='class_size'
                 rules={[{ required: true, message: 'Please enter the number of students' }]}
               >
-                <InputNumber style={{ width: '100%' }} />
+                <InputNumber
+                  style={{ width: '100%' }}
+                  placeholder='Type...'
+                />
               </Form.Item>
             </Col>
-            {/* {selectedCourse && selectedWorkplace && (
+          </Row>
+          {/* {selectedCourse && selectedWorkplace && (
               <Col span={24}>
                 <Form.Item>
                   <Card>
@@ -386,7 +402,7 @@ const CustomContent = () => {
                 </Form.Item>
               </Col>
             )} */}
-          </Row>
+          {/* </Row> */}
           {/* <Col
                 span={12}
                 style={{ display: 'flex', flexDirection: 'column', margin: '8px 0' }}

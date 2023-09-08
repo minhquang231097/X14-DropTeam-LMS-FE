@@ -5,11 +5,11 @@ import { MdAddCircleOutline } from 'react-icons/md'
 import { useQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
-import { ColumnsType } from 'antd/es/table'
+import { ColumnsType, TablePaginationConfig } from 'antd/es/table'
 import { DeleteOutlined, EyeOutlined } from '@ant-design/icons'
 import AdminLayout from '@/layouts/admin'
-import AdminSearch from '@/components/search/adminSearch'
-import { getCoursesList } from '@/apis/coursesList.api'
+import AdminSearch from '@/components/search/AdminSearch'
+import { getCoursesList, getCoursesBySearch } from '@/apis/coursesList.api'
 import LevelTag from '@/components/tag/LevelTag'
 import { COMMON_LEVEL } from '@/utils/level'
 import http from '@/utils/http'
@@ -35,6 +35,17 @@ const CustomContent = () => {
   const limit = searchParams.get('limit') ?? 10
   const search = searchParams.get('search') ?? null
 
+  const tablePagination: TablePaginationConfig = {
+    position: ['bottomRight'],
+    current: Number(page),
+    pageSize: Number(limit),
+    defaultCurrent: 1,
+    defaultPageSize: 10,
+    pageSizeOptions: [5, 10, 20],
+    showSizeChanger: true,
+    showQuickJumper: true,
+  }
+
   const [selectedCourse, setSelectedCourse] = useState<DataType | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [filteredData, setFilteredData] = useState<any>(null)
@@ -47,25 +58,39 @@ const CustomContent = () => {
     },
   })
 
+  const { data: searchCourseData } = useQuery({
+    queryKey: ['courses', page, limit, search],
+    queryFn: async () => {
+      const res = await getCoursesBySearch(page, limit, search)
+      return res.data
+    },
+  })
+
   useEffect(() => {
     if (courseData) {
       setFilteredData(courseData.data)
     }
-  }, [courseData])
-
-  useEffect(() => {
-    if (search) {
-      const filtered = courseData?.data.filter(
-        (item: any) =>
-          item.course_code.toLowerCase().includes(search.toLowerCase()) ||
-          item.title.toLowerCase().includes(search.toLowerCase()),
-      )
-      setFilteredData({ data: filtered, total: courseData?.total })
-    } else {
-      navigate(`/admin/courses/all?page=${page}&limit=${limit}`)
-      setFilteredData({ data: courseData?.data, total: courseData?.total })
+    if (searchCourseData) {
+      setFilteredData(searchCourseData.data)
     }
-  }, [limit, page, search, courseData])
+    if (!search) {
+      navigate(`/admin/courses/all?page=${page}&limit=${limit}`)
+    }
+  }, [courseData, limit, navigate, page, search, searchCourseData])
+
+  // useEffect(() => {
+  //   if (search) {
+  //     const filtered = courseData?.data.filter(
+  //       (item: any) =>
+  //         item.course_code.toLowerCase().includes(search.toLowerCase()) ||
+  //         item.title.toLowerCase().includes(search.toLowerCase()),
+  //     )
+  //     setFilteredData({ data: filtered, total: courseData?.total })
+  //   } else {
+  //     navigate(`/admin/courses/all?page=${page}&limit=${limit}`)
+  //     setFilteredData({ data: courseData?.data, total: courseData?.total })
+  //   }
+  // }, [limit, page, search, courseData])
 
   const onChange: TableProps<DataType>['onChange'] = (pagination, filters, sorter, extra) => {
     const { current, pageSize } = pagination
@@ -224,21 +249,27 @@ const CustomContent = () => {
             </Button>
           </Space>
         </div>
-        {courseData && (
+        {courseData && !search && (
           <Table
             rowKey={(course: DataType) => course._id}
             columns={columns}
-            dataSource={search ? filteredData?.data : courseData.data}
+            dataSource={courseData.data}
             pagination={{
-              position: ['bottomRight'],
-              current: Number(page),
-              pageSize: Number(limit),
-              defaultCurrent: 1,
-              defaultPageSize: 10,
-              pageSizeOptions: [5, 10, 20],
-              showSizeChanger: true,
-              showQuickJumper: true,
-              total: search ? filteredData?.total : courseData.total,
+              ...tablePagination,
+              total: courseData.total,
+            }}
+            onChange={onChange}
+            style={{ marginTop: 16 }}
+          />
+        )}
+        {search && (
+          <Table
+            rowKey={(facility: DataType) => facility._id}
+            columns={columns}
+            dataSource={searchCourseData?.data}
+            pagination={{
+              ...tablePagination,
+              total: searchCourseData?.total,
             }}
             onChange={onChange}
             style={{ marginTop: 16 }}

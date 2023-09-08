@@ -37,7 +37,7 @@ http.interceptors.response.use(
   },
   async (error) => {
     const originalRequest = error.config
-    if (error.response.status === 401 && !originalRequest._retry) {
+    if (error.response && error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true
       const accessToken = await refreshAccessToken()
       const user = JSON.parse(localStorage.getItem('login') as string)
@@ -46,7 +46,7 @@ http.interceptors.response.use(
       http.defaults.headers.common.Authorization = `Bearer ${accessToken}`
       return http(originalRequest)
     }
-    if (error.response.status === 403 && error.response.data) {
+    if (error.response && error.response.status === 403 && error.response.data) {
       return Promise.reject(error.response.data)
     }
     return Promise.reject(error)

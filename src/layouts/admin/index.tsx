@@ -1,10 +1,10 @@
 import React, { PropsWithChildren, useContext, useState } from 'react'
 import { Helmet } from 'react-helmet'
-import { Button, Layout, Space, Typography, Image } from 'antd'
+import { Button, Layout, Space, Typography, Image, Col } from 'antd'
 import { MdDarkMode, MdSunny, MdNotifications, MdOutlineMenu } from 'react-icons/md'
 import Logo from '@/assets/images/logo/logo-with-shadow.png'
 import { ColorModeContext } from '@/contexts/colorMode'
-import AdminDropDown from '@/components/dropdown/adminDropDown'
+import AdminDropDown from '@/components/dropdown/AdminDropDown'
 import MenuSection from './Menu'
 
 interface LayoutProps extends PropsWithChildren {
@@ -113,6 +113,7 @@ const AdminLayout: React.FC<LayoutProps> = ({ content }) => {
             </Typography.Link>
             <MenuSection />
           </Sider>
+
           <Layout>
             <Header style={headerStyle}>
               <Space size='middle'>
@@ -144,7 +145,7 @@ const AdminLayout: React.FC<LayoutProps> = ({ content }) => {
                   style={ButtonStyle}
                   onClick={() => setMode(mode === 'light' ? 'dark' : 'light')}
                 />
-                <Button
+                {/* <Button
                   shape='circle'
                   icon={
                     <MdNotifications
@@ -152,7 +153,7 @@ const AdminLayout: React.FC<LayoutProps> = ({ content }) => {
                     />
                   }
                   style={ButtonStyle}
-                />
+                /> */}
                 <AdminDropDown />
               </Space>
             </Header>

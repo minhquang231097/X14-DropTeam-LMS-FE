@@ -1,7 +1,7 @@
 import React from 'react'
 import { Table, Tag, TableProps } from 'antd'
 import { useNavigate } from 'react-router-dom'
-import type { ColumnsType } from 'antd/es/table'
+import type { ColumnsType, TablePaginationConfig } from 'antd/es/table'
 
 interface DataType {
   _id: string
@@ -29,9 +29,18 @@ const StudentListTable: React.FC<StudentList> = (props) => {
   const navigate = useNavigate()
   const { searchText, data, filteredData, setSearchParams } = props
 
+  const tablePagination: TablePaginationConfig = {
+    position: ['bottomRight'],
+    defaultCurrent: 1,
+    defaultPageSize: 10,
+    pageSizeOptions: [10, 20, 50],
+    showSizeChanger: true,
+    showQuickJumper: true,
+  }
+
   const columns: ColumnsType<DataType> = [
     {
-      title: 'No.',
+      // title: 'No.',
       dataIndex: 'index',
       width: '40px',
       render: (_value, _record, index) => <>{index + 1}</>,
@@ -181,20 +190,16 @@ const StudentListTable: React.FC<StudentList> = (props) => {
   return (
     <Table
       pagination={{
-        position: ['bottomCenter'],
-        defaultCurrent: 1,
-        defaultPageSize: 20,
-        pageSizeOptions: [10, 20, 40],
-        showSizeChanger: true,
+        ...tablePagination,
         current: data && data.page,
         total: data && data.total,
       }}
       columns={columns}
       dataSource={studentData}
       scroll={{ y: 600 }}
-      bordered
-      size='small'
-      style={{ padding: '0 16px' }}
+      style={{ marginTop: 16 }}
+      // bordered
+      // size='small'
       rowKey={(_record) => _record._id}
       onChange={onChange}
     />

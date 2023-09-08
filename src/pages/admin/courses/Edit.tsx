@@ -18,6 +18,7 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import AdminLayout from '@/layouts/admin'
 import { getCourse } from '@/apis/course.api'
 import http from '@/utils/http'
+import { InputNoSpace } from '@/components/input/InputNoSpace'
 
 interface ICourse {
   course_code: string
@@ -113,7 +114,7 @@ const CustomContent = () => {
                 name='course_code'
                 rules={[{ required: true }]}
               >
-                <Input readOnly />
+                <InputNoSpace readOnly />
               </Form.Item>
               <Form.Item
                 label='Sessions per Course'

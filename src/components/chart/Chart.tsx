@@ -20,7 +20,10 @@ const Chart: React.FC<Props> = (props) => {
     },
   }
   return (
-    <Card title='Earning'>
+    <Card
+      title='Earning'
+      style={{ marginRight: '16px' }}
+    >
       <Column {...config} />
     </Card>
   )

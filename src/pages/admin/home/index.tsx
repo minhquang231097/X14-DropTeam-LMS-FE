@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Card } from 'antd'
+import { Card, Col, Row } from 'antd'
 import Chart from '@/components/chart/Chart'
 import Donut from '@/components/chart/Donut'
 import CardItem from '@/components/dashboard/Card'
@@ -12,41 +12,39 @@ const CustomContent = () => {
   const [year, setYear] = useState('2021')
   const filterData = data.find((e) => e.year === year)?.data
   return (
-    <Card>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          gap: '30px',
-        }}
-      >
-        <HeaderDashBoard
-          data={data}
-          setYear={setYear}
-        />
-        <CardItem
-          sale={filterData?.sale}
-          mentor={filterData?.mentor}
-          student={filterData?.student}
-          course={filterData?.course}
-        />
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-            gap: '30px',
-          }}
-        >
+    <div>
+      <Row gutter={[16, 16]}>
+        <Col span={24}>
+          <HeaderDashBoard
+            data={data}
+            setYear={setYear}
+          />
+        </Col>
+        <Col span={24}>
+          <CardItem
+            sale={filterData?.sale as string}
+            mentor={filterData?.mentor as string}
+            student={filterData?.student as string}
+            course={filterData?.course as string}
+          />
+        </Col>
+        <Col span={24}>
           <Chart data={filterData?.earning} />
+        </Col>
+        <Col
+          xs={24}
+          lg={12}
+        >
           <Rating data={filterData?.rating} />
+        </Col>
+        <Col
+          xs={24}
+          lg={12}
+        >
           <Donut data={filterData?.traffic} />
-        </div>
-      </div>
-    </Card>
+        </Col>
+      </Row>
+    </div>
   )
 }
 

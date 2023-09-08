@@ -1,15 +1,18 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Breadcrumb, Input, Button, Card, Image, PaginationProps, Space, Table, Typography, theme } from 'antd'
 import { useQuery } from '@tanstack/react-query'
 import { Link, useSearchParams } from 'react-router-dom'
+import { MdSearch } from 'react-icons/md'
 import AdminLayout from '@/layouts/admin'
 import { getStudentsListForAdmin } from '@/apis/studentListForAdmin'
 import { searchStudentForTeacher } from '@/apis/searchStudentForTeacher.api'
 import TeacherListTable from './MentorListTable'
+import { ColorModeContext } from '@/contexts/colorMode'
 
 const CustomContent = () => {
   const [searchText, setSearchText] = useState('')
   const [filteredData, setFilteredData] = useState([])
+  const { mode } = useContext(ColorModeContext)
 
   const [searchParams, setSearchParams] = useSearchParams()
   const user_role = searchParams.get('mentor') ?? ''
@@ -59,10 +62,14 @@ const CustomContent = () => {
             Mentor List
           </Typography.Title>
           <Input.Search
-            placeholder='Search Student Name ...'
+            placeholder='Search...'
             style={{ width: 280 }}
             onChange={(e) => handleSearch(e.target.value)}
             onSearch={handleSearch}
+            enterButton={
+              <MdSearch className={`text-${mode === 'light' ? 'black' : 'white'} align-middle text-[20px]`} />
+            }
+
           />
         </div>
         <TeacherListTable

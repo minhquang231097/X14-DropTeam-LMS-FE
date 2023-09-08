@@ -4,12 +4,13 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { MdAddCircleOutline } from 'react-icons/md'
 import { useQuery } from '@tanstack/react-query'
 import { DeleteOutlined, EyeOutlined } from '@ant-design/icons'
-import type { ColumnsType } from 'antd/es/table'
+import type { ColumnsType, TablePaginationConfig } from 'antd/es/table'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import AdminLayout from '@/layouts/admin'
-import AdminSearch from '@/components/search/adminSearch'
-import { getWorkplacesList } from '@/apis/workplaceList.api'
+import AdminSearch from '@/components/search/AdminSearch'
+import AdminStatusSelect from '@/components/select/AdminStatusSelect'
+import { getWorkplacesBySearch, getWorkplacesList } from '@/apis/workplaceList.api'
 import { COMMON_STATUS } from '@/utils/status'
 import StatusTag from '@/components/tag/StatusTag'
 import http from '@/utils/http'
@@ -34,6 +35,17 @@ const CustomContent = () => {
   const limit = searchParams.get('limit') ?? 10
   const search = searchParams.get('search') ?? null
 
+  const tablePagination: TablePaginationConfig = {
+    position: ['bottomRight'],
+    current: Number(page),
+    pageSize: Number(limit),
+    defaultCurrent: 1,
+    defaultPageSize: 10,
+    pageSizeOptions: [5, 10, 20],
+    showSizeChanger: true,
+    showQuickJumper: true,
+  }
+
   const [selectedFacility, setSelectedFacility] = useState<DataType | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [filteredData, setFilteredData] = useState<any>(null)
@@ -46,25 +58,25 @@ const CustomContent = () => {
     },
   })
 
+  const { data: searchWorkplaceData } = useQuery({
+    queryKey: ['workplaces', page, limit, search],
+    queryFn: async () => {
+      const res = await getWorkplacesBySearch(page, limit, search)
+      return res.data
+    },
+  })
+
   useEffect(() => {
     if (workplaceData) {
       setFilteredData(workplaceData.data)
     }
-  }, [workplaceData])
-
-  useEffect(() => {
-    if (search) {
-      const filtered = workplaceData?.data.filter(
-        (item: any) =>
-          item.name.toLowerCase().includes(search.toLowerCase()) ||
-          item.workplace_code.toLowerCase().includes(search.toLowerCase()),
-      )
-      setFilteredData({ data: filtered, total: workplaceData?.total })
-    } else {
-      navigate(`/admin/facilities/all?page=${page}&limit=${limit}`)
-      setFilteredData({ data: workplaceData?.data, total: workplaceData?.total })
+    if (searchWorkplaceData) {
+      setFilteredData(searchWorkplaceData.data)
     }
-  }, [limit, page, search, workplaceData])
+    if (!search) {
+      navigate(`/admin/facilities/all?page=${page}&limit=${limit}`)
+    }
+  }, [limit, navigate, page, search, searchWorkplaceData, workplaceData])
 
   const handleDelete = async () => {
     try {
@@ -93,22 +105,30 @@ const CustomContent = () => {
     setSearchParams({ search: value })
   }
 
+  // const handleSearchStatus = (value: string) => {
+  //   setSearchParams({ status: value })
+  // }
+
+  // const filterOption = (input: string, option: { label: string; value: string }) =>
+  //   (option?.value ?? '').toLowerCase().includes(input.toLowerCase())
+
   const columns: ColumnsType<DataType> = [
     {
       title: <Typography.Text style={{ fontSize: '18px' }}>Image</Typography.Text>,
       dataIndex: 'image_url',
-      width: '12.5%',
+      width: '15%',
       render: () => (
         <Image
           src='https://res.cloudinary.com/dar4pvqx2/image/upload/v1693931926/vitebanner_wtcoum.jpg'
           alt='Facility Image'
         />
       ),
+      responsive: ['lg'],
     },
     {
       title: <Typography.Text style={{ fontSize: '18px' }}>Facility</Typography.Text>,
       dataIndex: 'name',
-      width: '50%',
+      width: '45%',
       render: (name: string, facility: DataType) => (
         <Space direction='vertical'>
           <Typography.Text
@@ -117,7 +137,6 @@ const CustomContent = () => {
           >
             {name} ({facility.workplace_code})
           </Typography.Text>
-          {/* <Typography.Text>{facility.address}</Typography.Text> */}
           <Typography.Text>Created at: {dayjs(facility.create_at).format('DD/MM/YYYY')}</Typography.Text>
         </Space>
       ),
@@ -131,7 +150,7 @@ const CustomContent = () => {
     {
       title: <Typography.Text style={{ fontSize: '18px' }}>Status</Typography.Text>,
       dataIndex: 'status',
-      width: '10%',
+      width: '15%',
       render: (value: COMMON_STATUS) => (
         <StatusTag
           status={value}
@@ -153,6 +172,7 @@ const CustomContent = () => {
         },
       ],
       onFilter: (value, { status }) => String(status).indexOf(String(value)) === 0,
+      responsive: ['md'],
     },
     {
       title: <Typography.Text style={{ fontSize: '18px' }}>Action</Typography.Text>,
@@ -214,6 +234,14 @@ const CustomContent = () => {
               keysearch={search ?? ''}
               onChangeInput={handleSearch}
             />
+            {/* <AdminStatusSelect
+              endpoint='workplace'
+              status={status ?? ''}
+              options={options}
+              optionFilterProp='value'
+              filterOption={filterOption}
+              onChangeInput={handleSearchStatus}
+            /> */}
             <Button
               type='primary'
               onClick={() => navigate('/admin/facilities/create')}
@@ -223,21 +251,27 @@ const CustomContent = () => {
             </Button>
           </Space>
         </div>
-        {workplaceData && (
+        {workplaceData && !search && (
           <Table
             rowKey={(facility: DataType) => facility._id}
             columns={columns}
-            dataSource={search ? filteredData?.data : workplaceData.data}
+            dataSource={workplaceData.data}
             pagination={{
-              position: ['bottomRight'],
-              current: Number(page),
-              pageSize: Number(limit),
-              defaultCurrent: 1,
-              defaultPageSize: 10,
-              pageSizeOptions: [5, 10, 20],
-              showSizeChanger: true,
-              showQuickJumper: true,
-              total: search ? filteredData?.total : workplaceData?.total,
+              ...tablePagination,
+              total: workplaceData?.total,
+            }}
+            onChange={onChange}
+            style={{ marginTop: 16 }}
+          />
+        )}
+        {search && (
+          <Table
+            rowKey={(facility: DataType) => facility._id}
+            columns={columns}
+            dataSource={searchWorkplaceData?.data}
+            pagination={{
+              ...tablePagination,
+              total: searchWorkplaceData?.total,
             }}
             onChange={onChange}
             style={{ marginTop: 16 }}

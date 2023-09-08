@@ -48,7 +48,7 @@ const Donut: React.FC<Props> = (props) => {
     },
   }
   return (
-    <Card title='Traffic'>
+    <Card title='Traffic' style={{ marginRight: '16px' }}>
       <Pie {...config} />
     </Card>
   )
