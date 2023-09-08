@@ -20,6 +20,7 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import { ColumnsType } from 'antd/es/table'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
+import { ExclamationCircleOutlined } from '@ant-design/icons'
 import AdminLayout from '@/layouts/admin'
 import { getCoursesList } from '@/apis/coursesList.api'
 import { searchWorkplaceForAdmin } from '@/apis/searchWorkplaceForAdmin'
@@ -27,6 +28,7 @@ import { getRegisterCourseList, registerCourseForAdmin } from '@/apis/registerCo
 import { getUserListForAdmin } from '@/apis/userForAdmin.api'
 import http from '@/utils/http'
 import { getClassesByCourse } from '@/apis/classesList.api'
+import { getStudentsByCourseID } from '@/apis/studentsByCourseId.api'
 
 interface IStudent {
   username?: string
@@ -57,13 +59,15 @@ dayjs.extend(customParseFormat)
 const CustomContent = () => {
   const [form] = Form.useForm()
   const navigate = useNavigate()
+  const { confirm } = Modal
 
   const [selectedCourse, setSelectedCourse] = useState<string | undefined>(undefined)
   const [selectedWorkplace, setSelectedWorkplace] = useState<string | undefined>(undefined)
-  const [selectedStudent, setSelectedStudent] = useState<string | undefined>(undefined)
+  const [selectedStudents, setSelectedStudents] = useState<string[] | undefined>(undefined)
   const [selectedClass, setSelectedClass] = useState<string | undefined>(undefined)
 
-  const [confirmLoading, setConfirmLoading] = useState(false)
+  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([])
+  const [loading, setLoading] = useState(false)
 
   const [searchParams, setSearchParams] = useSearchParams()
   const page = searchParams.get('page') ?? 1
@@ -73,6 +77,7 @@ const CustomContent = () => {
   // const [isActive, setIsActive] = useState(true)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isModalOpen2, setIsModalOpen2] = useState(false)
+  // const [isModalOpen3, setIsModalOpen3] = useState(false)
 
   const [filteredData, setFilteredData] = useState<any>(null)
 
@@ -148,6 +153,15 @@ const CustomContent = () => {
     },
   })
 
+  const { data: studentByCourse } = useQuery({
+    queryKey: ['user', selectedCourse],
+    queryFn: async () => {
+      const res = await getStudentsByCourseID(selectedCourse as string)
+      return res.data.data
+    },
+    enabled: !!selectedCourse,
+  })
+
   const { mutate, isLoading } = useMutation(registerCourseForAdmin, {
     onSuccess: () => {
       // Perform any necessary actions after successful creation
@@ -169,18 +183,60 @@ const CustomContent = () => {
     retry: 3,
   })
 
+  const start = () => {
+    setLoading(true)
+    // ajax request after empty completing
+    setTimeout(() => {
+      setSelectedRowKeys([])
+      setLoading(false)
+    }, 1000)
+  }
+
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     console.log('selectedRowKeys changed: ', newSelectedRowKeys)
-    // setSelectedRowKeys(newSelectedRowKeys);
+    setSelectedRowKeys(newSelectedRowKeys)
   }
 
   const rowSelection = {
-    // selectedRowKeys,
+    selectedRowKeys,
     onChange: onSelectChange,
   }
+  const hasSelected = selectedRowKeys.length > 0
 
   const OnCourseChange = (value: string) => {
     setSelectedCourse(value)
+  }
+
+  const handleConfirm = async () => {
+    try {
+      await http.post(`/class/add-student`)
+      // Perform any necessary actions after successful deletion
+      notification.success({
+        message: 'Add students successful',
+        description: 'The chosen students has been added successfully',
+      })
+    } catch (error: any) {
+      notification.error({
+        message: 'Add students failed',
+        description: error.message,
+      })
+    }
+    setIsModalOpen(false)
+  }
+
+  const showConfirm = () => {
+    setTimeout(() => {
+      confirm({
+        icon: <ExclamationCircleOutlined />,
+        content: 'Are you sure?',
+        onOk() {
+          handleConfirm()
+        },
+        onCancel() {
+          setIsModalOpen(false)
+        },
+      })
+    }, 1000)
   }
 
   const columns: ColumnsType<DataType> = [
@@ -260,12 +316,16 @@ const CustomContent = () => {
           >
             Register Course
           </Button>
-          <Button
+          {/* <Button
             type='primary'
-            onClick={() => setIsModalOpen2(true)}
+            onClick={() => {
+              start
+              setIsModalOpen2(true)
+            }}
+            disabled={!hasSelected}
           >
             Add Students
-          </Button>
+          </Button> */}
         </div>
         {registCourseData && (
           <Table
@@ -354,8 +414,8 @@ const CustomContent = () => {
                   }))}
                   mode='multiple'
                   maxTagCount='responsive'
-                  value={selectedStudent}
-                  onChange={(value) => setSelectedStudent(value)}
+                  value={selectedStudents}
+                  onChange={(value) => setSelectedStudents(value)}
                   showSearch
                 />
               </Form.Item>
@@ -402,7 +462,6 @@ const CustomContent = () => {
       >
         <Form
           form={form}
-          onFinish={mutate}
           layout='vertical'
           style={{ paddingTop: '8px' }}
         >
@@ -428,18 +487,36 @@ const CustomContent = () => {
             <Col span={24}>
               <Form.Item
                 label='Class Code'
-                name='class_code'
+                name='class_id'
                 rules={[{ required: true, message: 'Please enter the class code' }]}
               >
                 <Select
                   placeholder='Select'
-                  options={(classByCourse || []).map((data: { _id: string, class_code: string }) => ({
+                  options={(classByCourse || []).map((data: { _id: string; class_code: string }) => ({
                     value: data._id,
                     label: data.class_code,
                   }))}
-                  value={selectedWorkplace}
+                  value={selectedClass}
                   onChange={(value) => setSelectedClass(value)}
                   disabled={!selectedCourse}
+                  showSearch
+                />
+              </Form.Item>
+            </Col>
+            <Col span={24}>
+              <Form.Item
+                label='Students'
+                name='student_id'
+                rules={[{ required: true, message: 'Please enter the course title' }]}
+              >
+                <Select
+                  placeholder='Select'
+                  options={(studentByCourse || []).map((data: { _id: string; fullname: string }) => ({
+                    value: data._id,
+                    label: data.fullname,
+                  }))}
+                  value={selectedStudents}
+                  onChange={(value) => setSelectedStudents(value)}
                   showSearch
                 />
               </Form.Item>
@@ -459,6 +536,7 @@ const CustomContent = () => {
               <Button
                 type='primary'
                 htmlType='submit'
+                onClick={showConfirm}
                 loading={isLoading}
               >
                 Confirm
