@@ -20,7 +20,7 @@ const HeaderDashBoard: React.FC<Props> = (props) => {
       }}
     >
       <Typography.Title
-        level={2}
+        level={3}
         className='mt-0 mx-1'
         style={{ marginBlock: 0 }}
       >
@@ -41,7 +41,7 @@ const HeaderDashBoard: React.FC<Props> = (props) => {
           <Form.Item noStyle>
             <Select
               placeholder='Select year'
-              style={{ width: '180px' }}
+              style={{ width: '180px', marginRight: '16px' }}
               onChange={(val) => setYear(val)}
             >
               {data.map((value: any) => (

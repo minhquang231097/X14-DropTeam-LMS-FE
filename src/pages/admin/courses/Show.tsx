@@ -7,7 +7,7 @@ import AdminLayout from '@/layouts/admin'
 import { ShowButtonStyle } from '@/utils/style'
 import { getCourse } from '@/apis/course.api'
 import LevelTag from '@/components/tag/LevelTag'
-import AdminLessonList from '../lessons/List'
+import AdminLessonList from '../lessons'
 
 const CustomContent = () => {
   const { id } = useParams<{ id: string }>()

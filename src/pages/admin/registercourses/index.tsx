@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import {
   Breadcrumb,
   Card,
@@ -14,12 +14,10 @@ import {
   Modal,
   Table,
   TableProps,
-  Image,
 } from 'antd'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs'
-import { EyeOutlined, DeleteOutlined } from '@ant-design/icons'
 import { ColumnsType } from 'antd/es/table'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import AdminLayout from '@/layouts/admin'
@@ -27,16 +25,20 @@ import { getCoursesList } from '@/apis/coursesList.api'
 import { searchWorkplaceForAdmin } from '@/apis/searchWorkplaceForAdmin'
 import { getRegisterCourseList, registerCourseForAdmin } from '@/apis/registerCourse.api'
 import { getUserListForAdmin } from '@/apis/userForAdmin.api'
-import { getClassesList } from '@/apis/classesList.api'
-import { weekdays } from '@/utils/day'
 import http from '@/utils/http'
+import { getClassesByCourse } from '@/apis/classesList.api'
 
-interface IMentor {
-  fullname: string
+interface IStudent {
+  username?: string
+  fullname?: string
+  email?: string
+  dob?: string
+  phone_number?: string
 }
 
 interface ICourse {
-  title: string
+  course_code?: string
+  title?: string
 }
 
 interface IWorkplace {
@@ -44,16 +46,9 @@ interface IWorkplace {
 }
 interface DataType {
   _id: string
-  image_url?: string
-  class_name?: string
-  location?: string
-  is_active?: boolean
-  class_size?: number
   create_at?: string
-  start_at?: string
-  end_at?: string
   course?: ICourse
-  mentor?: IMentor
+  student?: IStudent
   workplace?: IWorkplace
 }
 
@@ -66,6 +61,7 @@ const CustomContent = () => {
   const [selectedCourse, setSelectedCourse] = useState<string | undefined>(undefined)
   const [selectedWorkplace, setSelectedWorkplace] = useState<string | undefined>(undefined)
   const [selectedStudent, setSelectedStudent] = useState<string | undefined>(undefined)
+  const [selectedClass, setSelectedClass] = useState<string | undefined>(undefined)
 
   const [confirmLoading, setConfirmLoading] = useState(false)
 
@@ -75,17 +71,10 @@ const CustomContent = () => {
   const search = searchParams.get('search') ?? null
 
   // const [isActive, setIsActive] = useState(true)
-  const [selectedClass, setSelectedClass] = useState<DataType | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [filteredData, setFilteredData] = useState<any>(null)
+  const [isModalOpen2, setIsModalOpen2] = useState(false)
 
-  const { data: classData } = useQuery({
-    queryKey: ['classes', page, limit],
-    queryFn: async () => {
-      const res = await getClassesList(page, limit)
-      return res.data
-    },
-  })
+  const [filteredData, setFilteredData] = useState<any>(null)
 
   const { data: registCourseData } = useQuery({
     queryKey: ['regist-course', page, limit],
@@ -97,57 +86,37 @@ const CustomContent = () => {
 
   console.log(registCourseData)
 
-  useEffect(() => {
-    if (classData) {
-      setFilteredData(classData)
-    }
-  }, [classData])
-
-  useEffect(() => {
-    if (search) {
-      const filtered = classData?.data.filter(
-        (item: any) =>
-          item.class_code.toLowerCase().includes(search.toLowerCase()) ||
-          item.course.title.toLowerCase().includes(search.toLowerCase()),
-      )
-      setFilteredData({ data: filtered, total: classData?.total })
-    } else {
-      // navigate(`/admin/classes/all?page=${page}&limit=${limit}`)
-      setFilteredData({ data: classData?.data, total: classData?.total })
-    }
-  }, [limit, page, search, classData])
-
   const onChange: TableProps<DataType>['onChange'] = (pagination, filters, sorter, extra) => {
-    // const { current, pageSize } = pagination
+    const { current, pageSize } = pagination
     const searchParam = search ? `&search=${search}` : ''
-    // navigate(`/admin/classes/all?page=${current}&limit=${pageSize}${searchParam}`)
+    navigate(`/admin/courses/register-course?page=${current}&limit=${pageSize}${searchParam}`)
   }
 
   const handleSearch = (value: string) => {
     setSearchParams({ search: value })
   }
 
-  const handleDelete = async () => {
-    try {
-      await http.delete(`/class/${selectedClass?._id}`)
-      // Perform any necessary actions after successful deletion
-      notification.success({
-        message: 'Delete successful',
-        description: 'The class has been deleted successfully',
-      })
-    } catch (error: any) {
-      notification.error({
-        message: 'Delete failed',
-        description: error.message,
-      })
-    }
-    setIsModalOpen(false)
-  }
+  // const handleDelete = async () => {
+  //   try {
+  //     await http.delete(`/class/${selectedClass?._id}`)
+  //     // Perform any necessary actions after successful deletion
+  //     notification.success({
+  //       message: 'Delete successful',
+  //       description: 'The class has been deleted successfully',
+  //     })
+  //   } catch (error: any) {
+  //     notification.error({
+  //       message: 'Delete failed',
+  //       description: error.message,
+  //     })
+  //   }
+  //   setIsModalOpen(false)
+  // }
 
   const { data: course } = useQuery({
     queryKey: ['courses', page, limit],
     queryFn: async () => {
-      const res = await getCoursesList(page, limit)
+      const res = await getCoursesList(1, 50)
       return res.data.data
     },
   })
@@ -160,10 +129,21 @@ const CustomContent = () => {
     },
   })
 
+  console.log(selectedCourse)
+
+  const { data: classByCourse } = useQuery({
+    queryKey: ['classes', selectedCourse],
+    queryFn: async () => {
+      const res = await getClassesByCourse(selectedCourse as string)
+      return res.data.data
+    },
+    enabled: !!selectedCourse,
+  })
+
   const { data: students } = useQuery({
     queryKey: ['user', page, limit],
     queryFn: async () => {
-      const res = await getUserListForAdmin('STUDENT', page, limit)
+      const res = await getUserListForAdmin('STUDENT', page, 50)
       return res.data.data
     },
   })
@@ -201,121 +181,51 @@ const CustomContent = () => {
 
   const OnCourseChange = (value: string) => {
     setSelectedCourse(value)
-    // const { data: courseByID } = useQuery({
-    //   queryKey: ['courseByID'],
-    //   queryFn: async () => {
-    //     const res = await getCourse(value)
-    //     return res.data.data
-    //   },
-    // })
-    // console.log(courseByID)
   }
 
   const columns: ColumnsType<DataType> = [
     {
-      title: <Typography.Text style={{ fontSize: '18px' }}>Image</Typography.Text>,
-      dataIndex: 'image_url',
-      width: '12.5%',
-      render: () => (
-        <Image
-          src='https://res.cloudinary.com/dar4pvqx2/image/upload/v1693931926/vitebanner_wtcoum.jpg'
-          alt='Class Image'
-        />
-      ),
-    },
-    {
-      title: <Typography.Text style={{ fontSize: '18px' }}>Class</Typography.Text>,
-      dataIndex: 'class_code',
-      width: '25%',
-      render: (class_code: string, cls: DataType) => (
-        <Space direction='vertical'>
-          <Typography.Text
-            strong
-            style={{ fontSize: '22px' }}
-          >
-            {class_code}
-          </Typography.Text>
-          <Typography.Text strong>{cls.course?.title}</Typography.Text>
-          <Typography.Text>Created at: {dayjs(cls.create_at).format('DD/MM/YYYY')}</Typography.Text>
-        </Space>
-      ),
-      sorter: (a, b) => {
-        const dateA: any = a.create_at ? dayjs(a.create_at) : dayjs('')
-        const dateB: any = b.create_at ? dayjs(b.create_at) : dayjs('')
-        return dateA - dateB
-      },
-      defaultSortOrder: 'descend',
-    },
-    {
-      title: <Typography.Text style={{ fontSize: '18px' }}>Schedule</Typography.Text>,
-      dataIndex: 'schedule',
-      width: '20%',
-      sorter: true,
-      render: (schedule: number[], cls: DataType) => (
-        <Space direction='vertical'>
-          <Typography.Text>
-            Time: {dayjs(cls.start_at).format('DD/MM/YYYY')} - {dayjs(cls.end_at).format('DD/MM/YYYY')}
-          </Typography.Text>
-          <Typography.Text>
-            Schedule:{' '}
-            {schedule
-              .map((day: number) => {
-                const weekday = weekdays.find((w) => w.value === day)
-                return weekday ? weekday.label : ''
-              })
-              .join(', ')}
-          </Typography.Text>
-        </Space>
-      ),
-    },
-    {
-      title: <Typography.Text style={{ fontSize: '18px' }}>Facility</Typography.Text>,
+      title: 'Student Name',
+      dataIndex: 'fullname',
       width: '15%',
-      sorter: true,
-      render: (cls: DataType) => (
-        <Space direction='vertical'>
-          <Typography.Text>{cls.workplace?.name}</Typography.Text>
-        </Space>
-      ),
+      // filteredValue: [searchText],
+      // onFilter: (value, { fullname }) => String(fullname).toLowerCase().includes(String(value).toLowerCase()),
     },
     {
-      title: <Typography.Text style={{ fontSize: '14px' }}>Number of Students</Typography.Text>,
-      dataIndex: 'class_size',
-      width: '10%',
-      sorter: true,
-      render: (class_size: number) => (
-        <Space direction='vertical'>
-          <Typography.Text>{class_size}</Typography.Text>
-        </Space>
-      ),
+      title: 'Email',
+      dataIndex: 'email',
+      width: '20%',
     },
     {
-      title: <Typography.Text style={{ fontSize: '18px' }}>Action</Typography.Text>,
-      width: '10%',
-      render: (cls: DataType) => (
-        <Space>
-          <Button
-            type='primary'
-            size='large'
-            onClick={() => {
-              navigate(`/admin/classes/show/${cls._id}`)
-            }}
-          >
-            <EyeOutlined className='text-white text-[22px]' />
-          </Button>
-          <Button
-            type='primary'
-            size='large'
-            danger
-            onClick={() => {
-              setSelectedClass(cls)
-              setIsModalOpen(true)
-            }}
-          >
-            <DeleteOutlined className='text-white text-[22px]' />
-          </Button>
-        </Space>
-      ),
+      title: 'Phone Number',
+      dataIndex: 'phone_number',
+      width: '15%',
+    },
+    {
+      title: 'Day Of Birth',
+      width: '15%',
+      render: (regist: DataType) => <Typography.Text>{regist.student?.dob}</Typography.Text>,
+    },
+    {
+      title: 'Registration Course',
+      width: '20%',
+      render: (regist: DataType) => <Typography.Text>{regist.course?.title}</Typography.Text>,
+      filterSearch: true,
+      filterMultiple: true,
+      filters: (course ?? []).map((data: { title: string }) => ({
+        value: data.title,
+        text: data.title,
+      })),
+      onFilter: (value, regist) => {
+        console.log(value)
+        return String(regist.course?.title).indexOf(String(value)) === 0
+      },
+    },
+    {
+      title: 'Registration Date',
+      dataIndex: 'create_at',
+      width: '15%',
+      render: (create_at: string) => <Typography.Text>{dayjs(create_at).format('DD/MM/YYYY')}</Typography.Text>,
     },
   ]
 
@@ -348,33 +258,31 @@ const CustomContent = () => {
             type='primary'
             onClick={() => setIsModalOpen(true)}
           >
-            Register For New Student
+            Register Course
           </Button>
           <Button
             type='primary'
-            onClick={() => setIsModalOpen(true)}
+            onClick={() => setIsModalOpen2(true)}
           >
-            Add New Students To Class
+            Add Students
           </Button>
         </div>
-
-        {/* </Card> */}
-        {classData && (
+        {registCourseData && (
           <Table
             rowKey={(cls: DataType) => cls._id}
             rowSelection={rowSelection}
             columns={columns}
-            dataSource={search ? filteredData?.data : classData.data}
+            dataSource={registCourseData.data}
             pagination={{
               position: ['bottomRight'],
               current: Number(page),
               pageSize: Number(limit),
               defaultCurrent: 1,
               defaultPageSize: 10,
-              pageSizeOptions: [5, 10, 20],
+              pageSizeOptions: [5, 10, 20, 50],
               showSizeChanger: true,
               showQuickJumper: true,
-              total: search ? filteredData?.total : classData.total,
+              total: registCourseData.total,
             }}
             onChange={onChange}
             style={{ marginTop: 16 }}
@@ -382,6 +290,7 @@ const CustomContent = () => {
         )}
       </Card>
 
+      {/* MODAL FOR REGISTER COURSE FOR STUDENTS */}
       <Modal
         title={<Typography.Text style={{ fontSize: '24px' }}>Register Course Modal</Typography.Text>}
         open={isModalOpen}
@@ -437,17 +346,17 @@ const CustomContent = () => {
                 name='student_id'
                 rules={[{ required: true, message: 'Please enter the student name' }]}
               >
-                <Input.Search
+                <Select
                   placeholder='Select'
-                  // options={(students || []).map((data: { _id: string; fullname: string }) => ({
-                  //   value: data._id,
-                  //   label: data.fullname,
-                  // }))}
-                  // mode='multiple'
-                  // maxTagCount='responsive'
+                  options={(students || []).map((data: { _id: string; fullname: string }) => ({
+                    value: data._id,
+                    label: data.fullname,
+                  }))}
+                  mode='multiple'
+                  maxTagCount='responsive'
                   value={selectedStudent}
-                  // onChange={(value) => setSelectedStudent(value)}
-                  // showSearch
+                  onChange={(value) => setSelectedStudent(value)}
+                  showSearch
                 />
               </Form.Item>
             </Col>
@@ -478,6 +387,81 @@ const CustomContent = () => {
                 loading={isLoading}
               >
                 Register
+              </Button>
+            </Space>
+          </Form.Item>
+        </Form>
+      </Modal>
+
+      {/* MODAL FOR ADDING STUDENTS TO CLASS */}
+      <Modal
+        title={<Typography.Text style={{ fontSize: '24px' }}>Add Students Modal</Typography.Text>}
+        open={isModalOpen2}
+        onCancel={() => setIsModalOpen2(false)}
+        footer={null}
+      >
+        <Form
+          form={form}
+          onFinish={mutate}
+          layout='vertical'
+          style={{ paddingTop: '8px' }}
+        >
+          <Row gutter={16}>
+            <Col span={24}>
+              <Form.Item
+                label='Course Title'
+                name='course_id'
+                rules={[{ required: true, message: 'Please enter the course title' }]}
+              >
+                <Select
+                  placeholder='Select'
+                  options={(course || []).map((data: { _id: string; title: string }) => ({
+                    value: data._id,
+                    label: data.title,
+                  }))}
+                  value={selectedCourse}
+                  onChange={OnCourseChange}
+                  showSearch
+                />
+              </Form.Item>
+            </Col>
+            <Col span={24}>
+              <Form.Item
+                label='Class Code'
+                name='class_code'
+                rules={[{ required: true, message: 'Please enter the class code' }]}
+              >
+                <Select
+                  placeholder='Select'
+                  options={(classByCourse || []).map((data: { _id: string, class_code: string }) => ({
+                    value: data._id,
+                    label: data.class_code,
+                  }))}
+                  value={selectedWorkplace}
+                  onChange={(value) => setSelectedClass(value)}
+                  disabled={!selectedCourse}
+                  showSearch
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Form.Item>
+            <Space
+              size='middle'
+              style={{ display: 'flex', justifyContent: 'flex-end' }}
+            >
+              <Button
+                type='default'
+                onClick={() => setIsModalOpen2(false)}
+              >
+                Cancel
+              </Button>
+              <Button
+                type='primary'
+                htmlType='submit'
+                loading={isLoading}
+              >
+                Confirm
               </Button>
             </Space>
           </Form.Item>

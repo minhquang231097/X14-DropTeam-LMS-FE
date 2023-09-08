@@ -123,6 +123,7 @@ const CustomContent = () => {
           alt='Facility Image'
         />
       ),
+      responsive: ['lg'],
     },
     {
       title: <Typography.Text style={{ fontSize: '18px' }}>Facility</Typography.Text>,
@@ -171,10 +172,11 @@ const CustomContent = () => {
         },
       ],
       onFilter: (value, { status }) => String(status).indexOf(String(value)) === 0,
+      responsive: ['md'],
     },
     {
       title: <Typography.Text style={{ fontSize: '18px' }}>Action</Typography.Text>,
-      width: '15%',
+      width: '10%',
       render: (facility: DataType) => (
         <Space>
           <Button

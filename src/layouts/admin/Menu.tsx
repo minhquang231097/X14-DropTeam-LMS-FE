@@ -34,10 +34,10 @@ const MenuSection: React.FC = () => {
     if (e.key === '' || e.key === '') {
       navigate('/admin')
     }
-    if (e.key === 'courses/register-course') {
-      navigate('/admin/courses/register-course')
-    }
-    if (e.key !== '' && e.key !== 'courses/register-course') {
+    // if (e.key === 'courses/register-course') {
+    //   navigate('/admin/courses/register-course')
+    // }
+    if (e.key !== '') {
       searchParams.set('page', '1')
       searchParams.set('limit', '10')
       navigate(`/admin/${e.key}?${searchParams.toString()}`, { replace: true })
@@ -61,7 +61,7 @@ const MenuSection: React.FC = () => {
 
     getItem('Facilities', 'facilities/all', <MdPlace style={{ fontSize: '24px', verticalAlign: 'middle' }} />),
 
-    getItem('Feedbacks', 'feedbacks', <MdOutlineFeedback style={{ fontSize: '24px', verticalAlign: 'middle' }} />),
+    // getItem('Feedbacks', 'feedbacks', <MdOutlineFeedback style={{ fontSize: '24px', verticalAlign: 'middle' }} />),
   ]
 
   return (

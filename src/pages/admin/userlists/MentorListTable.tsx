@@ -1,7 +1,7 @@
 import React from 'react'
 import { Table, Tag, TableProps } from 'antd'
 import { useNavigate } from 'react-router-dom'
-import type { ColumnsType } from 'antd/es/table'
+import type { ColumnsType, TablePaginationConfig } from 'antd/es/table'
 
 interface DataType {
   _id: string
@@ -29,9 +29,18 @@ const TeacherListTable: React.FC<StudentList> = (props) => {
   const navigate = useNavigate()
   const { searchText, data, filteredData, setSearchParams } = props
 
+  const tablePagination: TablePaginationConfig = {
+    position: ['bottomRight'],
+    defaultCurrent: 1,
+    defaultPageSize: 10,
+    pageSizeOptions: [10, 20, 50],
+    showSizeChanger: true,
+    showQuickJumper: true,
+  }
+
   const columns: ColumnsType<DataType> = [
     {
-      title: 'No.',
+      // title: 'No.',
       dataIndex: 'index',
       width: '40px',
       render: (_value, _record, index) => <>{index + 1}</>,
@@ -174,27 +183,23 @@ const TeacherListTable: React.FC<StudentList> = (props) => {
     setSearchParams(current)
     navigate(
       // `/teacher/class-detail/session?sesson_code=${props.session_code}&class_id=${props.class_id}&page=${current}&limit=${pageSize}`,
-      `/admin/users/students?page=${current}&limit=${pageSize}`,
+      `/admin/users/mentors?page=${current}&limit=${pageSize}`,
     )
   }
 
   return (
     <Table
       pagination={{
-        position: ['bottomCenter'],
-        defaultCurrent: 1,
-        defaultPageSize: 10,
-        pageSizeOptions: [10, 20],
-        showSizeChanger: true,
+        ...tablePagination,
         current: data && data.page,
         total: data && data.total,
       }}
       columns={columns}
       dataSource={mentorData}
       scroll={{ y: 340 }}
-      bordered
-      size='small'
-      style={{ padding: '0 16px' }}
+      style={{ marginTop: 16 }}
+      // bordered
+      // size='small'
       rowKey={(_record) => _record._id}
       onChange={onChange}
     />

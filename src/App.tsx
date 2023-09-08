@@ -524,7 +524,7 @@ const App: React.FC = () => {
             )
           }
         />
-        <Route
+        {/* <Route
           path='/admin/feedbacks'
           element={
             USER && USER.role === 'ADMIN' ? (
@@ -535,7 +535,7 @@ const App: React.FC = () => {
               <Forbidden403 />
             )
           }
-        />
+        /> */}
         <Route
           path='/admin/courses/register-course'
           element={

@@ -16,3 +16,10 @@ export const getClassesBySearch = async (page?: any, limit?: any, search?: any) 
       search,
     },
   })
+
+export const getClassesByCourse = async (course_id?: string) =>
+  http.get('/class', {
+    params: {
+      course_id,
+    },
+  })

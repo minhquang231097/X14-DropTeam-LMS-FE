@@ -145,7 +145,7 @@ const AdminLayout: React.FC<LayoutProps> = ({ content }) => {
                   style={ButtonStyle}
                   onClick={() => setMode(mode === 'light' ? 'dark' : 'light')}
                 />
-                <Button
+                {/* <Button
                   shape='circle'
                   icon={
                     <MdNotifications
@@ -153,7 +153,7 @@ const AdminLayout: React.FC<LayoutProps> = ({ content }) => {
                     />
                   }
                   style={ButtonStyle}
-                />
+                /> */}
                 <AdminDropDown />
               </Space>
             </Header>
