@@ -1,8 +1,12 @@
 import http from '@/utils/http'
 
-export const handleChangePassword = async (value: any, other?: any) =>
-  http
-    .put('/user', { password: value.currentPassword, newPassword: value.newPassword })
+export const handleChangePassword = async (value: any, other?: any) => {
+  const payload = {
+    password: value.currentPassword,
+    newPassword: value.newPassword,
+  }
+  return http
+    .put('/user/update/change-password', JSON.stringify(payload))
     .then((res) => {
       if (res.data.message === 'Success' && res.data.statusCode === 200) {
         other('/', {
@@ -16,3 +20,4 @@ export const handleChangePassword = async (value: any, other?: any) =>
     .catch((err) => {
       console.log(err)
     })
+}
