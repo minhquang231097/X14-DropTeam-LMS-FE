@@ -6,13 +6,12 @@ import { RiUserSettingsLine, RiShieldKeyholeLine } from 'react-icons/ri'
 import { useNavigate } from 'react-router-dom'
 import handleLogout from '@/apis/logout.api'
 
-const UserDropdownLogged: React.FC<{ username: any }> = (prop: any) => {
-  const { username } = prop
+const UserDropdownLogged: React.FC<{ username: any; avatar: any }> = (props: any) => {
   const navigate = useNavigate()
   const items: MenuProps['items'] = [
     {
       key: '1',
-      label: <div className='flex items-center justify-center text-lg text-[#F56A00] font-bold'>{username}</div>,
+      label: <div className='flex items-center justify-center text-lg text-[#F56A00] font-bold'>{props.username}</div>,
       disabled: true,
     },
     {
@@ -72,10 +71,12 @@ const UserDropdownLogged: React.FC<{ username: any }> = (prop: any) => {
             borderColor: '#ccc',
             backgroundColor: '#F1F5F9',
           }}
-          src={`https://xsgames.co/randomusers/avatar.php?g=pixel&key=${Math.floor(Math.random() * 10)}`}
-        >
-          {/* {props.username.charAt(0).toUpperCase()} */}
-        </Avatar>
+          src={
+            props.avatar
+              ? props.avatar
+              : `https://xsgames.co/randomusers/avatar.php?g=pixel&key=${Math.floor(Math.random() * 10)}`
+          }
+        ></Avatar>
       </a>
     </Dropdown>
   )
