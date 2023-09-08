@@ -60,7 +60,7 @@ const CustomContent = () => {
   const [selectedCourse, setSelectedCourse] = useState<string | undefined>(undefined)
   const [selectedWorkplace, setSelectedWorkplace] = useState<string | undefined>(undefined)
 
-  const warningText = `A minimum of 10 students is required to create a class. Otherwise, class creation is not permitted.`
+  // const warningText = `A minimum of 10 students is required to create a class. Otherwise, class creation is not permitted.`
   // Cần tối thiểu 10 học viên để tạo lớp học. Mặt khác, việc tạo lớp không được phép.
 
   // const [checkedList, setCheckedList] = useState<CheckboxValueType[]>(defaultCheckedList.map((option) => option.value))
@@ -223,13 +223,13 @@ const CustomContent = () => {
           >
             Create A New Class
           </Typography.Title>
-          <Alert
+          {/* <Alert
             message='Warning'
             description={warningText}
             type='warning'
             showIcon
             style={{ marginBottom: '1rem' }}
-          />
+          /> */}
           <Row gutter={[24, 16]}>
             <Col
               xs={24}
