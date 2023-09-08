@@ -9,6 +9,8 @@ import Footer from '@/layouts/user/Footer'
 import { getCoursesList } from '@/apis/coursesList.api'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import { handleSortByForCourse } from '@/apis/sortByForCourse.api'
+import { handleGetCoursesByRate } from '@/apis/coursesByRate.api'
+import { handleGetCoursesByLevel } from '@/apis/coursesByLevel.api'
 
 const CoursesList: React.FC = () => {
   const navigate = useNavigate()
@@ -39,8 +41,8 @@ const CoursesList: React.FC = () => {
   const sortByData = useQuery({
     queryKey: ['sortBy', sortByValue],
     queryFn: async () => {
-      const res = await handleSortByForCourse(sortByValue, 1, page, limit)
-      return res.data
+      const res = await handleSortByForCourse(sortByValue, 1)
+      return res.data.data
     },
   }).data
 
@@ -49,29 +51,37 @@ const CoursesList: React.FC = () => {
   const handleFilterLevel = (event: any) => {
     setFilterLevel(event.target.value)
   }
-  const filteredListByLevel = data
-    ? data.data.filter((item: any) => (filterLevel === 'all' ? true : item.level === String(filterLevel).toUpperCase()))
-    : []
+  const filterLevelData = useQuery({
+    queryKey: ['level', filterLevel],
+    queryFn: async () => {
+      const res = await handleGetCoursesByLevel(String(filterLevel).toUpperCase())
+      return res.data.data
+    },
+  }).data
 
   // Filter by rate
   const [filterRate, setFilterRate] = useState(null)
   const handleFilterRate = (event: any) => {
     setFilterRate(event.target.value)
   }
-  const filteredListByRate = data
-    ? data.data.filter((item: any) => (filterRate === undefined ? true : item.rate === Number(filterRate)))
-    : []
+  const filterRateData = useQuery({
+    queryKey: ['rate', filterRate],
+    queryFn: async () => {
+      const res = await handleGetCoursesByRate(filterRate)
+      return res.data.data
+    },
+  }).data
 
   // Data
   let coursesListData: any[] = []
   if (data !== undefined) {
     coursesListData = data.data
     if (sortByData) {
-      coursesListData = [...sortByData.data]
-    } else if (filterRate) {
-      coursesListData = filteredListByRate
-    } else if (filterLevel) {
-      coursesListData = filteredListByLevel
+      coursesListData = sortByData
+    } else if (filterRateData && filterRate) {
+      coursesListData = filterRateData
+    } else if (filterLevelData && filterLevel) {
+      filterLevel === 'all' ? (coursesListData = data.data) : (coursesListData = filterLevelData)
     }
   }
 

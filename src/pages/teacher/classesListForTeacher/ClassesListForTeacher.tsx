@@ -9,6 +9,7 @@ import SidebarTeacher from '@/layouts/user/SidebarTeacher'
 import ClassListTable from './ClassListTable'
 import { getClassesList } from '@/apis/classesList.api'
 import { getClassByClassCode } from '@/apis/searchClassByClassCode.api'
+import { getClassesListForTeacher } from '@/apis/classesListForTeacher.api'
 
 const ClassesListForTeacher: React.FC = () => {
   const [searchText, setSearchText] = useState('')
@@ -18,10 +19,12 @@ const ClassesListForTeacher: React.FC = () => {
   const page = searchParams.get('page') ?? 1
   const limit = searchParams.get('limit') ?? 10
 
+  const ROLE = JSON.parse(localStorage.getItem('user') || '{}').role
+
   const { data } = useQuery({
     queryKey: ['classes', page, limit],
     queryFn: async () => {
-      const res = await getClassesList(page, limit)
+      const res = ROLE === 'MENTOR' ? await getClassesListForTeacher() : await getClassesList(page, limit)
       return res.data
     },
   })

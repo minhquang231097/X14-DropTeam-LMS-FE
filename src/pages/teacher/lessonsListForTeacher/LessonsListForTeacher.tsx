@@ -86,6 +86,7 @@ const LessonsListForTeacher: React.FC = () => {
             searchText={searchText}
             setSearchParams={setSearchParams}
             filteredData={filteredData as any}
+            course_id={course_id}
           />
         </div>
       </div>
