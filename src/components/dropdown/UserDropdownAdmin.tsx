@@ -9,7 +9,7 @@ import handleLogout from '@/apis/logout.api'
 
 const UserDropdownAdmin: React.FC<{ username: any; avatar: any }> = (props: any) => {
   const navigate = useNavigate()
-  const USER = JSON.parse(localStorage.getItem('user') as string)
+  const USER = JSON.parse(localStorage.getItem('login') as string)
 
   const items: MenuProps['items'] = [
     {

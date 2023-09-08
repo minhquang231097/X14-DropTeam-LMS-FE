@@ -12,6 +12,8 @@ import AdminSearch from '@/components/search/AdminSearch'
 import { getClassesBySearch, getClassesList } from '@/apis/classesList.api'
 import { weekdays } from '@/utils/day'
 import http from '@/utils/http'
+import StatusTag from '@/components/tag/StatusTag'
+import { COMMON_STATUS } from '@/utils/status'
 
 interface IMentor {
   fullname: string
@@ -34,6 +36,7 @@ interface DataType {
   create_at?: string
   start_at?: string
   end_at?: string
+  status?: string
   schedule?: number[]
   course?: ICourse
   mentor?: IMentor
@@ -218,14 +221,33 @@ const CustomContent = () => {
       },
     },
     {
-      title: <Typography.Text style={{ fontSize: '14px' }}>Number of Students</Typography.Text>,
-      dataIndex: 'class_size',
-      width: '10%',
-      render: (class_size: number) => (
-        <Space direction='vertical'>
-          <Typography.Text>{class_size}</Typography.Text>
-        </Space>
-      ),
+      title: <Typography.Text style={{ fontSize: '18px' }}>Status</Typography.Text>,
+      dataIndex: 'status',
+      width: '15%',
+      render: (value: COMMON_STATUS) =>
+        value ? (
+          <StatusTag
+            status={value}
+            style={{ fontSize: '14px', padding: '4px 8px' }}
+          />
+        ) : (
+          <span />
+        ),
+      filters: [
+        {
+          text: 'ACTIVE',
+          value: 'ON',
+        },
+        {
+          text: 'INACTIVE',
+          value: 'OFF',
+        },
+        {
+          text: 'UPCOMING',
+          value: 'UPCOMING',
+        },
+      ],
+      onFilter: (value, { status }) => String(status).indexOf(String(value)) === 0,
     },
     {
       title: <Typography.Text style={{ fontSize: '18px' }}>Action</Typography.Text>,

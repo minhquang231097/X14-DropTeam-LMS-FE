@@ -4,6 +4,8 @@ import { Avatar, Dropdown } from 'antd'
 import { FaUserCircle } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import { MdLockOutline, MdOutlineLogout, MdOutlinePersonOutline, MdOutlineHome } from 'react-icons/md'
+import { useQuery } from '@tanstack/react-query'
+import { getUserProfile } from '@/apis/userProfile.api'
 
 const items: MenuProps['items'] = [
   {
@@ -64,7 +66,8 @@ const items: MenuProps['items'] = [
 ]
 
 const AdminDropDown: React.FC = () => {
-  const USER = JSON.parse(localStorage.getItem('user') as string)
+  const USER = JSON.parse(localStorage.getItem('login') as string)
+  const { avatar } = JSON.parse(localStorage.getItem('user') as string)
 
   return (
     <Dropdown
@@ -74,6 +77,7 @@ const AdminDropDown: React.FC = () => {
     >
       {USER && USER.role === 'ADMIN' ? (
         <Avatar
+          src={avatar}
           size={40}
           style={{
             color: 'fff',

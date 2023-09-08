@@ -48,7 +48,7 @@ const LoginForm = lazy(() => import('./pages/user/login/LoginForm.tsx'))
 const AdminRegisterCourse = lazy(() => import('./pages/admin/registercourses/index.tsx'))
 
 const App: React.FC = () => {
-  const USER = JSON.parse(localStorage.getItem('user') as string)
+  const USER = JSON.parse(localStorage.getItem('login') as string)
   return (
     <>
       <Routes>

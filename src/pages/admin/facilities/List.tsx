@@ -35,21 +35,6 @@ const CustomContent = () => {
   const limit = searchParams.get('limit') ?? 10
   const search = searchParams.get('search') ?? null
 
-  // const options = [
-  //   {
-  //     label: 'ACTIVE',
-  //     value: 'ON',
-  //   },
-  //   {
-  //     label: 'INACTIVE',
-  //     value: 'OFF',
-  //   },
-  //   {
-  //     label: 'UPCOMING',
-  //     value: 'UPCOMING',
-  //   },
-  // ]
-
   const tablePagination: TablePaginationConfig = {
     position: ['bottomRight'],
     current: Number(page),

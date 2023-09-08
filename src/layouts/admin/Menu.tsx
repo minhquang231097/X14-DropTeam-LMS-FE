@@ -1,4 +1,4 @@
-import { ConfigProvider, Menu, MenuProps } from 'antd'
+import { Col, ConfigProvider, Grid, Menu, MenuProps } from 'antd'
 import {
   MdClass,
   MdMenuBook,
@@ -15,8 +15,8 @@ import './menu.css'
 type MenuItem = Required<MenuProps>['items'][number]
 
 function getItem(
-  label: React.ReactNode,
-  key: React.Key,
+  label?: React.ReactNode,
+  key?: React.Key,
   icon?: React.ReactNode,
   children?: MenuItem[],
   style?: React.CSSProperties,
@@ -28,6 +28,7 @@ const MenuSection: React.FC = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const searchParams = new URLSearchParams(location.search)
+  // const screen = Grid.useBreakpoint()
 
   const onClick: MenuProps['onClick'] = (e) => {
     if (e.key === '' || e.key === '') {
@@ -61,9 +62,6 @@ const MenuSection: React.FC = () => {
     getItem('Facilities', 'facilities/all', <MdPlace style={{ fontSize: '24px', verticalAlign: 'middle' }} />),
 
     getItem('Feedbacks', 'feedbacks', <MdOutlineFeedback style={{ fontSize: '24px', verticalAlign: 'middle' }} />),
-
-    // getItem('Analytics', 'analytics', <MdBarChart style={{ fontSize: '24px', verticalAlign: 'middle' }} />),
-    // getItem('Calendar', 'calendar', <MdOutlineCalendarToday style={{ fontSize: '24px', verticalAlign: 'middle' }} />),
   ]
 
   return (

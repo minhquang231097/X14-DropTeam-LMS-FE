@@ -285,6 +285,20 @@ const CustomContent = () => {
                   placeholder='Type...'
                 />
               </Form.Item>
+              <Form.Item
+                label='Class Status'
+                name='status'
+                rules={[{ required: true, message: 'Please select the status' }]}
+              >
+                <Select
+                  options={[
+                    { label: 'INACTIVE', value: 'OFF' },
+                    { label: 'ACTIVE', value: 'ON' },
+                    { label: 'UPCOMING', value: 'UPCOMING' },
+                  ]}
+                  placeholder='Select'
+                />
+              </Form.Item>
             </Col>
             <Col
               xs={24}

@@ -17,7 +17,7 @@ const Rating: React.FC<Props> = (props) => {
     position: 'top-left',
   }
   return (
-    <Card title='Rating'>
+    <Card title='Rating' style={{ marginRight: '16px' }}>
       <Bar {...config} />
     </Card>
   )

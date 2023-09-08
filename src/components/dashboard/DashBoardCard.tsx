@@ -23,7 +23,7 @@ const DashBoardCard = ({ title, content, icon }: Props) => {
         </div>
       }
       style={{
-        width: 250,
+        // width: 250,
         border: '1px solid rgb(112,128,144, 0.1)',
         borderRadius: '8px',
       }}
