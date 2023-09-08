@@ -21,9 +21,9 @@ const CourseCard = (course: Course) => {
           alt=''
           className='w-full h-[180px]'
         />
-        <div className='px-4'>
+        <div className='px-4 h-'>
           <p
-            className='font-bold leading-6'
+            className='font-bold leading-6 h-[48px]'
             style={{
               display: '-webkit-box',
               WebkitLineClamp: '2',
@@ -70,7 +70,7 @@ const CourseCard = (course: Course) => {
                     )
                   })}
             </div>
-            <span className='mt-[10px] text-gray-500 text-sm'>({Math.floor(Math.random() * 10000)})</span>
+            <span className='mt-[10px] text-gray-500 text-sm'>({Math.floor(Math.random() * 1000)})</span>
           </div>
           <div className='flex items-center'>
             <p className='font-bold mr-2'>

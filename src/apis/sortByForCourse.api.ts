@@ -1,7 +1,5 @@
 import http from '@/utils/http'
 
-export const handleSortByForCourse = (field: any) => {
-  if (field === 'create_at') {
-    return http.get('/course?sortBy=create_at')
-  }
+export const handleSortByForCourse = (field?: any, order?: any, page?: any, limit?: any) => {
+  return http.get('/course', { params: { sortFeild: field, sortOrder: order, page, limit } })
 }

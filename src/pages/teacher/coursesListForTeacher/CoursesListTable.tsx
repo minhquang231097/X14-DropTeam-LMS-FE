@@ -120,6 +120,13 @@ const ClassListTable: React.FC<ClassesList> = (props) => {
       }}
       style={{ padding: '0 16px' }}
       onChange={onChange}
+      onRow={({ _id }) => {
+        return {
+          onClick: () => {
+            navigate(`/teacher/lessons-list?course_id=${_id}&page=1&limit=10`)
+          },
+        }
+      }}
     />
   )
 }

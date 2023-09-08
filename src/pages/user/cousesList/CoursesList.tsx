@@ -13,7 +13,8 @@ import { handleSortByForCourse } from '@/apis/sortByForCourse.api'
 const CoursesList: React.FC = () => {
   const navigate = useNavigate()
 
-  const [searchParams, setSearchParams] = useSearchParams()
+  // Call API
+  const [searchParams, _setSearchParams] = useSearchParams()
   const page = searchParams.get('page') ?? 1
   const limit = searchParams.get('limit') ?? 6
 
@@ -29,10 +30,49 @@ const CoursesList: React.FC = () => {
     navigate(`/courses-list?page=${page}&limit=${pageSize}`)
   }
 
+  // Sort by
   const [sortByValue, setSortByValue] = useState('')
-
   const handleSortBy = (value: string) => {
     setSortByValue(value)
+  }
+
+  const sortByData = useQuery({
+    queryKey: ['sortBy', sortByValue],
+    queryFn: async () => {
+      const res = await handleSortByForCourse(sortByValue, 1, page, limit)
+      return res.data
+    },
+  }).data
+
+  // Filter by level
+  const [filterLevel, setFilterLevel] = useState('all')
+  const handleFilterLevel = (event: any) => {
+    setFilterLevel(event.target.value)
+  }
+  const filteredListByLevel = data
+    ? data.data.filter((item: any) => (filterLevel === 'all' ? true : item.level === String(filterLevel).toUpperCase()))
+    : []
+
+  // Filter by rate
+  const [filterRate, setFilterRate] = useState(null)
+  const handleFilterRate = (event: any) => {
+    setFilterRate(event.target.value)
+  }
+  const filteredListByRate = data
+    ? data.data.filter((item: any) => (filterRate === undefined ? true : item.rate === Number(filterRate)))
+    : []
+
+  // Data
+  let coursesListData: any[] = []
+  if (data !== undefined) {
+    coursesListData = data.data
+    if (sortByData) {
+      coursesListData = [...sortByData.data]
+    } else if (filterRate) {
+      coursesListData = filteredListByRate
+    } else if (filterLevel) {
+      coursesListData = filteredListByLevel
+    }
   }
 
   return (
@@ -51,9 +91,6 @@ const CoursesList: React.FC = () => {
               colorBgContainer: 'trasparent',
               colorTextPlaceholder: '#888',
               colorBgSpotlight: '#888',
-            },
-            Checkbox: {
-              colorBgContainer: 'transparent',
             },
             Radio: {
               colorBgContainer: 'transparent',
@@ -84,19 +121,20 @@ const CoursesList: React.FC = () => {
         </div>
         <div className='max-w-[1280px] mx-auto mb-[96px] grid grid-rows-1 grid-cols-4 gap-6 max-xl:px-8 max-xl:grid-cols-1'>
           <div className='row-span-1 max-xl:hidden'>
-            <Sidebar />
+            <Sidebar
+              handleFilterLevel={handleFilterLevel}
+              handleFilterRate={handleFilterRate}
+            />
           </div>
 
           <div className='col-span-3 grid grid-cols-3 row-span-1 max-xl:grid-cols-1'>
             <div className='col-span-3 grid grid-cols-3 gap-6 max-xl:col-span-2 max-xl:grid-cols-2 max-xl:flex max-xl:flex-wrap max-xl:justify-evenly'>
-              {data
-                ? data.data.map((course: any) => (
-                    <CourseCard
-                      {...course}
-                      key={course._id}
-                    />
-                  ))
-                : ''}
+              {coursesListData.map((course: any) => (
+                <CourseCard
+                  {...course}
+                  key={course._id}
+                />
+              ))}
             </div>
             <div className='flex justify-center col-start-2 mt-10 max-xl:col-start-1'>
               <Pagination
