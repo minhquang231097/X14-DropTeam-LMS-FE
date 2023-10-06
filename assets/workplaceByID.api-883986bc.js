@@ -1,0 +1,1 @@
+import{h as o}from"./http-c5fb7bd7.js";const e=async t=>o.get(`/workplace/${t}`);export{e as g};

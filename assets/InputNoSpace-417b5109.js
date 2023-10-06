@@ -1,1 +1,0 @@
-import{j as s}from"./index-3c606b8c.js";import{I as r}from"./index-67e6ce75.js";const c=({onChange:t=()=>{},...e})=>{const n=a=>{const o=a.target.value.replace(/\s/g,"");t(o)};return s.jsx(r,{...e,onChange:n})};export{c as I};

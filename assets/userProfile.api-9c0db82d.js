@@ -1,1 +1,0 @@
-import{h as r}from"./http-f102274f.js";const s=async e=>{console.log(e);const o=JSON.parse(localStorage.getItem("login")).accessToken;return r.get("/user/info",{headers:{Authorization:`Bearer ${o}`}})};export{s as g};

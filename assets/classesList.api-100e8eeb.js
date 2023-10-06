@@ -1,1 +1,0 @@
-import{h as t}from"./http-f102274f.js";const r=async(s,a)=>t.get("/class",{params:{page:s,limit:a}}),g=async(s,a,e)=>t.get("/class",{params:{page:s,limit:a,search:e}}),o=async s=>t.get("/class",{params:{course_id:s}});export{g as a,o as b,r as g};
