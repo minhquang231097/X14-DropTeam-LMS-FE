@@ -5,9 +5,9 @@ import {
   Card,
   Col,
   DatePicker,
-  Divider,
+
   Form,
-  Input,
+
   InputNumber,
   Row,
   Select,
@@ -17,8 +17,6 @@ import {
 } from 'antd'
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { CheckboxValueType } from 'antd/es/checkbox/Group'
-import Checkbox, { CheckboxChangeEvent } from 'antd/es/checkbox'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import AdminLayout from '@/layouts/admin'
@@ -56,7 +54,7 @@ const CustomContent = () => {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
 
-  const [searchParams, setSearchParams] = useSearchParams()
+  const [searchParams] = useSearchParams()
   const page = searchParams.get('page') ?? 1
   const limit = searchParams.get('limit') ?? 50
 

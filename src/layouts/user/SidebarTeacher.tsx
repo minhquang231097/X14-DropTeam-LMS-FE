@@ -1,5 +1,5 @@
 import React from 'react'
-import { MdOutlineClass, MdConveyorBelt, MdOutlinePlayLesson } from 'react-icons/md'
+import { MdOutlineClass, MdConveyorBelt } from 'react-icons/md'
 import Divider from 'antd/es/divider'
 import { Link } from 'react-router-dom'
 

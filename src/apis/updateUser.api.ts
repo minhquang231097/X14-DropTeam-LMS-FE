@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 import axios from 'axios'
 import { message } from 'antd'
 import http from '@/utils/http'

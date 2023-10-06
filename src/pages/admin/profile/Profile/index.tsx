@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Button, Form, Input, Select, DatePicker } from 'antd'
 import { Option } from 'antd/es/mentions'
 import '../../../user/profile/Profile/Profile.css'
@@ -44,7 +44,7 @@ const Profile: React.FC = () => {
               <Form.Item
                 label='User Name'
                 name='username'
-                //   rules={[{ required: true, message: 'Please input your user name!' }]}
+              //   rules={[{ required: true, message: 'Please input your user name!' }]}
               >
                 <Input
                   disabled
@@ -55,7 +55,7 @@ const Profile: React.FC = () => {
               <Form.Item
                 label='Id'
                 name='id'
-                //   rules={[{ required: true, message: 'Please input your user name!' }]}
+              //   rules={[{ required: true, message: 'Please input your user name!' }]}
               >
                 <Input disabled />
               </Form.Item>
@@ -64,7 +64,7 @@ const Profile: React.FC = () => {
             <Form.Item
               label='Full Name'
               name='fullname'
-              //   rules={[{ required: true, message: 'Please input your user name!' }]}
+            //   rules={[{ required: true, message: 'Please input your user name!' }]}
             >
               <Input style={{ width: '450px' }} />
             </Form.Item>
@@ -72,7 +72,7 @@ const Profile: React.FC = () => {
             <Form.Item
               label='Email'
               name='email'
-              //   rules={[{ required: true, message: 'Please input your email!' }]}
+            //   rules={[{ required: true, message: 'Please input your email!' }]}
             >
               <Input style={{ width: '450px' }} />
             </Form.Item>
@@ -80,7 +80,7 @@ const Profile: React.FC = () => {
             <Form.Item
               label='Phone Number'
               name='phonenumber'
-              //   rules={[{ required: true, message: 'Please input your phone number!' }]}
+            //   rules={[{ required: true, message: 'Please input your phone number!' }]}
             >
               <Input style={{ width: '450px' }} />
             </Form.Item>
@@ -96,7 +96,7 @@ const Profile: React.FC = () => {
               <Form.Item
                 label='Gender'
                 name='gender'
-                // rules={[{ required: true, message: 'Please select your gender!' }]}
+              // rules={[{ required: true, message: 'Please select your gender!' }]}
               >
                 <Select style={{ width: '210px' }}>
                   <Option value='Male' />
@@ -108,7 +108,7 @@ const Profile: React.FC = () => {
             <Form.Item
               label='Address'
               name='address'
-              //   rules={[{ required: true, message: 'Please input your full name!' }]}
+            //   rules={[{ required: true, message: 'Please input your full name!' }]}
             >
               <Input style={{ width: '450px' }} />
             </Form.Item>

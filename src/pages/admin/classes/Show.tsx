@@ -8,7 +8,6 @@ import AdminLayout from '@/layouts/admin'
 import { ShowButtonStyle } from '@/utils/style'
 import { getClassById } from '@/apis/class.api'
 import { weekdays } from '@/utils/day'
-import { getStudentsByClassID } from '@/apis/studentsByClassId.api'
 
 dayjs.extend(customParseFormat)
 
@@ -24,13 +23,13 @@ const CustomContent = () => {
     },
   })
 
-  const { data: studentsByClassID } = useQuery({
-    queryKey: ['studentByclassID'],
-    queryFn: async () => {
-      const res = await getStudentsByClassID(id as string)
-      return res.data.data
-    },
-  })
+  // const { data: studentsByClassID } = useQuery({
+  //   queryKey: ['studentByclassID'],
+  //   queryFn: async () => {
+  //     const res = await getStudentsByClassID(id as string)
+  //     return res.data.data
+  //   },
+  // })
 
   if (!classByID) {
     return <Typography.Text>Class not found</Typography.Text>

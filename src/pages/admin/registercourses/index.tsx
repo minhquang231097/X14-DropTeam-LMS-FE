@@ -67,9 +67,9 @@ const CustomContent = () => {
   const [selectedClass, setSelectedClass] = useState<string | undefined>(undefined)
 
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([])
-  const [loading, setLoading] = useState(false)
+  // const [loading, setLoading] = useState(false)
 
-  const [searchParams, setSearchParams] = useSearchParams()
+  const [searchParams] = useSearchParams()
   const page = searchParams.get('page') ?? 1
   const limit = searchParams.get('limit') ?? 50
   const search = searchParams.get('search') ?? null
@@ -78,8 +78,6 @@ const CustomContent = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isModalOpen2, setIsModalOpen2] = useState(false)
   // const [isModalOpen3, setIsModalOpen3] = useState(false)
-
-  const [filteredData, setFilteredData] = useState<any>(null)
 
   const { data: registCourseData } = useQuery({
     queryKey: ['regist-course', page, limit],
@@ -91,15 +89,15 @@ const CustomContent = () => {
 
   console.log(registCourseData)
 
-  const onChange: TableProps<DataType>['onChange'] = (pagination, filters, sorter, extra) => {
+  const onChange: TableProps<DataType>['onChange'] = (pagination) => {
     const { current, pageSize } = pagination
     const searchParam = search ? `&search=${search}` : ''
     navigate(`/admin/courses/register-course?page=${current}&limit=${pageSize}${searchParam}`)
   }
 
-  const handleSearch = (value: string) => {
-    setSearchParams({ search: value })
-  }
+  // const handleSearch = (value: string) => {
+  //   setSearchParams({ search: value })
+  // }
 
   // const handleDelete = async () => {
   //   try {
@@ -183,14 +181,14 @@ const CustomContent = () => {
     retry: 3,
   })
 
-  const start = () => {
-    setLoading(true)
-    // ajax request after empty completing
-    setTimeout(() => {
-      setSelectedRowKeys([])
-      setLoading(false)
-    }, 1000)
-  }
+  // const start = () => {
+  //   setLoading(true)
+  //   // ajax request after empty completing
+  //   setTimeout(() => {
+  //     setSelectedRowKeys([])
+  //     setLoading(false)
+  //   }, 1000)
+  // }
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     console.log('selectedRowKeys changed: ', newSelectedRowKeys)
@@ -201,7 +199,7 @@ const CustomContent = () => {
     selectedRowKeys,
     onChange: onSelectChange,
   }
-  const hasSelected = selectedRowKeys.length > 0
+  // const hasSelected = selectedRowKeys.length > 0
 
   const OnCourseChange = (value: string) => {
     setSelectedCourse(value)

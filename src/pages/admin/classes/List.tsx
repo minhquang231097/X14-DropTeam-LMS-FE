@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
-import { Breadcrumb, Button, Card, Image, Modal, Space, Table, TableProps, Typography, notification, theme } from 'antd'
+import { Breadcrumb, Button, Card, Image, Modal, Space, Table, TableProps, Typography, notification } from 'antd'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { MdAddCircleOutline } from 'react-icons/md'
 import { useQuery } from '@tanstack/react-query'
@@ -69,7 +69,7 @@ const CustomContent = () => {
   // const [isActive, setIsActive] = useState(true)
   const [selectedClass, setSelectedClass] = useState<DataType | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [filteredData, setFilteredData] = useState<any>(null)
+  const [, setFilteredData] = useState<any>(null)
 
   const { data: classData } = useQuery({
     queryKey: ['classes', page, limit],
@@ -113,7 +113,7 @@ const CustomContent = () => {
   //   }
   // }, [limit, page, search, classData])
 
-  const onChange: TableProps<DataType>['onChange'] = (pagination, filters, sorter, extra) => {
+  const onChange: TableProps<DataType>['onChange'] = (pagination) => {
     const { current, pageSize } = pagination
     const searchParam = search ? `&search=${search}` : ''
     navigate(`/admin/classes/all?page=${current}&limit=${pageSize}${searchParam}`)

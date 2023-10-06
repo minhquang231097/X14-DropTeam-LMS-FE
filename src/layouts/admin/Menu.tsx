@@ -1,13 +1,5 @@
-import { Col, ConfigProvider, Grid, Menu, MenuProps } from 'antd'
-import {
-  MdClass,
-  MdMenuBook,
-  MdOutlineFeedback,
-  MdOutlineHome,
-  MdOutlineNoteAlt,
-  MdPeople,
-  MdPlace,
-} from 'react-icons/md'
+import { ConfigProvider, Menu, MenuProps } from 'antd'
+import { MdClass, MdMenuBook, MdOutlineHome, MdPeople, MdPlace } from 'react-icons/md'
 import React from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import './menu.css'

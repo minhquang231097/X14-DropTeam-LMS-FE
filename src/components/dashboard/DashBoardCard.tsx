@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, Space } from 'antd'
+import { Card } from 'antd'
 
 interface Props {
   title: string

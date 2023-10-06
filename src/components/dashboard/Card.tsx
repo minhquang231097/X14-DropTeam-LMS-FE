@@ -1,5 +1,4 @@
-import React from 'react'
-import { Col, Row, Space } from 'antd'
+import { Col, Row } from 'antd'
 import { GoBook } from 'react-icons/go'
 import { MdOutlineAttachMoney, MdOutlinePeople } from 'react-icons/md'
 import DashBoardCard from './DashBoardCard'

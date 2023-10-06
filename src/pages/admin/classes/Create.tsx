@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import {
-  Alert,
   Breadcrumb,
   Button,
   Card,
@@ -26,25 +25,25 @@ import { searchWorkplaceForAdmin } from '@/apis/searchWorkplaceForAdmin'
 import { getCourse } from '@/apis/course.api'
 import { weekdays } from '@/utils/day'
 
-interface IMentor {
-  fullname: string
-}
+// interface IMentor {
+//   fullname: string
+// }
 
-interface IWorkplace {
-  name: string
-}
-interface IClass {
-  _id: string
-  image_url?: string
-  class_name?: string
-  location?: string
-  is_active?: boolean
-  class_size?: number
-  start_at?: string
-  end_at?: string
-  mentor?: IMentor
-  workplace?: IWorkplace
-}
+// interface IWorkplace {
+//   name: string
+// }
+// interface IClass {
+//   _id: string
+//   image_url?: string
+//   class_name?: string
+//   location?: string
+//   is_active?: boolean
+//   class_size?: number
+//   start_at?: string
+//   end_at?: string
+//   mentor?: IMentor
+//   workplace?: IWorkplace
+// }
 
 dayjs.extend(customParseFormat)
 
@@ -52,7 +51,7 @@ const CustomContent = () => {
   const [form] = Form.useForm()
   const navigate = useNavigate()
 
-  const [searchParams, setSearchParams] = useSearchParams()
+  const [searchParams] = useSearchParams()
   const page = searchParams.get('page') ?? 1
   const limit = searchParams.get('limit') ?? 50
 
