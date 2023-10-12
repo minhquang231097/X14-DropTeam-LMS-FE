@@ -15,8 +15,8 @@ const Header: React.FC = () => {
     <header className='h-[56px] bg-white dark:bg-[#1E293B] flex items-center justify-between border-0 border-b-[1px] border-gray-300 border-solid dark:border-none'>
       <nav className='max-w-[1280px] mx-auto w-full flex items-center justify-between px-8'>
         <div className='flex flex-1'>
-          <a
-            href='/'
+          <Link
+            to='/'
             className='-m-1.5 p-1.5 flex items-center no-underline'
           >
             <img
@@ -27,7 +27,7 @@ const Header: React.FC = () => {
             <span className='text-2xl font-bold text-gray-600 dark:text-gray-100 max-lg:text-[20px] max-sm:hidden'>
               Vite Education
             </span>
-          </a>
+          </Link>
         </div>
 
         <div className='flex flex-1 justify-between max-md:hidden'>

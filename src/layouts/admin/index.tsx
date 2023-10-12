@@ -2,6 +2,7 @@ import React, { PropsWithChildren, useContext, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { Button, Layout, Space, Typography, Image } from 'antd'
 import { MdDarkMode, MdSunny, MdOutlineMenu } from 'react-icons/md'
+import { Link } from 'react-router-dom'
 import Logo from '@/assets/images/logo/logo-with-shadow.png'
 import { ColorModeContext } from '@/contexts/colorMode'
 import AdminDropDown from '@/components/dropdown/AdminDropDown'
@@ -95,9 +96,9 @@ const AdminLayout: React.FC<LayoutProps> = ({ content }) => {
             width='15%'
             className='min-h-screen'
           >
-            <Typography.Link
-              href='/admin'
-              className='p-1.5 flex items-center justify-center'
+            <Link
+              to='/'
+              className='p-1.5 h-[60px] flex items-center justify-center'
             >
               <Image
                 src={Logo}
@@ -110,7 +111,7 @@ const AdminLayout: React.FC<LayoutProps> = ({ content }) => {
               >
                 Vite Education
               </Typography.Text>
-            </Typography.Link>
+            </Link>
             <MenuSection />
           </Sider>
 
