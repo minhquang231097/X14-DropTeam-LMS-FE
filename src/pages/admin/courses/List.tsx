@@ -48,7 +48,7 @@ const CustomContent = () => {
 
   const [selectedCourse, setSelectedCourse] = useState<DataType | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [filteredData, setFilteredData] = useState<any>(null)
+  const [, setFilteredData] = useState<any>(null)
 
   const { data: courseData } = useQuery({
     queryKey: ['courses', page, limit],
@@ -92,7 +92,7 @@ const CustomContent = () => {
   //   }
   // }, [limit, page, search, courseData])
 
-  const onChange: TableProps<DataType>['onChange'] = (pagination, filters, sorter, extra) => {
+  const onChange: TableProps<DataType>['onChange'] = (pagination) => {
     const { current, pageSize } = pagination
     const searchParam = search ? `&search=${search}` : ''
     navigate(`/admin/courses/all?page=${current}&limit=${pageSize}${searchParam}`)

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Button, Form, Input } from 'antd'
 import '../../user/profile/ChangePassword/ChangePassword.css'
-import handleChangePassword from '@/apis/changePassword.api'
+import { handleChangePassword } from '@/apis/changePassword.api'
 
 // const onFinish = (values: any) => {
 //   console.log('Success:', values)

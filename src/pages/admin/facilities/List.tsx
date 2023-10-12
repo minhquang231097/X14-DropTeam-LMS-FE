@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Breadcrumb, Button, Card, Image, Space, Table, Typography, Modal, theme, TableProps, notification } from 'antd'
+import { Breadcrumb, Button, Card, Image, Space, Table, Typography, Modal, TableProps, notification } from 'antd'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { MdAddCircleOutline } from 'react-icons/md'
 import { useQuery } from '@tanstack/react-query'
@@ -9,7 +9,6 @@ import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import AdminLayout from '@/layouts/admin'
 import AdminSearch from '@/components/search/AdminSearch'
-import AdminStatusSelect from '@/components/select/AdminStatusSelect'
 import { getWorkplacesBySearch, getWorkplacesList } from '@/apis/workplaceList.api'
 import { COMMON_STATUS } from '@/utils/status'
 import StatusTag from '@/components/tag/StatusTag'
@@ -48,7 +47,7 @@ const CustomContent = () => {
 
   const [selectedFacility, setSelectedFacility] = useState<DataType | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [filteredData, setFilteredData] = useState<any>(null)
+  const [, setFilteredData] = useState<any>(null)
 
   const { data: workplaceData } = useQuery({
     queryKey: ['workplaces', page, limit],
@@ -95,7 +94,7 @@ const CustomContent = () => {
     setIsModalOpen(false)
   }
 
-  const onChange: TableProps<DataType>['onChange'] = (pagination, filters, sorter, extra) => {
+  const onChange: TableProps<DataType>['onChange'] = (pagination) => {
     const { current, pageSize } = pagination
     const searchParam = search ? `&search=${search}` : ''
     navigate(`/admin/facilities/all?page=${current}&limit=${pageSize}${searchParam}`)

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
-import { Breadcrumb, Card, Typography, Row, Col, Image, Divider, Space, Button, Tag, Rate } from 'antd'
+import { Breadcrumb, Card, Typography, Row, Col, Image, Space, Button, Tag, Rate } from 'antd'
 import { useQuery } from '@tanstack/react-query'
 import { MdStarOutline } from 'react-icons/md'
 import AdminLayout from '@/layouts/admin'

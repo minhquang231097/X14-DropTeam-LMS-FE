@@ -1,5 +1,4 @@
 import React from 'react'
-import ImgCrop from 'antd-img-crop'
 import {
   Breadcrumb,
   Card,
@@ -8,8 +7,6 @@ import {
   Typography,
   Row,
   Col,
-  Upload,
-  UploadProps,
   Button,
   Space,
   InputNumber,

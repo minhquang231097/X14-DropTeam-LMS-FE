@@ -42,10 +42,10 @@ const ContainerHeight = 400
 const CustomContent = () => {
   const { mode } = useContext(ColorModeContext)
   const [searchText, setSearchText] = useState('')
-  const [filteredData, setFilteredData] = useState([])
+  const [, setFilteredData] = useState([])
   const [data, setData] = useState<UserItem[]>([])
 
-  const [searchParams, setSearchParams] = useSearchParams()
+  const [searchParams] = useSearchParams()
   const page = searchParams.get('page') ?? '1'
   const limit = searchParams.get('limit') ?? '10'
 

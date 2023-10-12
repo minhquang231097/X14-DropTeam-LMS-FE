@@ -1,17 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import {
-  Button,
-  Card,
-  Collapse,
-  CollapseProps,
-  Form,
-  Input,
-  Space,
-  Tabs,
-  TabsProps,
-  Typography,
-  notification,
-} from 'antd'
+import React, { useState } from 'react'
+import { Card, Collapse, CollapseProps, Form, Input, Space, Tabs, TabsProps, Typography, notification } from 'antd'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 import { getCourse } from '@/apis/course.api'
@@ -20,9 +8,8 @@ import { updateLesson } from '@/apis/lessonsUpdate.api'
 
 const CollapseComponent: React.FC = () => {
   const [form] = Form.useForm()
-  const [isEditing, setIsEditing] = useState(false)
-  const [title, setTitle] = useState<string>('')
-  const [content, setContent] = useState<string>('')
+  const [isEditing] = useState(false)
+  const [, setContent] = useState<string>('')
 
   const { id: courseId } = useParams()
 

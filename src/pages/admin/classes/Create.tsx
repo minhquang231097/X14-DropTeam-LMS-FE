@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import {
-  Alert,
   Breadcrumb,
   Button,
   Card,
@@ -26,25 +25,25 @@ import { searchWorkplaceForAdmin } from '@/apis/searchWorkplaceForAdmin'
 import { getCourse } from '@/apis/course.api'
 import { weekdays } from '@/utils/day'
 
-interface IMentor {
-  fullname: string
-}
+// interface IMentor {
+//   fullname: string
+// }
 
-interface IWorkplace {
-  name: string
-}
-interface IClass {
-  _id: string
-  image_url?: string
-  class_name?: string
-  location?: string
-  is_active?: boolean
-  class_size?: number
-  start_at?: string
-  end_at?: string
-  mentor?: IMentor
-  workplace?: IWorkplace
-}
+// interface IWorkplace {
+//   name: string
+// }
+// interface IClass {
+//   _id: string
+//   image_url?: string
+//   class_name?: string
+//   location?: string
+//   is_active?: boolean
+//   class_size?: number
+//   start_at?: string
+//   end_at?: string
+//   mentor?: IMentor
+//   workplace?: IWorkplace
+// }
 
 dayjs.extend(customParseFormat)
 
@@ -52,7 +51,7 @@ const CustomContent = () => {
   const [form] = Form.useForm()
   const navigate = useNavigate()
 
-  const [searchParams, setSearchParams] = useSearchParams()
+  const [searchParams] = useSearchParams()
   const page = searchParams.get('page') ?? 1
   const limit = searchParams.get('limit') ?? 50
 
@@ -60,7 +59,7 @@ const CustomContent = () => {
   const [selectedCourse, setSelectedCourse] = useState<string | undefined>(undefined)
   const [selectedWorkplace, setSelectedWorkplace] = useState<string | undefined>(undefined)
 
-  const warningText = `A minimum of 10 students is required to create a class. Otherwise, class creation is not permitted.`
+  // const warningText = `A minimum of 10 students is required to create a class. Otherwise, class creation is not permitted.`
   // Cần tối thiểu 10 học viên để tạo lớp học. Mặt khác, việc tạo lớp không được phép.
 
   // const [checkedList, setCheckedList] = useState<CheckboxValueType[]>(defaultCheckedList.map((option) => option.value))
@@ -223,13 +222,13 @@ const CustomContent = () => {
           >
             Create A New Class
           </Typography.Title>
-          <Alert
+          {/* <Alert
             message='Warning'
             description={warningText}
             type='warning'
             showIcon
             style={{ marginBottom: '1rem' }}
-          />
+          /> */}
           <Row gutter={[24, 16]}>
             <Col
               xs={24}

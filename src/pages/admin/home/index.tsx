@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Card, Col, Row } from 'antd'
+import { Col, Row } from 'antd'
 import Chart from '@/components/chart/Chart'
 import Donut from '@/components/chart/Donut'
 import CardItem from '@/components/dashboard/Card'

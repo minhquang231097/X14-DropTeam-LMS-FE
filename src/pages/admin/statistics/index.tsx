@@ -26,10 +26,10 @@ const Statistics = () => {
         setYear={setYear}
       />
       <CardItem
-        sale={filterData?.sale}
-        mentor={filterData?.mentor}
-        student={filterData?.student}
-        course={filterData?.course}
+        sale={filterData?.sale as string}
+        mentor={filterData?.mentor as string}
+        student={filterData?.student as string}
+        course={filterData?.course as string}
       />
       <div
         style={{

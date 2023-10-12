@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { Breadcrumb, Input, Button, Card, Image, PaginationProps, Space, Table, Typography, theme } from 'antd'
+import { Breadcrumb, Input, Card, Typography } from 'antd'
 import { useQuery } from '@tanstack/react-query'
 import { Link, useSearchParams } from 'react-router-dom'
 import { MdSearch } from 'react-icons/md'
@@ -69,7 +69,6 @@ const CustomContent = () => {
             enterButton={
               <MdSearch className={`text-${mode === 'light' ? 'black' : 'white'} align-middle text-[20px]`} />
             }
-
           />
         </div>
         <TeacherListTable

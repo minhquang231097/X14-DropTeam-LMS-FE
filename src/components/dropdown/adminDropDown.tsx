@@ -4,8 +4,6 @@ import { Avatar, Dropdown } from 'antd'
 import { FaUserCircle } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import { MdLockOutline, MdOutlineLogout, MdOutlinePersonOutline, MdOutlineHome } from 'react-icons/md'
-import { useQuery } from '@tanstack/react-query'
-import { getUserProfile } from '@/apis/userProfile.api'
 
 const items: MenuProps['items'] = [
   {

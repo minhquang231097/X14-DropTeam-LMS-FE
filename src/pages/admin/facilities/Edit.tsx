@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { Breadcrumb, Card, Form, Input, Typography, Row, Col, Button, notification, Space, Select } from 'antd'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { RuleObject } from 'antd/es/form'
 import http from '@/utils/http'
 import AdminLayout from '@/layouts/admin'
 import { getWorkplace } from '@/apis/workplaceByID.api'
@@ -25,8 +24,8 @@ const CustomContent = () => {
   const navigate = useNavigate()
 
   const [nameValue, setNameValue] = useState('')
-  const [codeValue, setCodeValue] = useState('')
-  const [addressValue, setAddressValue] = useState('')
+  // const [codeValue, setCodeValue] = useState('')
+  const [addressValue] = useState('')
   const [statusValue, setStatusValue] = useState<StatusFacility>('ON')
 
   const updateWorkplace = async (workplace: IWorkplace) => {
@@ -86,10 +85,10 @@ const CustomContent = () => {
     const { value } = event.target
     setNameValue(value)
   }
-  const onChange2: React.ChangeEventHandler<HTMLInputElement> = (event) => {
-    const { value } = event.target
-    setNameValue(value)
-  }
+  // const onChange2: React.ChangeEventHandler<HTMLInputElement> = (event) => {
+  //   const { value } = event.target
+  //   setNameValue(value)
+  // }
   const onChange3: React.ChangeEventHandler<HTMLInputElement> = (event) => {
     const { value } = event.target
     setNameValue(value)

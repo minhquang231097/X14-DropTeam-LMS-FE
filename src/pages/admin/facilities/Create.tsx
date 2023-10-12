@@ -1,5 +1,4 @@
 import React from 'react'
-import ImgCrop from 'antd-img-crop'
 import {
   Breadcrumb,
   Card,
@@ -8,8 +7,6 @@ import {
   Typography,
   Row,
   Col,
-  Upload,
-  UploadProps,
   Button,
   notification,
   Space,
@@ -22,12 +19,12 @@ import { createWorkplace } from '@/apis/workplaceCreate.api'
 import { InputNoSpace } from '@/components/input/InputNoSpace'
 // import { UploadOutlined } from '@ant-design/icons'
 
-interface IWorkplace {
-  name: string
-  workplace_code: string
-  address: string
-  status: string
-}
+// interface IWorkplace {
+//   name: string
+//   workplace_code: string
+//   address: string
+//   status: string
+// }
 
 const CustomContent = () => {
   const [form] = Form.useForm()
