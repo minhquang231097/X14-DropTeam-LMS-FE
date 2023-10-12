@@ -1,1 +1,0 @@
-import{j as t}from"./index-af6f98f4.js";import{A as o}from"./index-d13faa49.js";import"./index.esm-1433434a.js";import"./TextArea-a8573295.js";import"./logo-with-shadow-2b5099bc.js";const r=()=>t.jsx("div",{children:"THIS IS THE MAIN ADMIN CONTENT"}),p=()=>t.jsx(o,{content:t.jsx(r,{})});export{p as default};

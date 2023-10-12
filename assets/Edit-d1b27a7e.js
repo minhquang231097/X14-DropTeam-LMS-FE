@@ -1,0 +1,1 @@
+import{j as t}from"./index-66f4439b.js";import{A as o}from"./index-b1d286ea.js";import"./index.esm-585c5a33.js";import"./TextArea-61888de0.js";import"./logo-with-shadow-2b5099bc.js";const n=()=>t.jsx("div",{children:"CustomContent"}),p=()=>t.jsx(o,{content:t.jsx(n,{})});export{p as default};
